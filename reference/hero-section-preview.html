@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヒーローセクション デザイン案（ネオ東京ヘッダー連動）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; }
+
+  /* 共通ヘッダー（ネオ東京） */
+  .neo-header {
+    background: #000; position: relative; overflow: hidden;
+    display: flex; align-items: center; padding: 0 40px; height: 56px;
+  }
+  .neo-header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #ff0040, #00ff88, #58a6ff, transparent);
+    animation: scanline 3s linear infinite;
+  }
+  @keyframes scanline { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .neo-header .logo { font-size: 1.2em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px; margin-right: auto; }
+  .neo-header .logo .br { color: #ff0040; font-weight: 400; }
+  .neo-header nav { display: flex; gap: 20px; align-items: center; font-family: monospace; font-size: 0.8em; }
+  .neo-header nav a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .neo-header nav a.active { color: #00ff88; }
+  .neo-header .reg { border: 1px solid #ff0040; color: #ff0040; padding: 5px 14px; font-weight: 700; text-decoration: none; font-family: monospace; font-size: 0.8em; }
+
+  /* 共通ボタン */
+  .cta-sub { font-size: 0.85em; margin-bottom: 12px; }
+  .cta-btn {
+    display: inline-flex; align-items: center; text-decoration: none;
+    overflow: hidden; white-space: nowrap; transition: all 0.2s;
+  }
+
+  /* ラベル */
+  .preview-label {
+    background: #000; color: #555; text-align: center; padding: 16px;
+    font-size: 0.85em; letter-spacing: 4px; font-family: monospace;
+    border-top: 1px solid #222; border-bottom: 1px solid #222;
+  }
+  .preview-desc { color: #444; font-size: 0.75em; margin-top: 4px; letter-spacing: 0; }
+
+  /* ===== A: ダークグラデ全面 ===== */
+  .hero-a {
+    background: linear-gradient(135deg, #0a0a14 0%, #1a0a20 50%, #0a0a14 100%);
+    min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-a::before {
+    content: ''; position: absolute; top: -50%; right: -10%; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,0,64,0.08) 0%, transparent 70%);
+  }
+  .hero-a .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-a .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-a .right img { width: 100%; max-width: 440px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+  .hero-a .tag { display: inline-block; border: 1px solid #ff0040; color: #ff0040; padding: 4px 14px; font-family: monospace; font-size: 0.75em; letter-spacing: 2px; margin-bottom: 20px; }
+  .hero-a h2 { font-size: 2.8em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+  .hero-a h2 .accent { color: #ff0040; }
+  .hero-a .sub { font-size: 1em; color: rgba(255,255,255,0.35); margin-bottom: 28px; font-family: monospace; }
+  .hero-a .cta-sub { color: rgba(255,255,255,0.3); }
+  .hero-a .cta-btn { background: #ff0040; border: none; }
+  .hero-a .cta-btn .b { background: rgba(0,0,0,0.2); color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-a .cta-btn .t { padding: 14px 24px; color: #fff; font-weight: 700; font-size: 0.95em; }
+  .hero-a .cta-btn:hover { box-shadow: 0 0 30px rgba(255,0,64,0.4); transform: translateY(-2px); }
+
+  /* ===== B: ターミナル風 ===== */
+  .hero-b {
+    background: #0d1117; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative;
+  }
+  .hero-b::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,0.015) 2px, rgba(0,255,136,0.015) 4px);
+    pointer-events: none;
+  }
+  .hero-b .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-b .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-b .right img { width: 100%; max-width: 440px; border-radius: 8px; border: 1px solid #21262d; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .hero-b .cmd { font-family: 'Courier New', monospace; color: #484f58; font-size: 0.8em; margin-bottom: 8px; }
+  .hero-b h2 { font-family: 'Courier New', monospace; font-size: 2.4em; font-weight: 700; color: #c9d1d9; line-height: 1.3; margin-bottom: 8px; }
+  .hero-b h2 .grn { color: #00ff88; }
+  .hero-b h2 .red { color: #ff0040; }
+  .hero-b .sub { font-family: 'Courier New', monospace; font-size: 0.85em; color: #484f58; margin-bottom: 28px; }
+  .hero-b .cursor { display: inline-block; width: 10px; height: 22px; background: #00ff88; animation: blink 1s infinite; vertical-align: text-bottom; }
+  @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+  .hero-b .cta-sub { color: #484f58; font-family: monospace; }
+  .hero-b .cta-btn { border: 1px solid #00ff88; background: transparent; }
+  .hero-b .cta-btn .b { background: #00ff88; color: #0d1117; padding: 12px 16px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-b .cta-btn .t { padding: 12px 22px; color: #00ff88; font-weight: 700; font-size: 0.9em; font-family: monospace; }
+  .hero-b .cta-btn:hover { background: rgba(0,255,136,0.1); box-shadow: 0 0 20px rgba(0,255,136,0.2); }
+
+  /* ===== C: スプリットブラック ===== */
+  .hero-c {
+    background: #000; min-height: 520px; display: flex; align-items: stretch;
+    position: relative;
+  }
+  .hero-c .left {
+    flex: 1; padding: 60px 5%; display: flex; flex-direction: column; justify-content: center;
+    border-right: 2px solid #ff0040;
+  }
+  .hero-c .right { flex: 1; position: relative; overflow: hidden; }
+  .hero-c .right img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+  .hero-c .right::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, #000 0%, transparent 30%);
+  }
+  .hero-c .tag { color: #ff0040; font-family: monospace; font-size: 0.8em; letter-spacing: 4px; margin-bottom: 16px; }
+  .hero-c h2 { font-size: 3em; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+  .hero-c .sub-line { font-size: 2em; font-weight: 900; color: rgba(255,255,255,0.15); margin-bottom: 24px; }
+  .hero-c .cta-sub { color: rgba(255,255,255,0.3); }
+  .hero-c .cta-btn { border: 2px solid #ff0040; background: #000; }
+  .hero-c .cta-btn .b { background: #ff0040; color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-c .cta-btn .t { padding: 14px 24px; color: #ff0040; font-weight: 700; font-size: 0.95em; font-family: monospace; }
+  .hero-c .cta-btn:hover { background: #ff0040; }
+  .hero-c .cta-btn:hover .t { color: #fff; }
+
+  /* ===== D: グリッド＋ネオン枠 ===== */
+  .hero-d {
+    background: #0a0a0f; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-d::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-d .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-d .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-d .right img {
+    width: 100%; max-width: 420px; border-radius: 4px;
+    border: 1px solid rgba(0,255,136,0.2);
+    box-shadow: 0 0 30px rgba(0,255,136,0.05), 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .hero-d .badge { display: inline-block; background: #ff0040; color: #fff; padding: 4px 12px; font-family: monospace; font-size: 0.7em; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px; }
+  .hero-d h2 { font-size: 2.6em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+  .hero-d h2 .glow { color: #00ff88; text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+  .hero-d .sub { color: rgba(255,255,255,0.3); font-family: monospace; font-size: 0.9em; margin-bottom: 28px; }
+  .hero-d .cta-sub { color: rgba(255,255,255,0.25); font-family: monospace; }
+  .hero-d .cta-btn { border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); }
+  .hero-d .cta-btn .b { background: #00ff88; color: #0a0a0f; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-d .cta-btn .t { padding: 14px 24px; color: #fff; font-weight: 600; font-size: 0.9em; }
+  .hero-d .cta-btn:hover { border-color: #00ff88; box-shadow: 0 0 20px rgba(0,255,136,0.15); }
+
+  /* ===== E: ホログラムグラデ ===== */
+  .hero-e {
+    background: linear-gradient(135deg, #000 0%, #0a0515 40%, #150a20 70%, #000 100%);
+    min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-e::before {
+    content: ''; position: absolute; top: 20%; right: 5%; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(88,166,255,0.06) 0%, transparent 60%);
+  }
+  .hero-e::after {
+    content: ''; position: absolute; bottom: 10%; left: 10%; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,0,64,0.05) 0%, transparent 60%);
+  }
+  .hero-e .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-e .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-e .right img {
+    width: 100%; max-width: 440px; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 4px 80px rgba(88,166,255,0.08), 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .hero-e .tag { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .hero-e .tag .dot { width: 8px; height: 8px; border-radius: 50%; background: #00ff88; animation: blink 1.5s infinite; }
+  .hero-e .tag span { font-family: monospace; font-size: 0.75em; color: rgba(255,255,255,0.4); letter-spacing: 2px; }
+  .hero-e h2 { font-size: 2.8em; font-weight: 900; line-height: 1.25; margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, #ff0040 50%, #58a6ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-e .sub { color: rgba(255,255,255,0.3); font-size: 0.95em; margin-bottom: 28px; }
+  .hero-e .cta-sub { color: rgba(255,255,255,0.25); }
+  .hero-e .cta-btn {
+    background: linear-gradient(135deg, #ff0040, #ff0060);
+    border: none; border-radius: 4px;
+  }
+  .hero-e .cta-btn .b { background: rgba(0,0,0,0.2); color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-e .cta-btn .t { padding: 14px 24px; color: #fff; font-weight: 700; font-size: 0.95em; }
+  .hero-e .cta-btn:hover { box-shadow: 0 0 30px rgba(255,0,64,0.4); transform: translateY(-2px); }
+
+  /* ===== F: ミッドナイト＋赤ストライプ ===== */
+  .hero-f {
+    background: #000; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-f .stripe {
+    position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
+    background: linear-gradient(180deg, transparent, #ff0040, transparent);
+    opacity: 0.3;
+  }
+  .hero-f .left { flex: 1; max-width: 50%; z-index: 2; }
+  .hero-f .right { flex: 1; max-width: 50%; display: flex; justify-content: center; z-index: 2; padding-left: 40px; }
+  .hero-f .right img { width: 100%; max-width: 440px; border-radius: 0; border: 2px solid rgba(255,255,255,0.06); }
+  .hero-f .eyebrow { color: #ff0040; font-family: monospace; font-size: 0.8em; font-weight: 700; letter-spacing: 4px; margin-bottom: 16px; border-left: 3px solid #ff0040; padding-left: 12px; }
+  .hero-f h2 { font-size: 2.8em; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .hero-f .sub-h2 { font-size: 2.8em; font-weight: 900; color: rgba(255,255,255,0.12); line-height: 1.2; margin-bottom: 24px; }
+  .hero-f .desc { color: rgba(255,255,255,0.35); font-size: 0.85em; margin-bottom: 28px; font-family: monospace; line-height: 1.6; }
+  .hero-f .cta-sub { color: rgba(255,255,255,0.25); font-family: monospace; }
+  .hero-f .cta-btn { border: 2px solid #ff0040; background: transparent; }
+  .hero-f .cta-btn .b { background: #ff0040; color: #fff; padding: 14px 20px; font-weight: 900; font-family: monospace; font-size: 0.9em; }
+  .hero-f .cta-btn .t { padding: 14px 28px; color: #ff0040; font-weight: 700; font-size: 0.95em; font-family: monospace; letter-spacing: 1px; }
+  .hero-f .cta-btn:hover { background: #ff0040; }
+  .hero-f .cta-btn:hover .t { color: #fff; }
+
+  /* ===== G: パーティクル風（ドット浮遊） ===== */
+  .hero-g {
+    background: #050510; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-g .particles { position: absolute; inset: 0; }
+  .hero-g .p { position: absolute; width: 3px; height: 3px; border-radius: 50%; animation: float linear infinite; }
+  @keyframes float { 0%{ transform: translateY(0) scale(1); opacity:0; } 20%{ opacity:1; } 80%{ opacity:1; } 100%{ transform: translateY(-520px) scale(0.5); opacity:0; } }
+  .hero-g .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-g .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-g .right img { width: 100%; max-width: 440px; border-radius: 12px; box-shadow: 0 0 60px rgba(255,0,64,0.1), 0 20px 60px rgba(0,0,0,0.6); }
+  .hero-g .kicker { color: #ff0040; font-family: monospace; font-size: 0.8em; letter-spacing: 6px; margin-bottom: 20px; }
+  .hero-g h2 { font-size: 2.8em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+  .hero-g h2 .thin { font-weight: 200; color: rgba(255,255,255,0.3); }
+  .hero-g .sub { color: rgba(255,255,255,0.25); font-size: 0.9em; margin-bottom: 28px; font-family: monospace; }
+  .hero-g .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-g .cta-btn { background: transparent; border: 1px solid #ff0040; position: relative; overflow: hidden; }
+  .hero-g .cta-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,0,64,0.15), transparent); animation: shine 2.5s infinite; }
+  @keyframes shine { 0%{ left:-100%; } 100%{ left:100%; } }
+  .hero-g .cta-btn .b { background: #ff0040; color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; position: relative; }
+  .hero-g .cta-btn .t { padding: 14px 24px; color: #ff0040; font-weight: 700; font-size: 0.9em; font-family: monospace; position: relative; }
+
+  /* ===== H: 斜めカット ===== */
+  .hero-h {
+    background: #000; min-height: 520px; display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-h .bg-img { position: absolute; right: 0; top: 0; bottom: 0; width: 55%; }
+  .hero-h .bg-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+  .hero-h .bg-img::before { content:''; position:absolute; inset:0; background: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 100%); }
+  .hero-h .diagonal { position: absolute; left: 40%; top: 0; bottom: 0; width: 200px;
+    background: #000; transform: skewX(-8deg); z-index: 2;
+  }
+  .hero-h .diagonal::after { content:''; position:absolute; right:-2px; top:0; bottom:0; width:3px; background: #ff0040; }
+  .hero-h .left { flex: 1; max-width: 45%; z-index: 3; padding: 60px 5%; }
+  .hero-h .tag { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .hero-h .tag .line { width: 30px; height: 2px; background: #ff0040; }
+  .hero-h .tag span { color: #ff0040; font-family: monospace; font-size: 0.75em; letter-spacing: 3px; }
+  .hero-h h2 { font-size: 2.6em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+  .hero-h .sub { color: rgba(255,255,255,0.3); font-family: monospace; font-size: 0.9em; margin-bottom: 28px; }
+  .hero-h .cta-sub { color: rgba(255,255,255,0.25); font-family: monospace; }
+  .hero-h .cta-btn { background: #ff0040; border: none; }
+  .hero-h .cta-btn .b { background: rgba(0,0,0,0.25); color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-h .cta-btn .t { padding: 14px 28px; color: #fff; font-weight: 700; font-size: 0.95em; }
+  .hero-h .cta-btn:hover { box-shadow: 0 0 30px rgba(255,0,64,0.5); }
+
+  /* ===== I: カード浮遊 ===== */
+  .hero-i {
+    background: linear-gradient(180deg, #08080f 0%, #0f0a18 100%);
+    min-height: 520px; display: flex; align-items: center; justify-content: center; padding: 60px 5%;
+    position: relative;
+  }
+  .hero-i .card-wrap {
+    display: flex; align-items: center; gap: 50px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px; padding: 50px; max-width: 1100px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  .hero-i .left { flex: 1; }
+  .hero-i .right { flex-shrink: 0; }
+  .hero-i .right img { width: 320px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+  .hero-i .tag { color: #00ff88; font-family: monospace; font-size: 0.75em; letter-spacing: 3px; margin-bottom: 16px; }
+  .hero-i h2 { font-size: 2.4em; font-weight: 900; color: #fff; line-height: 1.3; margin-bottom: 10px; }
+  .hero-i h2 .dim { color: rgba(255,255,255,0.2); }
+  .hero-i .sub { color: rgba(255,255,255,0.3); font-size: 0.85em; margin-bottom: 24px; font-family: monospace; }
+  .hero-i .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-i .cta-btn { border: 1px solid #00ff88; background: transparent; }
+  .hero-i .cta-btn .b { background: #00ff88; color: #0a0a14; padding: 12px 16px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-i .cta-btn .t { padding: 12px 22px; color: #00ff88; font-weight: 700; font-size: 0.9em; font-family: monospace; }
+  .hero-i .cta-btn:hover { background: rgba(0,255,136,0.08); box-shadow: 0 0 20px rgba(0,255,136,0.15); }
+
+  /* ===== J: タイポ全面 ===== */
+  .hero-j {
+    background: #000; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-j .bg-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 18em; font-weight: 900; color: rgba(255,255,255,0.015);
+    white-space: nowrap; pointer-events: none; font-family: monospace;
+  }
+  .hero-j .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-j .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-j .right img { width: 100%; max-width: 400px; border-radius: 8px; mix-blend-mode: lighten; opacity: 0.8; }
+  .hero-j h2 { font-size: 3.5em; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 6px; letter-spacing: -2px; }
+  .hero-j .accent { display: block; font-size: 3.5em; font-weight: 900; color: #ff0040; line-height: 1.1; letter-spacing: -2px; margin-bottom: 16px; }
+  .hero-j .sub { color: rgba(255,255,255,0.25); font-family: monospace; font-size: 0.85em; margin-bottom: 28px; }
+  .hero-j .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-j .cta-btn { border: 2px solid #fff; background: transparent; }
+  .hero-j .cta-btn .b { background: #fff; color: #000; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-j .cta-btn .t { padding: 14px 24px; color: #fff; font-weight: 700; font-size: 0.9em; font-family: monospace; }
+  .hero-j .cta-btn:hover { background: #fff; }
+  .hero-j .cta-btn:hover .t { color: #000; }
+
+  /* ===== K: グリッチ重ね ===== */
+  .hero-k {
+    background: #000; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-k .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-k .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; position: relative; }
+  .hero-k .right img { width: 100%; max-width: 440px; border-radius: 4px; }
+  .hero-k .right::after {
+    content: ''; position: absolute; inset: 10px; border: 2px solid #ff0040;
+    border-radius: 4px; transform: translate(8px, -8px); opacity: 0.3;
+  }
+  .hero-k .right::before {
+    content: ''; position: absolute; inset: 10px; border: 2px solid #00ff88;
+    border-radius: 4px; transform: translate(-8px, 8px); opacity: 0.2;
+  }
+  .hero-k .mono { font-family: monospace; color: #ff0040; font-size: 0.8em; margin-bottom: 12px; letter-spacing: 2px; }
+  .hero-k h2 { font-size: 2.8em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 4px; position: relative; }
+  .hero-k h2::after { content: 'AIに奪われる側か、'; position: absolute; left: 3px; top: 3px; color: rgba(0,255,136,0.1); z-index: -1; }
+  .hero-k .line2 { font-size: 2.8em; font-weight: 900; color: #ff0040; line-height: 1.25; margin-bottom: 16px; }
+  .hero-k .sub { color: rgba(255,255,255,0.3); font-family: monospace; font-size: 0.85em; margin-bottom: 28px; }
+  .hero-k .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-k .cta-btn { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+  .hero-k .cta-btn .b { background: #ff0040; color: #fff; padding: 14px 18px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-k .cta-btn .t { padding: 14px 24px; color: #fff; font-weight: 600; font-size: 0.9em; }
+  .hero-k .cta-btn:hover { border-color: #ff0040; box-shadow: 0 0 20px rgba(255,0,64,0.2); }
+
+  /* ===== L: ワイドシネマ ===== */
+  .hero-l {
+    background: #000; min-height: 480px; display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-l .cinema-bars { position: absolute; top: 0; left: 0; right: 0; height: 40px; background: #000; z-index: 5; }
+  .hero-l .cinema-bars-btm { position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: #000; z-index: 5; }
+  .hero-l .bg-full { position: absolute; inset: 0; }
+  .hero-l .bg-full img { width: 100%; height: 100%; object-fit: cover; opacity: 0.25; filter: saturate(0.3); }
+  .hero-l .content { position: relative; z-index: 3; width: 100%; text-align: center; padding: 80px 5%; }
+  .hero-l h2 { font-size: 3.2em; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 8px; letter-spacing: 2px; }
+  .hero-l h2 .red { color: #ff0040; }
+  .hero-l .sub { color: rgba(255,255,255,0.4); font-family: monospace; font-size: 1em; margin-bottom: 32px; letter-spacing: 6px; }
+  .hero-l .cta-sub { color: rgba(255,255,255,0.25); font-family: monospace; margin-bottom: 12px; }
+  .hero-l .cta-btn { border: 2px solid #ff0040; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
+  .hero-l .cta-btn .b { background: #ff0040; color: #fff; padding: 16px 22px; font-weight: 900; font-family: monospace; font-size: 0.9em; }
+  .hero-l .cta-btn .t { padding: 16px 32px; color: #fff; font-weight: 700; font-size: 1em; letter-spacing: 1px; }
+  .hero-l .cta-btn:hover { background: #ff0040; box-shadow: 0 0 40px rgba(255,0,64,0.4); }
+
+  /* ===== M: 縦書き混合 ===== */
+  .hero-m {
+    background: #0a0a0a; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-m .vert-text {
+    position: absolute; right: 52%; top: 50%; transform: translateY(-50%);
+    writing-mode: vertical-rl; font-size: 0.7em; color: rgba(255,255,255,0.06);
+    font-family: monospace; letter-spacing: 8px; white-space: nowrap;
+  }
+  .hero-m .left { flex: 1; max-width: 50%; z-index: 2; }
+  .hero-m .right { flex: 1; max-width: 50%; display: flex; justify-content: center; z-index: 2; }
+  .hero-m .right img { width: 100%; max-width: 420px; border-radius: 0;
+    clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .hero-m .jp-tag { font-size: 0.8em; color: #ff0040; margin-bottom: 16px; letter-spacing: 8px; }
+  .hero-m h2 { font-size: 2.8em; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .hero-m .h2-sub { font-size: 2em; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+  .hero-m .h2-sub .slash { color: #ff0040; margin: 0 8px; }
+  .hero-m .en-sub { font-family: monospace; font-size: 0.7em; color: rgba(255,255,255,0.15); letter-spacing: 4px; margin-bottom: 28px; text-transform: uppercase; }
+  .hero-m .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-m .cta-btn { border: none; background: #ff0040; clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%); }
+  .hero-m .cta-btn .b { background: rgba(0,0,0,0.2); color: #fff; padding: 14px 22px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-m .cta-btn .t { padding: 14px 32px; color: #fff; font-weight: 700; font-size: 0.95em; }
+  .hero-m .cta-btn:hover { filter: brightness(1.2); }
+
+  /* ===== N: ノイズテクスチャ ===== */
+  .hero-n {
+    background: #0c0c0c; min-height: 520px; display: flex; align-items: center; padding: 60px 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-n::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none;
+  }
+  .hero-n .left { flex: 1; max-width: 55%; z-index: 2; }
+  .hero-n .right { flex: 1; max-width: 45%; display: flex; justify-content: center; z-index: 2; }
+  .hero-n .right img { width: 100%; max-width: 440px; border-radius: 8px;
+    filter: grayscale(0.3) contrast(1.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .hero-n .label-bar { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .hero-n .label-bar .line { width: 40px; height: 1px; background: #ff0040; }
+  .hero-n .label-bar span { font-family: monospace; font-size: 0.7em; color: rgba(255,255,255,0.3); letter-spacing: 4px; text-transform: uppercase; }
+  .hero-n h2 { font-size: 2.6em; font-weight: 900; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+  .hero-n h2 em { font-style: normal; color: #ff0040; position: relative; }
+  .hero-n h2 em::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 3px; background: #ff0040; opacity: 0.3; }
+  .hero-n .sub { color: rgba(255,255,255,0.25); font-size: 0.9em; margin-bottom: 28px; font-family: monospace; letter-spacing: 1px; }
+  .hero-n .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-n .cta-btn { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+  .hero-n .cta-btn .b { background: #ff0040; color: #fff; padding: 14px 20px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-n .cta-btn .t { padding: 14px 28px; color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.9em; }
+  .hero-n .cta-btn:hover { border-color: #ff0040; background: rgba(255,0,64,0.06); }
+
+  /* ===== O: アニメボーダー囲み ===== */
+  .hero-o {
+    background: #050508; min-height: 520px; display: flex; align-items: center; justify-content: center;
+    padding: 60px 5%; position: relative;
+  }
+  .hero-o .frame {
+    display: flex; align-items: center; gap: 50px; padding: 50px 60px;
+    position: relative; max-width: 1100px; width: 100%;
+  }
+  .hero-o .frame::before, .hero-o .frame::after {
+    content: ''; position: absolute; border: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-o .frame::before { top: 0; left: 0; right: 50%; bottom: 50%; border-right: none; border-bottom: none; border-color: #ff0040; opacity: 0.4; }
+  .hero-o .frame::after { bottom: 0; right: 0; left: 50%; top: 50%; border-left: none; border-top: none; border-color: #00ff88; opacity: 0.3; }
+  .hero-o .left { flex: 1; z-index: 2; }
+  .hero-o .right { flex-shrink: 0; z-index: 2; }
+  .hero-o .right img { width: 360px; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .hero-o .num { font-family: monospace; font-size: 5em; font-weight: 900; color: rgba(255,0,64,0.08); line-height: 1; margin-bottom: -10px; }
+  .hero-o h2 { font-size: 2.4em; font-weight: 900; color: #fff; line-height: 1.3; margin-bottom: 8px; }
+  .hero-o h2 .g { color: #00ff88; }
+  .hero-o .sub { color: rgba(255,255,255,0.25); font-family: monospace; font-size: 0.85em; margin-bottom: 28px; }
+  .hero-o .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-o .cta-btn { border: 1px solid #ff0040; background: transparent; }
+  .hero-o .cta-btn .b { background: #ff0040; color: #fff; padding: 12px 16px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-o .cta-btn .t { padding: 12px 22px; color: #ff0040; font-weight: 700; font-size: 0.9em; font-family: monospace; }
+  .hero-o .cta-btn:hover { background: rgba(255,0,64,0.1); box-shadow: 0 0 20px rgba(255,0,64,0.15); }
+
+  /* ===== P: マガジン風 ===== */
+  .hero-p {
+    background: #000; min-height: 520px; display: flex; align-items: stretch;
+    position: relative; overflow: hidden;
+  }
+  .hero-p .left {
+    flex: 1; padding: 50px 5%; display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .hero-p .right { flex: 1; position: relative; }
+  .hero-p .right img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-p .right::after { content:''; position:absolute; inset:0; background: linear-gradient(90deg, #000 0%, transparent 40%); }
+  .hero-p .issue { font-family: monospace; font-size: 0.65em; color: rgba(255,255,255,0.2); letter-spacing: 4px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; }
+  .hero-p h2 { font-size: 3.4em; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 4px; letter-spacing: -1px; }
+  .hero-p .h2-red { font-size: 3.4em; font-weight: 900; color: #ff0040; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+  .hero-p .deck { color: rgba(255,255,255,0.35); font-size: 0.85em; line-height: 1.7; margin-bottom: 28px; border-left: 2px solid #ff0040; padding-left: 16px; }
+  .hero-p .cta-sub { color: rgba(255,255,255,0.2); font-family: monospace; }
+  .hero-p .cta-btn { border: 2px solid #fff; background: transparent; }
+  .hero-p .cta-btn .b { background: #fff; color: #000; padding: 14px 20px; font-weight: 900; font-family: monospace; font-size: 0.85em; }
+  .hero-p .cta-btn .t { padding: 14px 28px; color: #fff; font-weight: 600; font-size: 0.95em; letter-spacing: 1px; }
+  .hero-p .cta-btn:hover { background: #fff; }
+  .hero-p .cta-btn:hover .t { color: #000; }
+</style>
+</head>
+<body>
+
+<!-- ===== A ===== -->
+<div class="preview-label">A - DARK GLOW（赤グロー＋浮遊感）<div class="preview-desc">暗い背景に赤のアクセント。画像に控えめなグロー。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-a">
+  <div class="left">
+    <div class="tag">AI INTERN No.1</div>
+    <h2>AIに奪われる側か、<br><span class="accent">奪う側か。</span></h2>
+    <div class="sub">// 選べ、今すぐ。</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+</div>
+
+<!-- ===== B ===== -->
+<div class="preview-label">B - TERMINAL（CRT風スキャンライン）<div class="preview-desc">ターミナル風。緑基調。背景にスキャンライン。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-b">
+  <div class="left">
+    <div class="cmd">$ ai-intern --status</div>
+    <h2>AIに<span class="red">奪われる</span>側か、<br><span class="grn">奪う</span>側か。</h2>
+    <div class="sub">$ echo "選べ、今すぐ。"<span class="cursor"></span></div>
+    <div class="cta-sub">// register --free --time=30sec</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+</div>
+
+<!-- ===== C ===== -->
+<div class="preview-label">C - SPLIT SCREEN（赤ライン分割）<div class="preview-desc">左テキスト・右画像を赤ラインで明確に分割。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-c">
+  <div class="left">
+    <div class="tag">AI_INTERN</div>
+    <h2>奪われる側か、<br>奪う側か。</h2>
+    <div class="sub-line">選べ、今すぐ。</div>
+    <div class="cta-sub" style="color:rgba(255,255,255,0.3);">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_3.png" alt=""></div>
+</div>
+
+<!-- ===== D ===== -->
+<div class="preview-label">D - GRID + NEON（グリッド背景＋緑ネオン枠）<div class="preview-desc">方眼グリッド背景。画像を緑ネオン枠で囲む。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-d">
+  <div class="left">
+    <div class="badge">AI INTERNSHIP No.1</div>
+    <h2>AIに奪われる側か、<br><span class="glow">奪う側か。</span></h2>
+    <div class="sub">// 選べ、今すぐ。</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+</div>
+
+<!-- ===== E ===== -->
+<div class="preview-label">E - HOLOGRAM GRADIENT（ホログラム＋グラデ文字）<div class="preview-desc">文字が虹グラデ。背景に複数の光源。高級感。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-e">
+  <div class="left">
+    <div class="tag"><span class="dot"></span><span>AI_INTERN ONLINE</span></div>
+    <h2>AIに奪われる側か、<br>奪う側か。<br>選べ、今すぐ。</h2>
+    <div class="sub">AI特化インターンなら AI_INTERN</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+</div>
+
+<!-- ===== F ===== -->
+<div class="preview-label">F - MIDNIGHT STRIPE（赤ストライプ＋ゴースト文字）<div class="preview-desc">中央に赤ストライプ。サブコピーがゴーストテキスト。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-f">
+  <div class="stripe"></div>
+  <div class="left">
+    <div class="eyebrow">AI_INTERN</div>
+    <h2>奪われる側か、<br>奪う側か。</h2>
+    <div class="sub-h2">選べ、今すぐ。</div>
+    <div class="desc">AI特化インターンだけを厳選。<br>プロンプトエンジニアからMLエンジニアまで。</div>
+    <div class="cta-sub" style="color:rgba(255,255,255,0.25); font-family:monospace;">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">REGISTER</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_3.png" alt=""></div>
+</div>
+
+<!-- ===== G ===== -->
+<div class="preview-label">G - PARTICLE（パーティクル浮遊＋シャインCTA）<div class="preview-desc">光の粒が浮遊。CTAに光が走るアニメーション。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-g">
+  <div class="particles">
+    <div class="p" style="left:10%; bottom:0; background:#ff0040; animation-duration:4s; animation-delay:0s;"></div>
+    <div class="p" style="left:25%; bottom:0; background:#00ff88; animation-duration:5s; animation-delay:1s;"></div>
+    <div class="p" style="left:40%; bottom:0; background:#58a6ff; animation-duration:3.5s; animation-delay:0.5s;"></div>
+    <div class="p" style="left:55%; bottom:0; background:#ff0040; animation-duration:6s; animation-delay:2s;"></div>
+    <div class="p" style="left:70%; bottom:0; background:#00ff88; animation-duration:4.5s; animation-delay:1.5s;"></div>
+    <div class="p" style="left:85%; bottom:0; background:#58a6ff; animation-duration:5.5s; animation-delay:0.8s;"></div>
+    <div class="p" style="left:15%; bottom:0; background:#ff0040; animation-duration:7s; animation-delay:3s;"></div>
+    <div class="p" style="left:60%; bottom:0; background:#00ff88; animation-duration:4s; animation-delay:2.5s;"></div>
+    <div class="p" style="left:90%; bottom:0; background:#ff0040; animation-duration:5s; animation-delay:0.3s;"></div>
+    <div class="p" style="left:35%; bottom:0; background:#58a6ff; animation-duration:6.5s; animation-delay:1.8s;"></div>
+  </div>
+  <div class="left">
+    <div class="kicker">AI _ INTERN</div>
+    <h2>AIに奪われる側か、<br>奪う側か。<br><span class="thin">選べ、今すぐ。</span></h2>
+    <div class="sub">// AI特化インターンなら AI_INTERN</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+</div>
+
+<!-- ===== H ===== -->
+<div class="preview-label">H - DIAGONAL CUT（斜めカット＋赤ライン）<div class="preview-desc">斜めに切られたレイアウト。画像が背景全面。赤の斜めライン。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-h">
+  <div class="bg-img"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+  <div class="diagonal"></div>
+  <div class="left">
+    <div class="tag"><span class="line"></span><span>AI INTERN</span></div>
+    <h2>AIに奪われる側か、<br>奪う側か。</h2>
+    <div class="sub">// 選べ、今すぐ。</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+</div>
+
+<!-- ===== I ===== -->
+<div class="preview-label">I - FLOATING CARD（カード浮遊＋緑アクセント）<div class="preview-desc">コンテンツをカードに格納。浮遊感。緑ベース。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-i">
+  <div class="card-wrap">
+    <div class="left">
+      <div class="tag">AI_INTERN // NOW LIVE</div>
+      <h2>AIに奪われる側か、<br>奪う側か。<br><span class="dim">選べ、今すぐ。</span></h2>
+      <div class="sub">AI特化インターンなら AI_INTERN</div>
+      <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+      <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+    </div>
+    <div class="right"><img src="images/top/catch_main_image_pc_3.png" alt=""></div>
+  </div>
+</div>
+
+<!-- ===== J ===== -->
+<div class="preview-label">J - BIG TYPO（超巨大タイポグラフィ）<div class="preview-desc">文字で圧倒。背景にゴースト文字。赤アクセント。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-j">
+  <div class="bg-text">AI_INTERN</div>
+  <div class="left">
+    <h2>奪われる側か、</h2>
+    <div class="accent">奪う側か。</div>
+    <div class="sub">// 選べ、今すぐ。 — AI特化インターン AI_INTERN</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+</div>
+
+<!-- ===== K ===== -->
+<div class="preview-label">K - GLITCH FRAME（画像にズレ枠エフェクト）<div class="preview-desc">画像に赤・緑のズレた枠。テキストにもグリッチ影。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-k">
+  <div class="left">
+    <div class="mono">[AI_INTERN] // v2.0</div>
+    <h2>AIに奪われる側か、</h2>
+    <div class="line2">奪う側か。選べ。</div>
+    <div class="sub">// AI特化インターンなら AI_INTERN</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+</div>
+
+<!-- ===== L ===== -->
+<div class="preview-label">L - WIDE CINEMA（映画風レターボックス）<div class="preview-desc">上下に黒帯。画像背景全面。テキスト中央。映画的。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-l">
+  <div class="cinema-bars"></div>
+  <div class="cinema-bars-btm"></div>
+  <div class="bg-full"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+  <div class="content">
+    <h2>AIに奪われる側か、<span class="red">奪う側か。</span></h2>
+    <div class="sub">--- 選 べ 、 今 す ぐ 。 ---</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+</div>
+
+<!-- ===== M ===== -->
+<div class="preview-label">M - SLANT（斜めクリップ＋和テイスト）<div class="preview-desc">画像を斜めにクリップ。日本語レタースペース。ボタンも斜め。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-m">
+  <div class="vert-text">ARTIFICIAL INTELLIGENCE INTERNSHIP PLATFORM 2026</div>
+  <div class="left">
+    <div class="jp-tag">人 工 知 能</div>
+    <h2>奪われる側か、</h2>
+    <div class="h2-sub">奪う側か<span class="slash">/</span>選べ。</div>
+    <div class="en-sub">the last job hunt for humanity</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+</div>
+
+<!-- ===== N ===== -->
+<div class="preview-label">N - NOISE GRAIN（ノイズテクスチャ＋アンダーライン）<div class="preview-desc">フィルムグレイン風。画像はモノクロ寄り。赤アンダーラインの強調。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-n">
+  <div class="left">
+    <div class="label-bar"><span class="line"></span><span>AI Internship Platform</span><span class="line"></span></div>
+    <h2>AIに<em>奪われる</em>側か、<br><em>奪う</em>側か。</h2>
+    <div class="sub">// 選べ、今すぐ。 ― AI特化インターン AI_INTERN</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_3.png" alt=""></div>
+</div>
+
+<!-- ===== O ===== -->
+<div class="preview-label">O - CORNER FRAME（コーナー枠＋ナンバリング）<div class="preview-desc">左上赤・右下緑のL字コーナー枠。巨大ナンバリング。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-o">
+  <div class="frame">
+    <div class="left">
+      <div class="num">01</div>
+      <h2>AIに奪われる側か、<br><span class="g">奪う側か。</span></h2>
+      <div class="sub">// 選べ、今すぐ。 ― AI_INTERN</div>
+      <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+      <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+    </div>
+    <div class="right"><img src="images/top/catch_main_image_pc_1.png" alt=""></div>
+  </div>
+</div>
+
+<!-- ===== P ===== -->
+<div class="preview-label">P - MAGAZINE（マガジン/エディトリアル風）<div class="preview-desc">雑誌の表紙のような構成。リード文付き。白黒CTAボタン。</div></div>
+<div class="neo-header"><a href="#" class="logo"><span class="br">[</span>AI_INTERN<span class="br">]</span></a><nav><a href="#" class="active">AIインターン</a><a href="#">AI勉強会</a><a href="#">採用担当者様</a><a href="#">login</a></nav><a href="#" class="reg">REGISTER</a></div>
+<div class="hero-p">
+  <div class="left">
+    <div class="issue">AI_INTERN // ISSUE 001 // 2026.04</div>
+    <h2>奪われる側か、</h2>
+    <div class="h2-red">奪う側か。</div>
+    <div class="deck">ChatGPTに仕事を奪われる前に、奪う側に回れ。<br>プロンプトエンジニア、MLエンジニア、AIリサーチャー。<br>日本で一番尖ったAI特化インターンだけを厳選。</div>
+    <div class="cta-sub">＼ GPTより先に動け。登録30秒。／</div>
+    <a href="#" class="cta-btn"><span class="b">FREE</span><span class="t">新規登録する</span></a>
+  </div>
+  <div class="right"><img src="images/top/catch_main_image_pc_2.png" alt=""></div>
+</div>
+
+</body>
+</html>

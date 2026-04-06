@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>インターン一覧 カードUIデザイン案（白ベース）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f7f7f8; font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; color: #222; }
+  .label { background: #fff; text-align: center; padding: 40px 20px 20px; border-top: 1px solid #eee; }
+  .label h2 { font-size: 1em; color: #999; letter-spacing: 4px; font-family: monospace; margin-bottom: 6px; }
+  .label p { font-size: 0.75em; color: #bbb; }
+  .section { max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; }
+  .section-title { font-size: 1.4em; font-weight: 900; margin-bottom: 6px; color: #1a1a2e; }
+  .section-accent { color: #764ba2; }
+  .section-sub { font-size: 0.8em; color: #aaa; margin-bottom: 24px; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.7em; margin: 2px; }
+
+  /* ===== A: クリーンカード ===== */
+  .card-a {
+    background: #fff; border: 1px solid #eee; border-radius: 14px;
+    padding: 28px; margin-bottom: 16px; transition: all 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card-a:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); transform: translateY(-3px); border-color: #ddd; }
+  .card-a .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-a .company { font-size: 0.8em; color: #888; }
+  .card-a .date { font-size: 0.7em; color: #bbb; }
+  .card-a .badge { background: #764ba2; color: #fff; font-size: 0.65em; padding: 3px 12px; border-radius: 100px; font-weight: 700; margin-right: 8px; }
+  .card-a .badge-urgent { background: #f5576c; }
+  .card-a h3 { font-size: 1.05em; font-weight: 700; color: #1a1a2e; line-height: 1.6; margin-bottom: 14px; }
+  .card-a .tags { margin-bottom: 14px; }
+  .card-a .tag { background: #f3f0ff; color: #764ba2; border: 1px solid #e8e0f7; }
+  .card-a .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 0.78em; color: #666; }
+  .card-a .meta dt { color: #aaa; font-weight: 500; }
+  .card-a .salary { color: #764ba2; font-weight: 700; }
+  .card-a .cta { display: inline-block; margin-top: 16px; background: #764ba2; color: #fff; padding: 9px 24px; border-radius: 8px; font-size: 0.8em; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .card-a .cta:hover { background: #5e3a8a; box-shadow: 0 4px 12px rgba(118,75,162,0.3); }
+
+  /* ===== B: ボーダーアクセント ===== */
+  .card-b {
+    background: #fff; border: 1px solid #eee; border-radius: 12px;
+    padding: 28px; margin-bottom: 16px; transition: all 0.3s;
+    border-left: 4px solid #764ba2;
+  }
+  .card-b:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+  .card-b .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .card-b .company { font-size: 0.8em; color: #888; }
+  .card-b .badge { background: #1a1a2e; color: #fff; font-size: 0.65em; padding: 3px 10px; border-radius: 4px; font-weight: 700; margin-right: 8px; }
+  .card-b .badge-urgent { background: #f5576c; }
+  .card-b h3 { font-size: 1.05em; font-weight: 700; color: #222; line-height: 1.6; margin-bottom: 12px; }
+  .card-b .tags { margin-bottom: 12px; }
+  .card-b .tag { background: #f0faf5; color: #2d8a6e; border: 1px solid #d0f0e0; }
+  .card-b .info { display: flex; gap: 20px; font-size: 0.78em; color: #777; flex-wrap: wrap; }
+  .card-b .info .lbl { color: #aaa; margin-right: 4px; }
+  .card-b .salary { color: #2d8a6e; font-weight: 700; }
+  .card-b .cta { display: inline-block; margin-top: 14px; border: 1.5px solid #764ba2; color: #764ba2; padding: 8px 22px; border-radius: 8px; font-size: 0.8em; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .card-b .cta:hover { background: #764ba2; color: #fff; }
+
+  /* ===== C: ミニマルリスト ===== */
+  .card-c {
+    border-bottom: 1px solid #eee; padding: 22px 0; transition: all 0.3s;
+    position: relative;
+  }
+  .card-c:first-of-type { border-top: 1px solid #eee; }
+  .card-c:hover { background: #fafafe; padding-left: 16px; padding-right: 16px; border-radius: 8px; }
+  .card-c .top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .card-c .company { font-size: 0.75em; color: #999; }
+  .card-c .badge { background: #764ba2; color: #fff; font-size: 0.6em; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+  .card-c .badge-urgent { background: #f5576c; }
+  .card-c h3 { font-size: 0.95em; font-weight: 600; color: #333; line-height: 1.6; margin-bottom: 8px; }
+  .card-c .bottom { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .card-c .tag { background: #f5f5f5; color: #777; border: none; font-size: 0.65em; border-radius: 4px; }
+  .card-c .salary { color: #764ba2; font-size: 0.8em; font-weight: 700; margin-left: auto; }
+  .card-c .location { color: #aaa; font-size: 0.75em; }
+
+  /* ===== D: フラットカード + アイコン ===== */
+  .card-d {
+    background: #fff; border-radius: 16px; padding: 28px;
+    margin-bottom: 16px; transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex; gap: 24px; align-items: flex-start;
+  }
+  .card-d:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .card-d .icon {
+    width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff;
+  }
+  .card-d .icon-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .card-d .icon-pink { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .card-d .icon-green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .card-d .icon-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .card-d .body { flex: 1; }
+  .card-d .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .card-d .company { font-size: 0.78em; color: #999; }
+  .card-d .badge { background: #764ba2; color: #fff; font-size: 0.6em; padding: 2px 10px; border-radius: 100px; font-weight: 700; }
+  .card-d h3 { font-size: 1em; font-weight: 700; color: #1a1a2e; line-height: 1.5; margin-bottom: 10px; }
+  .card-d .tags { margin-bottom: 10px; }
+  .card-d .tag { background: #f3f0ff; color: #764ba2; border: none; }
+  .card-d .footer { display: flex; gap: 20px; font-size: 0.78em; color: #888; }
+  .card-d .salary { color: #764ba2; font-weight: 700; }
+
+  /* ===== E: 2カラムグリッド ===== */
+  .grid-e { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card-e {
+    background: #fff; border: 1px solid #eee; border-radius: 14px;
+    padding: 24px; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .card-e::after { content:''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb); opacity: 0; transition: opacity 0.3s; }
+  .card-e:hover::after { opacity: 1; }
+  .card-e:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.08); transform: translateY(-3px); }
+  .card-e .company { font-size: 0.72em; color: #999; margin-bottom: 8px; }
+  .card-e .badge { background: #764ba2; color: #fff; font-size: 0.6em; padding: 2px 8px; border-radius: 100px; font-weight: 700; margin-right: 6px; }
+  .card-e h3 { font-size: 0.9em; font-weight: 700; color: #222; line-height: 1.5; margin-bottom: 12px; min-height: 4em; }
+  .card-e .tags { margin-bottom: 10px; }
+  .card-e .tag { background: #f3f0ff; color: #764ba2; border: none; font-size: 0.6em; }
+  .card-e .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid #f0f0f0; padding-top: 12px; }
+  .card-e .salary { color: #764ba2; font-size: 0.82em; font-weight: 700; }
+  .card-e .location { color: #aaa; font-size: 0.72em; }
+</style>
+</head>
+<body>
+
+<!-- ===== A ===== -->
+<div class="label"><h2>A - CLEAN CARD（クリーン丸角）</h2><p>白カード。紫アクセント。ホバーで浮き上がるシャドウ。丸角タグ。</p></div>
+<div class="section">
+  <div class="section-title">AIインターンシップ一覧 <span class="section-accent">ー 全部AI。例外なし。</span></div>
+  <div class="section-sub">厳選AIインターン</div>
+  <div class="card-a">
+    <div class="top">
+      <div><span class="badge">Pickup</span><span class="company">株式会社ニューロンクラフト</span></div>
+      <span class="date">2日前</span>
+    </div>
+    <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+    <div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM開発</span><span class="tag">フルリモート可</span><span class="tag">論文読み会あり</span></div>
+    <div class="meta">
+      <dt>職種</dt><dd>LLMアプリケーションエンジニア</dd>
+      <dt>給与</dt><dd class="salary">時給2,000〜4,000円</dd>
+      <dt>勤務地</dt><dd>渋谷 / フルリモート</dd>
+      <dt>条件</dt><dd>週3日〜 / 1日5h〜</dd>
+    </div>
+    <a href="#" class="cta">詳しく見る →</a>
+  </div>
+  <div class="card-a">
+    <div class="top">
+      <div><span class="badge badge-urgent">急募</span><span class="company">合同会社プロンプト・ラボ</span></div>
+      <span class="date">3日前</span>
+    </div>
+    <h3>【日本語力、最強の武器になる】文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要。</h3>
+    <div class="tags"><span class="tag">文系歓迎</span><span class="tag">プログラミング不要</span><span class="tag">CEO直下</span><span class="tag">フルリモート</span></div>
+    <div class="meta">
+      <dt>職種</dt><dd>プロンプトエンジニア</dd>
+      <dt>給与</dt><dd class="salary">時給1,800〜3,000円</dd>
+      <dt>勤務地</dt><dd>完全フルリモート</dd>
+      <dt>条件</dt><dd>週2日〜 / 1日4h〜</dd>
+    </div>
+    <a href="#" class="cta">詳しく見る →</a>
+  </div>
+</div>
+
+<!-- ===== B ===== -->
+<div class="label"><h2>B - BORDER ACCENT（左ラインアクセント）</h2><p>左に紫ライン。緑タグ。ボーダーCTAボタン。</p></div>
+<div class="section">
+  <div class="section-title">AIインターンシップ一覧 <span class="section-accent">ー 全部AI。例外なし。</span></div>
+  <div class="section-sub">厳選AIインターン</div>
+  <div class="card-b">
+    <div class="top">
+      <div><span class="badge">Pickup</span><span class="company">株式会社ニューロンクラフト</span></div>
+    </div>
+    <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+    <div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM開発</span><span class="tag">フルリモート可</span><span class="tag">論文読み会あり</span></div>
+    <div class="info">
+      <span><span class="lbl">職種:</span> LLMアプリエンジニア</span>
+      <span class="salary">時給2,000〜4,000円</span>
+      <span><span class="lbl">勤務地:</span> 渋谷 / リモート</span>
+    </div>
+    <a href="#" class="cta">詳しく見る →</a>
+  </div>
+  <div class="card-b">
+    <div class="top">
+      <div><span class="badge badge-urgent">急募</span><span class="company">合同会社プロンプト・ラボ</span></div>
+    </div>
+    <h3>【日本語力、最強の武器になる】文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要。</h3>
+    <div class="tags"><span class="tag">文系歓迎</span><span class="tag">コード不要</span><span class="tag">CEO直下</span><span class="tag">フルリモート</span></div>
+    <div class="info">
+      <span><span class="lbl">職種:</span> プロンプトエンジニア</span>
+      <span class="salary">時給1,800〜3,000円</span>
+      <span><span class="lbl">勤務地:</span> フルリモート</span>
+    </div>
+    <a href="#" class="cta">詳しく見る →</a>
+  </div>
+</div>
+
+<!-- ===== C ===== -->
+<div class="label"><h2>C - MINIMAL LIST（ミニマルリスト）</h2><p>カード枠なし。罫線で区切り。ホバーで背景がふんわり色づく。</p></div>
+<div class="section">
+  <div class="section-title">AIインターンシップ一覧 <span class="section-accent">ー 全部AI。例外なし。</span></div>
+  <div class="section-sub">厳選AIインターン</div>
+  <div class="card-c">
+    <div class="top"><span class="badge">Pickup</span><span class="company">株式会社ニューロンクラフト</span></div>
+    <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+    <div class="bottom">
+      <span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">リモート可</span><span class="location">渋谷</span>
+      <span class="salary">¥2,000〜4,000/h</span>
+    </div>
+  </div>
+  <div class="card-c">
+    <div class="top"><span class="badge badge-urgent">急募</span><span class="company">合同会社プロンプト・ラボ</span></div>
+    <h3>【日本語力、最強の武器になる】文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要。</h3>
+    <div class="bottom">
+      <span class="tag">文系歓迎</span><span class="tag">コード不要</span><span class="tag">CEO直下</span><span class="location">リモート</span>
+      <span class="salary">¥1,800〜3,000/h</span>
+    </div>
+  </div>
+  <div class="card-c">
+    <div class="top"><span class="company">株式会社ディフュージョン・ワークス</span></div>
+    <h3>【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion時代のクリエイティブAI開発。美大生歓迎。</h3>
+    <div class="bottom">
+      <span class="tag">A100</span><span class="tag">美大生歓迎</span><span class="tag">論文共著</span><span class="location">六本木</span>
+      <span class="salary">¥2,500〜5,000/h</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== D ===== -->
+<div class="label"><h2>D - ICON CARD（アイコン付きカード）</h2><p>左にカラーアイコン。グラデーションで職種を直感表現。シャドウ。</p></div>
+<div class="section">
+  <div class="section-title">AIインターンシップ一覧 <span class="section-accent">ー 全部AI。例外なし。</span></div>
+  <div class="section-sub">厳選AIインターン</div>
+  <div class="card-d">
+    <div class="icon icon-purple">AI</div>
+    <div class="body">
+      <div class="top"><span class="company"><span class="badge">Pickup</span>株式会社ニューロンクラフト</span></div>
+      <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中。RAG構築からファインチューニングまで全部やる。</h3>
+      <div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">リモート可</span></div>
+      <div class="footer"><span class="salary">時給2,000〜4,000円</span><span>渋谷 / リモート</span><span>週3日〜</span></div>
+    </div>
+  </div>
+  <div class="card-d">
+    <div class="icon icon-pink">PE</div>
+    <div class="body">
+      <div class="top"><span class="company"><span class="badge" style="background:#f5576c;">急募</span>合同会社プロンプト・ラボ</span></div>
+      <h3>【日本語力、最強の武器になる】文系こそ来い。プログラミング不要のプロンプトエンジニア。</h3>
+      <div class="tags"><span class="tag">文系歓迎</span><span class="tag">コード不要</span><span class="tag">CEO直下</span></div>
+      <div class="footer"><span class="salary">時給1,800〜3,000円</span><span>フルリモート</span><span>週2日〜</span></div>
+    </div>
+  </div>
+  <div class="card-d">
+    <div class="icon icon-green">CV</div>
+    <div class="body">
+      <div class="top"><span class="company">株式会社ディフュージョン・ワークス</span></div>
+      <h3>【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。美大生のセンス × エンジニアの技術。</h3>
+      <div class="tags"><span class="tag">A100</span><span class="tag">美大生歓迎</span><span class="tag">論文共著</span></div>
+      <div class="footer"><span class="salary">時給2,500〜5,000円</span><span>六本木</span><span>週3日〜</span></div>
+    </div>
+  </div>
+  <div class="card-d">
+    <div class="icon icon-blue">AG</div>
+    <div class="body">
+      <div class="top"><span class="company"><span class="badge">注目</span>株式会社オートノミー</span></div>
+      <h3>【AIエージェントが人間の仕事を奪う？お前が作る側だ。】自律型AIエージェント開発。</h3>
+      <div class="tags"><span class="tag">自律型AI</span><span class="tag">H100</span><span class="tag">CTO直下</span></div>
+      <div class="footer"><span class="salary">時給3,000〜6,000円</span><span>渋谷 / リモート</span><span>週4日〜</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== E ===== -->
+<div class="label"><h2>E - 2COL GRID（2カラムグリッド）</h2><p>コンパクト2列。ホバーで紫グラデのトップラインが出現。</p></div>
+<div class="section">
+  <div class="section-title">AIインターンシップ一覧 <span class="section-accent">ー 全部AI。例外なし。</span></div>
+  <div class="section-sub">厳選AIインターン</div>
+  <div class="grid-e">
+    <div class="card-e">
+      <div class="company"><span class="badge">Pickup</span>株式会社ニューロンクラフト</div>
+      <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中。RAG構築からファインチューニングまで。</h3>
+      <div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">リモート可</span></div>
+      <div class="footer"><span class="salary">¥2,000〜4,000/h</span><span class="location">渋谷 / remote</span></div>
+    </div>
+    <div class="card-e">
+      <div class="company"><span class="badge" style="background:#f5576c;">急募</span>合同会社プロンプト・ラボ</div>
+      <h3>【文系こそ来い】日本語力が最強の武器になる。プログラミング不要のプロンプトエンジニア。</h3>
+      <div class="tags"><span class="tag">文系歓迎</span><span class="tag">コード不要</span><span class="tag">CEO直下</span></div>
+      <div class="footer"><span class="salary">¥1,800〜3,000/h</span><span class="location">フルリモート</span></div>
+    </div>
+    <div class="card-e">
+      <div class="company">株式会社ディフュージョン・ワークス</div>
+      <h3>【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。美大生歓迎。</h3>
+      <div class="tags"><span class="tag">A100</span><span class="tag">美大生歓迎</span><span class="tag">論文共著</span></div>
+      <div class="footer"><span class="salary">¥2,500〜5,000/h</span><span class="location">六本木</span></div>
+    </div>
+    <div class="card-e">
+      <div class="company"><span class="badge">注目</span>株式会社オートノミー</div>
+      <h3>【AIエージェントが人間の仕事を奪う？お前が作る側だ。】自律型AIエージェント開発。</h3>
+      <div class="tags"><span class="tag">自律型AI</span><span class="tag">H100</span><span class="tag">CTO直下</span></div>
+      <div class="footer"><span class="salary">¥3,000〜6,000/h</span><span class="location">渋谷 / remote</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

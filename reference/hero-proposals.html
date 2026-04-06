@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Hero Section Proposals</title>
+  <link href="css/vendor.css" rel="stylesheet">
+  <link href="css/top.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0">
+  <style>
+    /* 共通リセット＆プレビュー用レイアウト */
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .proposal-wrapper {
+      padding: 40px 20px 100px;
+      border-bottom: 2px dashed #444;
+      margin-bottom: 20px;
+    }
+    .proposal-header {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: #00ff88;
+      letter-spacing: 2px;
+      font-family: monospace;
+    }
+
+    /* -------------------------------------------
+       提案1：Neo Tokyo Glassmorphism (ダーク＆サイバー)
+       ------------------------------------------- */
+    .prop-1-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 24px;
+      overflow: hidden;
+      background: url('images/top/catch_main_image_pc_1.png') center/cover no-repeat;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .prop-1-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(0,0,0,0.7) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .prop-1-content {
+      position: relative;
+      z-index: 1;
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .prop-1-badge {
+      background: linear-gradient(90deg, #ff0040, #ff0088);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(255,0,64,0.5);
+    }
+    .prop-1-title {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .prop-1-title span {
+      background: linear-gradient(135deg, #00ff88 0%, #00b8ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .prop-1-subtitle {
+      font-size: 20px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+    .prop-1-btn {
+      background: linear-gradient(135deg, #00ff88 0%, #00b8ff 100%);
+      color: #0b0f19;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,255,136,0.3);
+    }
+    .prop-1-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(0,255,136,0.5);
+    }
+    .prop-1-search {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      width: 100%;
+      max-width: 900px;
+      margin-top: 50px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .prop-1-search-title {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 15px;
+      text-align: left;
+      font-weight: bold;
+    }
+    .prop-1-input-group {
+      display: flex;
+      position: relative;
+    }
+    .prop-1-input {
+      flex: 1;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 18px 24px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .prop-1-input:focus { border-color: #00ff88; }
+    .prop-1-submit {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      bottom: 8px;
+      background: #00ff88;
+      border: none;
+      border-radius: 8px;
+      width: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .prop-1-submit:hover { background: #00cc6a; }
+
+
+    /* -------------------------------------------
+       提案2：High Contrast Brutalism (ハッカー/アグレッシブ)
+       ------------------------------------------- */
+    .prop-2-container {
+      background: #000;
+      color: #fff;
+      border: 2px solid #333;
+      max-width: 1200px;
+      margin: 0 auto;
+      font-family: monospace;
+      position: relative;
+    }
+    .prop-2-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .prop-2-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .prop-2-left {
+      flex: 1;
+      min-width: 300px;
+      padding: 60px;
+      border-right: 2px solid #333;
+    }
+    .prop-2-right {
+      width: 400px;
+      background: url('images/top/catch_text_image_1.png') center/cover;
+      opacity: 0.8;
+      filter: grayscale(100%) contrast(120%);
+    }
+    .prop-2-badge {
+      display: inline-block;
+      background: #ff0040;
+      color: #fff;
+      padding: 4px 12px;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .prop-2-title {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .prop-2-btn {
+      display: inline-block;
+      border: 2px solid #00ff88;
+      color: #00ff88;
+      padding: 16px 32px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      background: transparent;
+      margin-top: 30px;
+    }
+    .prop-2-btn:hover {
+      background: #00ff88;
+      color: #000;
+    }
+    .prop-2-search-area {
+      border-top: 2px solid #333;
+      padding: 40px 60px;
+    }
+    .prop-2-input {
+      width: calc(100% - 140px);
+      background: transparent;
+      border: 2px solid #fff;
+      padding: 16px;
+      color: #fff;
+      font-size: 18px;
+      font-family: monospace;
+      outline: none;
+    }
+    .prop-2-submit {
+      width: 120px;
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: monospace;
+      margin-left: -4px;
+    }
+    .prop-2-submit:hover {
+      background: #ccc;
+    }
+
+
+    /* -------------------------------------------
+       提案3：Premium Modern (洗練されたグラデーション)
+       ------------------------------------------- */
+    .prop-3-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 32px;
+      background: linear-gradient(145deg, #1c1c28, #111118);
+      padding: 80px 60px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .prop-3-glow {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(118,75,162,0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .prop-3-title {
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .prop-3-subtitle {
+      font-size: 18px;
+      color: #a0a0b0;
+      margin-bottom: 40px;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+    .prop-3-actions {
+      display: flex;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .prop-3-btn-primary {
+      background: #fff;
+      color: #111;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .prop-3-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255,255,255,0.2);
+    }
+    .prop-3-search {
+      margin-top: 60px;
+      width: 100%;
+      max-width: 700px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .prop-3-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 16px;
+      outline: none;
+    }
+    .prop-3-submit {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .prop-3-submit:hover {
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 提案1 -->
+  <div class="proposal-wrapper">
+    <div class="proposal-header">案1：Glass Cyber (サイバー＆グラスモーフィズム)</div>
+    <div class="prop-1-container">
+      <div class="prop-1-content">
+        <div class="prop-1-badge">🔥 求人数業界No.1（自称）</div>
+        <h1 class="prop-1-title">AIに奪われる側か、<span>奪う側か。</span><br>選べ、今すぐ。</h1>
+        <p class="prop-1-subtitle">＼ GPTより先に動け。登録30秒。 ／<br>AI特化インターンなら AI_INTERN</p>
+        <a href="#" class="prop-1-btn">
+          無料ではじめる
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        
+        <div class="prop-1-search">
+          <div class="prop-1-search-title">圧倒的なAIスキルで探す</div>
+          <div class="prop-1-input-group">
+            <input type="text" class="prop-1-input" placeholder="LLM / RAG / 画像生成 / ファインチューニング...">
+            <button class="prop-1-submit">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提案2 -->
+  <div class="proposal-wrapper">
+    <div class="proposal-header">案2：Brutalism Matrix (ハッカー＆アグレッシブ)</div>
+    <div class="prop-2-container">
+      <div class="prop-2-grid"></div>
+      <div class="prop-2-inner">
+        <div class="prop-2-left">
+          <div class="prop-2-badge">System Overdrive</div>
+          <h1 class="prop-2-title">AIに奪われる側か、<br>奪う側か。<br>選べ、今すぐ。</h1>
+          <a href="#" class="prop-2-btn">>> 新規登録_</a>
+        </div>
+        <div class="prop-2-right"></div>
+      </div>
+      <div class="prop-2-search-area">
+        <div style="font-size:14px; margin-bottom:10px; color:#00ff88;">[QUERY_INPUT] AIスキルで検索</div>
+        <input type="text" class="prop-2-input" placeholder="Enter keywords...">
+        <button class="prop-2-submit">EXEC</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提案3 -->
+  <div class="proposal-wrapper">
+    <div class="proposal-header">案3：Premium Modern (洗練・ダークモダン)</div>
+    <div class="prop-3-container">
+      <div class="prop-3-glow"></div>
+      <h1 class="prop-3-title">人類最後の就活を、始めよう。</h1>
+      <p class="prop-3-subtitle">AIに奪われる側か、奪う側か。GPTより先に動け。<br>AI特化インターンなら、AI_INTERN。</p>
+      <div class="prop-3-actions">
+        <a href="#" class="prop-3-btn-primary">今すぐ無料で登録</a>
+      </div>
+      
+      <div class="prop-3-search">
+        <svg style="margin-left:10px; opacity:0.5;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="prop-3-input" placeholder="LLM, 具現化AI, LangChain などのキーワードで検索...">
+        <button class="prop-3-submit">検索</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

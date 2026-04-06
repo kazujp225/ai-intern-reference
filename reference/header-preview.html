@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヘッダーデザイン案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f5f5f5; font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; }
+  .spacer { height: 60px; background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.8em; letter-spacing: 3px; border-top: 1px solid #ddd; }
+  .page-body { height: 300px; background: linear-gradient(135deg, #1a1a3e, #2d1b4e); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 2em; font-weight: 900; }
+
+  /* ===== A: ダーク＋ネオン ===== */
+  .header-a {
+    background: #0a0a14; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header-a .logo { font-size: 1.3em; font-weight: 900; font-family: monospace; color: #00ff88; margin-right: auto; text-decoration: none; }
+  .header-a .logo span { color: #fff; }
+  .header-a nav { display: flex; align-items: center; gap: 28px; }
+  .header-a nav a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85em; transition: color 0.2s; }
+  .header-a nav a:hover { color: #fff; }
+  .header-a nav a.active { color: #00ff88; border-bottom: 2px solid #00ff88; padding-bottom: 2px; }
+  .header-a .btn-login { border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 6px; color: rgba(255,255,255,0.7); font-size: 0.8em; text-decoration: none; transition: all 0.2s; }
+  .header-a .btn-login:hover { border-color: #fff; color: #fff; }
+  .header-a .btn-register { background: #00ff88; color: #0a0a14; padding: 6px 18px; border-radius: 6px; font-size: 0.8em; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+  .header-a .btn-register:hover { background: #33ffaa; }
+  .header-a .corp { color: rgba(255,255,255,0.3); font-size: 0.75em; text-decoration: none; }
+  .header-a .sep { color: rgba(255,255,255,0.15); margin: 0 4px; }
+
+  /* ===== B: ホワイト＋パープル ===== */
+  .header-b {
+    background: #fff; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .header-b .logo { font-size: 1.3em; font-weight: 900; font-family: monospace; margin-right: auto; text-decoration: none;
+    background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-b nav { display: flex; align-items: center; gap: 24px; }
+  .header-b nav a { color: #666; text-decoration: none; font-size: 0.85em; transition: color 0.2s; }
+  .header-b nav a:hover { color: #333; }
+  .header-b nav a.active { color: #764ba2; font-weight: 700; }
+  .header-b .btn-login { color: #764ba2; padding: 6px 16px; font-size: 0.8em; text-decoration: none; font-weight: 600; }
+  .header-b .btn-register { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 8px 20px; border-radius: 100px; font-size: 0.8em; font-weight: 700; text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 10px rgba(118,75,162,0.3); }
+  .header-b .btn-register:hover { box-shadow: 0 4px 16px rgba(118,75,162,0.5); transform: translateY(-1px); }
+  .header-b .corp { color: #aaa; font-size: 0.75em; text-decoration: none; }
+
+  /* ===== C: ブルータリスト ===== */
+  .header-c {
+    background: #000; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    border-bottom: 3px solid #ff0040;
+  }
+  .header-c .logo { font-size: 1.4em; font-weight: 900; font-family: 'Courier New', monospace; color: #ff0040; margin-right: auto; text-decoration: none; letter-spacing: 2px; }
+  .header-c nav { display: flex; align-items: center; gap: 0; }
+  .header-c nav a { color: #fff; text-decoration: none; font-size: 0.8em; padding: 8px 16px; font-family: monospace; border-left: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; }
+  .header-c nav a:hover { background: #ff0040; }
+  .header-c nav a.active { background: #ff0040; font-weight: 700; }
+  .header-c .btn-register { background: #fff; color: #000; padding: 8px 18px; font-size: 0.8em; font-weight: 900; text-decoration: none; font-family: monospace; border-left: 1px solid rgba(255,255,255,0.1); }
+  .header-c .btn-register:hover { background: #ff0040; color: #fff; }
+  .header-c .corp { color: rgba(255,255,255,0.3); font-size: 0.7em; text-decoration: none; font-family: monospace; padding: 8px 16px; border-left: 1px solid rgba(255,255,255,0.1); }
+
+  /* ===== D: グラス ===== */
+  .header-d-wrap { position: relative; }
+  .header-d-bg { height: 350px; background: linear-gradient(135deg, #667eea, #764ba2); }
+  .header-d {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 1200px;
+    background: rgba(255,255,255,0.1); backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 16px;
+    padding: 0 32px; display: flex; align-items: center; height: 56px;
+    z-index: 10;
+  }
+  .header-d .logo { font-size: 1.2em; font-weight: 900; font-family: monospace; color: #fff; margin-right: auto; text-decoration: none; }
+  .header-d nav { display: flex; align-items: center; gap: 24px; }
+  .header-d nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85em; transition: color 0.2s; }
+  .header-d nav a:hover { color: #fff; }
+  .header-d nav a.active { color: #fff; font-weight: 700; }
+  .header-d .btn-login { color: rgba(255,255,255,0.7); padding: 6px 14px; font-size: 0.8em; text-decoration: none; }
+  .header-d .btn-register { background: rgba(255,255,255,0.2); color: #fff; padding: 7px 18px; border-radius: 100px; font-size: 0.8em; font-weight: 600; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); transition: all 0.2s; }
+  .header-d .btn-register:hover { background: rgba(255,255,255,0.3); }
+  .header-d .corp { color: rgba(255,255,255,0.4); font-size: 0.7em; text-decoration: none; }
+
+  /* ===== E: 2段ヘッダー ===== */
+  .header-e-top {
+    background: #0a0a14; padding: 0 40px; display: flex; align-items: center; height: 36px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .header-e-top .corp { color: rgba(255,255,255,0.35); font-size: 0.7em; text-decoration: none; margin-right: auto; }
+  .header-e-top a { color: rgba(255,255,255,0.4); font-size: 0.75em; text-decoration: none; margin-left: 20px; }
+  .header-e-top a:hover { color: #fff; }
+  .header-e-bottom {
+    background: #0f0f1e; padding: 0 40px; display: flex; align-items: center; height: 56px;
+  }
+  .header-e-bottom .logo {
+    font-size: 1.4em; font-weight: 900; font-family: monospace; margin-right: auto; text-decoration: none;
+    color: #fff;
+  }
+  .header-e-bottom .logo .dot { color: #ff0040; }
+  .header-e-bottom nav { display: flex; align-items: center; gap: 0; }
+  .header-e-bottom nav a {
+    color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9em;
+    padding: 16px 20px; position: relative; transition: color 0.2s;
+  }
+  .header-e-bottom nav a:hover { color: #fff; }
+  .header-e-bottom nav a.active { color: #fff; }
+  .header-e-bottom nav a.active::after {
+    content: ''; position: absolute; bottom: 0; left: 20px; right: 20px; height: 3px;
+    background: linear-gradient(90deg, #ff0040, #ff6b6b); border-radius: 3px 3px 0 0;
+  }
+  .header-e-bottom .btn-register {
+    background: #ff0040; color: #fff; padding: 8px 22px; border-radius: 8px;
+    font-size: 0.85em; font-weight: 700; text-decoration: none; margin-left: 16px;
+    transition: all 0.2s;
+  }
+  .header-e-bottom .btn-register:hover { background: #ff3360; transform: translateY(-1px); }
+
+  /* ===== F: ミニマル横一列 ===== */
+  .header-f {
+    background: #fff; padding: 0 40px; display: flex; align-items: center; height: 56px;
+    border-bottom: 1px solid #eee;
+  }
+  .header-f .logo { font-size: 1.1em; font-weight: 900; font-family: monospace; color: #1a1a2e; margin-right: 40px; text-decoration: none; }
+  .header-f nav { display: flex; align-items: center; gap: 24px; margin-right: auto; }
+  .header-f nav a { color: #999; text-decoration: none; font-size: 0.82em; font-weight: 500; transition: color 0.2s; }
+  .header-f nav a:hover { color: #333; }
+  .header-f nav a.active { color: #1a1a2e; font-weight: 700; }
+  .header-f .btn-login { color: #666; font-size: 0.8em; text-decoration: none; margin-right: 12px; }
+  .header-f .btn-register { background: #1a1a2e; color: #fff; padding: 7px 20px; border-radius: 8px; font-size: 0.8em; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .header-f .btn-register:hover { background: #333; }
+  .header-f .corp { color: #bbb; font-size: 0.72em; text-decoration: none; margin-right: 16px; }
+
+  /* ===== G: ターミナル風 ===== */
+  .header-g {
+    background: #0d1117; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    border-bottom: 1px solid #21262d; font-family: 'Courier New', monospace;
+  }
+  .header-g .logo { font-size: 1.2em; font-weight: 700; color: #58a6ff; margin-right: auto; text-decoration: none; }
+  .header-g .logo .prompt { color: #8b949e; }
+  .header-g nav { display: flex; align-items: center; gap: 8px; }
+  .header-g nav a { color: #8b949e; text-decoration: none; font-size: 0.8em; padding: 5px 12px; border-radius: 6px; transition: all 0.2s; }
+  .header-g nav a:hover { background: #161b22; color: #c9d1d9; }
+  .header-g nav a.active { background: #1f6feb; color: #fff; }
+  .header-g .btn-login { color: #8b949e; font-size: 0.8em; text-decoration: none; padding: 5px 12px; }
+  .header-g .btn-register { border: 1px solid #388bfd; color: #58a6ff; padding: 5px 16px; border-radius: 6px; font-size: 0.8em; text-decoration: none; transition: all 0.2s; }
+  .header-g .btn-register:hover { background: #1f6feb; color: #fff; }
+  .header-g .corp { color: #484f58; font-size: 0.7em; text-decoration: none; margin-right: 12px; }
+
+  /* ===== H: グラデーションバー ===== */
+  .header-h {
+    background: linear-gradient(90deg, #0a0a14 0%, #1a1040 50%, #0a0a14 100%);
+    padding: 0 40px; display: flex; align-items: center; height: 64px;
+    border-bottom: 2px solid; border-image: linear-gradient(90deg, #667eea, #f093fb, #ff0040) 1;
+  }
+  .header-h .logo { font-size: 1.3em; font-weight: 900; font-family: monospace; margin-right: auto; text-decoration: none;
+    background: linear-gradient(90deg, #667eea, #f093fb); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-h nav { display: flex; align-items: center; gap: 24px; }
+  .header-h nav a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85em; transition: color 0.2s; }
+  .header-h nav a:hover { color: #fff; }
+  .header-h nav a.active { color: #fff; font-weight: 700; }
+  .header-h .btn-login { color: rgba(255,255,255,0.5); font-size: 0.8em; text-decoration: none; }
+  .header-h .btn-register {
+    background: linear-gradient(135deg, #667eea, #f093fb); color: #fff; padding: 7px 20px;
+    border-radius: 100px; font-size: 0.8em; font-weight: 700; text-decoration: none; transition: all 0.2s;
+  }
+  .header-h .btn-register:hover { opacity: 0.85; transform: translateY(-1px); }
+  .header-h .corp { color: rgba(255,255,255,0.25); font-size: 0.7em; text-decoration: none; }
+
+  /* ===== I: サイドロゴ＋センターナビ ===== */
+  .header-i {
+    background: #fff; padding: 0 40px; display: flex; align-items: center; height: 60px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  }
+  .header-i .logo { font-size: 1.2em; font-weight: 900; font-family: monospace; color: #1a1a2e; text-decoration: none;
+    background: #1a1a2e; color: #fff; padding: 4px 12px; border-radius: 6px;
+  }
+  .header-i nav { display: flex; align-items: center; gap: 0; margin: 0 auto; }
+  .header-i nav a {
+    color: #999; text-decoration: none; font-size: 0.85em; font-weight: 500;
+    padding: 18px 20px; position: relative; transition: color 0.2s;
+  }
+  .header-i nav a:hover { color: #333; }
+  .header-i nav a.active { color: #1a1a2e; font-weight: 700; }
+  .header-i nav a.active::after {
+    content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 3px;
+    background: #764ba2; border-radius: 3px 3px 0 0;
+  }
+  .header-i .right-area { display: flex; align-items: center; gap: 12px; }
+  .header-i .corp { color: #bbb; font-size: 0.7em; text-decoration: none; }
+  .header-i .btn-login { color: #764ba2; font-size: 0.8em; text-decoration: none; font-weight: 600; }
+  .header-i .btn-register { background: #764ba2; color: #fff; padding: 7px 18px; border-radius: 8px; font-size: 0.8em; font-weight: 600; text-decoration: none; }
+
+  /* ===== J: チップナビ ===== */
+  .header-j {
+    background: #fafafa; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    border-bottom: 1px solid #eee;
+  }
+  .header-j .logo { font-size: 1.1em; font-weight: 900; font-family: monospace; color: #1a1a2e; margin-right: 32px; text-decoration: none; }
+  .header-j .logo .ai { background: #ff0040; color: #fff; padding: 2px 8px; border-radius: 4px; margin-right: 2px; }
+  .header-j nav { display: flex; align-items: center; gap: 8px; margin-right: auto; }
+  .header-j nav a {
+    color: #666; text-decoration: none; font-size: 0.82em; font-weight: 500;
+    padding: 6px 16px; border-radius: 100px; background: #f0f0f0; transition: all 0.2s;
+  }
+  .header-j nav a:hover { background: #e0e0e0; }
+  .header-j nav a.active { background: #1a1a2e; color: #fff; font-weight: 600; }
+  .header-j .corp { color: #bbb; font-size: 0.7em; text-decoration: none; margin-right: 16px; }
+  .header-j .btn-login { color: #666; font-size: 0.8em; text-decoration: none; margin-right: 8px; }
+  .header-j .btn-register { background: #ff0040; color: #fff; padding: 7px 20px; border-radius: 100px; font-size: 0.8em; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+  .header-j .btn-register:hover { background: #e00038; }
+
+  /* ===== K: ボーダーレス透明 ===== */
+  .header-k-wrap { position: relative; }
+  .header-k-bg { height: 350px; background: linear-gradient(180deg, #0a0a1a 0%, #1a1040 100%); }
+  .header-k {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 20px 40px; display: flex; align-items: center;
+    z-index: 10;
+  }
+  .header-k .logo { font-size: 1.3em; font-weight: 900; font-family: monospace; color: #fff; margin-right: auto; text-decoration: none; }
+  .header-k .logo .slash { color: #ff0040; }
+  .header-k nav { display: flex; align-items: center; gap: 28px; }
+  .header-k nav a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85em; transition: color 0.2s; font-weight: 300; }
+  .header-k nav a:hover { color: #fff; }
+  .header-k nav a.active { color: #fff; font-weight: 600; }
+  .header-k .btn-login { color: rgba(255,255,255,0.6); font-size: 0.8em; text-decoration: none; }
+  .header-k .btn-register { background: rgba(255,255,255,0.1); color: #fff; padding: 8px 22px; border-radius: 100px; font-size: 0.8em; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); transition: all 0.2s; }
+  .header-k .btn-register:hover { background: rgba(255,255,255,0.2); }
+  .header-k .corp { color: rgba(255,255,255,0.3); font-size: 0.7em; text-decoration: none; }
+
+  /* ===== L: ネオ東京 ===== */
+  .header-l {
+    background: #000; padding: 0 40px; display: flex; align-items: center; height: 64px;
+    position: relative; overflow: hidden;
+  }
+  .header-l::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, #ff0040, #00ff88, #58a6ff, transparent);
+    animation: scanline 3s linear infinite;
+  }
+  @keyframes scanline { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .header-l .logo { font-size: 1.4em; font-weight: 900; font-family: monospace; margin-right: auto; text-decoration: none; color: #fff; letter-spacing: 3px; }
+  .header-l .logo .bracket { color: #ff0040; font-weight: 400; }
+  .header-l nav { display: flex; align-items: center; gap: 20px; }
+  .header-l nav a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8em; font-family: monospace; transition: all 0.2s; }
+  .header-l nav a:hover { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.4); }
+  .header-l nav a.active { color: #00ff88; }
+  .header-l .btn-login { color: rgba(255,255,255,0.4); font-size: 0.8em; text-decoration: none; font-family: monospace; }
+  .header-l .btn-register { border: 1px solid #ff0040; color: #ff0040; padding: 6px 18px; font-size: 0.8em; font-weight: 700; text-decoration: none; font-family: monospace; transition: all 0.2s; }
+  .header-l .btn-register:hover { background: #ff0040; color: #fff; box-shadow: 0 0 16px rgba(255,0,64,0.4); }
+  .header-l .corp { color: rgba(255,255,255,0.2); font-size: 0.65em; text-decoration: none; font-family: monospace; margin-right: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ===== A ===== -->
+<div class="spacer">A - DARK + NEON GREEN</div>
+<div class="header-a">
+  <a href="#" class="logo"><span>AI</span>_INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <span class="sep">|</span>
+    <a href="#" class="corp">採用担当者様はこちら</a>
+    <a href="#" class="btn-login">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== B ===== -->
+<div class="spacer">B - WHITE + PURPLE GRADIENT</div>
+<div class="header-b">
+  <a href="#" class="logo">AI_INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="corp">採用担当者様はこちら</a>
+    <a href="#" class="btn-login">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== C ===== -->
+<div class="spacer">C - BRUTALIST RED</div>
+<div class="header-c">
+  <a href="#" class="logo">AI_INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="corp">採用担当者様</a>
+    <a href="#">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== D ===== -->
+<div class="spacer">D - FLOATING GLASS</div>
+<div class="header-d-wrap">
+  <div class="header-d">
+    <a href="#" class="logo">AI_INTERN</a>
+    <nav>
+      <a href="#" class="active">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="corp">採用担当者様</a>
+      <a href="#" class="btn-login">ログイン</a>
+      <a href="#" class="btn-register">新規登録</a>
+    </nav>
+  </div>
+  <div class="header-d-bg"></div>
+</div>
+
+<!-- ===== E ===== -->
+<div class="spacer">E - 2段ヘッダー（トップバー + メインナビ）</div>
+<div class="header-e-top">
+  <a href="#" class="corp">採用担当者様はこちら</a>
+  <a href="#">ログイン</a>
+</div>
+<div class="header-e-bottom">
+  <a href="#" class="logo">AI<span class="dot">.</span>INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+  </nav>
+  <a href="#" class="btn-register">無料で始める</a>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== F ===== -->
+<div class="spacer">F - MINIMAL WHITE</div>
+<div class="header-f">
+  <a href="#" class="logo">AI_INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+  </nav>
+  <a href="#" class="corp">採用担当者様</a>
+  <a href="#" class="btn-login">ログイン</a>
+  <a href="#" class="btn-register">新規登録</a>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== G ===== -->
+<div class="spacer">G - TERMINAL / GitHub風</div>
+<div class="header-g">
+  <a href="#" class="logo"><span class="prompt">~/</span>ai_intern</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="corp">採用担当者様</a>
+    <a href="#" class="btn-login">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== H ===== -->
+<div class="spacer">H - GRADIENT BORDER</div>
+<div class="header-h">
+  <a href="#" class="logo">AI_INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="corp">採用担当者様</a>
+    <a href="#" class="btn-login">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== I ===== -->
+<div class="spacer">I - CENTER NAV + バッジロゴ</div>
+<div class="header-i">
+  <a href="#" class="logo">AI</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+  </nav>
+  <div class="right-area">
+    <a href="#" class="corp">採用担当者様</a>
+    <a href="#" class="btn-login">ログイン</a>
+    <a href="#" class="btn-register">新規登録</a>
+  </div>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== J ===== -->
+<div class="spacer">J - CHIP NAV + RED ACCENT</div>
+<div class="header-j">
+  <a href="#" class="logo"><span class="ai">AI</span>INTERN</a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+  </nav>
+  <a href="#" class="corp">採用担当者様</a>
+  <a href="#" class="btn-login">ログイン</a>
+  <a href="#" class="btn-register">新規登録</a>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<!-- ===== K ===== -->
+<div class="spacer">K - BORDERLESS TRANSPARENT</div>
+<div class="header-k-wrap">
+  <div class="header-k">
+    <a href="#" class="logo">AI<span class="slash">/</span>INTERN</a>
+    <nav>
+      <a href="#" class="active">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="corp">採用担当者様</a>
+      <a href="#" class="btn-login">ログイン</a>
+      <a href="#" class="btn-register">新規登録</a>
+    </nav>
+  </div>
+  <div class="header-k-bg"></div>
+</div>
+
+<!-- ===== L ===== -->
+<div class="spacer">L - NEO TOKYO（スキャンラインアニメ）</div>
+<div class="header-l">
+  <a href="#" class="logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></a>
+  <nav>
+    <a href="#" class="active">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="corp">採用担当者様</a>
+    <a href="#" class="btn-login">login</a>
+    <a href="#" class="btn-register">REGISTER</a>
+  </nav>
+</div>
+<div class="page-body">HERO AREA</div>
+
+<div class="spacer">END</div>
+
+</body>
+</html>

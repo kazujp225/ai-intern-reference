@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ボタンデザイン案プレビュー</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; color: #fff; font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; margin-bottom: 50px; font-size: 1.5em; color: #aaa; }
+  .preview-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 50px; }
+  .preview-item { text-align: center; }
+  .preview-label { font-size: 0.9em; color: #888; margin-bottom: 8px; letter-spacing: 2px; }
+  .preview-sub { font-size: 0.75em; color: #555; margin-top: 8px; }
+  .sub-text { font-size: 0.85em; margin-bottom: 12px; color: #ccc; }
+
+  /* ===== A: ネオンサイバー ===== */
+  .btn-a {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 50px; overflow: hidden;
+    border: 2px solid #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 20px rgba(0, 255, 136, 0.05);
+    transition: all 0.3s;
+  }
+  .btn-a:hover { box-shadow: 0 0 40px rgba(0, 255, 136, 0.6); transform: scale(1.03); }
+  .btn-a .badge {
+    background: #00ff88; color: #0a0a1a; padding: 14px 22px;
+    font-weight: 900; font-size: 1em; font-family: monospace;
+  }
+  .btn-a .label {
+    padding: 14px 32px; color: #00ff88; font-weight: 700; font-size: 1.1em;
+    font-family: monospace; letter-spacing: 1px;
+  }
+
+  /* ===== B: グラデーション溶け込み ===== */
+  .btn-b {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 16px; overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s;
+  }
+  .btn-b:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6); }
+  .btn-b .badge {
+    background: rgba(255,255,255,0.2); color: #fff; padding: 16px 24px;
+    font-weight: 900; font-size: 0.95em; backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-b .label {
+    padding: 16px 36px; color: #fff; font-weight: 700; font-size: 1.15em;
+  }
+
+  /* ===== C: ブルータリスト（荒削り系） ===== */
+  .btn-c {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; overflow: hidden;
+    border: 4px solid #fff; background: #000;
+    transition: all 0.2s;
+  }
+  .btn-c:hover { background: #fff; }
+  .btn-c:hover .label { color: #000; }
+  .btn-c .badge {
+    background: #ff3333; color: #fff; padding: 16px 20px;
+    font-weight: 900; font-size: 1.1em; font-family: monospace;
+    text-transform: uppercase;
+  }
+  .btn-c .label {
+    padding: 16px 32px; color: #fff; font-weight: 900; font-size: 1.2em;
+    letter-spacing: 2px;
+  }
+
+  /* ===== D: ミニマル・モノクロ ===== */
+  .btn-d {
+    display: inline-flex; align-items: center; gap: 16px;
+    text-decoration: none; padding: 16px 40px;
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 100px;
+    background: transparent;
+    transition: all 0.3s;
+  }
+  .btn-d:hover { background: rgba(255,255,255,0.08); border-color: #fff; }
+  .btn-d .badge {
+    color: rgba(255,255,255,0.5); font-size: 0.8em; font-weight: 400;
+    border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 100px;
+  }
+  .btn-d .label {
+    color: #fff; font-weight: 300; font-size: 1.1em; letter-spacing: 3px;
+  }
+
+  /* ===== E: ターミナル風 ===== */
+  .btn-e {
+    display: inline-block; text-decoration: none;
+    background: #0d1117; border: 1px solid #30363d; border-radius: 8px;
+    padding: 20px 36px; font-family: 'Courier New', monospace;
+    transition: all 0.3s; position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .btn-e:hover { border-color: #58a6ff; box-shadow: 0 4px 20px rgba(88,166,255,0.2); }
+  .btn-e .line1 { color: #8b949e; font-size: 0.8em; margin-bottom: 6px; }
+  .btn-e .line2 { color: #58a6ff; font-size: 1.1em; font-weight: 700; }
+  .btn-e .cursor { display: inline-block; width: 8px; height: 18px; background: #58a6ff; margin-left: 4px; animation: blink 1s infinite; vertical-align: text-bottom; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ===== F: グラスモーフィズム ===== */
+  .btn-f-wrap { padding: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 20px; display: inline-block; }
+  .btn-f {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 16px; overflow: hidden;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+  }
+  .btn-f:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+  .btn-f .badge {
+    background: rgba(255,255,255,0.2); color: #fff; padding: 18px 22px;
+    font-weight: 800; font-size: 0.9em;
+  }
+  .btn-f .label {
+    padding: 18px 36px; color: #fff; font-weight: 600; font-size: 1.1em;
+  }
+
+  /* ===== G: パルス・アニメーション ===== */
+  .btn-g {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 50px; overflow: hidden;
+    background: linear-gradient(90deg, #f5576c, #ff6b6b);
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+    animation: pulse 2s infinite;
+    transition: transform 0.2s;
+  }
+  .btn-g:hover { transform: scale(1.05); }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(245, 87, 108, 0.5); }
+    70% { box-shadow: 0 0 0 20px rgba(245, 87, 108, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 87, 108, 0); }
+  }
+  .btn-g .badge {
+    background: rgba(0,0,0,0.2); color: #fff; padding: 16px 22px;
+    font-weight: 900; font-size: 0.95em;
+  }
+  .btn-g .label {
+    padding: 16px 36px; color: #fff; font-weight: 700; font-size: 1.15em;
+  }
+
+  /* ===== I: 3Dボタン（押せる感） ===== */
+  .btn-i {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 14px; overflow: hidden;
+    background: linear-gradient(180deg, #5865f2 0%, #4752c4 100%);
+    border-bottom: 5px solid #3c45a5;
+    transition: all 0.1s;
+  }
+  .btn-i:hover { transform: translateY(2px); border-bottom-width: 3px; }
+  .btn-i:active { transform: translateY(4px); border-bottom-width: 1px; }
+  .btn-i .badge {
+    background: rgba(255,255,255,0.15); color: #fff; padding: 16px 22px;
+    font-weight: 900; font-size: 0.95em;
+  }
+  .btn-i .label {
+    padding: 16px 32px; color: #fff; font-weight: 700; font-size: 1.1em;
+  }
+
+  /* ===== J: スプリット・ツートン ===== */
+  .btn-j {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 0; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .btn-j .badge {
+    background: #fff; color: #0a0a1a; padding: 18px 26px;
+    font-weight: 900; font-size: 1em;
+  }
+  .btn-j .label {
+    background: #0a0a1a; border: 2px solid #fff; border-left: none;
+    padding: 16px 36px; color: #fff; font-weight: 700; font-size: 1.1em;
+  }
+  .btn-j:hover .badge { background: #00ff88; }
+  .btn-j:hover .label { border-color: #00ff88; color: #00ff88; }
+
+  /* ===== K: タイプライター ===== */
+  .btn-k {
+    display: inline-block; text-decoration: none;
+    background: transparent; border: none; padding: 20px 40px;
+    position: relative; cursor: pointer;
+  }
+  .btn-k .line1 { color: #ff6b6b; font-size: 0.75em; font-weight: 800; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 10px; }
+  .btn-k .line2 {
+    color: #fff; font-size: 1.8em; font-weight: 900; letter-spacing: -1px;
+    border-bottom: 4px solid #ff6b6b; padding-bottom: 6px;
+    display: inline-block;
+  }
+  .btn-k .line3 { color: #666; font-size: 0.7em; margin-top: 8px; letter-spacing: 1px; }
+  .btn-k:hover .line2 { color: #ff6b6b; }
+
+  /* ===== L: ホログラム風 ===== */
+  .btn-l {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 50px; overflow: hidden;
+    background: linear-gradient(135deg, #ff0080, #7928ca, #00d4ff, #ff0080);
+    background-size: 300% 300%;
+    animation: hologram 4s ease infinite;
+    box-shadow: 0 4px 25px rgba(121, 40, 202, 0.4);
+    transition: transform 0.2s;
+  }
+  .btn-l:hover { transform: scale(1.04); }
+  @keyframes hologram {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .btn-l .badge {
+    background: rgba(0,0,0,0.3); color: #fff; padding: 16px 22px;
+    font-weight: 900; font-size: 0.95em; backdrop-filter: blur(4px);
+  }
+  .btn-l .label {
+    padding: 16px 36px; color: #fff; font-weight: 700; font-size: 1.1em;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  }
+
+  /* ===== M: ワイヤーフレーム + ドット ===== */
+  .btn-m {
+    display: inline-flex; align-items: center; gap: 16px;
+    text-decoration: none; padding: 18px 36px;
+    border: 2px dashed rgba(255,255,255,0.4); border-radius: 8px;
+    background: transparent;
+    transition: all 0.3s;
+  }
+  .btn-m:hover { border-style: solid; border-color: #fff; background: rgba(255,255,255,0.05); }
+  .btn-m .dot { width: 12px; height: 12px; border-radius: 50%; background: #00ff88; animation: dotpulse 1.5s infinite; }
+  @keyframes dotpulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+  .btn-m .badge { color: rgba(255,255,255,0.5); font-size: 0.8em; font-weight: 600; }
+  .btn-m .label { color: #fff; font-weight: 500; font-size: 1.05em; }
+
+  /* ===== N: グリッチ ===== */
+  .btn-n {
+    display: inline-flex; align-items: center; gap: 0;
+    text-decoration: none; border-radius: 0; overflow: hidden;
+    background: #000; border: 2px solid #ff0040;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .btn-n .badge {
+    background: #ff0040; color: #fff; padding: 16px 22px;
+    font-weight: 900; font-size: 1em; font-family: monospace;
+  }
+  .btn-n .label {
+    padding: 16px 32px; color: #ff0040; font-weight: 700; font-size: 1.1em;
+    font-family: monospace; position: relative;
+  }
+  .btn-n:hover { animation: glitch 0.3s infinite; }
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 2px); }
+    40% { transform: translate(3px, -2px); }
+    60% { transform: translate(-2px, -1px); }
+    80% { transform: translate(2px, 1px); }
+    100% { transform: translate(0); }
+  }
+
+  /* ===== O: マトリックス風 ===== */
+  .btn-o {
+    display: inline-block; text-decoration: none;
+    background: #000; border: 1px solid #003300; border-radius: 4px;
+    padding: 20px 40px; position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .btn-o::before {
+    content: "010110100101101001011010";
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    color: rgba(0, 255, 0, 0.07); font-family: monospace; font-size: 10px;
+    line-height: 1.2; overflow: hidden; word-break: break-all; padding: 4px;
+  }
+  .btn-o:hover { border-color: #00ff00; box-shadow: 0 0 20px rgba(0,255,0,0.2); }
+  .btn-o .line1 { color: #00aa00; font-family: monospace; font-size: 0.75em; margin-bottom: 6px; position: relative; }
+  .btn-o .line2 { color: #00ff00; font-family: monospace; font-size: 1.15em; font-weight: 700; position: relative; }
+
+  /* ===== H: チップ型（Apple風） ===== */
+  .btn-h {
+    display: inline-flex; align-items: center; gap: 14px;
+    text-decoration: none; border-radius: 100px;
+    background: #fff; padding: 6px 6px 6px 6px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+  }
+  .btn-h:hover { box-shadow: 0 4px 30px rgba(0,0,0,0.25); transform: scale(1.02); }
+  .btn-h .badge {
+    background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+    padding: 12px 20px; border-radius: 100px;
+    font-weight: 800; font-size: 0.9em;
+  }
+  .btn-h .label {
+    color: #1a1a2e; font-weight: 700; font-size: 1.05em; padding-right: 28px;
+  }
+</style>
+</head>
+<body>
+
+<h1>BUTTON DESIGN PREVIEW - "人類やめる準備、できた？"</h1>
+
+<div class="preview-grid">
+
+  <!-- A -->
+  <div class="preview-item">
+    <div class="preview-label">A - NEON CYBER</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-a">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">サイバーパンク風。ネオングリーンの発光ボーダー。</div>
+  </div>
+
+  <!-- B -->
+  <div class="preview-item">
+    <div class="preview-label">B - GRADIENT FUSION</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-b">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">紫系グラデーション。高級感とテック感の融合。</div>
+  </div>
+
+  <!-- C -->
+  <div class="preview-item">
+    <div class="preview-label">C - BRUTALIST</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-c">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">角ばったブルータリスト。攻撃的で尖った印象。</div>
+  </div>
+
+  <!-- D -->
+  <div class="preview-item">
+    <div class="preview-label">D - MINIMAL MONO</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-d">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">極限ミニマル。余白で語る。</div>
+  </div>
+
+  <!-- E -->
+  <div class="preview-item">
+    <div class="preview-label">E - TERMINAL</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-e">
+      <div class="line1">$ ai-intern register --free</div>
+      <div class="line2">> 人類やめる準備、できた？<span class="cursor"></span></div>
+    </a>
+    <div class="preview-sub">ターミナル/CLI風。エンジニアに刺さる。カーソル点滅。</div>
+  </div>
+
+  <!-- F -->
+  <div class="preview-item">
+    <div class="preview-label">F - GLASSMORPHISM</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <div class="btn-f-wrap">
+      <a href="#" class="btn-f">
+        <span class="badge">FREE</span>
+        <span class="label">人類やめる準備、できた？</span>
+      </a>
+    </div>
+    <div class="preview-sub">すりガラス風。背景が透ける洗練デザイン。</div>
+  </div>
+
+  <!-- G -->
+  <div class="preview-item">
+    <div class="preview-label">G - PULSE</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-g">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">赤系グラデ + パルスアニメーション。緊急感・高揚感。</div>
+  </div>
+
+  <!-- H -->
+  <div class="preview-item">
+    <div class="preview-label">H - CHIP (Apple style)</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-h">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">Apple風チップ型。白背景に紫バッジ。クリーンで信頼感。</div>
+  </div>
+
+</div>
+
+  <!-- I -->
+  <div class="preview-item">
+    <div class="preview-label">I - 3D BUTTON</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-i">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">Discord風3Dボタン。押し込む触感。</div>
+  </div>
+
+  <!-- J -->
+  <div class="preview-item">
+    <div class="preview-label">J - SPLIT TWO-TONE</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-j">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">白黒ツートン。角張り。ホバーでネオン化。</div>
+  </div>
+
+  <!-- K -->
+  <div class="preview-item">
+    <div class="preview-label">K - TYPOGRAPHIC</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-k">
+      <div class="line1">- FREE ENTRY -</div>
+      <div class="line2">人類やめる準備、できた？</div>
+      <div class="line3">CLICK TO REGISTER / 30 SEC</div>
+    </a>
+    <div class="preview-sub">タイポグラフィ主体。ボタンというより見出し。</div>
+  </div>
+
+  <!-- L -->
+  <div class="preview-item">
+    <div class="preview-label">L - HOLOGRAM</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-l">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">ホログラム風。虹色グラデが常時流れる。</div>
+  </div>
+
+  <!-- M -->
+  <div class="preview-item">
+    <div class="preview-label">M - WIREFRAME + DOT</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-m">
+      <span class="dot"></span>
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">破線ボーダー + 呼吸ドット。設計図感。</div>
+  </div>
+
+  <!-- N -->
+  <div class="preview-item">
+    <div class="preview-label">N - GLITCH</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-n">
+      <span class="badge">FREE</span>
+      <span class="label">人類やめる準備、できた？</span>
+    </a>
+    <div class="preview-sub">グリッチエフェクト。ホバーでブレる。バグった未来感。</div>
+  </div>
+
+  <!-- O -->
+  <div class="preview-item">
+    <div class="preview-label">O - MATRIX</div>
+    <div class="sub-text">＼ 登録30秒。人生の分岐点。 ／</div>
+    <a href="#" class="btn-o">
+      <div class="line1">[FREE] register --now</div>
+      <div class="line2">人類やめる準備、できた？</div>
+    </a>
+    <div class="preview-sub">マトリックス風。背景にバイナリ。緑の世界。</div>
+  </div>
+
+</div>
+
+<div style="text-align: center; margin-top: 60px; color: #555; font-size: 0.8em;">
+  ホバーするとアニメーションも確認できます
+</div>
+
+</body>
+</html>

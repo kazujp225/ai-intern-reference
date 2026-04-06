@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>実績セクション デザイン案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; background: #f5f5f5; }
+  .spacer { height: 50px; background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 0.8em; letter-spacing: 3px; }
+
+  /* ===== A: ダークネイビー（参考画像に近い） ===== */
+  .stats-a {
+    background: #1a2234; color: #fff; padding: 60px 20px; text-align: center;
+  }
+  .stats-a .medal { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #c8a44e, #e8c84e); color: #1a2234; font-weight: 900; font-size: 1.2em; margin-bottom: 16px; }
+  .stats-a .big-num { font-size: 5em; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .stats-a .big-num .unit { font-size: 0.35em; font-weight: 600; vertical-align: baseline; margin-left: 4px; }
+  .stats-a .big-sub { font-size: 0.95em; color: rgba(255,255,255,0.6); margin-top: 8px; margin-bottom: 8px; }
+  .stats-a .gold-line { width: 40px; height: 3px; background: linear-gradient(90deg, #c8a44e, #e8c84e); margin: 0 auto 28px; border-radius: 2px; }
+  .stats-a .metrics { display: flex; justify-content: center; gap: 0; max-width: 700px; margin: 0 auto 40px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .stats-a .metric { flex: 1; padding: 24px 16px; border-right: 1px solid rgba(255,255,255,0.1); }
+  .stats-a .metric:last-child { border-right: none; }
+  .stats-a .metric .num { font-size: 2.4em; font-weight: 900; letter-spacing: -1px; }
+  .stats-a .metric .num .sm { font-size: 0.45em; font-weight: 500; }
+  .stats-a .metric .desc { font-size: 0.75em; color: rgba(255,255,255,0.45); margin-top: 4px; }
+  .stats-a .cta-text { font-size: 0.95em; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+  .stats-a .cta-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .stats-a .cta-btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #e07030, #f09050); color: #fff;
+    padding: 16px 36px; border-radius: 100px; text-decoration: none;
+    font-weight: 700; font-size: 1em; transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(224,112,48,0.3);
+  }
+  .stats-a .cta-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(224,112,48,0.4); }
+  .stats-a .cta-btn-primary .small { font-size: 0.7em; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 100px; }
+  .stats-a .cta-btn-primary .arrow { font-size: 1.2em; }
+  .stats-a .cta-btn-secondary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #c8a44e, #dab85e); color: #1a2234;
+    padding: 16px 36px; border-radius: 100px; text-decoration: none;
+    font-weight: 700; font-size: 1em; transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(200,164,78,0.3);
+  }
+  .stats-a .cta-btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,164,78,0.4); }
+  .stats-a .cta-btn-secondary .small { font-size: 0.7em; background: rgba(0,0,0,0.1); padding: 3px 10px; border-radius: 100px; }
+  .stats-a .cta-btn-secondary .arrow { font-size: 1.2em; }
+  .stats-a .cta-note { font-size: 0.7em; color: rgba(255,255,255,0.3); margin-top: 12px; }
+  .stats-a .down-arrows { color: rgba(255,255,255,0.2); font-size: 1.4em; margin-bottom: 8px; }
+
+  /* ===== B: 白背景＋紫アクセント ===== */
+  .stats-b {
+    background: #fff; color: #1a1a2e; padding: 60px 20px; text-align: center;
+  }
+  .stats-b .medal { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-weight: 900; font-size: 1.1em; margin-bottom: 16px; }
+  .stats-b .big-num { font-size: 4.5em; font-weight: 900; letter-spacing: -2px; line-height: 1; color: #1a1a2e; }
+  .stats-b .big-num .unit { font-size: 0.35em; font-weight: 600; }
+  .stats-b .big-sub { font-size: 0.9em; color: #999; margin-top: 8px; margin-bottom: 8px; }
+  .stats-b .purple-line { width: 40px; height: 3px; background: linear-gradient(90deg, #667eea, #764ba2); margin: 0 auto 28px; border-radius: 2px; }
+  .stats-b .metrics { display: flex; justify-content: center; gap: 0; max-width: 700px; margin: 0 auto 40px; border-top: 1px solid #eee; }
+  .stats-b .metric { flex: 1; padding: 24px 16px; border-right: 1px solid #eee; }
+  .stats-b .metric:last-child { border-right: none; }
+  .stats-b .metric .num { font-size: 2.4em; font-weight: 900; color: #764ba2; }
+  .stats-b .metric .num .sm { font-size: 0.45em; font-weight: 500; color: #666; }
+  .stats-b .metric .desc { font-size: 0.75em; color: #aaa; margin-top: 4px; }
+  .stats-b .cta-text { font-size: 0.95em; color: #888; margin-bottom: 20px; }
+  .stats-b .cta-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .stats-b .cta-btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2); color: #fff;
+    padding: 16px 36px; border-radius: 100px; text-decoration: none;
+    font-weight: 700; font-size: 1em; transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(118,75,162,0.3);
+  }
+  .stats-b .cta-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(118,75,162,0.4); }
+  .stats-b .cta-btn-primary .small { font-size: 0.7em; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 100px; }
+  .stats-b .cta-btn-secondary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #fff; color: #764ba2; border: 2px solid #764ba2;
+    padding: 14px 36px; border-radius: 100px; text-decoration: none;
+    font-weight: 700; font-size: 1em; transition: all 0.3s;
+  }
+  .stats-b .cta-btn-secondary:hover { background: #f8f4ff; }
+  .stats-b .arrow { font-size: 1.2em; }
+
+  /* ===== C: ブラック＋ネオン ===== */
+  .stats-c {
+    background: #000; color: #fff; padding: 60px 20px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .stats-c::after { content:''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #ff0040, #00ff88, transparent); }
+  .stats-c .medal { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; border: 2px solid #ff0040; color: #ff0040; font-weight: 900; font-size: 1.1em; margin-bottom: 16px; }
+  .stats-c .big-num { font-size: 5em; font-weight: 900; letter-spacing: -2px; line-height: 1; font-family: monospace; }
+  .stats-c .big-num .accent { color: #ff0040; }
+  .stats-c .big-num .unit { font-size: 0.35em; font-weight: 500; color: rgba(255,255,255,0.5); }
+  .stats-c .big-sub { font-size: 0.9em; color: rgba(255,255,255,0.4); margin-top: 8px; margin-bottom: 8px; font-family: monospace; }
+  .stats-c .red-line { width: 40px; height: 2px; background: #ff0040; margin: 0 auto 28px; }
+  .stats-c .metrics { display: flex; justify-content: center; gap: 0; max-width: 700px; margin: 0 auto 40px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .stats-c .metric { flex: 1; padding: 24px 16px; border-right: 1px solid rgba(255,255,255,0.08); }
+  .stats-c .metric:last-child { border-right: none; }
+  .stats-c .metric .num { font-size: 2.4em; font-weight: 900; font-family: monospace; }
+  .stats-c .metric .num .green { color: #00ff88; }
+  .stats-c .metric .num .sm { font-size: 0.45em; font-weight: 500; color: rgba(255,255,255,0.4); }
+  .stats-c .metric .desc { font-size: 0.72em; color: rgba(255,255,255,0.3); margin-top: 4px; font-family: monospace; }
+  .stats-c .cta-text { font-size: 0.9em; color: rgba(255,255,255,0.4); margin-bottom: 20px; font-family: monospace; }
+  .stats-c .cta-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .stats-c .cta-btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #ff0040; color: #fff;
+    padding: 16px 36px; border-radius: 0; text-decoration: none;
+    font-weight: 700; font-size: 1em; font-family: monospace; transition: all 0.2s;
+  }
+  .stats-c .cta-btn-primary:hover { box-shadow: 0 0 24px rgba(255,0,64,0.4); }
+  .stats-c .cta-btn-secondary {
+    display: inline-flex; align-items: center; gap: 12px;
+    border: 1px solid #00ff88; color: #00ff88;
+    padding: 16px 36px; border-radius: 0; text-decoration: none;
+    font-weight: 700; font-size: 1em; font-family: monospace; transition: all 0.2s; background: transparent;
+  }
+  .stats-c .cta-btn-secondary:hover { background: rgba(0,255,136,0.08); box-shadow: 0 0 24px rgba(0,255,136,0.2); }
+  .stats-c .arrow { font-size: 1.2em; }
+</style>
+</head>
+<body>
+
+<!-- ===== A ===== -->
+<div class="spacer">A - DARK NAVY + GOLD（参考画像に近い構成）</div>
+<div class="stats-a">
+  <div class="medal">祝</div>
+  <div class="big-num">1,200<span class="unit">件</span></div>
+  <div class="big-sub">AI特化インターン掲載突破！</div>
+  <div class="gold-line"></div>
+  <div class="metrics">
+    <div class="metric">
+      <div class="num">98.2<span class="sm">%</span></div>
+      <div class="desc">利用者満足度</div>
+    </div>
+    <div class="metric">
+      <div class="num">350<span class="sm">社</span></div>
+      <div class="desc">掲載AI企業数</div>
+    </div>
+    <div class="metric">
+      <div class="num">47<span class="sm">都道府県</span></div>
+      <div class="desc">対応エリア</div>
+    </div>
+  </div>
+  <div class="cta-text">未経験でも大丈夫！<br>AI知識ゼロから始められるインターンも多数掲載</div>
+  <div class="cta-row">
+    <a href="#" class="cta-btn-primary">
+      <span class="small">無料</span>
+      AIインターンを探す
+      <span class="arrow">></span>
+    </a>
+    <a href="#" class="cta-btn-secondary">
+      <span class="small">30秒</span>
+      新規登録する
+      <span class="arrow">></span>
+    </a>
+  </div>
+  <div class="cta-note">* 2026年4月時点 自社調べ</div>
+</div>
+
+<!-- ===== B ===== -->
+<div class="spacer">B - WHITE + PURPLE</div>
+<div class="stats-b">
+  <div class="medal">AI</div>
+  <div class="big-num">1,200<span class="unit">件</span></div>
+  <div class="big-sub">AI特化インターン掲載突破！</div>
+  <div class="purple-line"></div>
+  <div class="metrics">
+    <div class="metric">
+      <div class="num">98.2<span class="sm">%</span></div>
+      <div class="desc">利用者満足度</div>
+    </div>
+    <div class="metric">
+      <div class="num">350<span class="sm">社</span></div>
+      <div class="desc">掲載AI企業数</div>
+    </div>
+    <div class="metric">
+      <div class="num">47<span class="sm">都道府県</span></div>
+      <div class="desc">対応エリア</div>
+    </div>
+  </div>
+  <div class="cta-text">未経験でも大丈夫！AI知識ゼロから始められます</div>
+  <div class="cta-row">
+    <a href="#" class="cta-btn-primary">
+      <span class="small">無料</span>
+      AIインターンを探す
+      <span class="arrow">></span>
+    </a>
+    <a href="#" class="cta-btn-secondary">
+      新規登録する
+      <span class="arrow">></span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== C ===== -->
+<div class="spacer">C - BLACK + NEON（ネオ東京ヘッダー連動）</div>
+<div class="stats-c">
+  <div class="medal">AI</div>
+  <div class="big-num"><span class="accent">1,200</span><span class="unit">件</span></div>
+  <div class="big-sub">// AI特化インターン掲載突破</div>
+  <div class="red-line"></div>
+  <div class="metrics">
+    <div class="metric">
+      <div class="num"><span class="green">98.2</span><span class="sm">%</span></div>
+      <div class="desc">satisfaction</div>
+    </div>
+    <div class="metric">
+      <div class="num"><span class="green">350</span><span class="sm">社</span></div>
+      <div class="desc">ai_companies</div>
+    </div>
+    <div class="metric">
+      <div class="num"><span class="green">47</span><span class="sm">都道府県</span></div>
+      <div class="desc">coverage</div>
+    </div>
+  </div>
+  <div class="cta-text">// 未経験OK。AI知識ゼロから始められる。</div>
+  <div class="cta-row">
+    <a href="#" class="cta-btn-primary">
+      [FREE] AIインターンを探す
+      <span class="arrow">></span>
+    </a>
+    <a href="#" class="cta-btn-secondary">
+      [30sec] 新規登録する
+      <span class="arrow">></span>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
