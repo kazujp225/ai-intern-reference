@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AIインターン経験者のヤバい声 UIバリアント</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f3ed;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a;
+    background-image:
+      linear-gradient(rgba(15,23,42,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,23,42,0.045) 1px, transparent 1px);
+    background-size: 24px 24px, 24px 24px;
+  }
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:60px 0;border-top:1px dashed rgba(15,23,42,0.2)}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#10a37f;font-weight:700;font-family:"SF Mono",monospace}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:20px;font-weight:900}
+  .ds{max-width:1100px;margin:0 auto 36px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.7}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  /* ============================================== */
+  /* === 案1: チャット・メッセージ風 === */
+  /* ============================================== */
+  .v1{background:#fcfbf7;border:1px solid rgba(15,23,42,0.15);padding:30px 24px;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+  .v1 .msg{display:flex;gap:12px;align-items:flex-end}
+  .v1 .msg.right{flex-direction:row-reverse}
+  .v1 .ava{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#10a37f,#0d8c6e);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+  .v1 .msg.right .ava{background:linear-gradient(135deg,#0a0a0a,#374151)}
+  .v1 .bubble{max-width:78%;background:#fff;border:1px solid rgba(15,23,42,0.12);border-radius:18px;padding:12px 16px;font-size:13px;line-height:1.7;position:relative}
+  .v1 .msg.right .bubble{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
+  .v1 .bubble .nm{display:block;font-size:10px;font-weight:800;color:#6b7280;letter-spacing:0.05em;margin:0 0 4px;padding:0;max-width:none}
+  .v1 .msg.right .bubble .nm{color:#9ca3af}
+  .v1 .bubble .stars{display:block;font-size:11px;color:#fbbf24;margin-top:6px;letter-spacing:0.1em}
+  .v1 .day{text-align:center;font-size:10px;color:#9ca3af;letter-spacing:0.15em;font-family:"SF Mono",monospace;font-weight:700;margin:8px 0}
+
+  /* ============================================== */
+  /* === 案2: 雑誌インタビュー風 === */
+  /* ============================================== */
+  .v2{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:50px 40px;font-family:Georgia,"Yu Mincho",serif}
+  .v2 .item{display:grid;grid-template-columns:80px 1fr;gap:20px}
+  .v2 .num{font-size:48px;font-weight:900;line-height:1;color:#0a0a0a;font-family:Georgia,serif;letter-spacing:-0.04em;border-top:3px solid #0a0a0a;padding-top:10px}
+  .v2 .body .quote{font-size:13px;line-height:1.85;color:#0a0a0a;margin:0 0 14px;font-family:-apple-system,"Hiragino Mincho ProN",serif}
+  .v2 .body .quote::before{content:"\201C";font-size:42px;font-family:Georgia,serif;color:#10a37f;line-height:0;vertical-align:-18px;margin-right:4px;font-style:italic}
+  .v2 .body .meta{font-family:"SF Mono",monospace;font-size:10px;color:#6b7280;letter-spacing:0.1em;border-top:1px dotted rgba(15,23,42,0.3);padding-top:10px;text-transform:uppercase}
+  .v2 .body .meta strong{display:block;color:#0a0a0a;font-size:12px;letter-spacing:0;font-family:-apple-system,sans-serif;font-weight:800;margin-bottom:4px;text-transform:none}
+
+  /* ============================================== */
+  /* === 案3: ターミナル/チャットログ風 === */
+  /* ============================================== */
+  .v3{background:#0a0a0a;border:1px solid #374151;max-width:780px;margin:0 auto;font-family:"SF Mono","Menlo",monospace;color:#e5e7eb}
+  .v3 .top{background:#1f2937;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #374151}
+  .v3 .top .dot{width:11px;height:11px;border-radius:50%;background:#ef4444}
+  .v3 .top .dot:nth-child(2){background:#f59e0b}
+  .v3 .top .dot:nth-child(3){background:#10b981}
+  .v3 .top .ttl{margin-left:14px;font-size:11px;color:#9ca3af;letter-spacing:0.1em}
+  .v3 .body{padding:24px 22px;font-size:12px;line-height:1.85}
+  .v3 .body .ln{margin-bottom:18px}
+  .v3 .body .prompt{color:#10b981;font-weight:700}
+  .v3 .body .meta{color:#6b7280;font-size:11px;display:block;margin-bottom:4px}
+  .v3 .body .meta .name{color:#fbbf24}
+  .v3 .body .meta .uni{color:#60a5fa}
+  .v3 .body .text{color:#e5e7eb;display:block;padding-left:16px;border-left:2px solid #374151;margin-top:6px}
+  .v3 .body .stars{color:#fbbf24;margin-left:8px}
+  .v3 .body .cursor{display:inline-block;width:8px;height:14px;background:#10b981;animation:blink 1s steps(2) infinite;vertical-align:middle}
+  @keyframes blink{50%{opacity:0}}
+
+  /* ============================================== */
+  /* === 案5: Twitter/X 投稿風 === */
+  /* ============================================== */
+  .v5{max-width:680px;margin:0 auto;background:#fff;border:1px solid rgba(15,23,42,0.15)}
+  .v5 .post{padding:18px 22px;border-bottom:1px solid rgba(15,23,42,0.1);display:grid;grid-template-columns:48px 1fr;gap:14px}
+  .v5 .post:last-child{border-bottom:none}
+  .v5 .post:hover{background:#fafaf5}
+  .v5 .ava{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10a37f,#0d8c6e);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+  .v5 .post:nth-child(2) .ava{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+  .v5 .post:nth-child(3) .ava{background:linear-gradient(135deg,#dc2626,#991b1b)}
+  .v5 .post:nth-child(4) .ava{background:linear-gradient(135deg,#0a0a0a,#374151)}
+  .v5 .head{display:flex;align-items:center;gap:6px;font-size:13px;margin-bottom:4px;flex-wrap:wrap}
+  .v5 .head .nm{font-weight:900;color:#0a0a0a;padding:0;max-width:none;font-size:14px}
+  .v5 .head .verified{color:#10a37f;font-size:14px}
+  .v5 .head .handle{color:#6b7280;font-size:13px}
+  .v5 .head .dot{color:#6b7280}
+  .v5 .head .time{color:#6b7280;font-size:13px}
+  .v5 .body{font-size:14px;line-height:1.6;color:#0a0a0a;margin-bottom:10px}
+  .v5 .tags{color:#10a37f;font-weight:600;font-size:13px;margin-top:4px}
+  .v5 .actions{display:flex;gap:60px;margin-top:10px;color:#6b7280;font-size:12px}
+  .v5 .actions span{display:flex;align-items:center;gap:6px}
+  .v5 .actions span::before{font-family:"SF Mono",monospace;font-size:14px}
+  .v5 .actions .reply::before{content:"💬"}
+  .v5 .actions .rt::before{content:"🔁"}
+  .v5 .actions .like::before{content:"❤️"}
+
+  /* ============================================== */
+  /* === 案6: 卒業アルバム / 名簿風 === */
+  /* ============================================== */
+  .v6{max-width:1000px;margin:0 auto;background:#fcfbf7;border:2px solid #0a0a0a;padding:32px 28px}
+  .v6 .ttl{text-align:center;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:18px;font-weight:900;letter-spacing:0.4em;border-bottom:1px double #0a0a0a;padding-bottom:14px;margin-bottom:20px}
+  .v6 .ttl .sub{display:block;font-size:10px;letter-spacing:0.3em;color:#6b7280;margin-top:6px;font-family:"SF Mono",monospace}
+  .v6 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 20px}
+  .v6 .person{display:grid;grid-template-columns:64px 1fr;gap:14px}
+  .v6 .photo{width:64px;height:80px;background:linear-gradient(135deg,#e5e7eb,#9ca3af);border:1px solid #0a0a0a;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:24px;font-family:Georgia,serif}
+  .v6 .info{font-family:-apple-system,"Hiragino Mincho ProN",serif}
+  .v6 .info .name{font-size:14px;font-weight:900;color:#0a0a0a;border-bottom:1px solid #0a0a0a;padding-bottom:3px;margin-bottom:4px}
+  .v6 .info .dept{font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.05em;margin-bottom:6px}
+  .v6 .info .quote{font-size:11px;line-height:1.6;color:#374151;font-family:"Yu Mincho",serif}
+  .v6 .info .quote::before{content:"「"}
+  .v6 .info .quote::after{content:"」"}
+
+  /* ============================================== */
+  /* === 案7: トレーディングカード風 === */
+  /* ============================================== */
+  .v7{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .v7 .card{background:linear-gradient(160deg,#fef3c7 0%,#fcfbf7 30%,#fef3c7 100%);border:3px solid #0a0a0a;padding:0;position:relative;box-shadow:0 6px 16px rgba(15,23,42,0.2),inset 0 0 0 2px #fbbf24;font-family:Georgia,serif}
+  .v7 .card::before{content:"";position:absolute;top:6px;left:6px;right:6px;bottom:6px;border:1px solid rgba(15,23,42,0.4);pointer-events:none}
+  .v7 .head{padding:10px 12px 8px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0a0a0a;background:#0a0a0a;color:#fbbf24}
+  .v7 .head .name{font-size:13px;font-weight:900;letter-spacing:0.05em;font-family:Georgia,serif}
+  .v7 .head .lv{font-size:9px;background:#fbbf24;color:#0a0a0a;padding:2px 6px;font-weight:900;font-family:"SF Mono",monospace;letter-spacing:0.1em}
+  .v7 .img{height:110px;background:linear-gradient(135deg,#a78bfa,#7c3aed);margin:8px;border:1px solid #0a0a0a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;font-weight:900;font-family:Georgia,serif;text-shadow:0 2px 6px rgba(0,0,0,0.4)}
+  .v7 .card:nth-child(2) .img{background:linear-gradient(135deg,#34d399,#059669)}
+  .v7 .card:nth-child(3) .img{background:linear-gradient(135deg,#fb923c,#ea580c)}
+  .v7 .card:nth-child(4) .img{background:linear-gradient(135deg,#f472b6,#db2777)}
+  .v7 .stats{padding:0 10px 6px;display:flex;justify-content:space-between;font-size:9px;font-family:"SF Mono",monospace;font-weight:700;color:#374151;letter-spacing:0.05em}
+  .v7 .desc{padding:8px 12px 12px;font-size:10px;line-height:1.55;color:#0a0a0a;border-top:1px solid rgba(15,23,42,0.3);margin:0 6px;font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .v7 .desc .achieve{display:block;font-size:9px;font-weight:900;color:#dc2626;letter-spacing:0.05em;margin-top:6px;font-family:"SF Mono",monospace;text-transform:uppercase}
+
+  /* ============================================== */
+  /* === 案8: 新聞コラム風 === */
+  /* ============================================== */
+  .v8{max-width:980px;margin:0 auto;background:#fcfbf7;padding:36px 40px;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;border:1px solid rgba(15,23,42,0.2)}
+  .v8 .masthead{text-align:center;border-top:3px double #0a0a0a;border-bottom:3px double #0a0a0a;padding:14px 0;margin-bottom:24px}
+  .v8 .masthead h2{font-size:26px;margin:0;font-weight:900;letter-spacing:0.15em;font-family:"Yu Mincho",serif}
+  .v8 .masthead .info{display:flex;justify-content:space-between;font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.1em;margin-top:6px;text-transform:uppercase}
+  .v8 .cols{column-count:3;column-gap:30px;column-rule:1px solid rgba(15,23,42,0.25)}
+  .v8 .article{break-inside:avoid;margin-bottom:24px;padding-bottom:18px;border-bottom:1px dashed rgba(15,23,42,0.25)}
+  .v8 .article h3{font-size:15px;margin:0 0 6px;font-weight:900;color:#0a0a0a;line-height:1.4;font-family:"Yu Mincho",serif}
+  .v8 .article .by{font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.08em;margin-bottom:8px;text-transform:uppercase;border-bottom:1px dotted rgba(15,23,42,0.3);padding-bottom:4px}
+  .v8 .article p{font-size:12px;line-height:1.85;color:#0a0a0a;margin:0;text-align:justify}
+  .v8 .article p::first-letter{font-size:32px;font-weight:900;float:left;line-height:0.9;margin:4px 4px 0 0;font-family:Georgia,serif}
+
+  /* ============================================== */
+  /* === 案9: 学生証 / IDカード風 === */
+  /* ============================================== */
+  .v9{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .v9 .id{background:#fcfbf7;border:1px solid #0a0a0a;padding:0;font-family:"SF Mono","Menlo",monospace;position:relative;overflow:hidden}
+  .v9 .id .top{background:#0a0a0a;color:#fbbf24;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;letter-spacing:0.15em}
+  .v9 .id .top .logo::before{content:"◆ "}
+  .v9 .id .body{padding:18px 16px;display:grid;grid-template-columns:72px 1fr;gap:14px}
+  .v9 .id .photo{width:72px;height:90px;background:linear-gradient(135deg,#10a37f,#0d8c6e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;font-family:Georgia,serif;border:1px solid rgba(15,23,42,0.2)}
+  .v9 .id:nth-child(2) .photo{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+  .v9 .id:nth-child(3) .photo{background:linear-gradient(135deg,#dc2626,#991b1b)}
+  .v9 .id:nth-child(4) .photo{background:linear-gradient(135deg,#0a0a0a,#374151)}
+  .v9 .id:nth-child(5) .photo{background:linear-gradient(135deg,#fb923c,#ea580c)}
+  .v9 .id:nth-child(6) .photo{background:linear-gradient(135deg,#06b6d4,#0e7490)}
+  .v9 .id .info{font-size:10px;line-height:1.7}
+  .v9 .id .info .lbl{color:#6b7280;font-size:8px;letter-spacing:0.1em;text-transform:uppercase}
+  .v9 .id .info .val{color:#0a0a0a;font-weight:700;font-family:-apple-system,sans-serif;font-size:11px;display:block;margin-bottom:6px}
+  .v9 .id .quote{padding:12px 16px;border-top:1px dashed rgba(15,23,42,0.3);font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:11px;line-height:1.6;color:#374151}
+  .v9 .id .quote::before{content:"\201C ";color:#10a37f;font-size:18px;font-weight:900;font-family:Georgia,serif}
+  .v9 .id .barcode{height:18px;background:repeating-linear-gradient(90deg,#000 0,#000 1px,transparent 1px,transparent 3px,#000 3px,#000 4px,transparent 4px,transparent 6px);margin:0 16px 12px}
+
+  /* ============================================== */
+  /* === 案10: RPGダイアログウィンドウ風 === */
+  /* ============================================== */
+  .v10{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px;font-family:"SF Mono","Menlo",monospace}
+  .v10 .win{background:linear-gradient(180deg,#1e3a8a 0%,#0c1e4f 100%);border:3px solid #fff;box-shadow:0 0 0 3px #1e3a8a,0 0 0 5px #fff,0 8px 0 rgba(0,0,0,0.3);padding:0;color:#fff}
+  .v10 .win .name{background:#fff;color:#1e3a8a;padding:4px 14px;display:inline-block;font-weight:900;font-size:12px;letter-spacing:0.1em;margin:-3px 0 0 14px;border:3px solid #1e3a8a;border-top:none}
+  .v10 .win .text{padding:18px 22px;font-size:13px;line-height:1.8;font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .v10 .win .text::after{content:" ▼";color:#fbbf24;animation:blink2 1s infinite;font-size:14px}
+  @keyframes blink2{50%{opacity:0}}
+  .v10 .win .meta{padding:0 22px 14px;font-size:10px;color:#93c5fd;letter-spacing:0.05em}
+  .v10 .win .meta .stars{color:#fbbf24;margin-left:8px}
+
+  /* ============================================== */
+  /* === 案11: Slack メッセージ風 === */
+  /* ============================================== */
+  .v11{max-width:760px;margin:0 auto;background:#fff;border:1px solid rgba(15,23,42,0.15);font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .v11 .ch{padding:12px 22px;border-bottom:1px solid rgba(15,23,42,0.1);font-weight:900;font-size:14px;color:#0a0a0a;background:#f7f6f1}
+  .v11 .ch::before{content:"# ";color:#6b7280}
+  .v11 .ch .topic{font-weight:400;color:#6b7280;font-size:12px;margin-left:10px}
+  .v11 .msg{padding:10px 22px 10px 22px;display:grid;grid-template-columns:38px 1fr;gap:12px}
+  .v11 .msg:hover{background:#fafaf5}
+  .v11 .ava{width:38px;height:38px;border-radius:6px;background:#10a37f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px}
+  .v11 .msg:nth-child(3) .ava{background:#7c3aed}
+  .v11 .msg:nth-child(4) .ava{background:#dc2626}
+  .v11 .msg:nth-child(5) .ava{background:#0a0a0a}
+  .v11 .head{display:flex;align-items:baseline;gap:8px}
+  .v11 .head .nm{font-weight:900;color:#0a0a0a;font-size:14px;padding:0;max-width:none}
+  .v11 .head .role{font-size:10px;background:#10a37f;color:#fff;padding:1px 6px;border-radius:3px;font-weight:700;letter-spacing:0.05em}
+  .v11 .head .time{font-size:11px;color:#6b7280}
+  .v11 .body{font-size:13px;line-height:1.6;color:#0a0a0a;margin-top:2px}
+  .v11 .reactions{display:flex;gap:6px;margin-top:6px}
+  .v11 .reactions span{background:#f0faf0;border:1px solid #c8e6c9;padding:2px 8px;border-radius:12px;font-size:11px;color:#388e3c;font-weight:600}
+
+  /* ============================================== */
+  /* === 案12: ポラロイド写真風 (コルクボード) === */
+  /* ============================================== */
+  .v12{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:30px 20px;padding:20px 10px;background:#c2956b;background-image:radial-gradient(circle,rgba(0,0,0,0.15) 1px,transparent 1.5px);background-size:8px 8px;padding:30px}
+  .v12 .pol{background:#fcfbf7;padding:14px 14px 50px;box-shadow:0 8px 18px rgba(0,0,0,0.3),0 2px 4px rgba(0,0,0,0.2);position:relative;font-family:"Caveat","Yu Mincho",cursive,serif}
+  .v12 .pol:nth-child(1){transform:rotate(-2.5deg)}
+  .v12 .pol:nth-child(2){transform:rotate(1.8deg)}
+  .v12 .pol:nth-child(3){transform:rotate(-1.2deg)}
+  .v12 .pol:nth-child(4){transform:rotate(2deg)}
+  .v12 .pol::before{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:14px;height:14px;background:#dc2626;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.4)}
+  .v12 .pol .pic{height:140px;background:linear-gradient(135deg,#a78bfa,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:48px;font-weight:900;font-family:Georgia,serif}
+  .v12 .pol:nth-child(2) .pic{background:linear-gradient(135deg,#34d399,#059669)}
+  .v12 .pol:nth-child(3) .pic{background:linear-gradient(135deg,#fb923c,#ea580c)}
+  .v12 .pol:nth-child(4) .pic{background:linear-gradient(135deg,#f472b6,#db2777)}
+  .v12 .pol .cap{position:absolute;bottom:14px;left:14px;right:14px;font-size:15px;line-height:1.3;color:#0a0a0a;text-align:center;font-family:"Caveat","Yu Mincho","Hiragino Maru Gothic ProN",cursive,serif}
+  .v12 .pol .cap strong{display:block;font-size:13px;color:#6b7280;font-weight:600}
+
+  /* ============================================== */
+  /* === 案13: 評価フォーム / アンケート風 === */
+  /* ============================================== */
+  .v13{max-width:780px;margin:0 auto;background:#fcfbf7;border:1px solid rgba(15,23,42,0.2);padding:0}
+  .v13 .ttl{background:#f7f6f1;padding:14px 22px;border-bottom:2px solid #0a0a0a;font-weight:900;font-size:14px;letter-spacing:0.05em;display:flex;justify-content:space-between;align-items:center}
+  .v13 .ttl span{font-family:"SF Mono",monospace;font-size:10px;color:#6b7280;font-weight:600;letter-spacing:0.1em}
+  .v13 .row{padding:18px 22px;border-bottom:1px solid rgba(15,23,42,0.1);display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
+  .v13 .row:last-child{border-bottom:none}
+  .v13 .num{font-family:"SF Mono",monospace;font-size:13px;font-weight:900;color:#10a37f;width:32px}
+  .v13 .num::before{content:"Q"}
+  .v13 .body .q{font-size:11px;color:#6b7280;margin-bottom:4px;font-family:"SF Mono",monospace;letter-spacing:0.05em;text-transform:uppercase}
+  .v13 .body .a{font-size:13px;line-height:1.6;color:#0a0a0a;font-weight:700}
+  .v13 .body .who{font-size:10px;color:#6b7280;margin-top:6px;font-family:"SF Mono",monospace;letter-spacing:0.05em}
+  .v13 .score{text-align:center}
+  .v13 .score .v{font-size:28px;font-weight:900;color:#10a37f;line-height:1;font-family:Georgia,serif}
+  .v13 .score .lbl{font-size:9px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.1em;margin-top:2px}
+
+  /* ============================================== */
+  /* === 案14: 賞状 / 感謝状風 === */
+  /* ============================================== */
+  .v14{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .v14 .cert{background:#fcfbf7;border:8px double #0a0a0a;padding:30px 32px 28px;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;text-align:center;position:relative}
+  .v14 .cert::before,.v14 .cert::after{content:"";position:absolute;width:30px;height:30px;border:1px solid #d4a017}
+  .v14 .cert::before{top:8px;left:8px;border-right:none;border-bottom:none}
+  .v14 .cert::after{bottom:8px;right:8px;border-left:none;border-top:none}
+  .v14 .cert h3{font-size:20px;margin:0 0 14px;letter-spacing:0.3em;font-weight:900;color:#0a0a0a;border-bottom:1px double #0a0a0a;display:inline-block;padding:0 14px 6px}
+  .v14 .cert .name{font-size:22px;margin:14px 0;font-weight:900;color:#0a0a0a;letter-spacing:0.1em}
+  .v14 .cert .name .dept{display:block;font-size:11px;color:#6b7280;letter-spacing:0.05em;margin-top:4px;font-family:"SF Mono",monospace}
+  .v14 .cert .body{font-size:13px;line-height:2;color:#374151;margin:14px 0;text-align:justify;text-align-last:center}
+  .v14 .cert .seal{display:inline-block;width:50px;height:50px;border:2px solid #dc2626;border-radius:50%;color:#dc2626;font-weight:900;font-size:11px;line-height:1.2;display:inline-flex;align-items:center;justify-content:center;font-family:"Yu Mincho",serif;transform:rotate(-3deg);margin-top:8px}
+
+  /* ============================================== */
+  /* === 案15: ステータスカード(RPG/ゲーム風) === */
+  /* ============================================== */
+  .v15{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .v15 .stat{background:linear-gradient(160deg,#0a0a0a 0%,#1f2937 100%);color:#fff;padding:0;border:2px solid #10a37f;font-family:"SF Mono","Menlo",monospace;position:relative;overflow:hidden}
+  .v15 .stat::before{content:"";position:absolute;top:0;right:0;width:100px;height:100px;background:radial-gradient(circle,rgba(16,163,127,0.4),transparent 70%);filter:blur(20px)}
+  .v15 .stat .head{padding:14px 18px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(16,163,127,0.4);position:relative}
+  .v15 .stat .head .name{font-size:14px;font-weight:900;color:#fff;letter-spacing:0.05em}
+  .v15 .stat .head .lvl{background:#10a37f;color:#0a0a0a;padding:2px 10px;font-size:10px;font-weight:900;letter-spacing:0.1em}
+  .v15 .stat .body{padding:14px 18px;position:relative}
+  .v15 .stat .row{display:flex;justify-content:space-between;align-items:center;font-size:10px;margin-bottom:6px;color:#9ca3af;letter-spacing:0.05em}
+  .v15 .stat .row .k{text-transform:uppercase}
+  .v15 .stat .row .v{color:#10a37f;font-weight:900}
+  .v15 .stat .bar{height:6px;background:rgba(16,163,127,0.15);margin-bottom:10px;position:relative;overflow:hidden}
+  .v15 .stat .bar::before{content:"";position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#10a37f,#34d399);width:95%;box-shadow:0 0 8px #10a37f}
+  .v15 .stat:nth-child(2) .bar::before{width:88%}
+  .v15 .stat:nth-child(3) .bar::before{width:99%}
+  .v15 .stat .quote{padding:12px 18px;border-top:1px solid rgba(16,163,127,0.4);font-size:11px;line-height:1.6;color:#e5e7eb;font-family:-apple-system,"Hiragino Sans",sans-serif;position:relative}
+  .v15 .stat .quote::before{content:"// REVIEW";display:block;font-size:9px;color:#10a37f;letter-spacing:0.15em;margin-bottom:6px;font-family:"SF Mono",monospace;font-weight:700}
+
+  /* ============================================== */
+  /* === 案16: 漫画コマ割り風 === */
+  /* ============================================== */
+  .v16{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:240px 240px;gap:6px;background:#0a0a0a;padding:6px}
+  .v16 .panel{background:#fcfbf7;border:3px solid #0a0a0a;padding:18px;position:relative;display:flex;flex-direction:column;justify-content:space-between;font-family:"Yu Mincho","Hiragino Mincho ProN",serif}
+  .v16 .panel:nth-child(1){grid-column:span 2}
+  .v16 .panel:nth-child(4){grid-column:span 2}
+  .v16 .panel .pow{position:absolute;top:14px;right:14px;background:#fbbf24;color:#0a0a0a;font-size:10px;font-weight:900;padding:4px 10px;border:2px solid #0a0a0a;font-family:-apple-system,sans-serif;letter-spacing:0.1em;transform:rotate(8deg);box-shadow:2px 2px 0 #0a0a0a}
+  .v16 .panel .text{font-size:14px;line-height:1.7;color:#0a0a0a;font-weight:700;background:#fff;padding:8px 12px;border:2px solid #0a0a0a;display:inline-block;margin-top:auto;position:relative;border-radius:18px}
+  .v16 .panel .text::before{content:"";position:absolute;left:30px;bottom:-12px;width:20px;height:14px;background:#fff;border:2px solid #0a0a0a;border-top:none;border-radius:0 0 50% 50%}
+  .v16 .panel .who{font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.1em;text-transform:uppercase;margin-top:8px}
+
+  /* ============================================== */
+  /* === 案17: タイムライン縦線風 === */
+  /* ============================================== */
+  .v17{max-width:760px;margin:0 auto;padding:20px 0 20px 80px;position:relative}
+  .v17::before{content:"";position:absolute;left:30px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,#0a0a0a 5%,#0a0a0a 95%,transparent)}
+  .v17 .item{position:relative;margin-bottom:30px}
+  .v17 .item::before{content:"";position:absolute;left:-58px;top:8px;width:14px;height:14px;border-radius:50%;background:#10a37f;border:3px solid #fcfbf7;box-shadow:0 0 0 2px #0a0a0a;z-index:1}
+  .v17 .item .date{position:absolute;left:-178px;top:8px;width:100px;text-align:right;font-family:"SF Mono",monospace;font-size:10px;color:#6b7280;letter-spacing:0.1em;font-weight:700}
+  .v17 .item .card{background:#fcfbf7;border:1px solid rgba(15,23,42,0.2);padding:16px 20px}
+  .v17 .item .who{font-size:11px;color:#10a37f;font-family:"SF Mono",monospace;font-weight:700;letter-spacing:0.05em;margin-bottom:4px;text-transform:uppercase}
+  .v17 .item .who strong{color:#0a0a0a;font-size:13px;font-weight:900;font-family:-apple-system,sans-serif;text-transform:none;letter-spacing:0;margin-right:8px}
+  .v17 .item .text{font-size:12px;line-height:1.7;color:#374151}
+
+  /* ============================================== */
+  /* === 案18: タブ切り替え型 === */
+  /* ============================================== */
+  .v18{max-width:780px;margin:0 auto}
+  .v18 .tabs{display:flex;gap:0;border-bottom:2px solid #0a0a0a}
+  .v18 .tabs .tab{padding:12px 18px;background:#fcfbf7;border:1px solid rgba(15,23,42,0.2);border-bottom:none;font-family:"SF Mono",monospace;font-size:11px;font-weight:700;color:#6b7280;letter-spacing:0.05em;cursor:pointer;margin-right:-1px}
+  .v18 .tabs .tab.active{background:#0a0a0a;color:#fbbf24;border-color:#0a0a0a}
+  .v18 .panel{background:#fcfbf7;border:2px solid #0a0a0a;border-top:none;padding:30px 32px}
+  .v18 .panel .quote{font-size:18px;line-height:1.8;color:#0a0a0a;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;margin:0 0 20px;font-weight:500}
+  .v18 .panel .quote::before{content:"\201C ";font-size:36px;color:#10a37f;font-family:Georgia,serif;vertical-align:-12px;line-height:0;margin-right:4px}
+  .v18 .panel .author{display:flex;align-items:center;gap:14px;border-top:1px dashed rgba(15,23,42,0.3);padding-top:14px}
+  .v18 .panel .author .ava{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10a37f,#0d8c6e);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+  .v18 .panel .author .info .nm{font-size:14px;font-weight:900;color:#0a0a0a;padding:0;max-width:none}
+  .v18 .panel .author .info .meta{font-size:11px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.05em}
+  .v18 .pager{margin-top:14px;display:flex;justify-content:space-between;align-items:center;font-family:"SF Mono",monospace;font-size:11px;color:#6b7280}
+  .v18 .pager .dots span{display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(15,23,42,0.2);margin:0 3px}
+  .v18 .pager .dots span.on{background:#0a0a0a}
+
+  /* ============================================== */
+  /* === 案4: 付箋・ポストイット風 === */
+  /* ============================================== */
+  .v4{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px 24px;padding:20px 10px}
+  .v4 .note{background:#fef3c7;padding:24px 22px 20px;font-family:"Caveat","Yu Mincho",cursive,serif;color:#0a0a0a;box-shadow:0 6px 14px rgba(15,23,42,0.18),0 1px 2px rgba(15,23,42,0.1);position:relative;min-height:240px;display:flex;flex-direction:column}
+  .v4 .note:nth-child(1){transform:rotate(-1.8deg);background:#fef3c7}
+  .v4 .note:nth-child(2){transform:rotate(1.2deg);background:#fce7f3}
+  .v4 .note:nth-child(3){transform:rotate(-0.6deg);background:#dbeafe}
+  .v4 .note:nth-child(4){transform:rotate(1.5deg);background:#d1fae5}
+  .v4 .note:nth-child(5){transform:rotate(-1.3deg);background:#fed7aa}
+  .v4 .note:nth-child(6){transform:rotate(0.8deg);background:#e9d5ff}
+  .v4 .note::before{content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%) rotate(-3deg);width:60px;height:18px;background:rgba(15,23,42,0.12);box-shadow:0 1px 2px rgba(0,0,0,0.1)}
+  .v4 .note .text{font-size:18px;line-height:1.6;flex:1;font-family:"Caveat","Yu Mincho","Hiragino Maru Gothic ProN",cursive,serif}
+  .v4 .note .meta{font-size:13px;color:#374151;margin-top:14px;padding-top:10px;border-top:1.5px dashed rgba(15,23,42,0.3);font-family:"Caveat","Yu Mincho",cursive,serif}
+  .v4 .note .meta strong{display:block;font-size:15px;font-weight:700;color:#0a0a0a}
+  .v4 .note .stars{color:#dc2626;font-size:14px;letter-spacing:0.1em;margin-top:4px;display:block}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>「AIインターン経験者のヤバい声」UIバリアント</h1>
+  <p>4案・上から順にご確認ください</p>
+</header>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">チャット・メッセージ風</div>
+  <p class="ds">iMessage / LINE 風のバブル吹き出し UI。学生のアバター + 名前 + 体験談を会話のように左右交互に並べる。スクロールで会話を読む感覚。</p>
+  <div class="stage">
+    <div class="v1">
+      <div class="day">— 2026/04/05 · ヤバい声 ログ —</div>
+      <div class="msg">
+        <div class="ava">M</div>
+        <div class="bubble">
+          <span class="nm">東大 工学部 3年 Mさん · 某AIユニコーンに就職</span>
+          インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。
+          <span class="stars">★ ★ ★ ★ ★</span>
+        </div>
+      </div>
+      <div class="msg right">
+        <div class="ava">A</div>
+        <div class="bubble">
+          <span class="nm">慶應 SFC 2年 Aさん · PdM経験</span>
+          「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。
+          <span class="stars">★ ★ ★ ★ ★</span>
+        </div>
+      </div>
+      <div class="msg">
+        <div class="ava">S</div>
+        <div class="bubble">
+          <span class="nm">東工大 情理 M1 Sさん · Kaggle金</span>
+          インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleでも金メダル。GPUは正義、AI_INTERNは神。
+          <span class="stars">★ ★ ★ ★ ★</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">雑誌インタビュー風</div>
+  <p class="ds">紙の雑誌のインタビュー記事を模したエディトリアル。大きなナンバリング + 上罫線、明朝体の引用、緑の引用符 + 等幅の名前/所属。情報密度が高く読みやすい。</p>
+  <div class="stage">
+    <div class="v2">
+      <div class="item">
+        <div class="num">01</div>
+        <div class="body">
+          <p class="quote">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</p>
+          <div class="meta"><strong>Mさん · 東京大学 工学部 3年</strong>某AIユニコーン企業に就職 · ★★★★★</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="num">02</div>
+        <div class="body">
+          <p class="quote">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIから3社オファー来てるので選ぶ側です。</p>
+          <div class="meta"><strong>Aさん · 慶應義塾大学 SFC 2年</strong>AI SaaSスタートアップでPdM経験 · ★★★★★</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="num">03</div>
+        <div class="body">
+          <p class="quote">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</p>
+          <div class="meta"><strong>Sさん · 東京工業大学 情報理工学院 M1</strong>Kaggle金メダル · 外資AIラボ内定 · ★★★★★</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="num">04</div>
+        <div class="body">
+          <p class="quote">完全文系、プログラミング経験ゼロからスタート。鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</p>
+          <div class="meta"><strong>Kさん · 早稲田大学 商学部 3年</strong>副業AIエンジニアで月30万 · ★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">ターミナル / チャットログ風</div>
+  <p class="ds">macOS ターミナル風の黒背景ウィンドウ。$ プロンプトで体験談がコマンド実行ログのように表示。エンジニア向けの遊び心あるデザイン。</p>
+  <div class="stage">
+    <div class="v3">
+      <div class="top">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="ttl">~/ai-intern-reviews — zsh — 80×24</div>
+      </div>
+      <div class="body">
+        <div class="ln">
+          <span class="prompt">$</span> cat review_001.log<br>
+          <span class="meta">[<span class="name">Mさん</span>] <span class="uni">東大 工学部 3年</span> · 某AIユニコーンに就職 <span class="stars">★★★★★</span></span>
+          <span class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</span>
+        </div>
+        <div class="ln">
+          <span class="prompt">$</span> cat review_002.log<br>
+          <span class="meta">[<span class="name">Aさん</span>] <span class="uni">慶應 SFC 2年</span> · PdM経験 <span class="stars">★★★★★</span></span>
+          <span class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？3社オファー来てるので選ぶ側です。</span>
+        </div>
+        <div class="ln">
+          <span class="prompt">$</span> cat review_003.log<br>
+          <span class="meta">[<span class="name">Sさん</span>] <span class="uni">東工大 情理 M1</span> · Kaggle金 <span class="stars">★★★★★</span></span>
+          <span class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</span>
+        </div>
+        <div class="ln">
+          <span class="prompt">$</span> <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">Twitter / X 投稿風</div>
+  <p class="ds">タイムラインに体験談ツイートが並ぶ。認証バッジ + ハンドル + 時刻 + リプ/RT/いいね。SNSネイティブ世代に刺さる。</p>
+  <div class="stage">
+    <div class="v5">
+      <div class="post">
+        <div class="ava">M</div>
+        <div>
+          <div class="head"><span class="nm">M</span><span class="verified">✓</span><span class="handle">@m_utokyo_ai</span><span class="dot">·</span><span class="time">3ヶ月</span></div>
+          <div class="body">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。<br><span class="tags">#AIインターン #某ユニコーン就職</span></div>
+          <div class="actions"><span class="reply">42</span><span class="rt">128</span><span class="like">1.2K</span></div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="ava">A</div>
+        <div>
+          <div class="head"><span class="nm">A</span><span class="verified">✓</span><span class="handle">@a_sfc_prompt</span><span class="dot">·</span><span class="time">2ヶ月</span></div>
+          <div class="body">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。<br><span class="tags">#プロンプトエンジニア #文系AI</span></div>
+          <div class="actions"><span class="reply">87</span><span class="rt">340</span><span class="like">2.4K</span></div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="ava">S</div>
+        <div>
+          <div class="head"><span class="nm">S</span><span class="verified">✓</span><span class="handle">@s_titech_kaggle</span><span class="dot">·</span><span class="time">1ヶ月</span></div>
+          <div class="body">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。<br><span class="tags">#Kaggle #H100</span></div>
+          <div class="actions"><span class="reply">156</span><span class="rt">892</span><span class="like">5.8K</span></div>
+        </div>
+      </div>
+      <div class="post">
+        <div class="ava">N</div>
+        <div>
+          <div class="head"><span class="nm">N</span><span class="verified">✓</span><span class="handle">@n_founder</span><span class="dot">·</span><span class="time">2週間</span></div>
+          <div class="body">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。<br><span class="tags">#起業 #シード調達</span></div>
+          <div class="actions"><span class="reply">234</span><span class="rt">1.5K</span><span class="like">8.2K</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">卒業アルバム / 名簿風</div>
+  <p class="ds">卒業アルバムの名簿ページ風。顔写真枠 + 罫線つき名前 + 一言コメント。明朝体でフォーマルな雰囲気。学生感を強調。</p>
+  <div class="stage">
+    <div class="v6">
+      <div class="ttl">AI INTERN GRADUATES 2026<span class="sub">— ROSTER · NO. 001-006 —</span></div>
+      <div class="grid">
+        <div class="person">
+          <div class="photo">M</div>
+          <div class="info">
+            <div class="name">Mさん</div>
+            <div class="dept">東京大学 工学部 3年</div>
+            <p class="quote">3ヶ月でRAGパイプライン組めた</p>
+          </div>
+        </div>
+        <div class="person">
+          <div class="photo">A</div>
+          <div class="info">
+            <div class="name">Aさん</div>
+            <div class="dept">慶應義塾大学 SFC 2年</div>
+            <p class="quote">文系でも戦える、選ぶ側です</p>
+          </div>
+        </div>
+        <div class="person">
+          <div class="photo">S</div>
+          <div class="info">
+            <div class="name">Sさん</div>
+            <div class="dept">東京工業大学 情理 M1</div>
+            <p class="quote">H100使い放題、Kaggle金</p>
+          </div>
+        </div>
+        <div class="person">
+          <div class="photo">K</div>
+          <div class="info">
+            <div class="name">Kさん</div>
+            <div class="dept">早稲田大学 商学部 3年</div>
+            <p class="quote">副業で月30万、すみません</p>
+          </div>
+        </div>
+        <div class="person">
+          <div class="photo">T</div>
+          <div class="info">
+            <div class="name">Tさん</div>
+            <div class="dept">京都大学 情報学研究科 M1</div>
+            <p class="quote">研究がICML採択された</p>
+          </div>
+        </div>
+        <div class="person">
+          <div class="photo">N</div>
+          <div class="info">
+            <div class="name">Nさん</div>
+            <div class="dept">東京大学 経済学部 4年</div>
+            <p class="quote">在学中に起業、3000万調達</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 07</div>
+  <div class="nm">トレーディングカード風</div>
+  <p class="ds">遊戯王 / ポケカ風のレアカード。黒枠 + 金縁 + キャラ画像枠 + ステータス + 説明文。コレクション感とゲーミフィケーション。</p>
+  <div class="stage">
+    <div class="v7">
+      <div class="card">
+        <div class="head"><span class="name">M (UTokyo)</span><span class="lv">LV.99</span></div>
+        <div class="img">M</div>
+        <div class="stats"><span>ATK 4800</span><span>DEF 3200</span></div>
+        <div class="desc">3ヶ月でloss下げからRAGパイプラインまで習得。某AIユニコーンに就職。<span class="achieve">★ LEGENDARY ★</span></div>
+      </div>
+      <div class="card">
+        <div class="head"><span class="name">A (Keio SFC)</span><span class="lv">LV.92</span></div>
+        <div class="img">A</div>
+        <div class="stats"><span>ATK 3600</span><span>DEF 4500</span></div>
+        <div class="desc">文系プロンプトエンジニア。CTOと毎日壁打ち、3社オファー。<span class="achieve">★ EPIC ★</span></div>
+      </div>
+      <div class="card">
+        <div class="head"><span class="name">S (TokyoTech)</span><span class="lv">LV.99</span></div>
+        <div class="img">S</div>
+        <div class="stats"><span>ATK 5200</span><span>DEF 3800</span></div>
+        <div class="desc">H100×8枚を自由運用。Kaggle金メダル獲得。外資AIラボ内定。<span class="achieve">★ MYTHIC ★</span></div>
+      </div>
+      <div class="card">
+        <div class="head"><span class="name">N (UTokyo)</span><span class="lv">LV.95</span></div>
+        <div class="img">N</div>
+        <div class="stats"><span>ATK 4200</span><span>DEF 4400</span></div>
+        <div class="desc">在学中に共同創業。シード3000万調達。CEOに直接スカウトされ起業。<span class="achieve">★ FOUNDER ★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 08</div>
+  <div class="nm">新聞コラム風</div>
+  <p class="ds">新聞紙面の3段組みコラム。マストヘッド + 縦罫線 + ドロップキャップ + 明朝体 + justify。読み物としての存在感を出す。</p>
+  <div class="stage">
+    <div class="v8">
+      <div class="masthead">
+        <h2>AI INTERN POST</h2>
+        <div class="info"><span>VOL.001 · 2026/04/05</span><span>体験者の声 特集号</span><span>¥0 · FREE</span></div>
+      </div>
+      <div class="cols">
+        <div class="article">
+          <h3>3ヶ月でRAG構築。某AIユニコーンに就職</h3>
+          <div class="by">By Mさん · 東大工 3年</div>
+          <p>インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</p>
+        </div>
+        <div class="article">
+          <h3>文系でもAI業界で戦える方法</h3>
+          <div class="by">By Aさん · 慶應SFC 2年</div>
+          <p>「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</p>
+        </div>
+        <div class="article">
+          <h3>H100×8枚で掴んだKaggle金メダル</h3>
+          <div class="by">By Sさん · 東工大M1</div>
+          <p>インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</p>
+        </div>
+        <div class="article">
+          <h3>副業フリーランスで月30万</h3>
+          <div class="by">By Kさん · 早稲田商 3年</div>
+          <p>完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</p>
+        </div>
+        <div class="article">
+          <h3>研究成果がICMLに採択</h3>
+          <div class="by">By Tさん · 京大情報M1</div>
+          <p>インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</p>
+        </div>
+        <div class="article">
+          <h3>在学中に起業、シード3000万</h3>
+          <div class="by">By Nさん · 東大経済 4年</div>
+          <p>インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 09</div>
+  <div class="nm">学生証 / IDカード風</div>
+  <p class="ds">学生証/社員証風。顔写真 + 名前 + 所属 + 一言コメント + バーコード。等幅フォントで証明書感。</p>
+  <div class="stage">
+    <div class="v9">
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.001</span></div>
+        <div class="body">
+          <div class="photo">M</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Mさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">東大 工学部 3年</span>
+            <div class="lbl">STATUS</div><span class="val">某AIユニコーン就職</span>
+          </div>
+        </div>
+        <div class="quote">3ヶ月でRAGパイプライン組めるように。成長速度がバグってる。</div>
+        <div class="barcode"></div>
+      </div>
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.002</span></div>
+        <div class="body">
+          <div class="photo">A</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Aさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">慶應SFC 2年</span>
+            <div class="lbl">STATUS</div><span class="val">3社オファー獲得</span>
+          </div>
+        </div>
+        <div class="quote">文系でもプロンプトエンジニアリングなら戦える。選ぶ側です。</div>
+        <div class="barcode"></div>
+      </div>
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.003</span></div>
+        <div class="body">
+          <div class="photo">S</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Sさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">東工大 情理 M1</span>
+            <div class="lbl">STATUS</div><span class="val">Kaggle金 / 外資内定</span>
+          </div>
+        </div>
+        <div class="quote">H100を8枚自由運用。GPUは正義、AI_INTERNは神。</div>
+        <div class="barcode"></div>
+      </div>
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.004</span></div>
+        <div class="body">
+          <div class="photo">K</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Kさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">早稲田 商 3年</span>
+            <div class="lbl">STATUS</div><span class="val">副業月30万</span>
+          </div>
+        </div>
+        <div class="quote">完全文系・経験ゼロからフリーランス受注へ。</div>
+        <div class="barcode"></div>
+      </div>
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.005</span></div>
+        <div class="body">
+          <div class="photo">T</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Tさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">京大 情報 M1</span>
+            <div class="lbl">STATUS</div><span class="val">ICML論文採択</span>
+          </div>
+        </div>
+        <div class="quote">研究室とインターン先のダブルで論文書いてる。</div>
+        <div class="barcode"></div>
+      </div>
+      <div class="id">
+        <div class="top"><span class="logo">AI INTERN ID</span><span>NO.006</span></div>
+        <div class="body">
+          <div class="photo">N</div>
+          <div class="info">
+            <div class="lbl">NAME</div><span class="val">Nさん</span>
+            <div class="lbl">SCHOOL</div><span class="val">東大 経済 4年</span>
+            <div class="lbl">STATUS</div><span class="val">在学中起業</span>
+          </div>
+        </div>
+        <div class="quote">CEOに「起業しろ」と言われて本当にした。3000万調達。</div>
+        <div class="barcode"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 10</div>
+  <div class="nm">RPGダイアログウィンドウ風</div>
+  <p class="ds">青背景の白枠ダイアログ、名前タグ、点滅する▼マーカー。ドラクエ/FF風のRPG演出。</p>
+  <div class="stage">
+    <div class="v10">
+      <div class="win">
+        <div class="name">Mさん</div>
+        <div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div>
+        <div class="meta">東京大学 工学部 3年 · 某AIユニコーンに就職<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="win">
+        <div class="name">Aさん</div>
+        <div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。3社オファー来てるので選ぶ側です。</div>
+        <div class="meta">慶應義塾大学 SFC 2年 · PdM経験<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="win">
+        <div class="name">Sさん</div>
+        <div class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div>
+        <div class="meta">東京工業大学 情報理工学院 M1 · Kaggle金<span class="stars">★★★★★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 11</div>
+  <div class="nm">Slack メッセージ風</div>
+  <p class="ds">Slackチャンネル形式。# チャンネル名 + アバター + 名前バッジ + リアクション絵文字。社内ツール感のあるカジュアル雰囲気。</p>
+  <div class="stage">
+    <div class="v11">
+      <div class="ch">ai-intern-voices<span class="topic">ヤバい体験談を投稿するチャンネル · 248 members</span></div>
+      <div class="msg">
+        <div class="ava">M</div>
+        <div>
+          <div class="head"><span class="nm">Mさん</span><span class="role">UTokyo</span><span class="time">3ヶ月前</span></div>
+          <div class="body">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div>
+          <div class="reactions"><span>🔥 24</span><span>💯 18</span><span>😱 12</span></div>
+        </div>
+      </div>
+      <div class="msg">
+        <div class="ava">A</div>
+        <div>
+          <div class="head"><span class="nm">Aさん</span><span class="role">Keio SFC</span><span class="time">2ヶ月前</span></div>
+          <div class="body">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div>
+          <div class="reactions"><span>🚀 56</span><span>👏 32</span><span>🎯 14</span></div>
+        </div>
+      </div>
+      <div class="msg">
+        <div class="ava">S</div>
+        <div>
+          <div class="head"><span class="nm">Sさん</span><span class="role">TokyoTech</span><span class="time">1ヶ月前</span></div>
+          <div class="body">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div>
+          <div class="reactions"><span>🔥 89</span><span>🤯 45</span><span>💪 28</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 12</div>
+  <div class="nm">ポラロイド写真風 (コルクボード)</div>
+  <p class="ds">茶色のコルクボード背景に、ポラロイド写真がランダムに傾いて貼られている。赤いピンの装飾。手書き風キャプション。</p>
+  <div class="stage">
+    <div class="v12">
+      <div class="pol">
+        <div class="pic">M</div>
+        <div class="cap">3ヶ月でRAG組めた!<strong>Mさん · UTokyo</strong></div>
+      </div>
+      <div class="pol">
+        <div class="pic">A</div>
+        <div class="cap">3社オファー獲得<strong>Aさん · Keio</strong></div>
+      </div>
+      <div class="pol">
+        <div class="pic">S</div>
+        <div class="cap">Kaggle金メダル<strong>Sさん · TokyoTech</strong></div>
+      </div>
+      <div class="pol">
+        <div class="pic">N</div>
+        <div class="cap">起業 3000万調達<strong>Nさん · UTokyo</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 13</div>
+  <div class="nm">評価フォーム / アンケート風</div>
+  <p class="ds">Google Form / アンケート用紙のような構造化された一覧。Q番号 + 質問 + 回答 + 評価スコア。データドリブンな雰囲気。</p>
+  <div class="stage">
+    <div class="v13">
+      <div class="ttl">AI INTERNSHIP SURVEY <span>RESULTS · 248 RESPONSES</span></div>
+      <div class="row">
+        <div class="num">01</div>
+        <div class="body">
+          <div class="q">どう変わりましたか?</div>
+          <div class="a">3ヶ月でRAGパイプライン組めるようになった。成長速度がバグってる。</div>
+          <div class="who">— Mさん · 東大工 3年</div>
+        </div>
+        <div class="score"><div class="v">5.0</div><div class="lbl">/ 5</div></div>
+      </div>
+      <div class="row">
+        <div class="num">02</div>
+        <div class="body">
+          <div class="q">どう変わりましたか?</div>
+          <div class="a">文系でもプロンプトエンジニアリングなら戦える。3社オファー獲得。</div>
+          <div class="who">— Aさん · 慶應SFC 2年</div>
+        </div>
+        <div class="score"><div class="v">5.0</div><div class="lbl">/ 5</div></div>
+      </div>
+      <div class="row">
+        <div class="num">03</div>
+        <div class="body">
+          <div class="q">どう変わりましたか?</div>
+          <div class="a">H100を8枚自由運用。Kaggle金メダル獲得、外資AIラボ内定。</div>
+          <div class="who">— Sさん · 東工大M1</div>
+        </div>
+        <div class="score"><div class="v">5.0</div><div class="lbl">/ 5</div></div>
+      </div>
+      <div class="row">
+        <div class="num">04</div>
+        <div class="body">
+          <div class="q">どう変わりましたか?</div>
+          <div class="a">CEOに「起業しろ」と言われて本当にした。シード3000万調達。</div>
+          <div class="who">— Nさん · 東大経済 4年</div>
+        </div>
+        <div class="score"><div class="v">5.0</div><div class="lbl">/ 5</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 14</div>
+  <div class="nm">賞状 / 感謝状風</div>
+  <p class="ds">二重ボーダー + 装飾コーナー + 朱印。明朝体のフォーマルな賞状デザイン。インターンを「修了」した人への称号感。</p>
+  <div class="stage">
+    <div class="v14">
+      <div class="cert">
+        <h3>修了証</h3>
+        <div class="name">Mさん<span class="dept">東京大学 工学部 3年</span></div>
+        <div class="body">3ヶ月のAIインターン期間において、RAGパイプライン構築をはじめとする卓越した成果を達成。某AIユニコーン企業への就職が決定したことを証する。</div>
+        <div class="seal">認<br>定</div>
+      </div>
+      <div class="cert">
+        <h3>感謝状</h3>
+        <div class="name">Sさん<span class="dept">東京工業大学 情理 M1</span></div>
+        <div class="body">H100×8枚を駆使し、Kaggleコンペティションで金メダルを獲得。外資AIラボ内定という卓越した実績を樹立したことを讃える。</div>
+        <div class="seal">栄<br>誉</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 15</div>
+  <div class="nm">ステータスカード (RPG / ゲーム風)</div>
+  <p class="ds">黒背景にネオングリーンのHPバー風UI。LV/ATK/DEFのステータス表記、コードコメント風の // REVIEW ラベル。サイバーパンク。</p>
+  <div class="stage">
+    <div class="v15">
+      <div class="stat">
+        <div class="head"><div class="name">Mさん</div><div class="lvl">LV. 99</div></div>
+        <div class="body">
+          <div class="row"><span class="k">ATK</span><span class="v">4800</span></div><div class="bar"></div>
+          <div class="row"><span class="k">DEF</span><span class="v">3200</span></div>
+          <div class="row"><span class="k">CLASS</span><span class="v">RAG ENGINEER</span></div>
+        </div>
+        <div class="quote">3ヶ月でlossからRAGまで習得。某ユニコーン就職。</div>
+      </div>
+      <div class="stat">
+        <div class="head"><div class="name">Aさん</div><div class="lvl">LV. 92</div></div>
+        <div class="body">
+          <div class="row"><span class="k">ATK</span><span class="v">3600</span></div><div class="bar"></div>
+          <div class="row"><span class="k">DEF</span><span class="v">4500</span></div>
+          <div class="row"><span class="k">CLASS</span><span class="v">PROMPT MAGE</span></div>
+        </div>
+        <div class="quote">文系でも戦える。3社オファー獲得、選ぶ側です。</div>
+      </div>
+      <div class="stat">
+        <div class="head"><div class="name">Sさん</div><div class="lvl">LV. 99</div></div>
+        <div class="body">
+          <div class="row"><span class="k">ATK</span><span class="v">5200</span></div><div class="bar"></div>
+          <div class="row"><span class="k">DEF</span><span class="v">3800</span></div>
+          <div class="row"><span class="k">CLASS</span><span class="v">GPU LORD</span></div>
+        </div>
+        <div class="quote">H100×8枚運用、Kaggle金、外資ラボ内定。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 16</div>
+  <div class="nm">漫画コマ割り風</div>
+  <p class="ds">3コマ漫画風のグリッド。黒太枠 + 吹き出し + POW! 効果音バッジ。マンガ的演出で記憶に残る。</p>
+  <div class="stage">
+    <div class="v16">
+      <div class="panel">
+        <div class="pow">バァン!!</div>
+        <div class="text">3ヶ月でRAGパイプライン組めるようになった!! 成長速度がバグってる!!</div>
+        <div class="who">Mさん · 東大工 3年</div>
+      </div>
+      <div class="panel">
+        <div class="pow">!?</div>
+        <div class="text">3社オファー、選ぶ側です</div>
+        <div class="who">Aさん · 慶應SFC</div>
+      </div>
+      <div class="panel">
+        <div class="pow">★</div>
+        <div class="text">H100×8枚!! Kaggle金!!</div>
+        <div class="who">Sさん · 東工大M1</div>
+      </div>
+      <div class="panel">
+        <div class="pow">起業!!</div>
+        <div class="text">CEOに「起業しろ」って言われて、本当にやった。シード3000万調達。インターンが人生変えるって、マジだった。</div>
+        <div class="who">Nさん · 東大経済 4年</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 17</div>
+  <div class="nm">タイムライン縦線風</div>
+  <p class="ds">左端に縦線 + 緑の丸ノード。日付タイムライン形式で時系列に表示。プロセス感を演出。</p>
+  <div class="stage">
+    <div class="v17">
+      <div class="item">
+        <div class="date">2026/01</div>
+        <div class="card">
+          <div class="who"><strong>Mさん</strong>東大工 3年 · 某ユニコーン就職</div>
+          <div class="text">インターン初日に「loss下げといて」で泣きそうになったけど、3ヶ月後にはRAGパイプライン組んでた。成長速度がバグってる。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="date">2026/02</div>
+        <div class="card">
+          <div class="who"><strong>Aさん</strong>慶應SFC 2年 · PdM経験</div>
+          <div class="text">文系でもプロンプトエンジニアリングなら戦える。CTOと毎日壁打ち、3社オファー獲得、選ぶ側です。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="date">2026/03</div>
+        <div class="card">
+          <div class="who"><strong>Sさん</strong>東工大M1 · Kaggle金</div>
+          <div class="text">インターン先でH100×8枚を自由運用。Kaggle金メダル獲得。GPUは正義、AI_INTERNは神。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="date">2026/04</div>
+        <div class="card">
+          <div class="who"><strong>Nさん</strong>東大経済 4年 · 起業</div>
+          <div class="text">CEOに「お前、起業しろ」と言われて本当にした。シード3000万調達。インターンが人生変える、マジだった。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 18</div>
+  <div class="nm">タブ切り替え型</div>
+  <p class="ds">タブで切り替え + 1人ずつフォーカス表示。大きな引用文 + アバター + メタ情報 + ページネーション。高級感のあるエディトリアル。</p>
+  <div class="stage">
+    <div class="v18">
+      <div class="tabs">
+        <div class="tab active">M / 東大</div>
+        <div class="tab">A / 慶應</div>
+        <div class="tab">S / 東工大</div>
+        <div class="tab">K / 早稲田</div>
+        <div class="tab">N / 東大</div>
+      </div>
+      <div class="panel">
+        <p class="quote">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</p>
+        <div class="author">
+          <div class="ava">M</div>
+          <div class="info">
+            <div class="nm">Mさん</div>
+            <div class="meta">東京大学 工学部 3年 · 某AIユニコーンに就職 · ★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="pager">
+        <div class="dots"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+        <div>01 / 05</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">付箋・ポストイット風</div>
+  <p class="ds">コルクボードに貼った色とりどりの付箋。各カードはランダムに微回転、上部にテープ風の影。手書き風フォント (Caveat) で温かみを演出。</p>
+  <div class="stage">
+    <div class="v4">
+      <div class="note">
+        <div class="text">初日「loss下げといて」で泣きそうになったけど、3ヶ月後にRAGパイプライン組んでた。成長速度バグってる。</div>
+        <div class="meta"><strong>Mさん · 東大工 3年</strong>某AIユニコーン就職<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="note">
+        <div class="text">文系だからAI無理と思ってたけど、プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち、3社オファー。</div>
+        <div class="meta"><strong>Aさん · 慶應SFC 2年</strong>PdM経験<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="note">
+        <div class="text">H100を8枚自由に使わせてもらった。研究室より計算資源潤沢。Kaggle金メダル獲得。GPUは正義。</div>
+        <div class="meta"><strong>Sさん · 東工大M1</strong>Kaggle金 · 外資AIラボ内定<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="note">
+        <div class="text">完全文系・プログラミング経験ゼロから副業フリーランスへ。同期がESで悩んでる間に稼いでます。すみません。</div>
+        <div class="meta"><strong>Kさん · 早稲田商 3年</strong>副業で月30万<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="note">
+        <div class="text">取り組んだ研究がICMLに採択。研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+        <div class="meta"><strong>Tさん · 京大情報M1</strong>ICML採択<span class="stars">★★★★★</span></div>
+      </div>
+      <div class="note">
+        <div class="text">CEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターン人生変えるとか言うけど、マジだった。</div>
+        <div class="meta"><strong>Nさん · 東大経済 4年</strong>在学中に共同創業<span class="stars">★★★★★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body></html>

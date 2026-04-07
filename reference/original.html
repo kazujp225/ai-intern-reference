@@ -22,7 +22,22 @@
     .skull-divider { text-align: center; padding: 10px 0; font-size: 1.2em; letter-spacing: 8px; color: #764ba2; }
 
     /* ヘッダー */
-    .header { background: #fff !important; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header { background: #fff !important; position: relative; overflow: hidden; box-shadow: none; }
+    .header::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 40px;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .cover-area::before {
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%);
+      -webkit-mask-composite: source-in;
+              mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%);
+              mask-composite: intersect;
+    }
     .header-inner { background: transparent !important; }
     .header-logo { display: none !important; }
     .neo-logo { font-size: 1.4em; font-weight: 900; font-family: monospace; color: #222; text-decoration: none; letter-spacing: 3px; }
@@ -43,7 +58,15 @@
     .neo-nav .neo-register:hover { background: #444; }
 
     /* Hero background image - right side, fading to left */
-    .cover-area { position: relative; overflow: hidden; }
+    .cover-area {
+      position: relative;
+      overflow: hidden;
+      min-height: 560px;
+      padding: 0 0 60px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .cover-area .cover-inner { width: 100%; }
     .cover-area::before {
       content: '';
       position: absolute;
@@ -60,9 +83,10 @@
 
 
     /* ヒーロー内の小さな検索欄 */
+    .hero-search-label { display: none; }
     .hero-search {
       position: absolute;
-      bottom: -160px;
+      bottom: -140px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
@@ -112,12 +136,15 @@
     /* 人気タグ */
     .hero-popular-tags {
       position: absolute;
-      bottom: -120px;
-      left: 10%;
+      bottom: -98px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
       z-index: 3;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      padding-left: 4px;
     }
     .popular-label {
       color: #222;
@@ -139,75 +166,140 @@
       text-decoration: underline;
     }
 
+    /* サイト全体の背景を統一 */
+    html, body, .top-page, .main-container, .main-inner {
+      background: #fff !important;
+    }
+
     /* 特集トップ企業紹介 */
+    /* === 特集: トップAI企業紹介 (シンプル中央寄せ) === */
     .featured-companies {
-      background: #f9f9f9;
-      padding: 50px 40px;
+      background: transparent;
+      padding: 56px 40px 40px;
       text-align: center;
-      border: 2px solid #4caf50;
-      border-radius: 16px;
+      border: none;
+      border-radius: 0;
       max-width: 1000px;
-      margin: 30px auto;
+      margin: 20px auto;
+      position: relative;
     }
     .featured-companies-title {
-      font-size: 1.8em;
-      font-weight: 800;
-      color: #222;
+      font-size: 1.6em;
+      font-weight: 900;
+      color: #0a0a0a;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .featured-companies-title::before {
+      content: "FEATURED";
+      display: block;
+      font-family: "SF Mono","Menlo",monospace;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: #10a37f;
       margin-bottom: 8px;
     }
     .featured-companies-sub {
-      font-size: 0.95em;
-      color: #888;
-      margin-bottom: 36px;
+      font-size: 0.85em;
+      color: #6b7280;
+      margin: 0 auto 32px;
+      letter-spacing: 0.02em;
+      max-width: 520px;
+      position: relative;
+      padding-bottom: 18px;
+    }
+    .featured-companies-sub::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 1px;
+      background: rgba(15,23,42,0.3);
     }
     .companies-grid {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
-      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      max-width: 880px;
       margin: 0 auto;
-    }
-    .companies-grid {
       padding: 0;
     }
     .company-card {
-      background: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 24px 20px;
-      width: 160px;
+      background: #fcfbf7;
+      border: 1px solid rgba(15,23,42,0.15);
+      border-radius: 0;
+      padding: 22px 16px 20px;
+      width: auto;
       text-decoration: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      transition: all 0.2s;
+      gap: 12px;
+      box-shadow: none;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+    }
+    /* インターン一覧見出しの参加者アバター */
+    .intern-faces {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .intern-faces-stack {
+      display: flex;
+    }
+    .intern-faces-stack img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      margin-left: -12px;
+    }
+    .intern-faces-stack img:first-child { margin-left: 0; }
+    .intern-faces-text {
+      font-size: 13px;
+      color: #555;
+    }
+    .intern-faces-text strong {
+      color: #4caf50;
+      font-weight: 800;
+      font-size: 15px;
     }
     .company-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      transform: translateY(-3px);
+      border-color: #0a0a0a;
+      box-shadow: none;
     }
     .company-logo {
-      width: 60px;
-      height: 60px;
+      width: 52px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 4px;
     }
     .company-logo img {
       max-width: 100%;
       max-height: 100%;
+      object-fit: contain;
     }
     .company-name {
       font-size: 1em;
-      font-weight: 700;
-      color: #222;
+      font-weight: 800;
+      color: #0a0a0a;
+      letter-spacing: -0.01em;
     }
     .company-desc {
-      font-size: 0.8em;
-      color: #888;
+      font-size: 0.72em;
+      color: #6b7280;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     /* 案2: アイコン付きグリッドカード */
@@ -311,14 +403,38 @@
       font-family: sans-serif !important;
       font-size: 0.7em !important;
     }
+    .card-wrapper .pickup-tag,
+    .card-wrapper .new-tag {
+      display: inline-block !important;
+      vertical-align: middle !important;
+      margin-right: 8px !important;
+      margin-bottom: 0 !important;
+    }
     .card-wrapper .pickup-tag span,
     .card-wrapper .new-tag span {
       background: #4caf50 !important;
       color: #fff !important;
-      padding: 2px 8px !important;
+      padding: 3px 10px !important;
       border-radius: 4px !important;
       font-size: 0.7em !important;
       font-weight: 700 !important;
+      display: inline-block !important;
+      line-height: 1.4 !important;
+    }
+    .card-wrapper .line-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      flex-wrap: wrap !important;
+    }
+    .card-wrapper .line-left .company-name {
+      display: inline-block !important;
+      vertical-align: middle !important;
+      line-height: 1.4 !important;
+    }
+    .card-wrapper .info-area {
+      margin-bottom: 10px !important;
+      min-height: 28px !important;
     }
     .card-wrapper .job-detail {
       font-size: 0.85em !important;
@@ -349,56 +465,112 @@
     }
     .hiring-positive-part-band {
       background: linear-gradient(90deg, #4caf50, #81c784) !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 12px 16px !important;
+    }
+    .card-wrapper .card-title {
+      margin: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .card-wrapper .view-detail-btn {
+      background: #fff !important;
+      color: #4caf50 !important;
+      border: 1px solid #4caf50 !important;
+      border-radius: 8px !important;
+      padding: 10px 24px !important;
+      font-weight: 700 !important;
+      text-transform: none !important;
+      box-shadow: none !important;
+      font-size: 0.85em !important;
+      transition: all 0.2s !important;
+      white-space: nowrap !important;
+      display: inline-block !important;
+      line-height: 1.4 !important;
+      width: auto !important;
+      min-width: 200px !important;
+      text-align: center !important;
+    }
+    .card-wrapper .button-area {
+      text-align: center !important;
+      padding: 0 !important;
+      margin-top: 14px !important;
     }
 
-    /* AI名言集 */
+    /* AI名言集 - モノクロマーキー */
     .ai-quotes-section {
-      background: #f5f5f5;
-      padding: 50px 40px;
+      background: #fff;
+      padding: 60px 0;
       text-align: center;
+      border-bottom: 1px solid #000;
     }
     .ai-quotes-title {
-      font-size: 1.8em;
-      font-weight: 800;
-      color: #222;
-      margin-bottom: 8px;
+      font-size: 2em;
+      font-weight: 900;
+      color: #000;
+      margin: 0 0 8px;
+      letter-spacing: 0.05em;
     }
     .ai-quotes-sub {
-      color: #888;
-      font-size: 0.95em;
-      margin-bottom: 36px;
+      color: #666;
+      font-size: 0.9em;
+      margin: 0 0 40px;
+      letter-spacing: 0.1em;
     }
-    .ai-quotes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 1100px;
-      margin: 0 auto;
+    .ai-quotes-row {
+      display: flex;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+      margin-bottom: 18px;
+    }
+    .ai-quotes-row:last-child { margin-bottom: 0; }
+    .ai-quotes-track {
+      display: flex;
+      gap: 18px;
+      flex-shrink: 0;
+      animation: ai-quotes-scroll 60s linear infinite;
+      padding-right: 18px;
+    }
+    .ai-quotes-track:hover { animation-play-state: paused; }
+    .ai-quotes-row.rev .ai-quotes-track {
+      animation-direction: reverse;
+      animation-duration: 70s;
+    }
+    @keyframes ai-quotes-scroll {
+      to { transform: translateX(-50%); }
     }
     .ai-quote-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
+      flex-shrink: 0;
+      width: 340px;
+      background: transparent;
+      padding: 20px 4px;
       text-align: left;
-      border-left: 4px solid #4caf50;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-      transition: all 0.2s;
+      position: relative;
+      transition: opacity 0.25s;
     }
     .ai-quote-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      opacity: 0.55;
     }
     .ai-quote-text {
-      font-size: 0.9em;
-      color: #333;
-      line-height: 1.7;
-      margin-bottom: 10px;
-      font-style: italic;
+      font-size: 1.05em;
+      color: #000;
+      line-height: 1.85;
+      margin: 0 0 16px;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+      font-weight: 400;
     }
     .ai-quote-author {
-      font-size: 0.75em;
-      color: #888;
+      display: inline-block;
+      font-size: 0.65em;
+      color: #000;
       font-weight: 600;
+      letter-spacing: 0.25em;
+      border-top: 1px solid #000;
+      padding-top: 10px;
     }
 
     /* 「真の成果を、その手に」テキスト画像 */
@@ -412,13 +584,523 @@
       z-index: 2;
       pointer-events: none;
     }
+
+    /* サイドバー: ランキング型 */
+    .sidebar .side-h4-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0a0a0a;
+      margin: 24px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar .side-h4-title::before {
+      content: "#";
+      color: #dc2626;
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .sidebar .side-content-wrap-white {
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+    }
+    .sidebar ul.job-types,
+    .sidebar ul.features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: rank;
+    }
+    .sidebar ul.job-types li,
+    .sidebar ul.features li {
+      counter-increment: rank;
+      border-bottom: 1px solid #f0f0f0;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .sidebar ul.job-types li a,
+    .sidebar ul.features li a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 4px;
+      text-decoration: none;
+      color: #111;
+      font-size: 13px;
+      transition: 0.15s;
+      background: transparent !important;
+    }
+    .sidebar ul.job-types li a::before,
+    .sidebar ul.features li a::before {
+      content: counter(rank, decimal-leading-zero);
+      font-size: 14px;
+      font-weight: 900;
+      color: #9ca3af;
+      font-family: Georgia, serif;
+      width: 30px;
+      flex-shrink: 0;
+    }
+    .sidebar ul.job-types li:nth-child(1) a::before,
+    .sidebar ul.features li:nth-child(1) a::before { color: #fbbf24; }
+    .sidebar ul.job-types li:nth-child(2) a::before,
+    .sidebar ul.features li:nth-child(2) a::before { color: #9ca3af; }
+    .sidebar ul.job-types li:nth-child(3) a::before,
+    .sidebar ul.features li:nth-child(3) a::before { color: #d97706; }
+    .sidebar ul.job-types li a > span,
+    .sidebar ul.features li a > span {
+      font-size: 11px;
+      color: #9ca3af;
+      font-weight: 700;
+      margin-left: auto;
+    }
+    .sidebar ul.job-types li a:hover,
+    .sidebar ul.features li a:hover {
+      color: #dc2626;
+    }
+
+    /* ============================================== */
+    /* === 厳選AIインターン カード: レシート/明細風 === */
+    /* ============================================== */
+    /* body 全体: 上質なオフホワイトの方眼紙 */
+    body.top-page {
+      background-color: #f5f3ed !important;
+      background-image:
+        /* ごく薄い方眼ライン (24px) */
+        linear-gradient(rgba(15,23,42,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,0.045) 1px, transparent 1px),
+        /* さらに薄い細グリッド (6px) */
+        linear-gradient(rgba(15,23,42,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,0.025) 1px, transparent 1px) !important;
+      background-size: 24px 24px, 24px 24px, 6px 6px, 6px 6px !important;
+      background-attachment: fixed !important;
+    }
+    /* main-container を透明にして紙背景を見せる */
+    .main-container {
+      background: transparent !important;
+    }
+    .intern-list {
+      background: transparent !important;
+      padding: 40px 0 50px;
+      position: relative;
+    }
+    /* 左右の余白に控えめな縦ライン + 小さなマーカー */
+    .intern-list::before,
+    .intern-list::after {
+      content: "";
+      position: absolute;
+      top: 80px;
+      bottom: 80px;
+      width: 1px;
+      background:
+        linear-gradient(180deg,
+          transparent 0,
+          rgba(15,23,42,0.15) 8%,
+          rgba(15,23,42,0.15) 92%,
+          transparent 100%);
+      pointer-events: none;
+    }
+    .intern-list::before { left: -28px; }
+    .intern-list::after { right: -28px; }
+
+    /* セクション見出し: ミニマルなレシートヘッダー風 */
+    .intern-list .section-main-title {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 0 6px !important;
+      font-family: -apple-system,"Hiragino Sans","Yu Gothic",sans-serif !important;
+      font-size: 1.4em !important;
+      font-weight: 900 !important;
+      color: #0a0a0a !important;
+      letter-spacing: -0.01em;
+      position: relative;
+      padding-left: 16px !important;
+    }
+    .intern-list .section-main-title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 70%;
+      background: #0a0a0a;
+    }
+    .intern-list .section-sub-title-wrap {
+      background: transparent !important;
+      border: none !important;
+      border-top: 1px solid rgba(15,23,42,0.18) !important;
+      border-bottom: 1px dashed rgba(15,23,42,0.25) !important;
+      padding: 14px 16px !important;
+      margin: 14px 0 26px !important;
+      border-radius: 0 !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .intern-list .section-sub-title {
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.75em !important;
+      letter-spacing: 0.25em !important;
+      font-weight: 800 !important;
+      color: #0a0a0a !important;
+      text-transform: uppercase;
+      margin: 0 !important;
+    }
+    .intern-list .section-sub-title::before {
+      content: "/// ";
+      color: #10a37f;
+    }
+    .intern-list .intern-faces-stack {
+      display: none !important;
+    }
+    .intern-list .intern-faces-text {
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.7em !important;
+      color: #6b7280 !important;
+      letter-spacing: 0.1em;
+    }
+    .intern-list .intern-faces-text strong {
+      color: #0a0a0a !important;
+      font-weight: 900 !important;
+    }
+    .search-interns-list {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr 1fr 1fr !important;
+      gap: 28px 12px !important;
+      background: transparent !important;
+    }
+    .search-interns-list > div {
+      display: flex;
+      justify-content: center;
+    }
+    .card-wrapper.image {
+      width: 100%;
+      max-width: 260px;
+      position: relative;
+      filter: drop-shadow(0 4px 10px rgba(15,23,42,0.10)) drop-shadow(0 1px 2px rgba(15,23,42,0.06));
+    }
+    .card-wrapper .card {
+      background: #fcfbf7 !important;
+      border: 1px solid rgba(15,23,42,0.18) !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      font-family: "SF Mono","Menlo","Courier New",monospace !important;
+      position: relative;
+      overflow: visible !important;
+      transition: border-color 0.25s, transform 0.25s !important;
+    }
+    .card-wrapper .card::before,
+    .card-wrapper .card::after {
+      content: "";
+      position: absolute;
+      left: -1px;
+      right: -1px;
+      height: 8px;
+      background:
+        radial-gradient(circle at 5px 5px, #f5f3ed 3.5px, transparent 4px) repeat-x;
+      background-size: 8px 8px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .card-wrapper .card::before { top: -4px; }
+    .card-wrapper .card::after { bottom: -4px; transform: rotate(180deg); }
+    .card-wrapper .card:hover {
+      border-color: #0a0a0a !important;
+      transform: translateY(-3px) !important;
+      box-shadow: none !important;
+    }
+    .card-wrapper .card-content {
+      padding: 14px 14px 12px !important;
+    }
+
+    /* 急募バンド → ブラックヘッダー */
+    .card-wrapper .card-title.hiring-positive-part-band {
+      background: #0a0a0a !important;
+      color: #fff !important;
+      text-align: center;
+      padding: 10px 14px !important;
+      border-radius: 0 !important;
+      border-bottom: 2px dashed #d1d5db !important;
+      margin: 0 !important;
+      position: static !important;
+      height: auto !important;
+      min-height: 0 !important;
+      line-height: 1.5 !important;
+      overflow: visible !important;
+    }
+    .card-wrapper .card-title .title {
+      color: #fff !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.62em !important;
+      letter-spacing: 0.08em !important;
+      font-weight: 900;
+      display: block;
+      line-height: 1.6 !important;
+      white-space: normal !important;
+      word-break: keep-all;
+    }
+    .card-wrapper .card-title .title img { display: none !important; }
+
+    /* レシートヘッダー: 社名 + 日付 */
+    .card-wrapper .info-area {
+      border-bottom: 2px dashed #d1d5db !important;
+      padding-bottom: 8px !important;
+      margin-bottom: 10px !important;
+      text-align: center;
+      min-height: auto !important;
+      position: relative;
+    }
+    .card-wrapper .info-area::before {
+      content: "— AI INTERNSHIP —";
+      display: block;
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      color: #6b7280;
+      margin-bottom: 6px;
+      font-family: "SF Mono","Menlo",monospace;
+      text-transform: uppercase;
+    }
+    .card-wrapper .line-left {
+      justify-content: center !important;
+      gap: 8px !important;
+    }
+    .card-wrapper .line-left .company-name {
+      color: #0a0a0a !important;
+      font-weight: 800 !important;
+      font-size: 0.95em !important;
+      font-family: -apple-system,"Hiragino Sans","Yu Gothic",sans-serif !important;
+    }
+    .card-wrapper .line-right {
+      display: block !important;
+      text-align: center;
+      margin-top: 3px;
+      float: none !important;
+    }
+    .card-wrapper .publish-date-wrap {
+      display: inline-block !important;
+    }
+    .card-wrapper .line-right .material-icons { display: none !important; }
+    .card-wrapper .line-right .publish-date {
+      color: #6b7280 !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.7em !important;
+      letter-spacing: 0.05em;
+    }
+    .card-wrapper .line-right .publish-date::before {
+      content: "ISSUED · ";
+      color: #9ca3af;
+    }
+    .card-wrapper .scholarship-wrap {
+      display: inline-block !important;
+      margin-left: 10px !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.7em !important;
+      color: #6b7280 !important;
+    }
+    .card-wrapper .scholarship-wrap .material-icons { display: none !important; }
+    .card-wrapper .pickup-tag span,
+    .card-wrapper .new-tag span {
+      background: transparent !important;
+      color: #dc2626 !important;
+      border: 1px solid #dc2626 !important;
+      border-radius: 0 !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 1px 6px !important;
+      font-size: 0.65em !important;
+    }
+
+    /* タイトル */
+    .card-wrapper .intern-title {
+      margin: 0 0 8px !important;
+      padding: 2px 0 8px !important;
+      border-bottom: 1px dotted #d1d5db !important;
+    }
+    .card-wrapper .intern-title a {
+      font-family: -apple-system,"Hiragino Sans","Yu Gothic",sans-serif !important;
+      color: #0a0a0a !important;
+      font-size: 0.78em !important;
+      font-weight: 800 !important;
+      line-height: 1.5 !important;
+      -webkit-line-clamp: 2 !important;
+      display: -webkit-box !important;
+    }
+
+    /* 詳細 = 2列グリッド明細(1ペア/行) */
+    .card-wrapper .job-detail {
+      display: grid !important;
+      grid-template-columns: auto 1fr;
+      column-gap: 8px !important;
+      row-gap: 0 !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      font-size: 0.62em !important;
+      align-items: center;
+    }
+    .card-wrapper .job-detail dt {
+      color: #6b7280 !important;
+      font-weight: 400 !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      padding: 4px 0 !important;
+      border-bottom: 1px dotted #e5e7eb;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .card-wrapper .job-detail dd {
+      margin: 0 !important;
+      padding: 4px 0 !important;
+      text-align: right;
+      font-weight: 700;
+      color: #0a0a0a !important;
+      border-bottom: 1px dotted #e5e7eb;
+      font-family: -apple-system,"Hiragino Sans","Yu Gothic",sans-serif !important;
+      font-size: 1.1em;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+    /* 業界(4), 勤務条件(5) は非表示 (狭いので主要項目のみ) */
+    .card-wrapper .job-detail dt:nth-of-type(4),
+    .card-wrapper .job-detail dd:nth-of-type(4),
+    .card-wrapper .job-detail dt:nth-of-type(5),
+    .card-wrapper .job-detail dd:nth-of-type(5) {
+      display: none !important;
+    }
+    /* 特徴(2)はラベル非表示 + 値が全幅 */
+    .card-wrapper .job-detail dt:nth-of-type(2) { display: none !important; }
+    .card-wrapper .job-detail dd:nth-of-type(2) {
+      grid-column: 1 / 3;
+      text-align: left !important;
+      white-space: normal !important;
+      padding: 6px 0 !important;
+      border-bottom: 1px dotted #e5e7eb;
+    }
+    /* 必須・歓迎(7), 身につくスキル(8) は非表示 */
+    .card-wrapper .job-detail dt:nth-of-type(n+7),
+    .card-wrapper .job-detail dd:nth-of-type(n+7) {
+      display: none !important;
+    }
+    /* 給与(6) を TOTAL 行に */
+    .card-wrapper .job-detail dt:nth-of-type(6) {
+      grid-column: 1;
+    }
+    .card-wrapper .job-detail dd:nth-of-type(6) {
+      grid-column: 2;
+      white-space: nowrap !important;
+    }
+    .card-wrapper .job-detail dt:nth-of-type(6),
+    .card-wrapper .job-detail dd:nth-of-type(6) {
+      border-bottom: none !important;
+      border-top: 2px solid #0a0a0a !important;
+      margin-top: 6px !important;
+      padding-top: 8px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.08em;
+    }
+    .card-wrapper .job-detail dt:nth-of-type(6) {
+      color: #0a0a0a !important;
+      font-size: 1em !important;
+    }
+    .card-wrapper .job-detail dd:nth-of-type(6) {
+      color: #10a37f !important;
+      font-size: 1.15em !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+    }
+
+    /* 特徴: タグをチェックリスト風 */
+    .card-wrapper .feature-detail {
+      text-align: left !important;
+      line-height: 1.6 !important;
+    }
+    .card-wrapper .edgy-tag {
+      background: transparent !important;
+      color: #374151 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      font-size: 1em !important;
+      font-family: -apple-system,"Hiragino Sans","Yu Gothic",sans-serif !important;
+      display: inline !important;
+      margin: 0 6px 0 0 !important;
+      line-height: 1.6 !important;
+    }
+    .card-wrapper .edgy-tag::before {
+      content: "✓";
+      color: #10a37f;
+      font-weight: 900;
+      margin-right: 2px;
+    }
+
+    /* ボタン + バーコード footer */
+    .card-wrapper .button-area {
+      border-top: 2px dashed #d1d5db !important;
+      margin-top: 12px !important;
+      padding-top: 10px !important;
+      text-align: center !important;
+      position: relative;
+    }
+    .card-wrapper .button-area::before {
+      content: "";
+      display: block;
+      height: 16px;
+      background: repeating-linear-gradient(90deg,
+        rgba(15,23,42,0.85) 0, rgba(15,23,42,0.85) 1px, transparent 1px, transparent 3px,
+        rgba(15,23,42,0.85) 3px, rgba(15,23,42,0.85) 4px, transparent 4px, transparent 6px,
+        rgba(15,23,42,0.85) 6px, rgba(15,23,42,0.85) 8px, transparent 8px, transparent 10px);
+      margin: 0 12% 10px;
+      opacity: 0.85;
+    }
+    .card-wrapper .view-detail-btn {
+      background: #0a0a0a !important;
+      color: #fff !important;
+      border: none !important;
+      border-radius: 0 !important;
+      font-family: "SF Mono","Menlo",monospace !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase;
+      padding: 8px 18px !important;
+      font-size: 0.65em !important;
+      min-width: 0 !important;
+    }
+    .card-wrapper .view-detail-btn:hover {
+      background: #10a37f !important;
+      color: #fff !important;
+    }
+
+    @media (max-width: 1200px) {
+      .search-interns-list {
+        grid-template-columns: 1fr 1fr 1fr !important;
+      }
+    }
+    @media (max-width: 900px) {
+      .search-interns-list {
+        grid-template-columns: 1fr 1fr !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .search-interns-list {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
 </head>
 
 <body class="top-page modal-open">
 
-<div class="header">
-  <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
+<div class="header" style="position: relative;">
+  <canvas id="header-art" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0;"></canvas>
+  <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 60px; height: 110px; position: relative; z-index: 1;">
     <div class="header-content" style="display: flex; align-items: center; width: 100%;">
       <div class="header-left" style="margin-right: auto;">
         <a href="#" class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></a>
@@ -463,6 +1145,7 @@
           <a href="#" class="popular-tag">未経験OK</a>
         </div>
         <div class="hero-search">
+          <span class="hero-search-label">条件から探す</span>
           <input id="hero-search-input" type="text" placeholder="スキル、企業、条件で探す">
           <button type="submit"><i class="material-icons">search</i></button>
         </div>
@@ -486,45 +1169,24 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
     <p class="featured-companies-sub">インターン先として注目のAI企業をピックアップ</p>
     <div class="companies-grid">
       <a href="#" class="company-card">
-        <div class="company-logo">
-          <svg style="width: 50px; height: 50px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2406 2406">
-            <path d="M1 578.4C1 259.5 259.5 1 578.4 1h1249.1c319 0 577.5 258.5 577.5 577.4V2406H578.4C259.5 2406 1 2147.5 1 1828.6V578.4z" fill="#74aa9c"/>
-            <path id="gpt-a" d="M1107.3 299.1c-197.999 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.515V833.3h.1v-27.9L1372.7 604c33.715-19.52 70.44-32.857 108.47-39.828L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1zm0 117.5-.6.6c79.699 0 156.3 27.5 217.6 78.4-2.5 1.2-7.4 4.3-11 6.1L952.8 709.3c-18.4 10.4-29.4 30-29.4 51.4V1248l-155.1-89.4V755.8c-.1-187.099 151.601-338.9 339-339.2z" fill="#fff"/>
-            <use xlink:href="#gpt-a" transform="rotate(60 1203 1203)"/>
-            <use xlink:href="#gpt-a" transform="rotate(120 1203 1203)"/>
-            <use xlink:href="#gpt-a" transform="rotate(180 1203 1203)"/>
-            <use xlink:href="#gpt-a" transform="rotate(240 1203 1203)"/>
-            <use xlink:href="#gpt-a" transform="rotate(300 1203 1203)"/>
-          </svg>
-        </div>
+        <div class="company-logo"><img src="images/logo/openai.svg" alt="OpenAI"></div>
         <span class="company-name">OpenAI</span>
-        <span class="company-desc">ChatGPT</span>
+        <span class="company-desc">ChatGPT · GPT-4o</span>
       </a>
       <a href="#" class="company-card">
-        <div class="company-logo">
-          <svg width="50" height="50" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 28C14 26.0633 13.6267 24.2433 12.88 22.54C12.1567 20.8367 11.165 19.355 9.905 18.095C8.645 16.835 7.16333 15.8433 5.46 15.12C3.75667 14.3733 1.93667 14 0 14C1.93667 14 3.75667 13.6383 5.46 12.915C7.16333 12.1683 8.645 11.165 9.905 9.905C11.165 8.645 12.1567 7.16333 12.88 5.46C13.6267 3.75667 14 1.93667 14 0C14 1.93667 14.3617 3.75667 15.085 5.46C15.8317 7.16333 16.835 8.645 18.095 9.905C19.355 11.165 20.8367 12.1683 22.54 12.915C24.2433 13.6383 26.0633 14 28 14C26.0633 14 24.2433 14.3733 22.54 15.12C20.8367 15.8433 19.355 16.835 18.095 18.095C16.835 19.355 15.8317 20.8367 15.085 22.54C14.3617 24.2433 14 26.0633 14 28Z" fill="url(#gemini_paint)"/>
-            <defs>
-              <radialGradient id="gemini_paint" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.77876 11.3795) rotate(18.6832) scale(29.8025 238.737)">
-                <stop offset="0.0671246" stop-color="#9168C0"/>
-                <stop offset="0.342551" stop-color="#5684D1"/>
-                <stop offset="0.672076" stop-color="#1BA1E3"/>
-              </radialGradient>
-            </defs>
-          </svg>
-        </div>
+        <div class="company-logo"><img src="images/logo/google.svg" alt="Google"></div>
         <span class="company-name">Google</span>
-        <span class="company-desc">Gemini</span>
+        <span class="company-desc">Gemini · DeepMind</span>
       </a>
       <a href="#" class="company-card">
-        <div class="company-logo" style="font-size: 2em; font-weight: 900; color: #d97706;">☰</div>
+        <div class="company-logo"><img src="images/logo/anthropic.svg" alt="Anthropic"></div>
         <span class="company-name">Anthropic</span>
-        <span class="company-desc">Claude</span>
+        <span class="company-desc">Claude · Sonnet</span>
       </a>
       <a href="#" class="company-card">
-        <div class="company-logo"><svg width="50" height="50" viewBox="0 0 50 50"><defs><linearGradient id="metaGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0668E1"/><stop offset="50%" style="stop-color:#0081FB"/><stop offset="100%" style="stop-color:#00C2FF"/></linearGradient></defs><circle cx="25" cy="25" r="24" fill="url(#metaGrad)"/><text x="25" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="900" font-family="sans-serif">META AI</text></svg></div>
+        <div class="company-logo"><img src="images/logo/meta.svg" alt="Meta"></div>
         <span class="company-name">Meta AI</span>
-        <span class="company-desc">LLaMA</span>
+        <span class="company-desc">LLaMA · FAIR</span>
       </a>
     </div>
   </div>
@@ -721,6 +1383,15 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           <h2 class="section-main-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
           <div class="section-sub-title-wrap">
             <h3 class="section-sub-title">厳選AIインターン</h3>
+            <div class="intern-faces">
+              <div class="intern-faces-stack">
+                <img src="images/company/person_1.jpg" alt="">
+                <img src="images/company/person_2.jpg" alt="">
+                <img src="images/company/person_3.jpg" alt="">
+                <img src="images/company/person_4.jpg" alt="">
+              </div>
+              <span class="intern-faces-text"><strong>248人</strong>のインターン生がすでに参加中</span>
+            </div>
           </div>
 
 <div class="search-interns-list">
@@ -1284,9 +1955,10 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
 
   <!-- AI名言集 -->
   <div class="ai-quotes-section">
-    <h2 class="ai-quotes-title">AI名言集</h2>
-    <p class="ai-quotes-sub">AIの未来を切り開く先駆者たちの言葉</p>
-    <div class="ai-quotes-grid">
+    <div class="ai-quotes-row"><div class="ai-quotes-track" data-row="1"></div></div>
+    <div class="ai-quotes-row rev"><div class="ai-quotes-track" data-row="2"></div></div>
+    <div class="ai-quotes-row"><div class="ai-quotes-track" data-row="3"></div></div>
+    <div class="ai-quotes-grid-OLD" hidden>
       <div class="ai-quote-card">
         <p class="ai-quote-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
         <span class="ai-quote-author">- I.J. Good（数学者）</span>
@@ -1410,6 +2082,57 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
     </div>
   </div>
 
+  <script>
+  (function(){
+    const rows = {
+      1: [
+        ["AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。","I.J. Good（数学者）"],
+        ["AIを恐れるな。AIを使いこなせない自分を恐れろ。","サム・アルトマン（OpenAI CEO）"],
+        ["機械が考えることができるかを問うのは、潜水艦が泳げるかを問うようなものだ。","エドガー・ダイクストラ"],
+        ["AIは電気と同じくらい、すべての産業を変革する。","アンドリュー・ン"],
+        ["未来を予測する最良の方法は、それを発明することだ。","アラン・ケイ"],
+        ["AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。","カイフ・リー"],
+        ["十分に発達したAIは、魔法と見分けがつかない。","アーサー・C・クラーク"],
+        ["データは新しい石油だ。しかし、精製しなければただの泥だ。","クライブ・ハンビー"],
+        ["AIの目標は知性を理解することであり、それを作ることではない。","ヤン・ルカン（Meta）"],
+        ["最も危険なのはAIそのものではなく、AIを理解せずに使う人間だ。","スチュアート・ラッセル"]
+      ],
+      2: [
+        ["プロンプトは新しいプログラミング言語だ。最も民主的なコードだ。","アンドレイ・カルパシー"],
+        ["AIと共に働くことは、最も賢いインターンを永遠に雇うようなものだ。","エティエンヌ・ジャクソン"],
+        ["学ぶことをやめた者は、AIに置き換えられる最初の人間だ。","不明"],
+        ["100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。","デミス・ハサビス"],
+        ["AIは人間の知能を拡張するツールであり、置き換えるものではない。","ティム・クック（Apple）"],
+        ["完璧なモデルなど存在しない。しかし、有用なモデルは存在する。","ジョージ・ボックス"],
+        ["AIの本当の力は、人間が問うことすらしなかった問いに答えることだ。","フェイフェイ・リー"],
+        ["GPUは21世紀の印刷機だ。知識の民主化を加速させる。","ジェンスン・フアン"],
+        ["AIを学ばないことは、1990年代にインターネットを無視するのと同じだ。","マーク・キューバン"],
+        ["AIは疲れない。しかし、データがないと何もできないのは人間と同じだ。","不明"]
+      ],
+      3: [
+        ["コードを書けなくても、AIに正しい指示を出せる人間が次の時代を制する。","不明"],
+        ["Lossが下がった瞬間の快感を知ったら、もう普通のバイトには戻れない。","あるAIインターン生"],
+        ["世界を変えるのに許可はいらない。GPUとWi-Fiがあればいい。","不明"],
+        ["AIが仕事を奪う？違う、退屈な仕事を解放してくれるんだ。","サティア・ナデラ"],
+        ["一番のリスクはAIを使うことではなく、使わないことだ。","ポール・ドーアティ"],
+        ["Transformerの論文を読んだ日が、私の人生の転換点だった。","あるMLエンジニア"],
+        ["AIインターンの3ヶ月は、普通の職場の3年分に匹敵する。","あるAIスタートアップCEO"],
+        ["鳥を模倣しなくても飛行機は空を飛ぶ。AIも同じだ。","不明"],
+        ["今日のインターン生が、明日のAI時代のリーダーになる。","AI_INTERN"],
+        ["人工知能の時代に最も価値があるのは、人間にしかない好奇心だ。","孫正義"]
+      ]
+    };
+    function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+    document.querySelectorAll('.ai-quotes-track').forEach(track=>{
+      const list = rows[track.dataset.row] || [];
+      const html = [...list, ...list].map(([t,a])=>
+        `<div class="ai-quote-card"><p class="ai-quote-text">${esc(t)}</p><span class="ai-quote-author">— ${esc(a)}</span></div>`
+      ).join("");
+      track.innerHTML = html;
+    });
+  })();
+  </script>
+
   <footer class="page-footer">
   <div class="footer-container-wrapper">
     <div class="footer-container-upper">
@@ -1515,6 +2238,125 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           centerPadding: "4%",
       }});
     });
+  </script>
+
+  <!-- スクロール時のフェードイン演出 -->
+  <style>
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1);
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+  <script>
+  (function(){
+    // フェードイン対象のセレクタ
+    const selectors = [
+      '.featured-companies',
+      '.search-interns-new .search-icon-card',
+      '.search-interns-new .search-category-label',
+      '.section-main-title',
+      '.section-sub-title-wrap',
+      '.search-interns-list > div',
+      '.banners-carousel .banner',
+      '.student-voice',
+      '.ai-quotes-section',
+      '.sidebar .title-area',
+      '.sidebar .side-content-wrap-white',
+      '.page-footer'
+    ];
+    const targets = document.querySelectorAll(selectors.join(','));
+    targets.forEach((el, i) => {
+      el.classList.add('reveal');
+      // 軽い段差で順番に出るように
+      el.style.transitionDelay = ((i % 6) * 60) + 'ms';
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(el => io.observe(el));
+  })();
+  </script>
+
+  <!-- ヘッダー: Triangle Field (Case 07) -->
+  <script>
+  (function(){
+    const c = document.getElementById('header-art');
+    if (!c) return;
+    function fit(){
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = c.parentElement.clientWidth;
+      const h = c.parentElement.clientHeight;
+      c.width = w * dpr; c.height = h * dpr;
+      const ctx = c.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+    let { ctx, w, h } = fit();
+    const N = 35;
+    const ps = [];
+    for (let i = 0; i < N; i++) ps.push({
+      x: Math.random()*w, y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.3
+    });
+    window.addEventListener('resize', () => {
+      ({ ctx, w, h } = fit());
+      ps.forEach(p => { p.x = Math.random()*w; p.y = Math.random()*h; });
+    });
+    function loop(){
+      ctx.clearRect(0, 0, w, h);
+      for (const p of ps) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      }
+      // 各点を最も近い3点と結ぶ
+      for (let i = 0; i < N; i++) {
+        const dists = [];
+        for (let j = 0; j < N; j++) if (i !== j) {
+          dists.push({ j, d: Math.hypot(ps[i].x - ps[j].x, ps[i].y - ps[j].y) });
+        }
+        dists.sort((a, b) => a.d - b.d);
+        for (let k = 0; k < 3; k++) {
+          const j = dists[k].j, d = dists[k].d;
+          if (d < 200) {
+            ctx.strokeStyle = 'rgba(0,191,165,' + ((1 - d/200) * 0.5) + ')';
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(ps[i].x, ps[i].y);
+            ctx.lineTo(ps[j].x, ps[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.fillStyle = '#00e5ff';
+      for (const p of ps) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
+        ctx.fill();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
   </script>
 
 </body>

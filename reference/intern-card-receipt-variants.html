@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>厳選AIインターンカード レシート/明細風バリアント</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#ececec;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:50px 0;border-top:1px solid #eee;background:#f7f7f7}
+  section:nth-child(even){background:#ececec}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:800}
+  .ds{max-width:1100px;margin:0 auto 28px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;justify-content:center}
+
+  /* ============ 案A: クラシック感熱レシート ============ */
+  .vA{background:#fff;border:1px dashed #6b7280;padding:0;text-decoration:none;color:#111;display:block;font-family:"SF Mono","Menlo","Courier New",monospace;transition:.15s;width:360px;box-shadow:0 8px 24px rgba(0,0,0,0.08);position:relative}
+  .vA::before,.vA::after{content:"";position:absolute;left:0;right:0;height:14px;background:
+    radial-gradient(circle at 7px 7px,#ececec 5px,transparent 5.5px) repeat-x;
+    background-size:14px 14px}
+  .vA::before{top:-7px}
+  .vA::after{bottom:-7px;transform:rotate(180deg)}
+  .vA:hover{border-color:#0a0a0a;border-style:solid}
+  .vA .head{padding:22px 22px 14px;border-bottom:2px dashed #d1d5db;text-align:center}
+  .vA .head h2{font-size:13px;margin:0 0 4px;letter-spacing:0.35em;font-weight:900}
+  .vA .head .sub{font-size:9px;color:#6b7280;letter-spacing:0.2em}
+  .vA .head .id{font-size:10px;color:#6b7280;margin-top:6px}
+  .vA .body{padding:14px 22px}
+  .vA .row{display:flex;justify-content:space-between;padding:5px 0;font-size:11px}
+  .vA .row .k{color:#6b7280}
+  .vA .row .v{color:#0a0a0a;font-weight:700;text-align:right;max-width:60%}
+  .vA .div{border-top:1px dotted #d1d5db;margin:8px 0}
+  .vA .title-row{padding:10px 0;font-size:12px;font-weight:700;line-height:1.6;border-top:1px dotted #d1d5db;border-bottom:1px dotted #d1d5db;margin:6px 0}
+  .vA .items{padding:6px 0}
+  .vA .items .it{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:#374151}
+  .vA .items .it .qty{color:#6b7280}
+  .vA .total{display:flex;justify-content:space-between;padding:12px 0 4px;border-top:2px solid #0a0a0a;margin-top:8px;font-size:13px;font-weight:900}
+  .vA .total .v{color:#10a37f}
+  .vA .sub-total{display:flex;justify-content:space-between;padding:4px 0;font-size:10px;color:#6b7280}
+  .vA .foot{padding:14px 22px 22px;border-top:2px dashed #d1d5db;text-align:center;font-size:10px;color:#6b7280;line-height:1.7}
+  .vA .barcode{display:block;height:38px;background:repeating-linear-gradient(90deg,#000 0,#000 1px,transparent 1px,transparent 3px,#000 3px,#000 4px,transparent 4px,transparent 5px,#000 5px,#000 7px,transparent 7px,transparent 9px);margin:10px auto 6px;width:80%}
+  .vA .stars{font-size:13px;color:#0a0a0a;letter-spacing:0.1em;margin-top:4px}
+
+  /* ============ 案B: 銀行明細風 / トランザクション ============ */
+  .vB{background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:0;text-decoration:none;color:#111;display:block;width:540px;font-family:"SF Mono","Menlo",monospace;transition:.2s;overflow:hidden}
+  .vB:hover{border-color:#0a0a0a;box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+  .vB .head{background:#0a0a0a;color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
+  .vB .head .ttl{font-size:11px;letter-spacing:0.25em;font-weight:800}
+  .vB .head .acct{font-size:10px;color:#9ca3af}
+  .vB .body{padding:18px 22px}
+  .vB .meta{display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #e5e7eb;font-size:10px;color:#6b7280}
+  .vB .title{font-size:13px;font-weight:800;line-height:1.6;padding:14px 0 10px;color:#0a0a0a;font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .vB table{width:100%;border-collapse:collapse;margin-top:6px}
+  .vB table th{font-size:9px;color:#6b7280;text-align:left;padding:6px 0;border-bottom:1px solid #e5e7eb;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+  .vB table th.r{text-align:right}
+  .vB table td{font-size:11px;padding:8px 0;border-bottom:1px dotted #e5e7eb;color:#374151}
+  .vB table td.r{text-align:right;font-weight:700;color:#0a0a0a}
+  .vB table td .credit{color:#10a37f;font-weight:800}
+  .vB .balance{display:flex;justify-content:space-between;padding:14px 0 4px;margin-top:8px;border-top:2px solid #0a0a0a;font-size:12px}
+  .vB .balance .k{font-weight:700}
+  .vB .balance .v{font-weight:900;color:#10a37f;font-size:15px}
+  .vB .foot{padding:10px 22px;background:#f7f7f7;border-top:1px solid #e5e7eb;font-size:9px;color:#9ca3af;display:flex;justify-content:space-between;letter-spacing:0.1em}
+
+  /* ============ 案C: 配送伝票 / 宅配ラベル風 ============ */
+  .vC{background:#fff;border:2px solid #0a0a0a;padding:0;text-decoration:none;color:#111;display:block;width:480px;transition:.2s;font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .vC:hover{box-shadow:6px 6px 0 #0a0a0a;transform:translate(-3px,-3px)}
+  .vC .head{display:grid;grid-template-columns:1fr auto;border-bottom:2px solid #0a0a0a}
+  .vC .head .l{padding:14px 18px;border-right:2px solid #0a0a0a}
+  .vC .head .l .ttl{font-size:9px;color:#6b7280;letter-spacing:0.15em;font-weight:700;margin-bottom:2px}
+  .vC .head .l .v{font-size:18px;font-weight:900;letter-spacing:0.05em}
+  .vC .head .r{padding:14px 18px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+  .vC .head .r .pri{font-size:9px;color:#fff;background:#dc2626;padding:3px 8px;font-weight:900;letter-spacing:0.15em;display:inline-block;margin-bottom:4px}
+  .vC .head .r .num{font-size:11px;font-weight:800;font-family:"SF Mono",monospace}
+  .vC .body{padding:0}
+  .vC .from-to{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid #0a0a0a}
+  .vC .from-to > div{padding:12px 18px}
+  .vC .from-to > div:first-child{border-right:1px dashed #6b7280}
+  .vC .from-to .lbl{font-size:8px;color:#6b7280;letter-spacing:0.15em;font-weight:700;margin-bottom:4px}
+  .vC .from-to .name{font-size:13px;font-weight:800;line-height:1.4}
+  .vC .from-to .addr{font-size:10px;color:#374151;margin-top:2px;line-height:1.5}
+  .vC .desc{padding:14px 18px;border-bottom:2px dashed #0a0a0a}
+  .vC .desc .lbl{font-size:8px;color:#6b7280;letter-spacing:0.15em;font-weight:700;margin-bottom:6px}
+  .vC .desc .title{font-size:14px;font-weight:800;line-height:1.5}
+  .vC .grid{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid #0a0a0a}
+  .vC .grid > div{padding:10px 12px;text-align:center;border-right:1px solid #d1d5db}
+  .vC .grid > div:last-child{border-right:none}
+  .vC .grid .k{font-size:8px;color:#6b7280;letter-spacing:0.1em;font-weight:700;margin-bottom:3px}
+  .vC .grid .v{font-size:13px;font-weight:900}
+  .vC .grid .v.salary{color:#10a37f}
+  .vC .foot{padding:10px 18px;display:flex;justify-content:space-between;align-items:center;background:#fafafa}
+  .vC .foot .barcode{flex:1;height:30px;background:repeating-linear-gradient(90deg,#000 0,#000 1px,transparent 1px,transparent 3px,#000 3px,#000 4px,transparent 4px,transparent 7px);margin-right:14px}
+  .vC .foot .stamp{border:2px solid #dc2626;color:#dc2626;font-size:10px;font-weight:900;padding:5px 10px;letter-spacing:0.15em;transform:rotate(-4deg);font-family:"SF Mono",monospace}
+
+  /* ============ 案D: 飲食店伝票 / オーダーチケット風 ============ */
+  .vD{background:#fffef5;border:1px solid #d1d5db;padding:0;text-decoration:none;color:#111;display:block;width:340px;font-family:"Yu Mincho","Hiragino Mincho ProN",serif;transition:.15s;box-shadow:0 4px 12px rgba(0,0,0,0.06);position:relative}
+  .vD::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:18px;height:18px;background:#0a0a0a;border-radius:50%;box-shadow:0 0 0 2px #fffef5,0 0 0 3px #0a0a0a}
+  .vD:hover{border-color:#0a0a0a;transform:translateY(-2px)}
+  .vD .head{padding:46px 22px 14px;text-align:center;border-bottom:1px solid #0a0a0a}
+  .vD .head h2{font-size:18px;margin:0;font-weight:900;letter-spacing:0.4em;writing-mode:horizontal-tb}
+  .vD .head .sub{font-size:10px;color:#6b7280;margin-top:6px;letter-spacing:0.2em}
+  .vD .order{padding:12px 22px;display:flex;justify-content:space-between;font-size:10px;color:#6b7280;border-bottom:1px dashed #d1d5db}
+  .vD .body{padding:14px 22px}
+  .vD .title{font-size:14px;font-weight:900;line-height:1.7;padding-bottom:12px;border-bottom:1px dashed #d1d5db;text-align:center}
+  .vD .items{padding:10px 0}
+  .vD .items .it{display:flex;justify-content:space-between;padding:6px 0;font-size:12px}
+  .vD .items .it .k{color:#374151}
+  .vD .items .it .v{font-weight:700}
+  .vD .items .div{border-top:1px dotted #d1d5db;margin:6px 0}
+  .vD .total{padding:14px 22px 8px;border-top:2px solid #0a0a0a;margin:0 -22px;display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:900}
+  .vD .total{padding:14px 22px 8px}
+  .vD .total-row{border-top:2px solid #0a0a0a;display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 4px;margin-top:8px}
+  .vD .total-row .k{font-size:13px;font-weight:900;letter-spacing:0.2em}
+  .vD .total-row .v{font-size:18px;font-weight:900;color:#dc2626;font-family:Georgia,serif}
+  .vD .foot{padding:14px 22px 22px;text-align:center;border-top:1px dashed #d1d5db;font-size:10px;color:#6b7280;line-height:1.8}
+  .vD .stamp{display:inline-block;border:1.5px solid #dc2626;color:#dc2626;padding:3px 8px;font-size:9px;font-weight:900;letter-spacing:0.2em;margin-top:4px}
+
+  /* ============ 案E: ATM明細 / ドット印字風 ============ */
+  .vE{background:#fafaf5;border:1px solid #6b7280;padding:0;text-decoration:none;color:#111;display:block;width:440px;font-family:"VT323","Courier New",monospace;transition:.2s;position:relative}
+  .vE::before{content:"";position:absolute;top:0;bottom:0;left:18px;width:1px;background:repeating-linear-gradient(180deg,#cbd5e1 0,#cbd5e1 6px,transparent 6px,transparent 12px)}
+  .vE::after{content:"";position:absolute;top:0;bottom:0;right:18px;width:1px;background:repeating-linear-gradient(180deg,#cbd5e1 0,#cbd5e1 6px,transparent 6px,transparent 12px)}
+  .vE:hover{border-color:#0a0a0a;background:#fff}
+  .vE .head{padding:18px 36px 12px;text-align:center;border-bottom:1px dashed #6b7280}
+  .vE .head h2{font-size:14px;margin:0 0 4px;letter-spacing:0.2em;font-weight:700;font-family:"SF Mono",monospace}
+  .vE .head .id{font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.1em}
+  .vE .body{padding:14px 36px;font-family:"SF Mono",monospace}
+  .vE .line{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:#1f2937;letter-spacing:0.02em}
+  .vE .line .dots{flex:1;border-bottom:1px dotted #6b7280;margin:0 8px;align-self:flex-end;height:8px}
+  .vE .title-block{padding:12px 0;margin:8px 0;border-top:1px dashed #6b7280;border-bottom:1px dashed #6b7280;font-size:12px;font-weight:700;line-height:1.6;font-family:-apple-system,"Hiragino Sans",sans-serif;color:#0a0a0a}
+  .vE .total{display:flex;justify-content:space-between;font-size:14px;font-weight:900;padding:12px 0 4px;border-top:2px double #0a0a0a;margin-top:10px;color:#0a0a0a}
+  .vE .total .v{color:#0a0a0a;letter-spacing:0.05em}
+  .vE .foot{padding:12px 36px 18px;text-align:center;border-top:1px dashed #6b7280;font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.1em;line-height:1.7}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>厳選AIインターン カード レシート/明細風</h1>
+  <p>レシート・伝票・明細などペーパーメタファーで5案</p>
+</header>
+
+<section>
+  <div class="label">CASE A</div>
+  <div class="nm">クラシック感熱レシート</div>
+  <p class="ds">コンビニや飲食店でお馴染みの感熱紙レシート風。等幅フォント + ギザギザの上下端 + バーコードで「本物感」を演出。</p>
+  <div class="stage">
+    <a href="#" class="vA">
+      <div class="head">
+        <h2>AI INTERNSHIP</h2>
+        <div class="sub">~ NEURON CRAFT INC. ~</div>
+        <div class="id">No. NC-001 · 2026/04/05 14:32</div>
+      </div>
+      <div class="body">
+        <div class="row"><span class="k">会社名</span><span class="v">株式会社ニューロンクラフト</span></div>
+        <div class="row"><span class="k">業界</span><span class="v">AI SaaS / LLM</span></div>
+        <div class="row"><span class="k">職種</span><span class="v">LLMエンジニア</span></div>
+        <div class="title-row">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+        <div class="items">
+          <div class="it"><span>GPU使い放題</span><span class="qty">x1</span></div>
+          <div class="it"><span>自社LLM開発</span><span class="qty">x1</span></div>
+          <div class="it"><span>フルリモート可</span><span class="qty">x1</span></div>
+          <div class="it"><span>論文読み会あり</span><span class="qty">x1</span></div>
+          <div class="it"><span>未経験OK</span><span class="qty">x1</span></div>
+        </div>
+        <div class="row"><span class="k">勤務地</span><span class="v">渋谷 / リモート可</span></div>
+        <div class="row"><span class="k">勤務条件</span><span class="v">週3日〜 / 5h〜</span></div>
+        <div class="sub-total"><span>SUBTOTAL ITEMS</span><span>5</span></div>
+        <div class="total"><span>TIME WAGE</span><span class="v">¥2,000〜4,000</span></div>
+      </div>
+      <div class="foot">
+        ★ THANK YOU FOR APPLYING ★
+        <span class="barcode"></span>
+        <div class="stars">★ ★ ★ ★ ★ 4.9</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE B</div>
+  <div class="nm">銀行明細風 / トランザクション</div>
+  <p class="ds">ネットバンクの取引明細を模したレイアウト。テーブル形式で「身につくスキル」を入金トランザクションとして表現。</p>
+  <div class="stage">
+    <a href="#" class="vB">
+      <div class="head">
+        <span class="ttl">INTERN STATEMENT</span>
+        <span class="acct">Acct: NC-2026-001</span>
+      </div>
+      <div class="body">
+        <div class="meta">
+          <span>STATEMENT DATE: 2026/04/05</span>
+          <span>PERIOD: 3-6 MONTHS</span>
+        </div>
+        <div class="title">【GPTの裏側を知りたくないか？】株式会社ニューロンクラフト · LLMエンジニア</div>
+        <table>
+          <thead>
+            <tr><th>DATE</th><th>DESCRIPTION</th><th class="r">SKILL +</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>WEEK 1</td><td>RAG設計の基礎と実装</td><td class="r"><span class="credit">+ EXP</span></td></tr>
+            <tr><td>WEEK 4</td><td>LLMファインチューニング</td><td class="r"><span class="credit">+ EXP</span></td></tr>
+            <tr><td>WEEK 8</td><td>ベクトルDB / LangChain</td><td class="r"><span class="credit">+ EXP</span></td></tr>
+            <tr><td>WEEK 12</td><td>本番環境への運用知識</td><td class="r"><span class="credit">+ EXP</span></td></tr>
+          </tbody>
+        </table>
+        <div class="balance"><span class="k">HOURLY BALANCE</span><span class="v">¥2,000 〜 ¥4,000</span></div>
+      </div>
+      <div class="foot">
+        <span>STATUS: ACTIVE</span>
+        <span>渋谷 / REMOTE OK</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE C</div>
+  <div class="nm">配送伝票 / 宅配ラベル風</div>
+  <p class="ds">宅急便の配送ラベルを模した構造。FROM(企業) → TO(あなた) で「スキルを送り届ける」メタファー。スタンプ風の急募マーク付き。</p>
+  <div class="stage">
+    <a href="#" class="vC">
+      <div class="head">
+        <div class="l">
+          <div class="ttl">TRACKING No.</div>
+          <div class="v">NC-2026-0001</div>
+        </div>
+        <div class="r">
+          <span class="pri">EXPRESS</span>
+          <span class="num">2026/04/05</span>
+        </div>
+      </div>
+      <div class="from-to">
+        <div>
+          <div class="lbl">FROM / 発送元</div>
+          <div class="name">株式会社ニューロンクラフト</div>
+          <div class="addr">渋谷オフィス · AI SaaS / LLM</div>
+        </div>
+        <div>
+          <div class="lbl">TO / お届け先</div>
+          <div class="name">未来のAIエンジニア様</div>
+          <div class="addr">あなたの自宅 / リモート可</div>
+        </div>
+      </div>
+      <div class="desc">
+        <div class="lbl">CONTENT / 内容物</div>
+        <div class="title">【GPTの裏側を知りたくないか？】RAG構築・ファインチューニング体験パック</div>
+      </div>
+      <div class="grid">
+        <div><div class="k">勤務</div><div class="v">週3〜</div></div>
+        <div><div class="k">期間</div><div class="v">3〜6ヶ月</div></div>
+        <div><div class="k">時給</div><div class="v salary">¥2-4K</div></div>
+      </div>
+      <div class="foot">
+        <div class="barcode"></div>
+        <div class="stamp">急募</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE D</div>
+  <div class="nm">飲食店伝票 / オーダーチケット風</div>
+  <p class="ds">和食店の伝票やお品書きの雰囲気。明朝体 + 上部に紙留めの黒丸 + 朱印スタンプで「品書き」感。</p>
+  <div class="stage">
+    <a href="#" class="vD">
+      <div class="head">
+        <h2>御品書</h2>
+        <div class="sub">A I  I N T E R N</div>
+      </div>
+      <div class="order">
+        <span>卓 No.001</span>
+        <span>令和八年 四月五日</span>
+      </div>
+      <div class="body">
+        <div class="title">【GPTの裏側を<br>知りたくないか？】<br>自社LLM開発の旅</div>
+        <div class="items">
+          <div class="it"><span class="k">店名</span><span class="v">ニューロンクラフト</span></div>
+          <div class="it"><span class="k">主菜</span><span class="v">RAG構築 一式</span></div>
+          <div class="it"><span class="k">副菜</span><span class="v">ファインチューニング</span></div>
+          <div class="it"><span class="k">薬味</span><span class="v">論文読み会</span></div>
+          <div class="it"><span class="k">勤務</span><span class="v">週三日より</span></div>
+          <div class="it"><span class="k">場所</span><span class="v">渋谷 / 在宅可</span></div>
+        </div>
+        <div class="total-row">
+          <span class="k">御代</span>
+          <span class="v">¥2,000 〜 ¥4,000</span>
+        </div>
+      </div>
+      <div class="foot">
+        — 御来店誠に有難う御座います —<br>
+        <span class="stamp">本日のおすすめ</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE E</div>
+  <div class="nm">ATM明細 / ドット印字風</div>
+  <p class="ds">ATMの取引明細票風。両端に紙送り穴のミシン目を表現。リーダー線 (......) で項目と値を繋ぐ。</p>
+  <div class="stage">
+    <a href="#" class="vE">
+      <div class="head">
+        <h2>* AI INTERN RECORD *</h2>
+        <div class="id">TXN-NC-20260405-001</div>
+      </div>
+      <div class="body">
+        <div class="line"><span>COMPANY</span><span class="dots"></span><span>NEURON CRAFT</span></div>
+        <div class="line"><span>INDUSTRY</span><span class="dots"></span><span>AI SAAS / LLM</span></div>
+        <div class="line"><span>POSITION</span><span class="dots"></span><span>LLM ENGINEER</span></div>
+        <div class="title-block">【GPTの裏側を知りたくないか？】自社LLM開発スタートアップで全部やる。</div>
+        <div class="line"><span>LOCATION</span><span class="dots"></span><span>SHIBUYA / REMOTE</span></div>
+        <div class="line"><span>SHIFT</span><span class="dots"></span><span>3DAYS / 5H+</span></div>
+        <div class="line"><span>PERIOD</span><span class="dots"></span><span>3-6 MONTHS</span></div>
+        <div class="line"><span>RATING</span><span class="dots"></span><span>* * * * * 4.9</span></div>
+        <div class="total"><span>WAGE/H</span><span class="v">JPY 2,000-4,000</span></div>
+      </div>
+      <div class="foot">
+        ===== END OF TRANSACTION =====<br>
+        PRESS [APPLY] TO CONTINUE
+      </div>
+    </a>
+  </div>
+</section>
+
+</body></html>
