@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>案10: Masonry</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body{margin:0;background:#fafafa;color:#222;font-family:-apple-system,"Hiragino Sans",sans-serif;padding:60px 20px}
+  .wrap{max-width:1200px;margin:0 auto}
+  h2{text-align:center;font-size:28px;margin:0 0 8px}
+  .sub{text-align:center;color:#888;font-size:13px;margin:0 0 48px}
+  .masonry{column-count:4;column-gap:18px}
+  @media(max-width:1100px){.masonry{column-count:3}}
+  @media(max-width:760px){.masonry{column-count:2}}
+  @media(max-width:500px){.masonry{column-count:1}}
+  .card{break-inside:avoid;margin:0 0 18px;padding:22px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,0.06);background:#fff;transition:.25s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 8px 22px rgba(0,0,0,0.12)}
+  .card .text{font-size:14px;line-height:1.75;margin:0 0 14px;color:#333}
+  .card .author{font-size:11px;color:#666;font-weight:600;letter-spacing:0.05em}
+  .card.c1{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+  .card.c2{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+  .card.c3{background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+  .card.c4{background:linear-gradient(135deg,#f3e5f5,#e1bee7)}
+  .card.c5{background:linear-gradient(135deg,#fce4ec,#f8bbd0)}
+  .card.c6{background:linear-gradient(135deg,#e0f7fa,#b2ebf2)}
+  .card.big .text{font-size:18px;font-weight:600;line-height:1.6}
+</style></head><body>
+<div class="wrap">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉を Pinterest 風に</p>
+  <div class="masonry">
+    <div class="card c1 big"><p class="text">"AIは最後の発明になるだろう。"</p><p class="author">— I.J. GOOD</p></div>
+    <div class="card c2"><p class="text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p><p class="author">— サム・アルトマン</p></div>
+    <div class="card c3"><p class="text">"機械が考えることができるかどうかを問うのは、潜水艦が泳げるかどうかを問うようなものだ。"</p><p class="author">— エドガー・ダイクストラ</p></div>
+    <div class="card c4"><p class="text">"AIは電気と同じくらい、すべての産業を変革する。"</p><p class="author">— アンドリュー・ン</p></div>
+    <div class="card c5 big"><p class="text">"未来を予測する最良の方法は、それを発明することだ。"</p><p class="author">— アラン・ケイ</p></div>
+    <div class="card c6"><p class="text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p><p class="author">— アンドレイ・カルパシー</p></div>
+    <div class="card c2"><p class="text">"AIと共に働くことは、最も賢いインターンを永遠に雇うようなものだ。"</p><p class="author">— エティエンヌ・ジャクソン</p></div>
+    <div class="card c1"><p class="text">"学ぶことをやめた者は、AIに置き換えられる最初の人間だ。"</p><p class="author">— 不明</p></div>
+    <div class="card c4"><p class="text">"100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。"</p><p class="author">— デミス・ハサビス</p></div>
+    <div class="card c3"><p class="text">"GPUは21世紀の印刷機だ。"</p><p class="author">— ジェンスン・フアン</p></div>
+    <div class="card c5"><p class="text">"データは新しい石油だ。しかし、精製しなければただの泥だ。"</p><p class="author">— クライブ・ハンビー</p></div>
+    <div class="card c6"><p class="text">"完璧なモデルなど存在しない。しかし、有用なモデルは存在する。"</p><p class="author">— ジョージ・ボックス</p></div>
+  </div>
+</div></body></html>

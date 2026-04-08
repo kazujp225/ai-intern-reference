@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>厳選AIインターン フラットコーポレート案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f7f8fa;font-family:-apple-system,"Hiragino Sans","Yu Gothic","Helvetica Neue",sans-serif;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+  header{text-align:center;padding:60px 20px 30px;background:#fff;border-bottom:1px solid #e5e7eb}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:700;letter-spacing:-0.01em}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:60px 0;border-top:1px solid #e5e7eb;background:#fff}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.2em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:700;color:#111}
+  .ds{max-width:1100px;margin:0 auto 32px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  /* ============ 案1: コーポレートブルー / 左ボーダーアクセント ============ */
+  .v1{background:#fff;border:1px solid #e5e7eb;border-left:4px solid #1e3a8a;padding:28px 32px;text-decoration:none;color:#111;display:block;transition:all .2s}
+  .v1:hover{border-left-color:#3b82f6;background:#fafbfc}
+  .v1 .top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .v1 .top .cat{font-size:11px;color:#1e3a8a;font-weight:700;letter-spacing:0.1em;padding:4px 10px;background:#eff6ff;border:1px solid #dbeafe}
+  .v1 .top .pickup{font-size:11px;color:#fff;background:#1e3a8a;font-weight:700;letter-spacing:0.1em;padding:4px 10px}
+  .v1 .top .date{margin-left:auto;font-size:12px;color:#9ca3af}
+  .v1 .company{font-size:13px;color:#6b7280;font-weight:600;margin-bottom:8px}
+  .v1 h3{font-size:18px;margin:0 0 18px;font-weight:700;line-height:1.6;color:#111}
+  .v1 .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:16px 0;margin-bottom:18px}
+  .v1 .meta-grid .it{padding:0 16px;border-right:1px solid #e5e7eb}
+  .v1 .meta-grid .it:last-child{border-right:none}
+  .v1 .meta-grid .it:first-child{padding-left:0}
+  .v1 .meta-grid .k{font-size:10px;color:#9ca3af;font-weight:600;letter-spacing:0.1em;margin-bottom:6px;text-transform:uppercase}
+  .v1 .meta-grid .v{font-size:13px;color:#111;font-weight:600}
+  .v1 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  .v1 .tags span{font-size:11px;color:#4b5563;background:#f3f4f6;padding:4px 10px;font-weight:500}
+  .v1 .foot{display:flex;justify-content:space-between;align-items:center}
+  .v1 .foot .req{font-size:12px;color:#6b7280}
+  .v1 .foot .more{font-size:13px;font-weight:700;color:#1e3a8a}
+
+  /* ============ 案2: グレーベース / 完全フラット罫線 ============ */
+  .v2{background:#fff;border:1px solid #d1d5db;padding:0;text-decoration:none;color:#111;display:block;transition:.2s}
+  .v2:hover{border-color:#111}
+  .v2 .head{padding:20px 28px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+  .v2 .head .left{display:flex;align-items:center;gap:14px}
+  .v2 .head .num{font-size:11px;font-weight:700;color:#9ca3af;font-family:"SF Mono",monospace;letter-spacing:0.1em}
+  .v2 .head .company{font-size:13px;font-weight:700;color:#111}
+  .v2 .head .pickup{font-size:10px;color:#fff;background:#111;padding:3px 10px;font-weight:700;letter-spacing:0.1em}
+  .v2 .head .date{font-size:11px;color:#9ca3af}
+  .v2 .body{padding:24px 28px}
+  .v2 h3{font-size:17px;margin:0 0 18px;font-weight:700;line-height:1.65}
+  .v2 .table{display:grid;grid-template-columns:100px 1fr;gap:0;font-size:12px}
+  .v2 .table dt{padding:10px 0;color:#6b7280;font-weight:600;border-bottom:1px solid #f3f4f6;letter-spacing:0.05em}
+  .v2 .table dd{padding:10px 0;color:#111;font-weight:600;margin:0;border-bottom:1px solid #f3f4f6}
+  .v2 .table dd:last-of-type,.v2 .table dt:last-of-type{border-bottom:none}
+  .v2 .foot{padding:18px 28px;border-top:1px solid #e5e7eb;background:#f9fafb;display:flex;justify-content:flex-end}
+  .v2 .foot .btn{font-size:12px;color:#111;font-weight:700;border:1px solid #111;padding:10px 24px;letter-spacing:0.05em}
+
+  /* ============ 案3: ブルー基調 / カテゴリラベル付き ============ */
+  .v3{background:#fff;border:1px solid #e5e7eb;border-radius:4px;text-decoration:none;color:#111;display:block;overflow:hidden;transition:.2s}
+  .v3:hover{border-color:#2563eb}
+  .v3 .ribbon{background:#2563eb;color:#fff;padding:8px 24px;font-size:11px;font-weight:700;letter-spacing:0.15em;display:flex;justify-content:space-between;align-items:center}
+  .v3 .ribbon .left{display:flex;gap:12px;align-items:center}
+  .v3 .ribbon .icon{font-size:13px}
+  .v3 .body{padding:24px 28px}
+  .v3 .company{font-size:12px;color:#6b7280;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .v3 .company::before{content:"";display:inline-block;width:14px;height:1px;background:#9ca3af}
+  .v3 h3{font-size:18px;margin:0 0 16px;font-weight:700;line-height:1.6;color:#111}
+  .v3 .features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .v3 .features span{font-size:11px;color:#1e40af;background:#eff6ff;border:1px solid #bfdbfe;padding:4px 10px;border-radius:2px;font-weight:600}
+  .v3 .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #e5e7eb;padding-top:16px}
+  .v3 .meta .it{display:flex;flex-direction:column;gap:4px;padding:0 14px;border-left:1px solid #e5e7eb}
+  .v3 .meta .it:first-child{border-left:none;padding-left:0}
+  .v3 .meta .k{font-size:10px;color:#9ca3af;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+  .v3 .meta .v{font-size:13px;color:#111;font-weight:700}
+
+  /* ============ 案4: 白基調・ボーダーレス・影なし・大きな余白 ============ */
+  .v4{background:#fff;padding:36px 0;text-decoration:none;color:#111;display:block;border-bottom:1px solid #e5e7eb;transition:.2s}
+  .v4:hover{padding-left:8px}
+  .v4 .top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .v4 .top .num{font-size:13px;font-weight:700;color:#2563eb;font-family:"SF Mono",monospace}
+  .v4 .top .cat{font-size:11px;color:#6b7280;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+  .v4 .top .date{font-size:11px;color:#9ca3af;margin-left:auto}
+  .v4 h3{font-size:22px;margin:0 0 14px;font-weight:700;line-height:1.55;color:#111;letter-spacing:-0.005em}
+  .v4 .company{font-size:13px;color:#6b7280;margin-bottom:18px}
+  .v4 .features{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+  .v4 .features span{font-size:12px;color:#6b7280;font-weight:600;display:flex;align-items:center;gap:6px}
+  .v4 .features span::before{content:"";width:4px;height:4px;background:#2563eb;border-radius:50%}
+  .v4 .row{display:flex;gap:32px;align-items:center}
+  .v4 .row .meta{display:flex;gap:32px;font-size:13px;color:#374151}
+  .v4 .row .meta .it{display:flex;flex-direction:column;gap:2px}
+  .v4 .row .meta .k{font-size:10px;color:#9ca3af;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+  .v4 .row .meta .v{font-weight:700}
+  .v4 .row .more{margin-left:auto;font-size:13px;color:#2563eb;font-weight:700;display:flex;align-items:center;gap:6px}
+
+  /* ============ 案5: ネイビー + シアン アクセント / IBM風 ============ */
+  .v5{background:#fff;text-decoration:none;color:#111;display:grid;grid-template-columns:8px 1fr;gap:0;transition:.2s;border-bottom:1px solid #e5e7eb}
+  .v5:hover .stripe{background:#0f62fe}
+  .v5 .stripe{background:#161616;transition:.2s}
+  .v5 .body{padding:32px 36px}
+  .v5 .top{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .v5 .pickup{font-size:10px;color:#fff;background:#0f62fe;padding:4px 10px;font-weight:700;letter-spacing:0.1em}
+  .v5 .company{font-size:12px;color:#6f6f6f;font-weight:600}
+  .v5 .date{font-size:11px;color:#a8a8a8;margin-left:auto}
+  .v5 h3{font-size:24px;margin:0 0 16px;font-weight:300;line-height:1.45;color:#161616;letter-spacing:-0.01em;font-family:"IBM Plex Sans","Helvetica Neue",sans-serif}
+  .v5 .desc{font-size:13px;color:#525252;line-height:1.6;margin:0 0 22px;max-width:90%}
+  .v5 .features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+  .v5 .features span{font-size:11px;color:#161616;border:1px solid #161616;padding:5px 12px;font-weight:600}
+  .v5 .meta{display:flex;gap:48px;font-size:13px;padding-top:20px;border-top:1px solid #e0e0e0}
+  .v5 .meta .it .k{font-size:10px;color:#6f6f6f;letter-spacing:0.1em;margin-bottom:4px;text-transform:uppercase;font-weight:600}
+  .v5 .meta .it .v{color:#161616;font-weight:600}
+  .v5 .meta .more{margin-left:auto;color:#0f62fe;font-weight:600;align-self:center}
+
+  /* ============ 案6: グレーグレー（メーカー系コーポレート） ============ */
+  .v6{background:#fff;border:1px solid #d4d4d8;text-decoration:none;color:#111;display:block;padding:0;transition:.2s}
+  .v6:hover{border-color:#52525b}
+  .v6 .head{background:#f4f4f5;padding:14px 28px;border-bottom:1px solid #d4d4d8;display:flex;justify-content:space-between;align-items:center}
+  .v6 .head .left{display:flex;align-items:center;gap:12px}
+  .v6 .head .id{font-size:11px;color:#71717a;font-family:"SF Mono",monospace;font-weight:600}
+  .v6 .head .pickup{font-size:10px;color:#fff;background:#dc2626;padding:3px 10px;font-weight:700;letter-spacing:0.1em}
+  .v6 .head .industry{font-size:11px;color:#52525b;font-weight:600}
+  .v6 .body{padding:28px 28px 24px}
+  .v6 .company{font-size:13px;font-weight:700;color:#18181b;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .v6 .company .corp::before{content:"株式会社 ";color:#71717a;font-weight:500;font-size:11px}
+  .v6 .date{font-size:11px;color:#a1a1aa;font-weight:500;margin-bottom:14px}
+  .v6 h3{font-size:18px;margin:0 0 18px;font-weight:700;line-height:1.6;color:#18181b}
+  .v6 .table{width:100%;border-collapse:collapse;margin-bottom:18px}
+  .v6 .table th{text-align:left;padding:10px 0;color:#71717a;font-size:11px;font-weight:600;letter-spacing:0.05em;border-bottom:1px solid #e4e4e7;width:100px}
+  .v6 .table td{padding:10px 0 10px 16px;color:#18181b;font-size:13px;font-weight:600;border-bottom:1px solid #e4e4e7}
+  .v6 .table tr:last-child th,.v6 .table tr:last-child td{border-bottom:none}
+  .v6 .features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .v6 .features span{font-size:11px;color:#52525b;background:#f4f4f5;border:1px solid #e4e4e7;padding:4px 10px;font-weight:600}
+  .v6 .foot{padding:16px 28px;background:#fafafa;border-top:1px solid #e4e4e7;display:flex;justify-content:space-between;align-items:center}
+  .v6 .foot .req{font-size:11px;color:#71717a}
+  .v6 .foot .btn{font-size:12px;color:#fff;background:#18181b;padding:10px 24px;font-weight:700;letter-spacing:0.05em}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>厳選AIインターン / フラットコーポレート案</h1>
+  <p>装飾を抑えた、企業サイト系のフラットデザイン6案</p>
+</header>
+
+<!-- 案1 -->
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">コーポレートブルー / 左ボーダーアクセント</div>
+  <p class="ds">紺の左ボーダー1本でアクセント、4列のメタグリッド。SaaS系コーポレートの定番。</p>
+  <div class="stage">
+    <a href="#" class="v1">
+      <div class="top"><span class="cat">LLM ENGINEER</span><span class="pickup">PICKUP</span><span class="date">2026.04.05 更新</span></div>
+      <div class="company">株式会社ニューロンクラフト</div>
+      <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+      <div class="meta-grid">
+        <div class="it"><div class="k">給与</div><div class="v">時給 ¥2,000〜¥4,000</div></div>
+        <div class="it"><div class="k">勤務地</div><div class="v">渋谷 / リモート可</div></div>
+        <div class="it"><div class="k">勤務条件</div><div class="v">週3日〜 / 5h〜</div></div>
+        <div class="it"><div class="k">業界</div><div class="v">AI SaaS / LLM</div></div>
+      </div>
+      <div class="tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会あり</span><span>未経験OK</span></div>
+      <div class="foot"><span class="req">必須: Python / 歓迎: LangChain・LlamaIndex</span><span class="more">詳細を見る →</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- 案2 -->
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">グレーフラット / 罫線のみ</div>
+  <p class="ds">完全フラット、影ゼロ。ヘッダー・ボディ・フッターの3層構造で固い印象。</p>
+  <div class="stage">
+    <a href="#" class="v2">
+      <div class="head">
+        <div class="left"><span class="num">N°001</span><span class="company">株式会社ニューロンクラフト</span><span class="pickup">PICKUP</span></div>
+        <span class="date">2日前更新</span>
+      </div>
+      <div class="body">
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <dl class="table">
+          <dt>職種</dt><dd>LLMアプリケーションエンジニア</dd>
+          <dt>給与</dt><dd>時給 ¥2,000〜¥4,000</dd>
+          <dt>勤務地</dt><dd>渋谷駅 徒歩5分 / フルリモート可</dd>
+          <dt>勤務条件</dt><dd>週3日〜 / 1日5時間〜 / 3ヶ月〜</dd>
+          <dt>必須スキル</dt><dd>Python / 新しい技術への好奇心</dd>
+        </dl>
+      </div>
+      <div class="foot"><span class="btn">詳細を見る</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- 案3 -->
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">ブルーリボン / カテゴリラベル付き</div>
+  <p class="ds">上部に青いリボンバー、ボディは白く整然と。Salesforce系コーポレートの雰囲気。</p>
+  <div class="stage">
+    <a href="#" class="v3">
+      <div class="ribbon">
+        <div class="left"><span class="icon">▸</span><span>FEATURED · LLM ENGINEER</span></div>
+        <span>NEW</span>
+      </div>
+      <div class="body">
+        <div class="company">株式会社ニューロンクラフト</div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <div class="features"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会あり</span><span>未経験OK</span></div>
+        <div class="meta">
+          <div class="it"><span class="k">SALARY</span><span class="v">時給 ¥2,000〜¥4,000</span></div>
+          <div class="it"><span class="k">LOCATION</span><span class="v">渋谷 / リモート</span></div>
+          <div class="it"><span class="k">SHIFT</span><span class="v">週3日〜 / 5h〜</span></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 案4 -->
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">ボーダーレス / 大余白・横区切り</div>
+  <p class="ds">カードに枠なし、横線一本で区切るだけ。Vercel/Linear系のミニマルコーポレート。</p>
+  <div class="stage">
+    <a href="#" class="v4">
+      <div class="top"><span class="num">001</span><span class="cat">LLM ENGINEER</span><span class="date">2026.04.05</span></div>
+      <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+      <div class="company">株式会社ニューロンクラフト · AI SaaS / LLM</div>
+      <div class="features"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会あり</span><span>未経験OK</span></div>
+      <div class="row">
+        <div class="meta">
+          <div class="it"><span class="k">SALARY</span><span class="v">¥2,000〜¥4,000 / h</span></div>
+          <div class="it"><span class="k">LOCATION</span><span class="v">渋谷 / Remote</span></div>
+          <div class="it"><span class="k">SHIFT</span><span class="v">3 days / week ~</span></div>
+        </div>
+        <span class="more">View details →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 案5 -->
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">IBM風 / 細字大型タイトル + 縦ストライプ</div>
+  <p class="ds">左に8pxの黒い縦ストライプ、本文は細字の大きな見出し。エンタープライズ感。</p>
+  <div class="stage">
+    <a href="#" class="v5">
+      <div class="stripe"></div>
+      <div class="body">
+        <div class="top"><span class="pickup">PICKUP</span><span class="company">株式会社ニューロンクラフト</span><span class="date">2026.04.05</span></div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <p class="desc">「ChatGPT使えます」はもう古い。作る側に来い。RAG構築からファインチューニングまで、一気通貫で実務を経験。</p>
+        <div class="features"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会あり</span><span>未経験OK</span></div>
+        <div class="meta">
+          <div class="it"><div class="k">SALARY</div><div class="v">¥2,000〜¥4,000 / h</div></div>
+          <div class="it"><div class="k">LOCATION</div><div class="v">渋谷 / Remote</div></div>
+          <div class="it"><div class="k">SHIFT</div><div class="v">3+ days / week</div></div>
+          <span class="more">Learn more →</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 案6 -->
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">日本メーカー系 / 整然テーブル</div>
+  <p class="ds">グレーヘッダ + 罫線テーブル + 黒ボタン。日本のメーカー・SIerコーポレート定番。</p>
+  <div class="stage">
+    <a href="#" class="v6">
+      <div class="head">
+        <div class="left"><span class="id">JOB-NC-001</span><span class="pickup">PICKUP</span></div>
+        <span class="industry">AI SaaS / LLM</span>
+      </div>
+      <div class="body">
+        <div class="company"><span class="corp">ニューロンクラフト</span></div>
+        <div class="date">掲載日: 2026年04月05日</div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <table class="table">
+          <tr><th>職種</th><td>LLMアプリケーションエンジニア / RAGパイプライン構築</td></tr>
+          <tr><th>給与</th><td>時給 2,000円 〜 4,000円（交通費全額支給）</td></tr>
+          <tr><th>勤務地</th><td>東京都渋谷区（渋谷駅 徒歩5分）／フルリモート可</td></tr>
+          <tr><th>勤務条件</th><td>週3日〜／1日5時間〜／最低3ヶ月</td></tr>
+          <tr><th>必須スキル</th><td>Python（業務経験不問）</td></tr>
+        </table>
+        <div class="features"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会あり</span><span>未経験OK</span></div>
+      </div>
+      <div class="foot"><span class="req">エントリー受付中</span><span class="btn">詳細を見る ▶</span></div>
+    </a>
+  </div>
+</section>
+
+</body></html>

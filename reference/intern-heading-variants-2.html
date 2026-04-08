@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>セクション見出し 追加案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f7f8fa;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #e5e7eb}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:60px 0;border-top:1px solid #e5e7eb;background:#fff}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:700}
+  .ds{max-width:1100px;margin:0 auto 36px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  /* ============ 案A: 背景に巨大な薄い文字 ============ */
+  .vA{position:relative;padding:36px 0;overflow:hidden}
+  .vA::before{content:"INTERNSHIPS";position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;font-size:140px;font-weight:900;color:rgba(0,0,0,0.04);letter-spacing:-0.02em;line-height:1;font-family:Georgia,serif;pointer-events:none}
+  .vA .body{position:relative;text-align:center}
+  .vA .small{font-size:11px;letter-spacing:0.3em;color:#0a0a0a;font-weight:700;margin:0 0 12px}
+  .vA h2{font-size:36px;margin:0 0 10px;font-weight:900;letter-spacing:-0.01em}
+  .vA .sub{font-size:13px;color:#6b7280;margin:0}
+
+  /* ============ 案B: ステップバー型（プロセス表示） ============ */
+  .vB{padding:24px 0}
+  .vB .top{display:flex;align-items:center;gap:18px;margin-bottom:24px}
+  .vB .top .num{font-size:60px;font-weight:900;line-height:0.85;color:#0a0a0a;font-family:Georgia,serif}
+  .vB .top .body h2{font-size:24px;margin:0 0 4px;font-weight:900}
+  .vB .top .body p{margin:0;font-size:12px;color:#6b7280}
+  .vB .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb}
+  .vB .step{padding:18px 16px;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;gap:4px}
+  .vB .step:last-child{border-right:none}
+  .vB .step .k{font-size:10px;color:#9ca3af;letter-spacing:0.1em;text-transform:uppercase;font-weight:700}
+  .vB .step .v{font-size:18px;font-weight:900;color:#0a0a0a}
+  .vB .step.active .v{color:#10a37f}
+
+  /* ============ 案C: タイピング風（カーソル付き） ============ */
+  .vC{padding:24px 0;font-family:"SF Mono","Menlo",monospace}
+  .vC .prompt{font-size:11px;color:#10a37f;margin:0 0 8px;letter-spacing:0.05em}
+  .vC .prompt::before{content:"$ "}
+  .vC h2{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:30px;margin:0 0 8px;font-weight:900;letter-spacing:-0.01em;color:#0a0a0a}
+  .vC h2 .cursor{display:inline-block;width:14px;height:30px;background:#0a0a0a;vertical-align:-6px;margin-left:6px;animation:bl 1s steps(1) infinite}
+  @keyframes bl{50%{opacity:0}}
+  .vC .meta{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:13px;color:#6b7280;margin:0 0 14px}
+  .vC .stats{display:flex;gap:18px;font-size:11px}
+  .vC .stats span{color:#6b7280}
+  .vC .stats span strong{color:#0a0a0a;font-weight:900}
+
+  /* ============ 案D: 黒帯ナビ統合型 ============ */
+  .vD{background:#0a0a0a;color:#fff;padding:24px 32px;border-radius:14px;display:flex;align-items:center;gap:24px}
+  .vD .icon{width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+  .vD .info h2{font-size:22px;margin:0 0 4px;font-weight:900;letter-spacing:-0.01em}
+  .vD .info p{margin:0;font-size:12px;color:#aab2c0}
+  .vD .right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .vD .right .count{text-align:right}
+  .vD .right .count .v{font-size:24px;font-weight:900;line-height:1;color:#fff}
+  .vD .right .count .k{font-size:10px;color:#aab2c0;letter-spacing:0.1em}
+  .vD .right .filter{background:#fff;color:#0a0a0a;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:800}
+
+  /* ============ 案E: 二段カラー（黄ハイライト + 副題） ============ */
+  .vE{padding:32px 0}
+  .vE .marker{display:inline-block;background:linear-gradient(180deg,transparent 50%,#fef08a 50%);padding:0 4px;font-size:36px;font-weight:900;letter-spacing:-0.01em;line-height:1.4}
+  .vE h2{margin:0 0 16px;font-weight:900}
+  .vE .sub{font-size:14px;color:#6b7280;margin:0 0 14px;max-width:560px}
+  .vE .ribbon{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;background:#0a0a0a;color:#fff;font-size:11px;font-weight:800;letter-spacing:0.1em;border-radius:999px}
+  .vE .ribbon .dot{width:6px;height:6px;background:#10a37f;border-radius:50%;box-shadow:0 0 0 4px rgba(16,163,127,0.25)}
+
+  /* ============ 案F: マガジン中央 + サイド数字 ============ */
+  .vF{padding:0;display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center;border-top:2px solid #0a0a0a;border-bottom:2px solid #0a0a0a;padding:28px 0}
+  .vF .left .num{font-size:54px;font-weight:900;line-height:0.85;font-family:Georgia,serif}
+  .vF .left .label{font-size:10px;letter-spacing:0.2em;color:#9ca3af;margin-top:4px}
+  .vF .center{text-align:center}
+  .vF .center .small{font-size:11px;letter-spacing:0.3em;color:#dc2626;font-weight:700;margin:0 0 6px}
+  .vF .center h2{font-size:26px;margin:0 0 4px;font-weight:900;font-family:"Hiragino Mincho ProN",serif;letter-spacing:0.02em}
+  .vF .center p{margin:0;font-size:12px;color:#6b7280}
+  .vF .right{text-align:right}
+  .vF .right .updated{font-size:10px;color:#9ca3af;letter-spacing:0.1em;margin-bottom:4px}
+  .vF .right .live{display:inline-flex;align-items:center;gap:6px;background:#fef08a;padding:4px 10px;font-size:10px;font-weight:900;letter-spacing:0.1em}
+  .vF .right .live::before{content:"";width:6px;height:6px;background:#dc2626;border-radius:50%}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>「AIインターンシップ一覧」見出し 追加案</h1>
+  <p>これまでと違う方向で6案</p>
+</header>
+
+<section>
+  <div class="label">CASE 08</div>
+  <div class="nm">背景に巨大な薄い文字（タイポレイヤー）</div>
+  <p class="ds">背景に「INTERNSHIPS」の巨大文字を薄く敷き、手前に日本語見出し。エディトリアル系。</p>
+  <div class="stage"><div class="vA"><div class="body"><p class="small">F E A T U R E D</p><h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2><p class="sub">厳選AIインターン</p></div></div></div>
+</section>
+
+<section>
+  <div class="label">CASE 09</div>
+  <div class="nm">巨大ナンバー + 4列ステップバー</div>
+  <p class="ds">タイトルの隣にデカ番号、下に「件数 / 企業 / 職種 / 更新日」のステップ表示。</p>
+  <div class="stage"><div class="vB">
+    <div class="top">
+      <div class="num">01</div>
+      <div class="body"><h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2><p>厳選AIインターン</p></div>
+    </div>
+    <div class="steps">
+      <div class="step active"><span class="k">掲載数</span><span class="v">248件</span></div>
+      <div class="step"><span class="k">参加企業</span><span class="v">87社</span></div>
+      <div class="step"><span class="k">職種</span><span class="v">12カテゴリ</span></div>
+      <div class="step"><span class="k">更新</span><span class="v">毎週</span></div>
+    </div>
+  </div></div>
+</section>
+
+<section>
+  <div class="label">CASE 10</div>
+  <div class="nm">タイピング風 + ターミナル</div>
+  <p class="ds">コマンドラインから始まり、見出し横にカーソル点滅。テック感+遊び心。</p>
+  <div class="stage"><div class="vC">
+    <p class="prompt">grep --recursive "AI" ./internships/</p>
+    <h2>AIインターンシップ一覧 ー 全部AI。例外なし。<span class="cursor"></span></h2>
+    <p class="meta">// 厳選AIインターン</p>
+    <div class="stats"><span><strong>248</strong> results</span><span><strong>87</strong> companies</span><span><strong>12</strong> categories</span></div>
+  </div></div>
+</section>
+
+<section>
+  <div class="label">CASE 11</div>
+  <div class="nm">黒帯バナー型（アイコン + 件数 + ボタン）</div>
+  <p class="ds">サイト内の他セクションと差別化される黒帯バナー。フィルターボタン付き。</p>
+  <div class="stage"><div class="vD">
+    <div class="icon">⚡</div>
+    <div class="info"><h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2><p>厳選AIインターン</p></div>
+    <div class="right">
+      <div class="count"><div class="v">248</div><div class="k">JOBS</div></div>
+      <div class="filter">FILTER ▾</div>
+    </div>
+  </div></div>
+</section>
+
+<section>
+  <div class="label">CASE 12</div>
+  <div class="nm">マーカーハイライト + ステータスリボン</div>
+  <p class="ds">部分的に黄色マーカーで強調 + 「LIVE」リボン。動きと安心感の両立。</p>
+  <div class="stage"><div class="vE">
+    <h2>
+      <span class="marker">AIインターンシップ一覧</span><br>
+      <span class="marker">ー 全部AI。例外なし。</span>
+    </h2>
+    <p class="sub">本気でAIに振り切ったインターンだけを厳選。スクロールで全てチェック。</p>
+    <div class="ribbon"><span class="dot"></span>LIVE · 厳選AIインターン · 248件掲載中</div>
+  </div></div>
+</section>
+
+<section>
+  <div class="label">CASE 13</div>
+  <div class="nm">マガジン3カラム / 中央タイトル + サイド情報</div>
+  <p class="ds">左にナンバー、中央に明朝見出し、右に更新ステータス。雑誌のトビラ風。</p>
+  <div class="stage"><div class="vF">
+    <div class="left"><div class="num">248</div><div class="label">JOBS</div></div>
+    <div class="center"><p class="small">F E A T U R E D</p><h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2><p>厳選AIインターン</p></div>
+    <div class="right"><div class="updated">UPDATED 2026.04.07</div><span class="live">LIVE</span></div>
+  </div></div>
+</section>
+
+</body></html>

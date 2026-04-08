@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>特集：トップAI企業紹介 デザイン案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#eee;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;padding:40px 0;color:#222}
+  header{text-align:center;margin-bottom:32px}
+  header h1{font-size:24px;margin:0 0 6px}
+  header p{color:#666;font-size:13px;margin:0}
+
+  .case{background:#fff;padding:36px 0;border-top:1px solid #ddd}
+  .case-label{max-width:1100px;margin:0 auto 14px;padding:0 40px;font-size:11px;letter-spacing:0.2em;color:#888}
+  .case-name{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:800}
+  .case-desc{max-width:1100px;margin:0 auto 28px;padding:0 40px;font-size:12px;color:#666}
+
+  /* logos shared */
+  .logo-openai{color:#74aa9c}
+  .logo-google{background:linear-gradient(135deg,#4285F4,#9168C0,#1BA1E3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900}
+  .logo-anthropic{color:#d97706}
+  .logo-meta{background:linear-gradient(135deg,#0668E1,#0081FB,#00C2FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900}
+
+  /* ============ 案1: ミニマル横長カード（明朝・モノトーン） ============ */
+  .v1-wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+  .v1-head{text-align:center;border-top:1px solid #000;border-bottom:1px solid #000;padding:24px 0;margin-bottom:32px}
+  .v1-head h2{font-size:22px;margin:0 0 6px;font-family:"Hiragino Mincho ProN",serif;letter-spacing:0.1em}
+  .v1-head p{font-size:11px;letter-spacing:0.25em;color:#666;margin:0}
+  .v1-list{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid #000}
+  .v1-item{display:flex;align-items:center;gap:20px;padding:24px 16px;border-bottom:1px solid #000;text-decoration:none;color:#000;transition:.2s}
+  .v1-item:nth-child(odd){border-right:1px solid #000}
+  .v1-item:hover{background:#000;color:#fff}
+  .v1-item:hover .v1-num{color:#fff}
+  .v1-item:hover .v1-desc{color:#aaa}
+  .v1-num{font-size:32px;font-family:Georgia,serif;font-weight:900;color:#000;width:60px;text-align:center}
+  .v1-info{flex:1}
+  .v1-name{font-size:18px;font-weight:900;letter-spacing:0.05em;margin:0 0 4px}
+  .v1-desc{font-size:11px;color:#666;letter-spacing:0.1em;margin:0}
+  .v1-arrow{font-size:18px}
+
+  /* ============ 案2: ロゴ巨大ヒーロー (4つ縦並びの大型バナー) ============ */
+  .v2-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+  .v2-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;border-bottom:2px solid #000;padding-bottom:14px}
+  .v2-head h2{font-size:24px;margin:0;font-weight:900}
+  .v2-head .more{font-size:12px;text-decoration:none;color:#000;border-bottom:1px solid #000;padding-bottom:2px}
+  .v2-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .v2-card{background:#f5f5f5;padding:36px 24px;text-decoration:none;color:#000;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:200px;transition:.25s;border:1px solid transparent}
+  .v2-card:hover{background:#fff;border-color:#000;transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,0.08)}
+  .v2-card .big{font-size:42px;font-weight:900;letter-spacing:-0.02em;margin-bottom:14px;line-height:1}
+  .v2-card .name{font-size:13px;font-weight:700;margin-bottom:4px}
+  .v2-card .product{font-size:11px;color:#666;letter-spacing:0.1em}
+
+  /* ============ 案3: マガジンスタイル（横長カード、大きな番号） ============ */
+  .v3-wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+  .v3-tagline{font-size:11px;letter-spacing:0.4em;color:#888;margin:0 0 6px}
+  .v3-h2{font-size:32px;font-weight:900;margin:0 0 32px;font-family:"Hiragino Mincho ProN",serif}
+  .v3-h2 span{color:#4caf50}
+  .v3-list{display:flex;flex-direction:column;gap:16px}
+  .v3-row{display:grid;grid-template-columns:80px 1fr 200px 60px;gap:24px;align-items:center;padding:24px 28px;background:#fff;border:1px solid #ddd;border-radius:14px;text-decoration:none;color:#000;transition:.2s}
+  .v3-row:hover{border-color:#4caf50;box-shadow:0 6px 20px rgba(76,175,80,0.12)}
+  .v3-row .num{font-size:42px;font-weight:900;color:#e0e0e0;font-family:Georgia,serif;line-height:1}
+  .v3-row:hover .num{color:#4caf50}
+  .v3-row .ttl{font-size:20px;font-weight:800;margin:0 0 4px}
+  .v3-row .sub{font-size:12px;color:#666;margin:0}
+  .v3-row .pill{font-size:10px;background:#000;color:#fff;padding:5px 12px;border-radius:999px;font-weight:700;letter-spacing:0.1em;text-align:center}
+  .v3-row .arrow{font-size:24px;text-align:right;color:#888}
+
+  /* ============ 案4: ダークテーマ + ネオン枠 ============ */
+  .v4-wrap{background:#0a0a0a;padding:50px 40px;max-width:1100px;margin:0 auto;border-radius:20px}
+  .v4-h{text-align:center;margin-bottom:32px}
+  .v4-h h2{color:#fff;font-size:24px;margin:0 0 6px}
+  .v4-h p{color:#888;font-size:12px;margin:0;letter-spacing:0.15em}
+  .v4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .v4-card{background:#161616;padding:30px 18px;border-radius:14px;text-align:center;text-decoration:none;border:1px solid #2a2a2a;transition:.25s;position:relative;overflow:hidden}
+  .v4-card::before{content:"";position:absolute;inset:0;border-radius:14px;padding:1px;background:linear-gradient(135deg,#4caf50,#00bcd4);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:.25s}
+  .v4-card:hover::before{opacity:1}
+  .v4-card:hover{transform:translateY(-4px)}
+  .v4-card .lg{font-size:32px;font-weight:900;margin-bottom:12px}
+  .v4-card .nm{color:#fff;font-size:14px;font-weight:700;margin-bottom:4px}
+  .v4-card .pd{color:#666;font-size:11px;letter-spacing:0.1em}
+
+  /* ============ 案5: ストライプ・ロゴウォール (1行) ============ */
+  .v5-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+  .v5-h{text-align:center;margin-bottom:30px}
+  .v5-h h2{font-size:22px;margin:0 0 4px}
+  .v5-h p{font-size:11px;color:#888;margin:0;letter-spacing:0.2em}
+  .v5-bar{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:2px solid #000;border-bottom:2px solid #000}
+  .v5-cell{padding:36px 20px;text-align:center;text-decoration:none;color:#000;border-right:1px solid #ddd;transition:.2s}
+  .v5-cell:last-child{border-right:none}
+  .v5-cell:hover{background:#000;color:#fff}
+  .v5-cell:hover .v5-product{color:#aaa}
+  .v5-cell .v5-logo{font-size:38px;font-weight:900;line-height:1;margin-bottom:14px;letter-spacing:-0.03em}
+  .v5-cell .v5-name{font-size:13px;font-weight:700;letter-spacing:0.05em}
+  .v5-cell .v5-product{font-size:10px;color:#888;letter-spacing:0.2em;margin-top:4px}
+
+  /* ============ 案6: タイル+グラデオーバーレイ (大きめ) ============ */
+  .v6-wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+  .v6-h{margin-bottom:24px}
+  .v6-h .small{font-size:11px;color:#4caf50;letter-spacing:0.3em;margin:0 0 6px}
+  .v6-h h2{font-size:28px;margin:0;font-weight:900}
+  .v6-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .v6-tile{aspect-ratio:1;border-radius:18px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;padding:22px;color:#fff;position:relative;overflow:hidden;transition:.25s}
+  .v6-tile:hover{transform:scale(1.03)}
+  .v6-tile.openai{background:linear-gradient(135deg,#10a37f,#1a7f64)}
+  .v6-tile.google{background:linear-gradient(135deg,#4285F4,#9168C0)}
+  .v6-tile.anthropic{background:linear-gradient(135deg,#d97706,#92400e)}
+  .v6-tile.meta{background:linear-gradient(135deg,#0668E1,#00C2FF)}
+  .v6-tile .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .v6-tile .badge{background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;backdrop-filter:blur(10px)}
+  .v6-tile .arrow{font-size:20px}
+  .v6-tile .bottom .product{font-size:11px;opacity:0.85;margin:0 0 4px;letter-spacing:0.15em}
+  .v6-tile .bottom h3{font-size:22px;margin:0;font-weight:900;letter-spacing:0.02em}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>特集：トップAI企業紹介 デザイン案</h1>
+  <p>OpenAI / Google / Anthropic / Meta の表示パターン・6案</p>
+</header>
+
+<!-- ====== 案1 ====== -->
+<div class="case">
+  <div class="case-label">CASE 01</div>
+  <div class="case-name">ミニマル / 2列リスト（明朝）</div>
+  <p class="case-desc">罫線とナンバリングだけで構成。雑誌の目次のように整然と。ホバーで黒反転。</p>
+  <div class="v1-wrap">
+    <div class="v1-head">
+      <h2>特 集 ・ ト ッ プ A I 企 業</h2>
+      <p>F E A T U R E D   A I   C O M P A N I E S</p>
+    </div>
+    <div class="v1-list">
+      <a href="#" class="v1-item"><div class="v1-num">01</div><div class="v1-info"><p class="v1-name">OpenAI</p><p class="v1-desc">ChatGPT / GPT-4</p></div><span class="v1-arrow">→</span></a>
+      <a href="#" class="v1-item"><div class="v1-num">02</div><div class="v1-info"><p class="v1-name">Google</p><p class="v1-desc">Gemini / DeepMind</p></div><span class="v1-arrow">→</span></a>
+      <a href="#" class="v1-item"><div class="v1-num">03</div><div class="v1-info"><p class="v1-name">Anthropic</p><p class="v1-desc">Claude</p></div><span class="v1-arrow">→</span></a>
+      <a href="#" class="v1-item"><div class="v1-num">04</div><div class="v1-info"><p class="v1-name">Meta AI</p><p class="v1-desc">LLaMA</p></div><span class="v1-arrow">→</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 案2 ====== -->
+<div class="case">
+  <div class="case-label">CASE 02</div>
+  <div class="case-name">ロゴ巨大ヒーロー（タイポ重視）</div>
+  <p class="case-desc">企業名を巨大なタイポで表示。シンプル＆視認性最優先。</p>
+  <div class="v2-wrap">
+    <div class="v2-head"><h2>特集：トップAI企業</h2><a href="#" class="more">VIEW ALL →</a></div>
+    <div class="v2-grid">
+      <a href="#" class="v2-card"><div class="big logo-openai">OpenAI</div><div class="name">サンフランシスコ</div><div class="product">CHATGPT</div></a>
+      <a href="#" class="v2-card"><div class="big logo-google">Google</div><div class="name">マウンテンビュー</div><div class="product">GEMINI</div></a>
+      <a href="#" class="v2-card"><div class="big logo-anthropic">Anthropic</div><div class="name">サンフランシスコ</div><div class="product">CLAUDE</div></a>
+      <a href="#" class="v2-card"><div class="big logo-meta">Meta AI</div><div class="name">メンロパーク</div><div class="product">LLAMA</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 案3 ====== -->
+<div class="case">
+  <div class="case-label">CASE 03</div>
+  <div class="case-name">マガジンスタイル / 横長ランキング</div>
+  <p class="case-desc">大きな番号 + 企業名 + バッジ + 矢印。雑誌のランキング記事風。</p>
+  <div class="v3-wrap">
+    <p class="v3-tagline">F E A T U R E D</p>
+    <h2 class="v3-h2">特集：<span>トップAI企業</span></h2>
+    <div class="v3-list">
+      <a href="#" class="v3-row"><div class="num">01</div><div><p class="ttl">OpenAI</p><p class="sub">ChatGPT・GPT-4を生んだ世界最先端AI企業</p></div><div class="pill">FOUNDATION</div><div class="arrow">→</div></a>
+      <a href="#" class="v3-row"><div class="num">02</div><div><p class="ttl">Google</p><p class="sub">GeminiとDeepMindを擁する検索王</p></div><div class="pill">BIG TECH</div><div class="arrow">→</div></a>
+      <a href="#" class="v3-row"><div class="num">03</div><div><p class="ttl">Anthropic</p><p class="sub">Claudeを開発するAI安全研究所</p></div><div class="pill">SAFETY</div><div class="arrow">→</div></a>
+      <a href="#" class="v3-row"><div class="num">04</div><div><p class="ttl">Meta AI</p><p class="sub">LLaMAを世界にOSSで開放</p></div><div class="pill">OPEN SOURCE</div><div class="arrow">→</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 案4 ====== -->
+<div class="case">
+  <div class="case-label">CASE 04</div>
+  <div class="case-name">ダーク + ネオン枠（ホバーでグラデ点灯）</div>
+  <p class="case-desc">黒背景にホバー時グラデーションのボーダーが浮き出るテック感のあるレイアウト。</p>
+  <div class="v4-wrap">
+    <div class="v4-h"><h2>特集：トップAI企業紹介</h2><p>F E A T U R E D   C O M P A N I E S</p></div>
+    <div class="v4-grid">
+      <a href="#" class="v4-card"><div class="lg logo-openai">OpenAI</div><div class="nm">OpenAI</div><div class="pd">CHATGPT</div></a>
+      <a href="#" class="v4-card"><div class="lg logo-google">Google</div><div class="nm">Google</div><div class="pd">GEMINI</div></a>
+      <a href="#" class="v4-card"><div class="lg logo-anthropic">Anthropic</div><div class="nm">Anthropic</div><div class="pd">CLAUDE</div></a>
+      <a href="#" class="v4-card"><div class="lg logo-meta">Meta</div><div class="nm">Meta AI</div><div class="pd">LLAMA</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 案5 ====== -->
+<div class="case">
+  <div class="case-label">CASE 05</div>
+  <div class="case-name">ロゴウォール / フルブリード1行</div>
+  <p class="case-desc">画面いっぱいの1行ストライプ。BtoBサイトの「導入企業」風の信頼感。</p>
+  <div class="v5-wrap">
+    <div class="v5-h"><h2>特集：トップAI企業紹介</h2><p>T R U S T E D   B Y   T H E   B E S T</p></div>
+    <div class="v5-bar">
+      <a href="#" class="v5-cell"><div class="v5-logo logo-openai">OpenAI</div><div class="v5-name">OpenAI</div><div class="v5-product">CHATGPT</div></a>
+      <a href="#" class="v5-cell"><div class="v5-logo logo-google">Google</div><div class="v5-name">Google</div><div class="v5-product">GEMINI</div></a>
+      <a href="#" class="v5-cell"><div class="v5-logo logo-anthropic">Anthropic</div><div class="v5-name">Anthropic</div><div class="v5-product">CLAUDE</div></a>
+      <a href="#" class="v5-cell"><div class="v5-logo logo-meta">Meta</div><div class="v5-name">Meta AI</div><div class="v5-product">LLAMA</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 案6 ====== -->
+<div class="case">
+  <div class="case-label">CASE 06</div>
+  <div class="case-name">グラデーションタイル（カラフル）</div>
+  <p class="case-desc">各社のブランドカラーで4タイルを敷き詰める。アプリストア風で目を引く。</p>
+  <div class="v6-wrap">
+    <div class="v6-h"><p class="small">F E A T U R E D</p><h2>特集：トップAI企業</h2></div>
+    <div class="v6-grid">
+      <a href="#" class="v6-tile openai"><div class="top"><span class="badge">FOUNDATION</span><span class="arrow">↗</span></div><div class="bottom"><p class="product">CHATGPT</p><h3>OpenAI</h3></div></a>
+      <a href="#" class="v6-tile google"><div class="top"><span class="badge">BIG TECH</span><span class="arrow">↗</span></div><div class="bottom"><p class="product">GEMINI</p><h3>Google</h3></div></a>
+      <a href="#" class="v6-tile anthropic"><div class="top"><span class="badge">SAFETY</span><span class="arrow">↗</span></div><div class="bottom"><p class="product">CLAUDE</p><h3>Anthropic</h3></div></a>
+      <a href="#" class="v6-tile meta"><div class="top"><span class="badge">OPEN SOURCE</span><span class="arrow">↗</span></div><div class="bottom"><p class="product">LLAMA</p><h3>Meta AI</h3></div></a>
+    </div>
+  </div>
+</div>
+
+</body></html>

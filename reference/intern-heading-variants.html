@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>セクション見出しデザイン案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f7f8fa;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111;-webkit-font-smoothing:antialiased}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #e5e7eb}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:700}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:60px 0;border-top:1px solid #e5e7eb;background:#fff}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.2em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:700}
+  .ds{max-width:1100px;margin:0 auto 36px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  /* ============ 案1: 大型タイポ + アンダーライン ============ */
+  .v1{padding:0}
+  .v1 .small{font-size:12px;color:#2563eb;font-weight:700;letter-spacing:0.25em;margin:0 0 12px}
+  .v1 h2{font-size:42px;margin:0 0 16px;font-weight:900;letter-spacing:-0.02em;line-height:1.25;color:#0a0a0a}
+  .v1 h2 em{font-style:normal;background:linear-gradient(transparent 65%,#fef08a 65%)}
+  .v1 .meta{display:flex;align-items:center;gap:14px;padding-top:14px;border-top:2px solid #0a0a0a}
+  .v1 .meta .count{font-size:14px;font-weight:700}
+  .v1 .meta .count strong{font-size:24px;color:#2563eb;margin:0 4px}
+  .v1 .meta .filter{margin-left:auto;font-size:12px;color:#6b7280}
+
+  /* ============ 案2: 縦バー + 副題横並び ============ */
+  .v2{display:flex;align-items:center;gap:24px;padding:24px 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb}
+  .v2 .bar{width:6px;height:64px;background:#0a0a0a}
+  .v2 .titles h2{font-size:28px;margin:0 0 6px;font-weight:900;letter-spacing:-0.01em}
+  .v2 .titles p{margin:0;color:#6b7280;font-size:13px}
+  .v2 .right{margin-left:auto;display:flex;align-items:center;gap:18px}
+  .v2 .right .count{font-size:13px;color:#6b7280}
+  .v2 .right .count strong{color:#0a0a0a;font-size:18px;margin:0 4px;font-weight:900}
+  .v2 .right .sort{font-size:12px;border:1px solid #d1d5db;padding:8px 14px;color:#374151;font-weight:600}
+
+  /* ============ 案3: ブランドカラー帯 + 中央タイポ ============ */
+  .v3{text-align:center;padding:50px 24px;background:linear-gradient(180deg,#f0f9ff,#fff);border:1px solid #bfdbfe;border-radius:0}
+  .v3 .label{font-size:11px;letter-spacing:0.3em;color:#1d4ed8;font-weight:700;margin:0 0 14px;display:flex;align-items:center;justify-content:center;gap:14px}
+  .v3 .label::before,.v3 .label::after{content:"";width:30px;height:1px;background:#1d4ed8}
+  .v3 h2{font-size:36px;margin:0 0 12px;font-weight:900;letter-spacing:-0.01em;color:#0a0a0a}
+  .v3 .sub{font-size:14px;color:#475569;margin:0 0 22px}
+  .v3 .meta{display:inline-flex;align-items:center;gap:12px;padding:8px 18px;background:#fff;border:1px solid #bfdbfe;border-radius:999px;font-size:12px}
+  .v3 .meta .dot{width:6px;height:6px;background:#22c55e;border-radius:50%}
+  .v3 .meta strong{color:#1d4ed8;font-weight:900}
+
+  /* ============ 案4: コードコメント風 ============ */
+  .v4{background:#0a0a0a;color:#fff;padding:36px 40px;font-family:"SF Mono","Menlo",monospace}
+  .v4 .top{font-size:11px;color:#7ee787;margin-bottom:14px}
+  .v4 .top::before{content:"$ "}
+  .v4 h2{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:32px;margin:0 0 6px;font-weight:900;color:#fff;letter-spacing:-0.01em}
+  .v4 .sub{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:13px;color:#7d8590;margin:0 0 18px}
+  .v4 .meta{display:flex;gap:24px;font-size:12px;color:#7d8590;padding-top:14px;border-top:1px solid #21262d}
+  .v4 .meta span strong{color:#7ee787;margin-right:6px}
+  .v4 .blink{display:inline-block;width:8px;height:14px;background:#7ee787;vertical-align:middle;margin-left:4px;animation:bl 1s steps(1) infinite}
+  @keyframes bl{50%{opacity:0}}
+
+  /* ============ 案5: マガジン / 見出し2段 + 区切り罫線 ============ */
+  .v5{padding:32px 0;border-top:4px solid #0a0a0a;border-bottom:1px solid #0a0a0a;display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:end}
+  .v5 .left{font-family:Georgia,serif}
+  .v5 .left .num{font-size:64px;font-weight:900;line-height:0.85;color:#0a0a0a}
+  .v5 .left .total{font-size:11px;color:#6b7280;letter-spacing:0.15em;margin-top:6px}
+  .v5 .right .small{font-size:11px;letter-spacing:0.3em;color:#dc2626;font-weight:700;margin:0 0 8px}
+  .v5 .right h2{font-size:32px;margin:0 0 6px;font-weight:900;line-height:1.3;letter-spacing:-0.01em;font-family:"Hiragino Mincho ProN",serif}
+  .v5 .right p{margin:0;font-size:13px;color:#6b7280}
+
+  /* ============ 案6: バッジ + コーポレートシンプル ============ */
+  .v6{padding:0}
+  .v6 .row{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+  .v6 .badge{display:inline-flex;align-items:center;gap:8px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:0.1em;border-radius:4px}
+  .v6 .badge::before{content:"";width:6px;height:6px;background:#22c55e;border-radius:50%;display:inline-block}
+  .v6 .row .updated{font-size:12px;color:#9ca3af;margin-left:auto}
+  .v6 h2{font-size:30px;margin:0 0 8px;font-weight:800;letter-spacing:-0.01em;color:#0a0a0a}
+  .v6 .sub{font-size:14px;color:#6b7280;margin:0 0 20px}
+  .v6 .stats{display:flex;gap:32px;padding:18px 24px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px}
+  .v6 .stats .it{display:flex;flex-direction:column;gap:4px}
+  .v6 .stats .k{font-size:10px;color:#9ca3af;letter-spacing:0.1em;text-transform:uppercase;font-weight:700}
+  .v6 .stats .v{font-size:18px;font-weight:900;color:#0a0a0a}
+  .v6 .stats .v em{font-style:normal;color:#2563eb}
+
+  /* ============ 案7: 全画面ヒーロー風（控えめ） ============ */
+  .v7{text-align:center;padding:60px 24px;background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb}
+  .v7 .eye{font-size:11px;color:#9ca3af;letter-spacing:0.4em;margin:0 0 18px}
+  .v7 h2{font-size:48px;margin:0 0 16px;font-weight:900;line-height:1.2;letter-spacing:-0.02em}
+  .v7 h2 .accent{color:#2563eb}
+  .v7 .sub{font-size:14px;color:#6b7280;margin:0 0 26px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7}
+  .v7 .line{width:60px;height:3px;background:#0a0a0a;margin:0 auto 26px}
+  .v7 .stats{display:inline-flex;gap:40px;padding:14px 28px;background:#f9fafb;border:1px solid #e5e7eb}
+  .v7 .stats .it{font-size:12px;color:#6b7280}
+  .v7 .stats .it strong{display:block;font-size:22px;color:#0a0a0a;font-weight:900;margin-bottom:2px}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>「AIインターンシップ一覧」見出しデザイン案</h1>
+  <p>セクションタイトル+サブタイトル+メタ情報・7案</p>
+</header>
+
+<!-- 案1 -->
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">大型タイポ + マーカーアンダーライン</div>
+  <p class="ds">巨大な見出し、強調したい部分にマーカー風のハイライト。下に件数とフィルターを表示。</p>
+  <div class="stage">
+    <div class="v1">
+      <p class="small">F E A T U R E D   I N T E R N S H I P S</p>
+      <h2>AIインターンシップ一覧<br>ー <em>全部AI。例外なし。</em></h2>
+      <div class="meta">
+        <span class="count">全 <strong>248</strong> 件</span>
+        <span class="filter">フィルター: 厳選AIインターン</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案2 -->
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">縦バー + 副題横並び + ソート</div>
+  <p class="ds">左に黒い縦バー、メイン+副題、右に件数とソートUI。SaaSの一覧画面の定番。</p>
+  <div class="stage">
+    <div class="v2">
+      <div class="bar"></div>
+      <div class="titles">
+        <h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+        <p>厳選AIインターン</p>
+      </div>
+      <div class="right">
+        <span class="count">全 <strong>248</strong> 件</span>
+        <span class="sort">並び替え: 新着順 ▾</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案3 -->
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">ブランドカラー帯 + 中央配置</div>
+  <p class="ds">薄い青グラデの背景帯、中央に大きな見出し。LP的にセクション開始を強く演出。</p>
+  <div class="stage">
+    <div class="v3">
+      <p class="label">F E A T U R E D ・ A I  I N T E R N S H I P S</p>
+      <h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+      <p class="sub">厳選AIインターン</p>
+      <div class="meta"><span class="dot"></span>現在 <strong>248件</strong> 掲載中・毎週更新</div>
+    </div>
+  </div>
+</section>
+
+<!-- 案4 -->
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">ターミナル / コードコメント風</div>
+  <p class="ds">黒背景にコマンドラインっぽい演出。AIインターンサイトの「尖った」雰囲気と相性◎</p>
+  <div class="stage">
+    <div class="v4">
+      <div class="top">grep "AI" --recursive ./internships/<span class="blink"></span></div>
+      <h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+      <p class="sub">// 厳選AIインターン</p>
+      <div class="meta">
+        <span><strong>248</strong>results</span>
+        <span><strong>87</strong>companies</span>
+        <span><strong>12</strong>categories</span>
+        <span style="margin-left:auto;color:#7ee787">$ updated_now</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案5 -->
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">マガジン / 巨大ナンバー + 明朝</div>
+  <p class="ds">左にデカ数字、右に明朝体の見出し。雑誌の特集ページ風で読み応え。</p>
+  <div class="stage">
+    <div class="v5">
+      <div class="left">
+        <div class="num">248</div>
+        <div class="total">TOTAL LISTINGS</div>
+      </div>
+      <div class="right">
+        <p class="small">F E A T U R E D</p>
+        <h2>AIインターンシップ一覧<br>ー 全部AI。例外なし。</h2>
+        <p>厳選AIインターン / 毎週更新</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案6 -->
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">バッジ + 統計ボックス</div>
+  <p class="ds">「LIVE」バッジで更新されている感を出し、下に件数・企業数のミニ統計。コーポレート寄り。</p>
+  <div class="stage">
+    <div class="v6">
+      <div class="row">
+        <span class="badge">LIVE · 厳選AIインターン</span>
+        <span class="updated">最終更新: 2026.04.07</span>
+      </div>
+      <h2>AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+      <p class="sub">本気でAIに振り切ったインターンだけを厳選しました。</p>
+      <div class="stats">
+        <div class="it"><span class="k">掲載数</span><span class="v"><em>248</em>件</span></div>
+        <div class="it"><span class="k">参加企業</span><span class="v"><em>87</em>社</span></div>
+        <div class="it"><span class="k">職種</span><span class="v"><em>12</em>カテゴリ</span></div>
+        <div class="it"><span class="k">更新頻度</span><span class="v">毎週</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案7 -->
+<section>
+  <div class="label">CASE 07</div>
+  <div class="nm">中央寄せヒーロー（控えめ）</div>
+  <p class="ds">上にアイブロー、巨大見出し、横線、サブ、ミニ統計。LPトップで使われる構成のセクション版。</p>
+  <div class="stage">
+    <div class="v7">
+      <p class="eye">F E A T U R E D ・ A I  I N T E R N S H I P S</p>
+      <h2>AIインターンシップ一覧<br>ー 全部AI。<span class="accent">例外なし。</span></h2>
+      <div class="line"></div>
+      <p class="sub">「AIっぽい」じゃない、本気でAIに振り切ったインターンだけ。<br>厳選された248件をお届けします。</p>
+      <div class="stats">
+        <div class="it"><strong>248</strong>掲載数</div>
+        <div class="it"><strong>87</strong>参加企業</div>
+        <div class="it"><strong>12</strong>カテゴリ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body></html>

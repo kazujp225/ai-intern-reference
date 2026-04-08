@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヘッダー アルゴリズミックアート案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f5f7;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header.page{padding:50px 20px 30px;background:#fff;border-bottom:1px solid #e5e7eb;text-align:center}
+  header.page h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header.page p{color:#6b7280;font-size:13px;margin:0}
+
+  section.case{padding:32px 0;background:#fff;border-top:1px solid #eee}
+  .label{max-width:1300px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1300px;margin:0 auto 6px;padding:0 40px;font-size:17px;font-weight:800}
+  .ds{max-width:1300px;margin:0 auto 18px;padding:0 40px;font-size:12px;color:#6b7280;line-height:1.6}
+
+  .header-demo{position:relative;height:110px;background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;overflow:hidden}
+  .header-demo canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .header-demo .content{position:relative;z-index:2;height:100%;display:flex;align-items:center;padding:0 60px;pointer-events:none}
+  .header-demo .neo-logo{font-family:monospace;font-size:1.4em;font-weight:900;color:#222;letter-spacing:3px;margin-right:auto}
+  .header-demo .neo-logo .bracket{color:#4caf50;font-weight:400}
+  .header-demo nav{display:flex;gap:20px;align-items:center;font-family:monospace;font-size:0.8em}
+  .header-demo nav a{color:#222;text-decoration:none}
+  .header-demo nav a.current{border-bottom:2px solid #222;padding-bottom:2px}
+  .header-demo nav .reg{background:#222;color:#fff;padding:6px 18px;border-radius:4px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>ヘッダー アルゴリズミックアート案</h1>
+  <p>ヘッダー背景に動的アルゴリズム描画・6案</p>
+</header>
+
+<!-- ============ 案1: Flow Field（パーリンノイズ流線） ============ -->
+<section class="case">
+  <div class="label">CASE 01</div>
+  <div class="nm">Flow Field — パーリンノイズの流線</div>
+  <p class="ds">数千個の粒子がノイズ場に沿って流れる。常に変化する有機的な軌跡。</p>
+  <div class="header-demo">
+    <canvas id="c1"></canvas>
+    <div class="content">
+      <span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+      <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案2: Constellation Network（点と線の星座） ============ -->
+<section class="case">
+  <div class="label">CASE 02</div>
+  <div class="nm">Constellation Network — 点と線の星座</div>
+  <p class="ds">浮遊する点が近距離で線で繋がる、ネットワーク的な動き。AI/グラフ感。</p>
+  <div class="header-demo">
+    <canvas id="c2"></canvas>
+    <div class="content">
+      <span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+      <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案3: Sine Waves（重なる波） ============ -->
+<section class="case">
+  <div class="label">CASE 03</div>
+  <div class="nm">Sine Waves — 重なるサイン波</div>
+  <p class="ds">複数のサイン波が異なる速度で流れる。シンプルで上品、静かな動き。</p>
+  <div class="header-demo">
+    <canvas id="c3"></canvas>
+    <div class="content">
+      <span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+      <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案4: Matrix Rain（マトリックス文字降り） ============ -->
+<section class="case">
+  <div class="label">CASE 04</div>
+  <div class="nm">Matrix Rain — マトリックス文字降下</div>
+  <p class="ds">緑の文字が縦に流れる、おなじみのサイバー演出。テック感MAX。</p>
+  <div class="header-demo" style="background:#000">
+    <canvas id="c4"></canvas>
+    <div class="content">
+      <span class="neo-logo" style="color:#fff"><span class="bracket" style="color:#4caf50">[</span>AI_INTERN<span class="bracket" style="color:#4caf50">]</span></span>
+      <nav><a class="current" style="color:#fff;border-bottom-color:#fff">AIインターン</a><a style="color:#fff">AI勉強会</a><a style="color:#aaa">採用担当者様</a><a style="color:#fff">login</a><a class="reg" style="background:#4caf50;color:#000">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案5: Voronoi Cells（ボロノイ分割） ============ -->
+<section class="case">
+  <div class="label">CASE 05</div>
+  <div class="nm">Voronoi-like Cells — 蠢く細胞分割</div>
+  <p class="ds">ぼかしたメタボール風の塊がゆっくり動く。柔らかく有機的。</p>
+  <div class="header-demo">
+    <canvas id="c5"></canvas>
+    <div class="content">
+      <span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+      <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案6: Sacred Geometry / Spirograph ============ -->
+<section class="case">
+  <div class="label">CASE 06</div>
+  <div class="nm">Spirograph — 回転する幾何学曲線</div>
+  <p class="ds">数学曲線（lissajous / spirograph）が常時描画されては薄れる。神秘的。</p>
+  <div class="header-demo">
+    <canvas id="c6"></canvas>
+    <div class="content">
+      <span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+      <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav>
+    </div>
+  </div>
+</section>
+
+<script>
+// 共通: canvas を親要素にフィット
+function fit(canvas){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  const w = canvas.parentElement.clientWidth;
+  const h = canvas.parentElement.clientHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w, h };
+}
+
+// ===== 1. Flow Field =====
+(function(){
+  const c = document.getElementById('c1');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const N = 600;
+  const ps = [];
+  for (let i=0;i<N;i++) ps.push({x:Math.random()*w, y:Math.random()*h});
+  function noise(x,y,t){ return Math.sin(x*0.01+t)*Math.cos(y*0.013+t*0.7); }
+  let t=0;
+  function loop(){
+    t+=0.005;
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'rgba(76,175,80,0.5)';
+    for (const p of ps){
+      const a = noise(p.x,p.y,t)*Math.PI*2;
+      p.x += Math.cos(a)*1.2;
+      p.y += Math.sin(a)*1.2;
+      if (p.x<0||p.x>w||p.y<0||p.y>h){ p.x=Math.random()*w; p.y=Math.random()*h; }
+      ctx.fillRect(p.x,p.y,1.4,1.4);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ===== 2. Constellation Network =====
+(function(){
+  const c = document.getElementById('c2');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const N = 70;
+  const ps = [];
+  for (let i=0;i<N;i++) ps.push({x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.4});
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    for (const p of ps){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w) p.vx*=-1;
+      if(p.y<0||p.y>h) p.vy*=-1;
+    }
+    for (let i=0;i<N;i++){
+      for (let j=i+1;j<N;j++){
+        const dx=ps[i].x-ps[j].x, dy=ps[i].y-ps[j].y;
+        const d=Math.hypot(dx,dy);
+        if (d<110){
+          ctx.strokeStyle = `rgba(76,175,80,${(1-d/110)*0.4})`;
+          ctx.beginPath();
+          ctx.moveTo(ps[i].x,ps[i].y);
+          ctx.lineTo(ps[j].x,ps[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.fillStyle = '#4caf50';
+    for (const p of ps){
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,1.6,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ===== 3. Sine Waves =====
+(function(){
+  const c = document.getElementById('c3');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  let t=0;
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    const layers = [
+      { col:'rgba(76,175,80,0.45)', amp:14, freq:0.012, off:0,    sp:1 },
+      { col:'rgba(33,150,243,0.35)', amp:18, freq:0.009, off:1.5, sp:1.4 },
+      { col:'rgba(156,39,176,0.28)', amp:22, freq:0.007, off:3,   sp:0.8 }
+    ];
+    for (const l of layers){
+      ctx.beginPath();
+      for (let x=0;x<=w;x+=4){
+        const y = h/2 + Math.sin(x*l.freq + t*l.sp + l.off) * l.amp;
+        if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = l.col;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    t += 0.04;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ===== 4. Matrix Rain =====
+(function(){
+  const c = document.getElementById('c4');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const fontSize = 14;
+  let cols = Math.floor(w/fontSize);
+  const drops = new Array(cols).fill(0).map(()=>Math.random()*-h);
+  const chars = '01ABCDEFアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモ$<>{}[]/_';
+  function loop(){
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(0,0,w,h);
+    ctx.font = fontSize+'px monospace';
+    for (let i=0;i<cols;i++){
+      const ch = chars[Math.floor(Math.random()*chars.length)];
+      const x = i*fontSize;
+      const y = drops[i];
+      ctx.fillStyle = '#4caf50';
+      ctx.fillText(ch, x, y);
+      if (y > h && Math.random() > 0.96) drops[i] = 0;
+      drops[i] += fontSize;
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ===== 5. Metaballs =====
+(function(){
+  const c = document.getElementById('c5');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const balls = [];
+  for (let i=0;i<6;i++) balls.push({
+    x:Math.random()*w, y:Math.random()*h,
+    vx:(Math.random()-0.5)*0.8, vy:(Math.random()-0.5)*0.5,
+    r: 30+Math.random()*30,
+    col: ['#4caf50','#81c784','#a5d6a7','#66bb6a'][i%4]
+  });
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    for (const b of balls){
+      b.x+=b.vx; b.y+=b.vy;
+      if (b.x<0||b.x>w) b.vx*=-1;
+      if (b.y<0||b.y>h) b.vy*=-1;
+      const g = ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      g.addColorStop(0, b.col+'cc');
+      g.addColorStop(1, b.col+'00');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ===== 6. Spirograph =====
+(function(){
+  const c = document.getElementById('c6');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  let t = 0;
+  function loop(){
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    ctx.fillRect(0,0,w,h);
+    const cx = w/2, cy = h/2;
+    ctx.strokeStyle = 'rgba(76,175,80,0.8)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i=0;i<400;i++){
+      const a = i*0.05 + t;
+      const R = 30 + Math.sin(t*0.5)*8;
+      const r = 12 + Math.cos(t*0.7)*4;
+      const k = 0.6;
+      const x = cx + (R-r)*Math.cos(a) + k*Math.cos(((R-r)/r)*a);
+      const y = cy + (R-r)*Math.sin(a) - k*Math.sin(((R-r)/r)*a);
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    t += 0.02;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body></html>

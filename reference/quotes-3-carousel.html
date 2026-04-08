@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>案3: 大判カルーセル</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body{margin:0;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+  .stage{max-width:900px;width:100%;text-align:center;position:relative}
+  .label{font-size:12px;letter-spacing:0.4em;color:#8ec5fc;margin-bottom:24px}
+  .quote{display:none;animation:fade .6s ease}
+  .quote.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  .qmark{font-size:120px;line-height:0.8;color:rgba(142,197,252,0.25);font-family:Georgia,serif;margin-bottom:-20px}
+  .text{font-size:32px;line-height:1.7;font-weight:300;margin:0 0 32px;letter-spacing:0.02em}
+  @media(max-width:600px){.text{font-size:20px}}
+  .author{font-size:14px;color:#8ec5fc;letter-spacing:0.15em}
+  .author::before{content:"— "}
+  .nav{display:flex;justify-content:center;gap:24px;align-items:center;margin-top:48px}
+  .nav button{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff;width:48px;height:48px;border-radius:50%;font-size:20px;cursor:pointer;transition:.2s}
+  .nav button:hover{background:rgba(255,255,255,0.18)}
+  .dots{display:flex;gap:8px}
+  .dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:.2s}
+  .dots span.on{background:#8ec5fc;width:24px;border-radius:4px}
+</style></head><body>
+<div class="stage">
+  <div class="label">A I   Q U O T E S</div>
+
+  <div class="quote active"><div class="qmark">"</div><p class="text">AIは最後の発明になるだろう。<br>その後の発明はすべてAIがやるからだ。</p><p class="author">I.J. Good (数学者)</p></div>
+  <div class="quote"><div class="qmark">"</div><p class="text">AIを恐れるな。<br>AIを使いこなせない自分を恐れろ。</p><p class="author">サム・アルトマン (OpenAI CEO)</p></div>
+  <div class="quote"><div class="qmark">"</div><p class="text">機械が考えられるかを問うのは、<br>潜水艦が泳げるかを問うようなものだ。</p><p class="author">エドガー・ダイクストラ (計算機科学者)</p></div>
+  <div class="quote"><div class="qmark">"</div><p class="text">AIは電気と同じくらい、<br>すべての産業を変革する。</p><p class="author">アンドリュー・ン (AI研究者)</p></div>
+  <div class="quote"><div class="qmark">"</div><p class="text">未来を予測する最良の方法は、<br>それを発明することだ。</p><p class="author">アラン・ケイ (計算機科学者)</p></div>
+  <div class="quote"><div class="qmark">"</div><p class="text">プロンプトは新しいプログラミング言語だ。<br>誰でも書ける、最も民主的なコードだ。</p><p class="author">アンドレイ・カルパシー (Tesla元AI責任者)</p></div>
+
+  <div class="nav">
+    <button onclick="go(-1)">‹</button>
+    <div class="dots" id="dots"></div>
+    <button onclick="go(1)">›</button>
+  </div>
+</div>
+<script>
+  const qs=document.querySelectorAll('.quote');let i=0;
+  const dots=document.getElementById('dots');
+  qs.forEach((_,k)=>{const s=document.createElement('span');if(k===0)s.className='on';s.onclick=()=>set(k);dots.appendChild(s)});
+  function set(n){qs[i].classList.remove('active');dots.children[i].classList.remove('on');i=(n+qs.length)%qs.length;qs[i].classList.add('active');dots.children[i].classList.add('on')}
+  function go(d){set(i+d)}
+  setInterval(()=>go(1),5000);
+</script>
+</body></html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>サイドバー カテゴリリスト デザイン案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fafafa;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:50px 0;border-top:1px solid #eee;background:#fff}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:800}
+  .ds{max-width:1100px;margin:0 auto 28px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:380px;margin:0 auto;padding:0 20px}
+
+  /* shared title */
+  .widget{margin-bottom:32px}
+
+  /* ============ 案1: シンプル罫線リスト + 件数バッジ ============ */
+  .v1 .ttl{font-size:14px;font-weight:800;color:#0a0a0a;padding:12px 0;border-bottom:2px solid #0a0a0a;margin:0 0 0;display:flex;align-items:center;gap:8px}
+  .v1 .ttl::before{content:"";width:4px;height:16px;background:#0a0a0a}
+  .v1 ul{list-style:none;padding:0;margin:0}
+  .v1 li{border-bottom:1px solid #f0f0f0}
+  .v1 li a{display:flex;justify-content:space-between;align-items:center;padding:13px 4px;font-size:13px;color:#374151;text-decoration:none;transition:.15s}
+  .v1 li a:hover{padding-left:10px;color:#0a0a0a}
+  .v1 li a span{font-size:11px;color:#9ca3af;font-weight:700}
+
+  /* ============ 案2: ピル/タグクラウド ============ */
+  .v2 .ttl{font-size:13px;font-weight:800;color:#0a0a0a;letter-spacing:0.05em;margin:0 0 14px;padding-left:10px;border-left:3px solid #4caf50}
+  .v2 .cloud{display:flex;flex-wrap:wrap;gap:8px}
+  .v2 .cloud a{display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;color:#374151;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:600;text-decoration:none;transition:.15s;border:1px solid #e5e7eb}
+  .v2 .cloud a:hover{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
+  .v2 .cloud a span{font-size:10px;color:#9ca3af;font-weight:700}
+  .v2 .cloud a:hover span{color:#9ca3af}
+
+  /* ============ 案3: バーチャート風 ============ */
+  .v3 .ttl{font-size:13px;font-weight:800;color:#0a0a0a;margin:0 0 14px;text-transform:uppercase;letter-spacing:0.1em}
+  .v3 ul{list-style:none;padding:0;margin:0}
+  .v3 li{margin-bottom:10px}
+  .v3 li a{display:block;text-decoration:none;color:#111;font-size:12px;position:relative;padding:8px 12px;background:#f9fafb;border-radius:6px;overflow:hidden;transition:.2s}
+  .v3 li a::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#dbeafe,#bfdbfe);width:var(--bar);transition:.2s}
+  .v3 li a:hover::before{background:linear-gradient(90deg,#bfdbfe,#93c5fd)}
+  .v3 li a .name{position:relative;font-weight:600}
+  .v3 li a .num{position:relative;float:right;font-size:11px;font-weight:800;color:#1e40af}
+
+  /* ============ 案4: グリッド2列カード ============ */
+  .v4 .ttl{font-size:13px;font-weight:800;color:#0a0a0a;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+  .v4 .ttl::after{content:"";flex:1;height:1px;background:#e5e7eb}
+  .v4 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .v4 .grid a{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px;text-decoration:none;color:#111;transition:.15s;display:flex;flex-direction:column;gap:4px}
+  .v4 .grid a:hover{border-color:#0a0a0a;background:#fafafa}
+  .v4 .grid a .name{font-size:12px;font-weight:700;line-height:1.4}
+  .v4 .grid a .num{font-size:10px;color:#6b7280}
+  .v4 .grid a .num strong{color:#dc2626;font-weight:800}
+
+  /* ============ 案5: ランキング型（番号付き） ============ */
+  .v5 .ttl{font-size:14px;font-weight:900;color:#0a0a0a;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+  .v5 .ttl::before{content:"#";color:#dc2626;font-size:18px}
+  .v5 ul{list-style:none;padding:0;margin:0;counter-reset:rank}
+  .v5 li{counter-increment:rank;border-bottom:1px solid #f0f0f0}
+  .v5 li a{display:flex;align-items:center;gap:14px;padding:12px 4px;text-decoration:none;color:#111;font-size:13px;transition:.15s}
+  .v5 li a::before{content:counter(rank,decimal-leading-zero);font-size:14px;font-weight:900;color:#9ca3af;font-family:Georgia,serif;width:30px;flex-shrink:0}
+  .v5 li:nth-child(1) a::before{color:#fbbf24}
+  .v5 li:nth-child(2) a::before{color:#9ca3af}
+  .v5 li:nth-child(3) a::before{color:#d97706}
+  .v5 li a .name{font-weight:600;flex:1}
+  .v5 li a .num{font-size:11px;color:#9ca3af;font-weight:700}
+  .v5 li a:hover .name{color:#dc2626}
+
+  /* ============ 案6: 完全ミニマル + ホバーで > ============ */
+  .v6 .ttl{font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:0.2em;margin:0 0 16px;text-transform:uppercase}
+  .v6 ul{list-style:none;padding:0;margin:0}
+  .v6 li a{display:flex;justify-content:space-between;align-items:center;padding:10px 0;text-decoration:none;color:#374151;font-size:14px;font-weight:500;transition:.15s;border-bottom:1px solid #f3f4f6}
+  .v6 li:last-child a{border-bottom:none}
+  .v6 li a::after{content:"›";color:#d1d5db;font-size:18px;margin-left:8px;transition:.15s}
+  .v6 li a:hover{color:#0a0a0a;font-weight:700}
+  .v6 li a:hover::after{color:#0a0a0a;transform:translateX(4px)}
+  .v6 li a span{font-size:11px;color:#9ca3af;margin-left:auto;margin-right:14px;font-weight:600}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>サイドバー4ウィジェット デザイン案</h1>
+  <p>AI職種 / 尖った特徴 / AI領域 / 人気キーワード を6パターンで</p>
+</header>
+
+<!-- 案1 -->
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">罫線リスト + 件数バッジ（現行近い・整理版）</div>
+  <p class="ds">細い罫線で区切るシンプルなリスト。タイトルに縦バー、ホバーで右にスライド。</p>
+  <div class="stage">
+    <div class="v1">
+      <div class="widget">
+        <h4 class="ttl">AI職種から探す</h4>
+        <ul>
+          <li><a href="#">プロンプトエンジニア<span>42</span></a></li>
+          <li><a href="#">MLエンジニア<span>38</span></a></li>
+          <li><a href="#">LLMアプリ開発<span>56</span></a></li>
+          <li><a href="#">データサイエンティスト<span>31</span></a></li>
+          <li><a href="#">AIリサーチャー<span>24</span></a></li>
+        </ul>
+      </div>
+      <div class="widget">
+        <h4 class="ttl">尖った特徴から探す</h4>
+        <ul>
+          <li><a href="#">GPU使い放題<span>23</span></a></li>
+          <li><a href="#">フルリモート可<span>89</span></a></li>
+          <li><a href="#">論文読み会あり<span>34</span></a></li>
+          <li><a href="#">未経験OK<span>67</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案2 -->
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">ピル / タグクラウド</div>
+  <p class="ds">全て丸タグで配置。視覚的に賑やか、サイズが揃っているので落ち着く。</p>
+  <div class="stage">
+    <div class="v2">
+      <div class="widget">
+        <h4 class="ttl">AI職種から探す</h4>
+        <div class="cloud">
+          <a href="#">プロンプトエンジニア<span>42</span></a>
+          <a href="#">MLエンジニア<span>38</span></a>
+          <a href="#">LLMアプリ開発<span>56</span></a>
+          <a href="#">データサイエンティスト<span>31</span></a>
+          <a href="#">AIリサーチャー<span>24</span></a>
+          <a href="#">AIエージェント<span>19</span></a>
+        </div>
+      </div>
+      <div class="widget">
+        <h4 class="ttl">人気のAIキーワード</h4>
+        <div class="cloud">
+          <a href="#">RAG</a>
+          <a href="#">ファインチューニング</a>
+          <a href="#">Claude</a>
+          <a href="#">LangChain</a>
+          <a href="#">Stable Diffusion</a>
+          <a href="#">Kaggle</a>
+          <a href="#">Transformer</a>
+          <a href="#">強化学習</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案3 -->
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">バーチャート風（件数を視覚化）</div>
+  <p class="ds">件数に応じて背景バーが伸びる。データ可視化的で、人気度が一目瞭然。</p>
+  <div class="stage">
+    <div class="v3">
+      <div class="widget">
+        <h4 class="ttl">AI職種から探す</h4>
+        <ul>
+          <li><a href="#" style="--bar:100%"><span class="name">LLMアプリ開発</span><span class="num">56</span></a></li>
+          <li><a href="#" style="--bar:75%"><span class="name">プロンプトエンジニア</span><span class="num">42</span></a></li>
+          <li><a href="#" style="--bar:68%"><span class="name">MLエンジニア</span><span class="num">38</span></a></li>
+          <li><a href="#" style="--bar:55%"><span class="name">データサイエンティスト</span><span class="num">31</span></a></li>
+          <li><a href="#" style="--bar:43%"><span class="name">AIリサーチャー</span><span class="num">24</span></a></li>
+        </ul>
+      </div>
+      <div class="widget">
+        <h4 class="ttl">尖った特徴から探す</h4>
+        <ul>
+          <li><a href="#" style="--bar:100%"><span class="name">フルリモート可</span><span class="num">89</span></a></li>
+          <li><a href="#" style="--bar:75%"><span class="name">未経験OK</span><span class="num">67</span></a></li>
+          <li><a href="#" style="--bar:58%"><span class="name">時給2,000円以上</span><span class="num">52</span></a></li>
+          <li><a href="#" style="--bar:50%"><span class="name">文系歓迎</span><span class="num">45</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案4 -->
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">2列グリッドカード</div>
+  <p class="ds">小さなカードを2列で。アイコン化したい要素にも展開しやすい。</p>
+  <div class="stage">
+    <div class="v4">
+      <div class="widget">
+        <h4 class="ttl">AI職種から探す</h4>
+        <div class="grid">
+          <a href="#"><span class="name">プロンプトエンジニア</span><span class="num"><strong>42</strong>件</span></a>
+          <a href="#"><span class="name">MLエンジニア</span><span class="num"><strong>38</strong>件</span></a>
+          <a href="#"><span class="name">LLMアプリ開発</span><span class="num"><strong>56</strong>件</span></a>
+          <a href="#"><span class="name">データサイエンティスト</span><span class="num"><strong>31</strong>件</span></a>
+          <a href="#"><span class="name">AIリサーチャー</span><span class="num"><strong>24</strong>件</span></a>
+          <a href="#"><span class="name">AIエージェント開発</span><span class="num"><strong>19</strong>件</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案5 -->
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">ランキング型 / 番号付き</div>
+  <p class="ds">CSSカウンターで自動採番、上位3つは金銀銅カラー。「人気ランキング」感を強化。</p>
+  <div class="stage">
+    <div class="v5">
+      <div class="widget">
+        <h4 class="ttl">AI職種から探す</h4>
+        <ul>
+          <li><a href="#"><span class="name">LLMアプリ開発</span><span class="num">56件</span></a></li>
+          <li><a href="#"><span class="name">プロンプトエンジニア</span><span class="num">42件</span></a></li>
+          <li><a href="#"><span class="name">MLエンジニア</span><span class="num">38件</span></a></li>
+          <li><a href="#"><span class="name">データサイエンティスト</span><span class="num">31件</span></a></li>
+          <li><a href="#"><span class="name">AIリサーチャー</span><span class="num">24件</span></a></li>
+          <li><a href="#"><span class="name">AIエージェント開発</span><span class="num">19件</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 案6 -->
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">完全ミニマル / Vercel風</div>
+  <p class="ds">余計な装飾なし。タイトルは小さく薄く。ホバーで矢印が右にスライド。</p>
+  <div class="stage">
+    <div class="v6">
+      <div class="widget">
+        <h4 class="ttl">AI 職種から探す</h4>
+        <ul>
+          <li><a href="#">プロンプトエンジニア<span>42</span></a></li>
+          <li><a href="#">MLエンジニア<span>38</span></a></li>
+          <li><a href="#">LLMアプリ開発<span>56</span></a></li>
+          <li><a href="#">データサイエンティスト<span>31</span></a></li>
+          <li><a href="#">AIリサーチャー<span>24</span></a></li>
+        </ul>
+      </div>
+      <div class="widget">
+        <h4 class="ttl">尖った特徴から探す</h4>
+        <ul>
+          <li><a href="#">GPU使い放題<span>23</span></a></li>
+          <li><a href="#">フルリモート可<span>89</span></a></li>
+          <li><a href="#">論文読み会あり<span>34</span></a></li>
+          <li><a href="#">未経験OK<span>67</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body></html>

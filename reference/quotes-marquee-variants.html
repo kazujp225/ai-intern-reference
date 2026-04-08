@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AI名言集 マーキー 色違いバリエーション</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;background:#0a0a0a;color:#fff}
+  .label{position:sticky;top:0;z-index:10;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);padding:8px 20px;font-size:12px;letter-spacing:0.2em;color:#fff;border-bottom:1px solid rgba(255,255,255,0.1)}
+  .label .num{display:inline-block;padding:2px 8px;background:#fff;color:#000;border-radius:4px;margin-right:10px;font-weight:700}
+  section{padding:40px 0 60px}
+  h2{text-align:center;font-size:22px;margin:0 0 4px}
+  .sub{text-align:center;font-size:12px;margin:0 0 28px;opacity:0.7}
+  .row{display:flex;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);margin-bottom:14px}
+  .track{display:flex;gap:18px;flex-shrink:0;animation:scroll 50s linear infinite;padding-right:18px}
+  .track:hover{animation-play-state:paused}
+  .row.rev .track{animation-direction:reverse;animation-duration:60s}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .card{flex-shrink:0;width:340px;border-radius:14px;padding:22px;position:relative;transition:transform .25s}
+  .card:hover{transform:translateY(-4px)}
+  .card::before{content:"\201C";position:absolute;top:-4px;left:14px;font-size:54px;font-family:Georgia,serif;line-height:1}
+  .card .text{font-size:13px;line-height:1.7;margin:22px 0 12px}
+  .card .author{font-size:11px;letter-spacing:0.08em;font-weight:600}
+
+  /* === 1: Dark Green (現行) === */
+  .v1{background:#0a0a0a}
+  .v1 .card{background:linear-gradient(135deg,#1a1a1a,#252525);border:1px solid #333;color:#e0e0e0}
+  .v1 .card::before{color:#4caf50}
+  .v1 .author{color:#4caf50}
+  .v1 h2{color:#fff}
+
+  /* === 2: Pastel Cream === */
+  .v2{background:#fff7e6}
+  .v2 h2,.v2 .sub{color:#5a4a2a}
+  .v2 .card{background:#fff;border:1px solid #f5e0b8;color:#3a2a1a;box-shadow:0 4px 14px rgba(180,140,60,0.12)}
+  .v2 .card::before{color:#f4a261}
+  .v2 .author{color:#e07a3c}
+
+  /* === 3: Sunset === */
+  .v3{background:linear-gradient(180deg,#2d1b3d,#5a2a4a,#ff6b6b)}
+  .v3 h2{color:#fff}
+  .v3 .sub{color:rgba(255,255,255,0.8)}
+  .v3 .card{background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);color:#fff}
+  .v3 .card::before{color:#ffd93d}
+  .v3 .author{color:#ffd93d}
+
+  /* === 4: Ocean === */
+  .v4{background:linear-gradient(180deg,#0a1929,#0f3460)}
+  .v4 h2{color:#fff}
+  .v4 .sub{color:#7fc8f8}
+  .v4 .card{background:rgba(15,52,96,0.6);border:1px solid #1e88e5;color:#e1f5fe;box-shadow:0 4px 18px rgba(30,136,229,0.2)}
+  .v4 .card::before{color:#7fc8f8}
+  .v4 .author{color:#7fc8f8}
+
+  /* === 5: Forest === */
+  .v5{background:#0d1f12}
+  .v5 h2{color:#c5e1c5}
+  .v5 .sub{color:#7da87d}
+  .v5 .card{background:linear-gradient(135deg,#1b3a1b,#0f2a0f);border:1px solid #2e5d2e;color:#e8f5e8}
+  .v5 .card::before{color:#a8e063}
+  .v5 .author{color:#a8e063}
+
+  /* === 6: Monochrome === */
+  .v6{background:#fff}
+  .v6 h2{color:#000}
+  .v6 .sub{color:#666}
+  .v6 .card{background:#fff;border:2px solid #000;color:#000}
+  .v6 .card::before{color:#000}
+  .v6 .author{color:#000}
+
+  /* === 7: Cyberpunk Neon === */
+  .v7{background:radial-gradient(ellipse at center,#1a0033,#000)}
+  .v7 h2{color:#fff;text-shadow:0 0 12px #ff00ff}
+  .v7 .sub{color:#0ff;text-shadow:0 0 6px #0ff}
+  .v7 .card{background:rgba(20,0,40,0.7);border:1px solid #ff00ff;color:#fff;box-shadow:0 0 18px rgba(255,0,255,0.3)}
+  .v7 .card:nth-child(odd){border-color:#0ff;box-shadow:0 0 18px rgba(0,255,255,0.3)}
+  .v7 .card::before{color:#ff00ff;text-shadow:0 0 10px #ff00ff}
+  .v7 .card:nth-child(odd)::before{color:#0ff;text-shadow:0 0 10px #0ff}
+  .v7 .author{color:#ff00ff;text-shadow:0 0 6px #ff00ff}
+  .v7 .card:nth-child(odd) .author{color:#0ff;text-shadow:0 0 6px #0ff}
+
+  /* === 8: Vintage Paper === */
+  .v8{background:#f4ecd8;background-image:radial-gradient(#d4c896 1px,transparent 1px);background-size:20px 20px}
+  .v8 h2{color:#3a2a1a;font-family:"Hiragino Mincho ProN",serif}
+  .v8 .sub{color:#7a6a5a}
+  .v8 .card{background:#fffaf0;border:1px solid #d4b896;color:#3a2a1a;box-shadow:2px 4px 10px rgba(0,0,0,0.1);font-family:"Hiragino Mincho ProN",serif}
+  .v8 .card::before{color:#a0522d}
+  .v8 .author{color:#8b4513}
+
+  /* === 9: Cherry Blossom === */
+  .v9{background:linear-gradient(180deg,#fef0f5,#ffe0ec)}
+  .v9 h2{color:#a0306a}
+  .v9 .sub{color:#c44d80}
+  .v9 .card{background:#fff;border:1px solid #f8c5dc;color:#5a2a4a;box-shadow:0 4px 14px rgba(200,80,140,0.12)}
+  .v9 .card::before{color:#ff6b9d}
+  .v9 .author{color:#e6336e}
+
+  /* === 10: Mint === */
+  .v10{background:linear-gradient(180deg,#e0f7f1,#c8f0e4)}
+  .v10 h2{color:#0a4a3a}
+  .v10 .sub{color:#1a7a5a}
+  .v10 .card{background:#fff;border:1px solid #80d4b8;color:#0a4a3a;box-shadow:0 4px 14px rgba(20,150,110,0.15)}
+  .v10 .card::before{color:#00bfa5}
+  .v10 .author{color:#00897b}
+
+  /* === 11: Gradient Rainbow === */
+  .v11{background:#0e0e1a}
+  .v11 h2{background:linear-gradient(90deg,#ff6b6b,#feca57,#48dbfb,#5f27cd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .v11 .sub{color:#aaa}
+  .v11 .card{background:#1a1a2e;border:2px solid transparent;background-clip:padding-box;color:#fff;position:relative}
+  .v11 .card{background-image:linear-gradient(#1a1a2e,#1a1a2e),linear-gradient(135deg,#ff6b6b,#feca57,#48dbfb,#5f27cd);background-origin:border-box;background-clip:padding-box,border-box}
+  .v11 .card::before{background:linear-gradient(135deg,#ff6b6b,#feca57);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .v11 .author{background:linear-gradient(90deg,#48dbfb,#5f27cd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+  /* === 12: Cream Beige (淡くて優しい) === */
+  .v12{background:#faf7f2}
+  .v12 h2{color:#3a2a1a}
+  .v12 .sub{color:#8a7a6a}
+  .v12 .card{background:#fff;border:1px solid #ebe3d5;color:#4a3a2a;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+  .v12 .card::before{color:#c9a961}
+  .v12 .author{color:#a08550}
+</style>
+</head>
+<body>
+
+<!-- ==== 1 ==== -->
+<div class="label"><span class="num">01</span>Dark Green（現行）</div>
+<section class="v1">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t1a"></div></div>
+  <div class="row rev"><div class="track" id="t1b"></div></div>
+</section>
+
+<!-- ==== 2 ==== -->
+<div class="label"><span class="num">02</span>Pastel Cream（クリーム / 暖色）</div>
+<section class="v2">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t2a"></div></div>
+  <div class="row rev"><div class="track" id="t2b"></div></div>
+</section>
+
+<!-- ==== 3 ==== -->
+<div class="label"><span class="num">03</span>Sunset（夕焼けグラデ）</div>
+<section class="v3">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t3a"></div></div>
+  <div class="row rev"><div class="track" id="t3b"></div></div>
+</section>
+
+<!-- ==== 4 ==== -->
+<div class="label"><span class="num">04</span>Ocean（深海ブルー）</div>
+<section class="v4">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t4a"></div></div>
+  <div class="row rev"><div class="track" id="t4b"></div></div>
+</section>
+
+<!-- ==== 5 ==== -->
+<div class="label"><span class="num">05</span>Forest（深緑）</div>
+<section class="v5">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t5a"></div></div>
+  <div class="row rev"><div class="track" id="t5b"></div></div>
+</section>
+
+<!-- ==== 6 ==== -->
+<div class="label"><span class="num">06</span>Monochrome（白黒）</div>
+<section class="v6">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t6a"></div></div>
+  <div class="row rev"><div class="track" id="t6b"></div></div>
+</section>
+
+<!-- ==== 7 ==== -->
+<div class="label"><span class="num">07</span>Cyberpunk Neon（ネオン）</div>
+<section class="v7">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t7a"></div></div>
+  <div class="row rev"><div class="track" id="t7b"></div></div>
+</section>
+
+<!-- ==== 8 ==== -->
+<div class="label"><span class="num">08</span>Vintage Paper（古紙・明朝）</div>
+<section class="v8">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t8a"></div></div>
+  <div class="row rev"><div class="track" id="t8b"></div></div>
+</section>
+
+<!-- ==== 9 ==== -->
+<div class="label"><span class="num">09</span>Cherry Blossom（桜ピンク）</div>
+<section class="v9">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t9a"></div></div>
+  <div class="row rev"><div class="track" id="t9b"></div></div>
+</section>
+
+<!-- ==== 10 ==== -->
+<div class="label"><span class="num">10</span>Mint（ミントグリーン）</div>
+<section class="v10">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t10a"></div></div>
+  <div class="row rev"><div class="track" id="t10b"></div></div>
+</section>
+
+<!-- ==== 11 ==== -->
+<div class="label"><span class="num">11</span>Gradient Rainbow（虹グラデボーダー）</div>
+<section class="v11">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t11a"></div></div>
+  <div class="row rev"><div class="track" id="t11b"></div></div>
+</section>
+
+<!-- ==== 12 ==== -->
+<div class="label"><span class="num">12</span>Cream Beige（落ち着いたベージュ）</div>
+<section class="v12">
+  <h2>AI名言集</h2><p class="sub">先駆者たちの言葉</p>
+  <div class="row"><div class="track" id="t12a"></div></div>
+  <div class="row rev"><div class="track" id="t12b"></div></div>
+</section>
+
+<script>
+  const A = [
+    ["AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。","I.J. Good"],
+    ["AIを恐れるな。AIを使いこなせない自分を恐れろ。","サム・アルトマン"],
+    ["機械が考えられるかを問うのは、潜水艦が泳げるかを問うようなものだ。","エドガー・ダイクストラ"],
+    ["AIは電気と同じくらい、すべての産業を変革する。","アンドリュー・ン"]
+  ];
+  const B = [
+    ["未来を予測する最良の方法は、それを発明することだ。","アラン・ケイ"],
+    ["プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。","アンドレイ・カルパシー"],
+    ["AIと共に働くことは、最も賢いインターンを永遠に雇うようなものだ。","エティエンヌ・ジャクソン"],
+    ["学ぶことをやめた者は、AIに置き換えられる最初の人間だ。","不明"]
+  ];
+  function build(arr){
+    // duplicate for seamless loop
+    return [...arr,...arr].map(([t,a])=>`<div class="card"><p class="text">${t}</p><p class="author">— ${a}</p></div>`).join("");
+  }
+  for(let i=1;i<=12;i++){
+    document.getElementById(`t${i}a`).innerHTML = build(A);
+    document.getElementById(`t${i}b`).innerHTML = build(B);
+  }
+</script>
+</body></html>

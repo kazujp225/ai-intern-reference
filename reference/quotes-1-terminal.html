@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AI名言集 案1: ターミナル風</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    margin: 0;
+    background: #0d1117;
+    font-family: "SF Mono", "Monaco", "Menlo", "Consolas", "Courier New", monospace;
+    color: #c9d1d9;
+    padding: 60px 20px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .head h2 {
+    font-size: 28px;
+    color: #7ee787;
+    margin: 0 0 8px;
+    letter-spacing: 0.04em;
+  }
+  .head h2::before { content: "$ "; color: #58a6ff; }
+  .head h2::after {
+    content: "_";
+    display: inline-block;
+    margin-left: 4px;
+    color: #7ee787;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .head p {
+    color: #8b949e;
+    font-size: 13px;
+    margin: 0;
+  }
+  .head p::before { content: "// "; color: #6e7681; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+  .quote {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .quote:hover {
+    border-color: #58a6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(88,166,255,0.15);
+  }
+  .quote-bar {
+    background: #21262d;
+    border-bottom: 1px solid #30363d;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: #8b949e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quote-bar .dots { display: flex; gap: 6px; }
+  .quote-bar .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #ff5f56;
+  }
+  .quote-bar .dots span:nth-child(2) { background: #ffbd2e; }
+  .quote-bar .dots span:nth-child(3) { background: #27c93f; }
+  .quote-bar .file { margin-left: auto; font-size: 11px; }
+
+  .quote-body {
+    padding: 18px 16px 16px;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .quote-body .comment { color: #6e7681; }
+  .quote-body .const { color: #ff7b72; }
+  .quote-body .var { color: #79c0ff; }
+  .quote-body .str { color: #a5d6ff; }
+  .quote-body .fn { color: #d2a8ff; }
+  .quote-body .pl { color: #c9d1d9; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h2>ai_quotes.sh</h2>
+      <p>AIの未来を切り開く先駆者たちの言葉</p>
+    </div>
+
+    <div class="grid">
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">good.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// I.J. Good — 数学者</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"AIは最後の発明になるだろう。<br>その後の発明はすべてAIがやるからだ。"</span><span class="pl">;</span>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">altman.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// サム・アルトマン — OpenAI CEO</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"AIを恐れるな。<br>AIを使いこなせない自分を恐れろ。"</span><span class="pl">;</span>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">dijkstra.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// エドガー・ダイクストラ — 計算機科学者</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"機械が考えられるかを問うのは、<br>潜水艦が泳げるかを問うようなものだ。"</span><span class="pl">;</span>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">ng.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// アンドリュー・ン — AI研究者</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"AIは電気と同じくらい、<br>すべての産業を変革する。"</span><span class="pl">;</span>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">kay.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// アラン・ケイ — 計算機科学者</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"未来を予測する最良の方法は、<br>それを発明することだ。"</span><span class="pl">;</span>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="quote-bar"><div class="dots"><span></span><span></span><span></span></div><span class="file">karpathy.js</span></div>
+        <div class="quote-body">
+          <span class="comment">// アンドレイ・カルパシー — Tesla元AI責任者</span><br>
+          <span class="const">const</span> <span class="var">quote</span> <span class="pl">=</span> <span class="str">"プロンプトは新しいプログラミング言語だ。<br>誰でも書ける、最も民主的なコードだ。"</span><span class="pl">;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

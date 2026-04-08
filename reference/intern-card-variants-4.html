@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>厳選AIインターンカード 新案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f5f7;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+
+  section{padding:50px 0;border-top:1px solid #eee;background:#fff}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 40px;font-size:18px;font-weight:800}
+  .ds{max-width:1100px;margin:0 auto 28px;padding:0 40px;font-size:13px;color:#6b7280;line-height:1.6}
+  .stage{max-width:1100px;margin:0 auto;padding:0 40px}
+
+  /* ============ 案W: 価格強調型 ============ */
+  .vW{background:#fff;border-radius:18px;text-decoration:none;color:#111;display:grid;grid-template-columns:1fr 280px;overflow:hidden;border:1px solid #ebebeb;transition:.2s}
+  .vW:hover{border-color:#0a0a0a;box-shadow:0 12px 30px rgba(0,0,0,0.08)}
+  .vW .left{padding:28px 32px}
+  .vW .top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .vW .pickup{background:#0a0a0a;color:#fff;font-size:10px;padding:4px 10px;border-radius:4px;font-weight:800;letter-spacing:0.1em}
+  .vW .company{font-size:12px;color:#6b7280;font-weight:700}
+  .vW .date{font-size:11px;color:#9ca3af;margin-left:auto}
+  .vW h3{font-size:19px;margin:0 0 16px;font-weight:800;line-height:1.55}
+  .vW .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .vW .tags span{font-size:11px;background:#f3f4f6;color:#374151;padding:3px 10px;border-radius:999px;font-weight:600}
+  .vW .meta{display:flex;gap:18px;font-size:12px;color:#6b7280;padding-top:14px;border-top:1px dashed #e5e7eb}
+  .vW .right{background:linear-gradient(160deg,#0a0a0a,#1f2937);color:#fff;padding:28px;display:flex;flex-direction:column;justify-content:space-between;text-align:center}
+  .vW .right .k{font-size:10px;opacity:0.6;letter-spacing:0.15em;margin-bottom:6px}
+  .vW .right .salary{font-size:32px;font-weight:900;line-height:1;margin-bottom:4px;color:#fbbf24}
+  .vW .right .salary .yen{font-size:14px;opacity:0.7}
+  .vW .right .salary .unit{font-size:12px;opacity:0.7;font-weight:600}
+  .vW .right .max{font-size:11px;opacity:0.8;margin-bottom:24px}
+  .vW .right .btn{background:#fbbf24;color:#0a0a0a;padding:12px 16px;border-radius:8px;font-size:13px;font-weight:900;letter-spacing:0.05em}
+
+  /* ============ 案X: ハイコントラスト・ミニマル黒太枠 ============ */
+  .vX{background:#fff;border:3px solid #0a0a0a;text-decoration:none;color:#0a0a0a;display:block;padding:0;transition:.15s;box-shadow:6px 6px 0 #0a0a0a}
+  .vX:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #0a0a0a}
+  .vX .head{background:#0a0a0a;color:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+  .vX .head .id{font-family:"SF Mono",monospace;font-size:11px;letter-spacing:0.1em}
+  .vX .head .pickup{background:#fbbf24;color:#0a0a0a;padding:4px 10px;font-size:10px;font-weight:900;letter-spacing:0.1em}
+  .vX .body{padding:24px 28px}
+  .vX .company{font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em}
+  .vX h3{font-size:22px;margin:0 0 18px;font-weight:900;line-height:1.5}
+  .vX .tags{display:flex;flex-wrap:wrap;gap:0;margin-bottom:18px}
+  .vX .tags span{font-size:11px;font-weight:700;border:2px solid #0a0a0a;padding:4px 10px;margin:0 -2px -2px 0}
+  .vX .info{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 0;border-top:2px solid #0a0a0a}
+  .vX .info .it .k{font-size:9px;font-weight:900;letter-spacing:0.15em;text-transform:uppercase}
+  .vX .info .it .v{font-size:14px;font-weight:900;margin-top:2px}
+
+  /* ============ 案Y: アクションフォーカス型（ボタン大） ============ */
+  .vY{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:0;text-decoration:none;color:#111;display:block;overflow:hidden;transition:.2s}
+  .vY:hover{border-color:#10a37f;box-shadow:0 10px 30px rgba(16,163,127,0.12)}
+  .vY .body{padding:28px 32px 20px}
+  .vY .top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .vY .new{background:linear-gradient(135deg,#10a37f,#22c55e);color:#fff;font-size:10px;padding:5px 12px;border-radius:999px;font-weight:800;letter-spacing:0.1em}
+  .vY .company{font-size:12px;color:#6b7280;font-weight:700}
+  .vY .date{font-size:11px;color:#9ca3af;margin-left:auto}
+  .vY h3{font-size:20px;margin:0 0 14px;font-weight:800;line-height:1.55}
+  .vY .summary{font-size:13px;color:#4b5563;line-height:1.7;margin:0 0 18px}
+  .vY .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+  .vY .tags span{font-size:11px;color:#10a37f;background:#f0fdf4;border:1px solid #bbf7d0;padding:3px 10px;border-radius:6px;font-weight:600}
+  .vY .row{display:flex;align-items:center;gap:24px;padding-top:18px;border-top:1px solid #f0f0f0}
+  .vY .row .meta{display:flex;gap:20px;font-size:12px;color:#6b7280}
+  .vY .row .meta .salary{color:#10a37f;font-weight:900;font-size:14px}
+  .vY .cta{padding:14px 32px;background:#0a0a0a;color:#fff;display:flex;justify-content:space-between;align-items:center;font-weight:800}
+  .vY .cta .ttl{font-size:13px;letter-spacing:0.05em}
+  .vY .cta .arrow{font-size:18px}
+
+  /* ============ 案Z: 縦長ステータス型（ゲーム/Steam風） ============ */
+  .vZ{background:#1b2838;color:#c7d5e0;border-radius:6px;text-decoration:none;display:block;padding:0;overflow:hidden;border:1px solid #2a475e;transition:.2s;width:340px}
+  .vZ:hover{border-color:#66c0f4}
+  .vZ .visual{height:140px;background:linear-gradient(135deg,#1b2838 0%,#0f4c75 50%,#1b2838 100%);display:flex;align-items:center;justify-content:center;position:relative}
+  .vZ .visual::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(102,192,244,0.3),transparent 60%)}
+  .vZ .visual .icon{font-size:52px;position:relative}
+  .vZ .visual .badge{position:absolute;top:12px;right:12px;background:#beee11;color:#000;font-size:10px;padding:4px 10px;font-weight:800;letter-spacing:0.05em;border-radius:2px}
+  .vZ .body{padding:18px 20px}
+  .vZ .company{font-size:11px;color:#67c1f5;font-weight:700;margin-bottom:6px;letter-spacing:0.05em}
+  .vZ h3{font-size:16px;margin:0 0 14px;font-weight:700;line-height:1.55;color:#fff}
+  .vZ .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+  .vZ .tags span{font-size:10px;background:#316282;color:#a4d7f5;padding:3px 8px;font-weight:600}
+  .vZ .stats{padding-top:14px;border-top:1px solid #2a475e}
+  .vZ .stats .it{display:flex;justify-content:space-between;margin-bottom:8px;font-size:11px}
+  .vZ .stats .it .k{color:#8f98a0}
+  .vZ .stats .it .v{color:#fff;font-weight:700}
+  .vZ .stats .it .v.up{color:#beee11}
+  .vZ .price-row{margin-top:12px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:2px}
+  .vZ .price-row .salary{color:#beee11;font-size:18px;font-weight:900}
+  .vZ .price-row .unit{font-size:10px;color:#8f98a0}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>厳選AIインターン カード新案</h1>
+  <p>これまでと違う方向で4案</p>
+</header>
+
+<!-- W -->
+<section>
+  <div class="label">CASE W</div>
+  <div class="nm">価格強調型 / 右側に黒い給与パネル</div>
+  <p class="ds">右半分が黒い「報酬パネル」で給与とCTAボタンを大きく見せる。お金にフォーカス。</p>
+  <div class="stage">
+    <a href="#" class="vW">
+      <div class="left">
+        <div class="top"><span class="pickup">PICKUP</span><span class="company">株式会社ニューロンクラフト</span><span class="date">2日前</span></div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <div class="tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会</span><span>未経験OK</span></div>
+        <div class="meta"><span>📍 渋谷 / リモート可</span><span>🕐 週3日〜 / 1日5h〜</span><span>🎓 Python必須</span></div>
+      </div>
+      <div class="right">
+        <div>
+          <div class="k">SALARY / HOUR</div>
+          <div class="salary"><span class="yen">¥</span>4,000<span class="unit">/h</span></div>
+          <div class="max">時給 ¥2,000 〜 上限なし</div>
+        </div>
+        <div class="btn">▶ このインターンを見る</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- X -->
+<section>
+  <div class="label">CASE X</div>
+  <div class="nm">ハイコントラスト・黒太枠 + 影オフセット</div>
+  <p class="ds">3px黒太枠＋オフセット影。ホバーで影が深くなる「ニューブルータリズム」風。</p>
+  <div class="stage">
+    <a href="#" class="vX">
+      <div class="head">
+        <span class="id">JOB_ID: NC-001</span>
+        <span class="pickup">PICKUP</span>
+      </div>
+      <div class="body">
+        <div class="company">株式会社ニューロンクラフト</div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <div class="tags"><span>GPU使い放題</span><span>自社LLM</span><span>フルリモート</span><span>論文読み会</span><span>未経験OK</span></div>
+        <div class="info">
+          <div class="it"><div class="k">SALARY</div><div class="v">¥2,000〜¥4,000/h</div></div>
+          <div class="it"><div class="k">LOCATION</div><div class="v">渋谷 / Remote</div></div>
+          <div class="it"><div class="k">SHIFT</div><div class="v">週3日〜 / 5h〜</div></div>
+          <div class="it"><div class="k">SKILL</div><div class="v">Python必須</div></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Y -->
+<section>
+  <div class="label">CASE Y</div>
+  <div class="nm">アクションフォーカス / 黒いCTAバンド付き</div>
+  <p class="ds">下部に黒いCTAバンドが常時表示。「クリックしたくなる」誘導重視のデザイン。</p>
+  <div class="stage">
+    <a href="#" class="vY">
+      <div class="body">
+        <div class="top"><span class="new">NEW</span><span class="company">株式会社ニューロンクラフト</span><span class="date">2日前更新</span></div>
+        <h3>【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</h3>
+        <p class="summary">「ChatGPT使えます」はもう古い。RAG構築からファインチューニングまで、一気通貫で実務を経験できる。</p>
+        <div class="tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>論文読み会</span><span>未経験OK</span></div>
+        <div class="row">
+          <div class="meta">
+            <span>📍 渋谷</span>
+            <span>🕐 週3〜</span>
+            <span class="salary">¥2,000〜¥4,000/h</span>
+          </div>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="ttl">このインターンの詳細を見る</span>
+        <span class="arrow">→</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Z -->
+<section>
+  <div class="label">CASE Z</div>
+  <div class="nm">Steam風 / 縦長ダーク + ステータス</div>
+  <p class="ds">ゲームストアのような縦長カード。視覚パネル + 統計データ + 黒い価格バー。</p>
+  <div class="stage">
+    <a href="#" class="vZ">
+      <div class="visual">
+        <span class="badge">PICKUP</span>
+        <span class="icon">🤖</span>
+      </div>
+      <div class="body">
+        <div class="company">NEURONCRAFT INC.</div>
+        <h3>【GPTの裏側を知りたくないか？】RAG構築からファインチューニングまで</h3>
+        <div class="tags"><span>GPU使い放題</span><span>自社LLM</span><span>リモート</span><span>未経験OK</span></div>
+        <div class="stats">
+          <div class="it"><span class="k">勤務地</span><span class="v">渋谷 / Remote</span></div>
+          <div class="it"><span class="k">勤務条件</span><span class="v">週3日〜 / 5h〜</span></div>
+          <div class="it"><span class="k">必須スキル</span><span class="v">Python</span></div>
+          <div class="it"><span class="k">人気度</span><span class="v up">★★★★★</span></div>
+        </div>
+        <div class="price-row">
+          <div><span class="salary">¥4,000</span> <span class="unit">/h MAX</span></div>
+          <div style="font-size:11px;color:#67c1f5;font-weight:700">VIEW →</div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+</body></html>

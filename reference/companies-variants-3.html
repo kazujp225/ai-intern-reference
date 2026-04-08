@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>特集：トップAI企業 白ベース派手案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f5f7;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header{text-align:center;padding:60px 20px 30px}
+  header h1{font-size:30px;margin:0 0 8px;background:linear-gradient(90deg,#ff3da6,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900}
+  header p{color:#666;font-size:13px;margin:0}
+
+  section{padding:60px 0;border-top:1px solid #e5e5e5;background:#fff}
+  .label{max-width:1200px;margin:0 auto 8px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#888}
+  .nm{max-width:1200px;margin:0 auto 6px;padding:0 40px;font-size:20px;font-weight:900;color:#111}
+  .ds{max-width:1200px;margin:0 auto 36px;padding:0 40px;font-size:12px;color:#666}
+
+  /* logos */
+  .l-openai{color:#10a37f}
+  .l-google{background:linear-gradient(135deg,#4285F4,#9168C0,#1BA1E3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .l-anthropic{color:#d97706}
+  .l-meta{background:linear-gradient(135deg,#0668E1,#00C2FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+  /* ============ A: ホログラム・トレカ（白ベース） ============ */
+  .A-bg{background:linear-gradient(180deg,#fafafa,#f0f4ff);position:relative;overflow:hidden}
+  .A-bg::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 20% 30%,rgba(255,61,166,0.08),transparent 40%),radial-gradient(circle at 80% 70%,rgba(6,182,212,0.08),transparent 40%);pointer-events:none}
+  .A{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+  .A-card{aspect-ratio:3/4;border-radius:20px;padding:18px;color:#111;position:relative;overflow:hidden;background:#fff;text-decoration:none;transition:.3s;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+  .A-card::before{content:"";position:absolute;inset:0;border-radius:20px;padding:2px;background:linear-gradient(135deg,#ff3da6,#7c3aed,#06b6d4,#fbbf24,#ff3da6);background-size:300% 300%;animation:gradMove 4s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .A-card::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,255,255,0.6) 50%,transparent 70%);background-size:200% 200%;animation:shine 3s ease-in-out infinite;pointer-events:none;border-radius:20px}
+  @keyframes gradMove{to{background-position:300% 0}}
+  @keyframes shine{0%,100%{background-position:200% 200%}50%{background-position:-50% -50%}}
+  .A-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 20px 50px rgba(124,58,237,0.2)}
+  .A-rare{position:absolute;top:14px;right:14px;font-size:9px;background:linear-gradient(90deg,#ff3da6,#7c3aed);color:#fff;padding:4px 10px;border-radius:999px;font-weight:900;letter-spacing:0.15em;z-index:1}
+  .A-logo{font-size:48px;font-weight:900;margin:30px 0 14px;letter-spacing:-0.03em;line-height:1;position:relative}
+  .A-name{font-size:18px;font-weight:900;margin:0 0 4px;color:#111;position:relative}
+  .A-prod{font-size:11px;color:#888;letter-spacing:0.15em;margin:0 0 16px;position:relative}
+  .A-stats{position:absolute;bottom:18px;left:18px;right:18px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:10px}
+  .A-stat{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:3px 0;color:#666}
+  .A-stat span:last-child{font-weight:900;color:#7c3aed}
+
+  /* ============ B: ネオン (白ベース) ============ */
+  .B-bg{background:#fff;position:relative;overflow:hidden}
+  .B-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.06) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse at center,#000,transparent);pointer-events:none}
+  .B{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+  .B-card{background:#fff;border:2px solid #ff3da6;border-radius:0;padding:30px 20px;text-align:center;text-decoration:none;color:#111;position:relative;transition:.3s;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));box-shadow:0 0 30px rgba(255,61,166,0.25)}
+  .B-card:nth-child(2){border-color:#06b6d4;box-shadow:0 0 30px rgba(6,182,212,0.25)}
+  .B-card:nth-child(3){border-color:#fbbf24;box-shadow:0 0 30px rgba(251,191,36,0.25)}
+  .B-card:nth-child(4){border-color:#7c3aed;box-shadow:0 0 30px rgba(124,58,237,0.25)}
+  .B-card:hover{transform:translateY(-6px)}
+  .B-card:nth-child(1):hover{box-shadow:0 0 50px rgba(255,61,166,0.5)}
+  .B-card:nth-child(2):hover{box-shadow:0 0 50px rgba(6,182,212,0.5)}
+  .B-card:nth-child(3):hover{box-shadow:0 0 50px rgba(251,191,36,0.5)}
+  .B-card:nth-child(4):hover{box-shadow:0 0 50px rgba(124,58,237,0.5)}
+  .B-card .glow{font-size:42px;font-weight:900;margin-bottom:14px;letter-spacing:-0.02em}
+  .B-card .nm{font-size:13px;font-weight:900;letter-spacing:0.15em;margin-bottom:4px;color:#111}
+  .B-card .pd{font-size:10px;letter-spacing:0.25em;color:#888}
+  .B-card .num{position:absolute;top:8px;left:14px;font-size:10px;font-family:"SF Mono",monospace;color:#bbb}
+
+  /* ============ C: 巨大背景ロゴ (白ベース) ============ */
+  .C-bg{background:#fff;padding:0;border-top:1px solid #e5e5e5}
+  .C{max-width:none;display:grid;grid-template-columns:repeat(2,1fr);gap:0}
+  .C-cell{aspect-ratio:16/9;position:relative;overflow:hidden;text-decoration:none;color:#111;display:flex;align-items:flex-end;padding:40px;transition:.3s;cursor:pointer;border-right:1px solid #eee;border-bottom:1px solid #eee}
+  .C-cell:nth-child(1){background:linear-gradient(135deg,#fff 0%,#e6fff5 100%)}
+  .C-cell:nth-child(2){background:linear-gradient(135deg,#fff 0%,#eef2ff 100%)}
+  .C-cell:nth-child(3){background:linear-gradient(135deg,#fff 0%,#fff7e6 100%)}
+  .C-cell:nth-child(4){background:linear-gradient(135deg,#fff 0%,#e6f7ff 100%)}
+  .C-cell::before{content:attr(data-name);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:180px;font-weight:900;letter-spacing:-0.05em;line-height:0.8;white-space:nowrap;pointer-events:none;transition:.4s}
+  .C-cell:nth-child(1)::before{color:rgba(16,163,127,0.12)}
+  .C-cell:nth-child(2)::before{color:rgba(66,133,244,0.12)}
+  .C-cell:nth-child(3)::before{color:rgba(217,119,6,0.12)}
+  .C-cell:nth-child(4)::before{color:rgba(6,102,225,0.12)}
+  .C-cell:hover::before{transform:translate(-50%,-50%) scale(1.1)}
+  .C-cell:nth-child(1):hover::before{color:rgba(16,163,127,0.22)}
+  .C-cell:nth-child(2):hover::before{color:rgba(66,133,244,0.22)}
+  .C-cell:nth-child(3):hover::before{color:rgba(217,119,6,0.22)}
+  .C-cell:nth-child(4):hover::before{color:rgba(6,102,225,0.22)}
+  .C-cell .meta{position:relative;z-index:1}
+  .C-cell .badge{display:inline-block;background:#111;color:#fff;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:0.15em;margin-bottom:14px}
+  .C-cell h3{font-size:36px;margin:0 0 4px;font-weight:900;letter-spacing:-0.01em;color:#111}
+  .C-cell p{font-size:13px;margin:0;color:#666;letter-spacing:0.1em}
+  .C-cell .arrow{position:absolute;top:32px;right:32px;width:50px;height:50px;border:2px solid #111;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff;transition:.3s;color:#111}
+  .C-cell:hover .arrow{transform:rotate(-45deg);background:#111;color:#fff}
+
+  /* ============ D: 無限スクロール (白ベース) ============ */
+  .D-bg{background:linear-gradient(180deg,#fafafa,#fff,#fafafa);padding:60px 0}
+  .D-row{display:flex;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);margin-bottom:18px}
+  .D-track{display:flex;gap:20px;flex-shrink:0;animation:Dscroll 30s linear infinite;padding-right:20px}
+  .D-row.rev .D-track{animation-direction:reverse;animation-duration:40s}
+  @keyframes Dscroll{to{transform:translateX(-50%)}}
+  .D-pill{flex-shrink:0;display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #e5e5e5;border-radius:999px;padding:14px 28px;text-decoration:none;color:#111;transition:.2s;font-weight:900;box-shadow:0 4px 16px rgba(0,0,0,0.04)}
+  .D-pill:hover{border-color:#111;transform:scale(1.05);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+  .D-pill .lg{font-size:24px;font-weight:900}
+  .D-pill .nm{font-size:14px;letter-spacing:0.05em}
+  .D-pill .pd{font-size:10px;color:#888;letter-spacing:0.2em;margin-left:4px;padding-left:14px;border-left:1px solid #ddd}
+
+  /* ============ E: 3Dティルト・グラス (白ベース) ============ */
+  .E-bg{background:radial-gradient(circle at 30% 20%,#fef6ff,#f0f8ff,#fafafa);perspective:1500px;position:relative;overflow:hidden}
+  .E{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+  .E-card{aspect-ratio:3/4;background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:24px;padding:28px 22px;text-decoration:none;color:#111;position:relative;overflow:hidden;transform-style:preserve-3d;transition:.4s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 60px rgba(124,58,237,0.12)}
+  .E-card:hover{transform:rotateY(-12deg) rotateX(8deg) translateZ(20px);box-shadow:-20px 30px 60px rgba(124,58,237,0.25)}
+  .E-card .orb{position:absolute;width:200px;height:200px;border-radius:50%;filter:blur(60px);top:-50px;right:-50px;opacity:0.6}
+  .E-card:nth-child(1) .orb{background:#10a37f}
+  .E-card:nth-child(2) .orb{background:#9168C0}
+  .E-card:nth-child(3) .orb{background:#fbbf24}
+  .E-card:nth-child(4) .orb{background:#06b6d4}
+  .E-card .ico{font-size:38px;font-weight:900;margin:24px 0 18px;line-height:1;position:relative}
+  .E-card .nm{font-size:20px;font-weight:900;margin:0 0 6px;position:relative;color:#111}
+  .E-card .pd{font-size:11px;color:#666;letter-spacing:0.2em;margin:0 0 18px;position:relative}
+  .E-card .desc{font-size:11px;line-height:1.7;color:#666;position:relative}
+  .E-card .more{position:absolute;bottom:22px;left:22px;right:22px;font-size:11px;display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(0,0,0,0.1);color:#111;font-weight:700}
+
+  /* ============ F: 株価ボード (白ベース) ============ */
+  .F-bg{background:#fafafa;border-top:2px solid #10a37f;border-bottom:2px solid #10a37f;padding:40px 0}
+  .F-h{max-width:1200px;margin:0 auto 24px;padding:0 40px;display:flex;justify-content:space-between;align-items:center}
+  .F-h .title{display:flex;align-items:center;gap:12px}
+  .F-h .live{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:0.3}}
+  .F-h h2{font-size:18px;color:#111;margin:0;font-family:"SF Mono",monospace;letter-spacing:0.1em}
+  .F-h .clock{color:#666;font-family:"SF Mono",monospace;font-size:12px}
+  .F{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#fff;border:1px solid #ddd}
+  .F-row{padding:24px 20px;background:#fff;text-decoration:none;color:#111;font-family:"SF Mono","Menlo",monospace;transition:.2s;border-right:1px solid #eee}
+  .F-row:last-child{border-right:none}
+  .F-row:hover{background:#f9f9f9}
+  .F-row .ticker{font-size:11px;color:#888;letter-spacing:0.15em;margin-bottom:8px}
+  .F-row .lg{font-size:32px;font-weight:900;margin-bottom:14px;letter-spacing:-0.02em}
+  .F-row .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px}
+  .F-row .stat .k{color:#aaa;display:block;margin-bottom:2px}
+  .F-row .stat .v{font-size:13px;font-weight:900;color:#111}
+  .F-row .up{color:#10a37f}
+  .F-row .down{color:#ef4444}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>特集：トップAI企業 / 白ベース派手版</h1>
+  <p>明るく華やかな6案</p>
+</header>
+
+<!-- ===== A ===== -->
+<section class="A-bg">
+  <div class="label">CASE A</div>
+  <div class="nm">ホログラム・トレーディングカード</div>
+  <p class="ds">白カードに虹色グラデの枠が流れ、表面に光のシャイン。コレクション感MAX。</p>
+  <div class="A">
+    <a href="#" class="A-card"><span class="A-rare">SSR</span><div class="A-logo l-openai">OpenAI</div><p class="A-name">OpenAI</p><p class="A-prod">CHATGPT</p><div class="A-stats"><div class="A-stat"><span>POW</span><span>99</span></div><div class="A-stat"><span>SPD</span><span>95</span></div><div class="A-stat"><span>DEF</span><span>88</span></div><div class="A-stat"><span>MAG</span><span>97</span></div></div></a>
+    <a href="#" class="A-card"><span class="A-rare">SSR</span><div class="A-logo l-google">Google</div><p class="A-name">Google</p><p class="A-prod">GEMINI</p><div class="A-stats"><div class="A-stat"><span>POW</span><span>98</span></div><div class="A-stat"><span>SPD</span><span>92</span></div><div class="A-stat"><span>DEF</span><span>96</span></div><div class="A-stat"><span>MAG</span><span>94</span></div></div></a>
+    <a href="#" class="A-card"><span class="A-rare">SR</span><div class="A-logo l-anthropic">Anthropic</div><p class="A-name">Anthropic</p><p class="A-prod">CLAUDE</p><div class="A-stats"><div class="A-stat"><span>POW</span><span>94</span></div><div class="A-stat"><span>SPD</span><span>90</span></div><div class="A-stat"><span>DEF</span><span>99</span></div><div class="A-stat"><span>MAG</span><span>96</span></div></div></a>
+    <a href="#" class="A-card"><span class="A-rare">SR</span><div class="A-logo l-meta">Meta</div><p class="A-name">Meta AI</p><p class="A-prod">LLAMA</p><div class="A-stats"><div class="A-stat"><span>POW</span><span>92</span></div><div class="A-stat"><span>SPD</span><span>88</span></div><div class="A-stat"><span>DEF</span><span>85</span></div><div class="A-stat"><span>MAG</span><span>91</span></div></div></a>
+  </div>
+</section>
+
+<!-- ===== B ===== -->
+<section class="B-bg">
+  <div class="label">CASE B</div>
+  <div class="nm">ネオン斜めクリップ</div>
+  <p class="ds">白背景にカラフル発光ボーダー。斜めにクリップしたカードでテック感。</p>
+  <div class="B">
+    <a href="#" class="B-card"><span class="num">// 001</span><div class="glow l-openai">OpenAI</div><div class="nm">OPENAI</div><div class="pd">CHATGPT</div></a>
+    <a href="#" class="B-card"><span class="num">// 002</span><div class="glow l-google">Google</div><div class="nm">GOOGLE</div><div class="pd">GEMINI</div></a>
+    <a href="#" class="B-card"><span class="num">// 003</span><div class="glow l-anthropic">Anthropic</div><div class="nm">ANTHROPIC</div><div class="pd">CLAUDE</div></a>
+    <a href="#" class="B-card"><span class="num">// 004</span><div class="glow l-meta">Meta</div><div class="nm">META AI</div><div class="pd">LLAMA</div></a>
+  </div>
+</section>
+
+<!-- ===== C ===== -->
+<section class="C-bg">
+  <div class="label">CASE C</div>
+  <div class="nm">巨大背景ロゴ / フルブリード2x2</div>
+  <p class="ds">画面いっぱい・縦横半分ずつ。背景に巨大企業名タイポ（淡色）。</p>
+  <div class="C">
+    <a href="#" class="C-cell" data-name="OpenAI"><div class="meta"><span class="badge">FOUNDATION</span><h3>OpenAI</h3><p>CHATGPT・GPT-4</p></div><div class="arrow">→</div></a>
+    <a href="#" class="C-cell" data-name="Google"><div class="meta"><span class="badge">BIG TECH</span><h3>Google</h3><p>GEMINI・DEEPMIND</p></div><div class="arrow">→</div></a>
+    <a href="#" class="C-cell" data-name="Anthropic"><div class="meta"><span class="badge">SAFETY</span><h3>Anthropic</h3><p>CLAUDE</p></div><div class="arrow">→</div></a>
+    <a href="#" class="C-cell" data-name="Meta"><div class="meta"><span class="badge">OPEN SOURCE</span><h3>Meta AI</h3><p>LLAMA</p></div><div class="arrow">→</div></a>
+  </div>
+</section>
+
+<!-- ===== D ===== -->
+<section class="D-bg">
+  <div class="label">CASE D</div>
+  <div class="nm">無限スクロール ロゴリール</div>
+  <p class="ds">白いピル型のロゴカードが2行で逆方向に流れる。AI名言集と統一感◎</p>
+  <div class="D-row"><div class="D-track">
+    <a href="#" class="D-pill"><span class="lg l-openai">OpenAI</span><span class="nm">OpenAI</span><span class="pd">CHATGPT</span></a>
+    <a href="#" class="D-pill"><span class="lg l-google">Google</span><span class="nm">Google</span><span class="pd">GEMINI</span></a>
+    <a href="#" class="D-pill"><span class="lg l-anthropic">Anthropic</span><span class="nm">Anthropic</span><span class="pd">CLAUDE</span></a>
+    <a href="#" class="D-pill"><span class="lg l-meta">Meta</span><span class="nm">Meta AI</span><span class="pd">LLAMA</span></a>
+    <a href="#" class="D-pill"><span class="lg l-openai">OpenAI</span><span class="nm">OpenAI</span><span class="pd">CHATGPT</span></a>
+    <a href="#" class="D-pill"><span class="lg l-google">Google</span><span class="nm">Google</span><span class="pd">GEMINI</span></a>
+    <a href="#" class="D-pill"><span class="lg l-anthropic">Anthropic</span><span class="nm">Anthropic</span><span class="pd">CLAUDE</span></a>
+    <a href="#" class="D-pill"><span class="lg l-meta">Meta</span><span class="nm">Meta AI</span><span class="pd">LLAMA</span></a>
+  </div></div>
+  <div class="D-row rev"><div class="D-track">
+    <a href="#" class="D-pill"><span class="lg l-meta">Meta</span><span class="nm">Meta AI</span><span class="pd">LLAMA</span></a>
+    <a href="#" class="D-pill"><span class="lg l-anthropic">Anthropic</span><span class="nm">Anthropic</span><span class="pd">CLAUDE</span></a>
+    <a href="#" class="D-pill"><span class="lg l-google">Google</span><span class="nm">Google</span><span class="pd">GEMINI</span></a>
+    <a href="#" class="D-pill"><span class="lg l-openai">OpenAI</span><span class="nm">OpenAI</span><span class="pd">CHATGPT</span></a>
+    <a href="#" class="D-pill"><span class="lg l-meta">Meta</span><span class="nm">Meta AI</span><span class="pd">LLAMA</span></a>
+    <a href="#" class="D-pill"><span class="lg l-anthropic">Anthropic</span><span class="nm">Anthropic</span><span class="pd">CLAUDE</span></a>
+    <a href="#" class="D-pill"><span class="lg l-google">Google</span><span class="nm">Google</span><span class="pd">GEMINI</span></a>
+    <a href="#" class="D-pill"><span class="lg l-openai">OpenAI</span><span class="nm">OpenAI</span><span class="pd">CHATGPT</span></a>
+  </div></div>
+</section>
+
+<!-- ===== E ===== -->
+<section class="E-bg">
+  <div class="label">CASE E</div>
+  <div class="nm">3Dティルト・グラスモーフィズム</div>
+  <p class="ds">パステル背景に半透明ガラスカード、背景にぼかしオーブ。ホバーで3D傾く。</p>
+  <div class="E">
+    <a href="#" class="E-card"><div class="orb"></div><div class="ico l-openai">OpenAI</div><p class="nm">OpenAI</p><p class="pd">CHATGPT</p><p class="desc">ChatGPTを生んだ、世界最先端のAI研究企業。</p><div class="more"><span>Read more</span><span>→</span></div></a>
+    <a href="#" class="E-card"><div class="orb"></div><div class="ico l-google">Google</div><p class="nm">Google</p><p class="pd">GEMINI</p><p class="desc">Geminiを擁する検索とAIの巨人。</p><div class="more"><span>Read more</span><span>→</span></div></a>
+    <a href="#" class="E-card"><div class="orb"></div><div class="ico l-anthropic">Anthropic</div><p class="nm">Anthropic</p><p class="pd">CLAUDE</p><p class="desc">Claudeを開発、AI安全性を追求。</p><div class="more"><span>Read more</span><span>→</span></div></a>
+    <a href="#" class="E-card"><div class="orb"></div><div class="ico l-meta">Meta</div><p class="nm">Meta AI</p><p class="pd">LLAMA</p><p class="desc">LLaMAをOSSで世界に開放。</p><div class="more"><span>Read more</span><span>→</span></div></a>
+  </div>
+</section>
+
+<!-- ===== F ===== -->
+<section class="F-bg">
+  <div class="label">CASE F</div>
+  <div class="nm">マーケットボード / ターミナル</div>
+  <p class="ds">白基調のモニター風。LIVE感、データドリブンな雰囲気。</p>
+  <div class="F-h">
+    <div class="title"><span class="live"></span><h2>AI_COMPANIES.LIVE</h2></div>
+    <div class="clock">2026.04.07 // REAL_TIME</div>
+  </div>
+  <div class="F">
+    <a href="#" class="F-row"><div class="ticker">[ TICKER: $OAI ]</div><div class="lg l-openai">OpenAI</div><div class="stats"><div class="stat"><span class="k">VAL</span><span class="v">$157B</span></div><div class="stat"><span class="k">CHG</span><span class="v up">▲ 12.4%</span></div><div class="stat"><span class="k">MOM</span><span class="v">★★★★★</span></div><div class="stat"><span class="k">HIRE</span><span class="v up">OPEN</span></div></div></a>
+    <a href="#" class="F-row"><div class="ticker">[ TICKER: $GOOG ]</div><div class="lg l-google">Google</div><div class="stats"><div class="stat"><span class="k">VAL</span><span class="v">$2.1T</span></div><div class="stat"><span class="k">CHG</span><span class="v up">▲ 4.2%</span></div><div class="stat"><span class="k">MOM</span><span class="v">★★★★★</span></div><div class="stat"><span class="k">HIRE</span><span class="v up">OPEN</span></div></div></a>
+    <a href="#" class="F-row"><div class="ticker">[ TICKER: $ANT ]</div><div class="lg l-anthropic">Anthropic</div><div class="stats"><div class="stat"><span class="k">VAL</span><span class="v">$60B</span></div><div class="stat"><span class="k">CHG</span><span class="v up">▲ 18.7%</span></div><div class="stat"><span class="k">MOM</span><span class="v">★★★★☆</span></div><div class="stat"><span class="k">HIRE</span><span class="v up">OPEN</span></div></div></a>
+    <a href="#" class="F-row"><div class="ticker">[ TICKER: $META ]</div><div class="lg l-meta">Meta</div><div class="stats"><div class="stat"><span class="k">VAL</span><span class="v">$1.3T</span></div><div class="stat"><span class="k">CHG</span><span class="v down">▼ 2.1%</span></div><div class="stat"><span class="k">MOM</span><span class="v">★★★★☆</span></div><div class="stat"><span class="k">HIRE</span><span class="v up">OPEN</span></div></div></a>
+  </div>
+</section>
+
+</body></html>

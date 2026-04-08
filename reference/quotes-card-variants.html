@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AI名言カード デザイン案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f5f5;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;padding:40px 0;color:#000}
+  header{text-align:center;margin-bottom:40px}
+  header h1{font-size:24px;margin:0 0 6px}
+  header p{color:#666;font-size:13px;margin:0}
+
+  section{background:#fff;padding:36px 40px;margin-bottom:0;border-top:1px solid #ddd}
+  .label{font-size:11px;letter-spacing:0.2em;color:#888;margin-bottom:4px}
+  .name{font-size:18px;font-weight:800;margin:0 0 6px}
+  .desc{font-size:12px;color:#666;margin:0 0 22px}
+  .stage{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+
+  /* base card size */
+  .card{width:340px;flex-shrink:0}
+
+  /* ============ 案1: 現行 (太ボーダー+引用符) ============ */
+  .v1{background:#fff;border:2px solid #000;border-radius:14px;padding:22px;position:relative}
+  .v1::before{content:"\201C";position:absolute;top:-6px;left:14px;font-size:56px;font-family:Georgia,serif;line-height:1;color:#000}
+  .v1 .text{font-size:13px;line-height:1.75;margin:22px 0 12px}
+  .v1 .author{font-size:11px;font-weight:700;letter-spacing:0.08em}
+
+  /* ============ 案2: ステッカー風 (影だけ) ============ */
+  .v2{background:#fff;border-radius:18px;padding:22px;box-shadow:0 6px 0 #000,0 6px 18px rgba(0,0,0,0.15)}
+  .v2 .text{font-size:13px;line-height:1.75;margin:0 0 14px}
+  .v2 .author{font-size:11px;font-weight:700;color:#666;letter-spacing:0.08em}
+
+  /* ============ 案3: 名刺風 (横長・上下罫線) ============ */
+  .v3{background:#fff;padding:24px 22px;border-top:1px solid #000;border-bottom:1px solid #000;text-align:center}
+  .v3 .text{font-size:13px;line-height:1.75;margin:0 0 14px}
+  .v3 .author{font-size:10px;letter-spacing:0.25em;font-weight:700;display:inline-block;padding-top:10px;border-top:1px solid #000}
+
+  /* ============ 案4: 反転（黒背景白文字） ============ */
+  .v4{background:#000;color:#fff;border-radius:14px;padding:22px;position:relative}
+  .v4::before{content:"";position:absolute;top:18px;right:18px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff}
+  .v4 .text{font-size:13px;line-height:1.75;margin:0 0 14px}
+  .v4 .author{font-size:11px;font-weight:700;color:#aaa;letter-spacing:0.08em}
+
+  /* ============ 案5: ターミナル風 ============ */
+  .v5{background:#fff;border:1px solid #000;border-radius:6px;padding:0;font-family:"SF Mono","Menlo","Consolas",monospace;overflow:hidden}
+  .v5 .bar{background:#000;color:#fff;padding:6px 12px;font-size:10px;display:flex;gap:6px;align-items:center}
+  .v5 .bar .dot{width:8px;height:8px;border-radius:50%;background:#fff;border:1px solid #fff}
+  .v5 .bar .file{margin-left:auto;font-size:10px;opacity:0.8}
+  .v5 .body{padding:18px}
+  .v5 .text{font-size:12px;line-height:1.7;margin:0 0 12px}
+  .v5 .text::before{content:"> ";font-weight:700}
+  .v5 .author{font-size:10px;color:#666}
+  .v5 .author::before{content:"// "}
+
+  /* ============ 案6: 縦帯リボン ============ */
+  .v6{background:#fff;border:1px solid #000;border-radius:0;padding:22px 22px 22px 56px;position:relative;overflow:hidden}
+  .v6::before{content:"";position:absolute;left:0;top:0;bottom:0;width:36px;background:#000}
+  .v6::after{content:"01";position:absolute;left:0;top:50%;transform:translate(-50%,-50%) rotate(-90deg);color:#fff;font-size:14px;font-weight:900;letter-spacing:0.1em;width:36px;text-align:center}
+  .v6 .text{font-size:13px;line-height:1.75;margin:0 0 12px}
+  .v6 .author{font-size:11px;font-weight:700;letter-spacing:0.08em}
+
+  /* ============ 案7: ミニマル (罫線なし) ============ */
+  .v7{background:transparent;padding:20px 4px}
+  .v7 .text{font-size:15px;line-height:1.85;margin:0 0 14px;font-family:"Hiragino Mincho ProN",serif}
+  .v7 .author{font-size:10px;letter-spacing:0.3em;font-weight:600;color:#000;border-top:1px solid #000;padding-top:10px;display:inline-block}
+
+  /* ============ 案8: ハンコ (円形author) ============ */
+  .v8{background:#fff;border:1px solid #000;border-radius:14px;padding:22px;position:relative}
+  .v8 .text{font-size:13px;line-height:1.75;margin:0 0 14px;padding-right:60px}
+  .v8 .author{font-size:11px;font-weight:700;color:#666}
+  .v8 .stamp{position:absolute;top:18px;right:18px;width:54px;height:54px;border:2px solid #000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;letter-spacing:0.05em;transform:rotate(-12deg);text-align:center;line-height:1.1;padding:4px}
+
+  /* ============ 案9: シネマ字幕風 ============ */
+  .v9{background:#000;color:#fff;border-radius:4px;padding:24px 22px;position:relative;text-align:center}
+  .v9::before{content:"●  ●  ●";position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:6px;letter-spacing:6px;color:#fff;opacity:0.5}
+  .v9 .text{font-size:14px;line-height:1.75;margin:8px 0 16px;font-weight:300}
+  .v9 .author{font-size:10px;letter-spacing:0.25em;color:#888;font-weight:700}
+
+  /* ============ 案10: タロットカード風 ============ */
+  .v10{background:#fff;border:2px solid #000;border-radius:8px;padding:18px;position:relative;text-align:center}
+  .v10::before,.v10::after{content:"";position:absolute;left:8px;right:8px;height:1px;background:#000}
+  .v10::before{top:36px}
+  .v10::after{bottom:36px}
+  .v10 .num{font-size:22px;font-weight:900;font-family:Georgia,serif;line-height:1;margin-bottom:8px}
+  .v10 .text{font-size:13px;line-height:1.75;margin:24px 0;padding:0 6px}
+  .v10 .author{font-size:10px;letter-spacing:0.2em;font-weight:700;text-transform:uppercase;font-family:Georgia,serif}
+
+  /* ============ 案11: タグ + テキスト ============ */
+  .v11{background:#fff;border:1px solid #000;border-radius:14px;padding:22px}
+  .v11 .tag{display:inline-block;background:#000;color:#fff;font-size:10px;padding:3px 10px;border-radius:999px;margin-bottom:14px;font-weight:700;letter-spacing:0.1em}
+  .v11 .text{font-size:13px;line-height:1.75;margin:0 0 14px}
+  .v11 .author{font-size:11px;color:#666;font-weight:700}
+  .v11 .author::before{content:"by "}
+
+  /* ============ 案12: 新聞風 ============ */
+  .v12{background:#fff;border:1px solid #000;padding:20px;font-family:"Hiragino Mincho ProN","Yu Mincho",serif}
+  .v12 .head{border-bottom:3px double #000;padding-bottom:8px;margin-bottom:12px}
+  .v12 .head .label{font-size:10px;font-weight:700;letter-spacing:0.2em;color:#000}
+  .v12 .head .date{font-size:9px;color:#888;float:right}
+  .v12 .text{font-size:13px;line-height:1.85;margin:0 0 12px}
+  .v12 .author{font-size:11px;font-weight:700;text-align:right;border-top:1px dashed #000;padding-top:8px}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI名言カード デザイン案</h1>
+  <p>無限スクロール内の1枚をどう見せるか・12案</p>
+</header>
+
+<section>
+  <div class="label">CASE 01</div>
+  <h2 class="name">現行: 太ボーダー + 引用符</h2>
+  <p class="desc">2px黒ボーダー、左上に大きな引用符。シンプルかつ印象的。</p>
+  <div class="stage">
+    <div class="card v1"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">— I.J. Good</p></div>
+    <div class="card v1"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">— サム・アルトマン</p></div>
+    <div class="card v1"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">— アラン・ケイ</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 02</div>
+  <h2 class="name">ステッカー風（影で浮かす）</h2>
+  <p class="desc">ボーダーなし、下に黒いオフセット影。ポップで遊び心。</p>
+  <div class="stage">
+    <div class="card v2"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">— I.J. Good</p></div>
+    <div class="card v2"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">— サム・アルトマン</p></div>
+    <div class="card v2"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">— アラン・ケイ</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 03</div>
+  <h2 class="name">名刺風（横罫線・中央寄せ）</h2>
+  <p class="desc">上下の細い罫線のみ。エディトリアルで上品。</p>
+  <div class="stage">
+    <div class="card v3"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I . J . G O O D</p></div>
+    <div class="card v3"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">S A M  A L T M A N</p></div>
+    <div class="card v3"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">A L A N  K A Y</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 04</div>
+  <h2 class="name">反転（黒背景・白文字）</h2>
+  <p class="desc">白いカードと交互に配置すると視覚にリズムが生まれる。</p>
+  <div class="stage">
+    <div class="card v4"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">— I.J. Good</p></div>
+    <div class="card v4"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">— サム・アルトマン</p></div>
+    <div class="card v4"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">— アラン・ケイ</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 05</div>
+  <h2 class="name">ターミナル / コードコメント</h2>
+  <p class="desc">タイトルバー風ヘッダ。等幅フォントで「尖り」を演出。</p>
+  <div class="stage">
+    <div class="card v5"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="file">good.js</span></div><div class="body"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I.J. Good</p></div></div>
+    <div class="card v5"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="file">altman.js</span></div><div class="body"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">サム・アルトマン</p></div></div>
+    <div class="card v5"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="file">kay.js</span></div><div class="body"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">アラン・ケイ</p></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 06</div>
+  <h2 class="name">縦帯リボン（番号入り）</h2>
+  <p class="desc">左に黒い太帯と縦書き番号。雑誌の連載コラムのよう。</p>
+  <div class="stage">
+    <div class="card v6"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">— I.J. Good</p></div>
+    <div class="card v6"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">— サム・アルトマン</p></div>
+    <div class="card v6"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">— アラン・ケイ</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 07</div>
+  <h2 class="name">ミニマル（罫線なし・明朝）</h2>
+  <p class="desc">背景もボーダーもなし。文字だけで主張する高級志向。</p>
+  <div class="stage">
+    <div class="card v7"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I . J .  G O O D</p></div>
+    <div class="card v7"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">S A M  A L T M A N</p></div>
+    <div class="card v7"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">A L A N  K A Y</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 08</div>
+  <h2 class="name">ハンコ（円形authorスタンプ）</h2>
+  <p class="desc">右上に判子風の円スタンプ。和の遊び心。</p>
+  <div class="stage">
+    <div class="card v8"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">数学者 1965</p><div class="stamp">I.J.<br>GOOD</div></div>
+    <div class="card v8"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">OpenAI CEO</p><div class="stamp">SAM<br>ALT</div></div>
+    <div class="card v8"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">計算機科学者</p><div class="stamp">ALAN<br>KAY</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 09</div>
+  <h2 class="name">シネマ字幕風</h2>
+  <p class="desc">黒背景の映画字幕的レイアウト。中央寄せで物語感。</p>
+  <div class="stage">
+    <div class="card v9"><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I . J . G O O D</p></div>
+    <div class="card v9"><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">S A M  A L T M A N</p></div>
+    <div class="card v9"><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">A L A N  K A Y</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 10</div>
+  <h2 class="name">タロットカード風</h2>
+  <p class="desc">縦長＋上下の罫線＋大きな番号。コレクション感。</p>
+  <div class="stage">
+    <div class="card v10"><div class="num">I</div><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I.J. Good</p></div>
+    <div class="card v10"><div class="num">II</div><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">Sam Altman</p></div>
+    <div class="card v10"><div class="num">III</div><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">Alan Kay</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 11</div>
+  <h2 class="name">タグ + テキスト</h2>
+  <p class="desc">黒い丸タグでカテゴリ表示。SNSライク。</p>
+  <div class="stage">
+    <div class="card v11"><span class="tag">FUTURE</span><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I.J. Good</p></div>
+    <div class="card v11"><span class="tag">MINDSET</span><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">サム・アルトマン</p></div>
+    <div class="card v11"><span class="tag">VISION</span><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">アラン・ケイ</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 12</div>
+  <h2 class="name">新聞風（明朝・二重罫線）</h2>
+  <p class="desc">明朝体＋二重罫線で、新聞コラムのよう。知的で硬派。</p>
+  <div class="stage">
+    <div class="card v12"><div class="head"><span class="label">QUOTE Nº 01</span><span class="date">1965</span><div style="clear:both"></div></div><p class="text">AIは最後の発明になるだろう。その後の発明はすべてAIがやるからだ。</p><p class="author">I.J. Good</p></div>
+    <div class="card v12"><div class="head"><span class="label">QUOTE Nº 02</span><span class="date">2023</span><div style="clear:both"></div></div><p class="text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><p class="author">サム・アルトマン</p></div>
+    <div class="card v12"><div class="head"><span class="label">QUOTE Nº 03</span><span class="date">1971</span><div style="clear:both"></div></div><p class="text">未来を予測する最良の方法は、それを発明することだ。</p><p class="author">アラン・ケイ</p></div>
+  </div>
+</section>
+
+</body></html>

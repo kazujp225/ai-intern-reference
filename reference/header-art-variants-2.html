@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヘッダー アート追加案 (teal/cyan)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f5f7;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#111}
+  header.page{padding:50px 20px 30px;background:#fff;border-bottom:1px solid #e5e7eb;text-align:center}
+  header.page h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header.page p{color:#6b7280;font-size:13px;margin:0}
+
+  section.case{padding:32px 0;background:#fff;border-top:1px solid #eee}
+  .label{max-width:1300px;margin:0 auto 4px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#9ca3af;font-weight:600}
+  .nm{max-width:1300px;margin:0 auto 6px;padding:0 40px;font-size:17px;font-weight:800}
+  .ds{max-width:1300px;margin:0 auto 18px;padding:0 40px;font-size:12px;color:#6b7280;line-height:1.6}
+
+  .header-demo{position:relative;height:110px;background:#fff;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;overflow:hidden}
+  .header-demo canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .header-demo .content{position:relative;z-index:2;height:100%;display:flex;align-items:center;padding:0 60px;pointer-events:none}
+  .header-demo .neo-logo{font-family:monospace;font-size:1.4em;font-weight:900;color:#222;letter-spacing:3px;margin-right:auto}
+  .header-demo .neo-logo .bracket{color:#0097a7;font-weight:400}
+  .header-demo nav{display:flex;gap:20px;align-items:center;font-family:monospace;font-size:0.8em}
+  .header-demo nav a{color:#222;text-decoration:none}
+  .header-demo nav a.current{border-bottom:2px solid #222;padding-bottom:2px}
+  .header-demo nav .reg{background:#222;color:#fff;padding:6px 18px;border-radius:4px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>ヘッダー アート 追加案</h1>
+  <p>青寄りの緑（teal / cyan系）で6案</p>
+</header>
+
+<section class="case">
+  <div class="label">CASE 07</div>
+  <div class="nm">Triangle Field — 動的三角分割</div>
+  <p class="ds">点が動き、それらをDelaunay的に三角で繋ぐ。AI/データの抽象表現。</p>
+  <div class="header-demo"><canvas id="c7"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<section class="case">
+  <div class="label">CASE 08</div>
+  <div class="nm">Spiral Particles — 螺旋に集う粒子</div>
+  <p class="ds">中心から外側へ螺旋状に粒子が放射される。動きが優雅。</p>
+  <div class="header-demo"><canvas id="c8"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<section class="case">
+  <div class="label">CASE 09</div>
+  <div class="nm">Ripple — 拡がる波紋</div>
+  <p class="ds">ランダムな位置で波紋が次々と発生し外側へ拡散。雨/水面の静かな印象。</p>
+  <div class="header-demo"><canvas id="c9"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<section class="case">
+  <div class="label">CASE 10</div>
+  <div class="nm">Hex Pulse — 六角グリッドのパルス</div>
+  <p class="ds">六角形のグリッドが連続して脈打つ。テック×自然のハイブリッド感。</p>
+  <div class="header-demo"><canvas id="c10"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<section class="case">
+  <div class="label">CASE 11</div>
+  <div class="nm">Wave Grid — 高さマップの3D波</div>
+  <p class="ds">グリッドの各点がサイン波で上下するワイヤーフレーム。サイバー風景。</p>
+  <div class="header-demo"><canvas id="c11"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<section class="case">
+  <div class="label">CASE 12</div>
+  <div class="nm">Diagonal Streams — 斜めに流れる光線</div>
+  <p class="ds">細い光のストリークが斜めに流れる。Tronっぽく洗練された印象。</p>
+  <div class="header-demo"><canvas id="c12"></canvas>
+    <div class="content"><span class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></span>
+    <nav><a class="current">AIインターン</a><a>AI勉強会</a><a>採用担当者様</a><a>login</a><a class="reg">REGISTER</a></nav></div></div>
+</section>
+
+<script>
+function fit(c){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = c.parentElement.clientWidth, h = c.parentElement.clientHeight;
+  c.width = w*dpr; c.height = h*dpr;
+  const ctx = c.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return { ctx, w, h };
+}
+
+// CASE 07: Triangle Field
+(function(){
+  const c = document.getElementById('c7');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const N = 30;
+  const ps = [];
+  for (let i=0;i<N;i++) ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.3});
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    for (const p of ps){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+    // 各点を最も近い2点と結ぶ
+    for (let i=0;i<N;i++){
+      const dists = [];
+      for (let j=0;j<N;j++) if(i!==j) dists.push({j, d:Math.hypot(ps[i].x-ps[j].x, ps[i].y-ps[j].y)});
+      dists.sort((a,b)=>a.d-b.d);
+      for (let k=0;k<3;k++){
+        const j = dists[k].j, d = dists[k].d;
+        if (d<200){
+          ctx.strokeStyle = `rgba(0,191,165,${(1-d/200)*0.5})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath(); ctx.moveTo(ps[i].x,ps[i].y); ctx.lineTo(ps[j].x,ps[j].y); ctx.stroke();
+        }
+      }
+    }
+    ctx.fillStyle='#00e5ff';
+    for (const p of ps){ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// CASE 08: Spiral Particles
+(function(){
+  const c = document.getElementById('c8');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const ps = [];
+  function spawn(){
+    ps.push({a:Math.random()*Math.PI*2, r:0, life:1, hue: 170+Math.random()*30});
+  }
+  function loop(){
+    ctx.fillStyle='rgba(255,255,255,0.08)';
+    ctx.fillRect(0,0,w,h);
+    for (let i=0;i<3;i++) spawn();
+    const cx=w/2, cy=h/2;
+    for (const p of ps){
+      p.r += 1.4;
+      p.a += 0.04;
+      p.life -= 0.008;
+      const x = cx + p.r*Math.cos(p.a);
+      const y = cy + p.r*0.45*Math.sin(p.a);
+      ctx.fillStyle = `hsla(${p.hue},100%,55%,${p.life})`;
+      ctx.beginPath(); ctx.arc(x,y,1.5,0,Math.PI*2); ctx.fill();
+    }
+    for (let i=ps.length-1;i>=0;i--) if (ps[i].life<=0) ps.splice(i,1);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// CASE 09: Ripple
+(function(){
+  const c = document.getElementById('c9');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const ripples = [];
+  function loop(){
+    ctx.fillStyle='rgba(255,255,255,0.12)';
+    ctx.fillRect(0,0,w,h);
+    if (Math.random() < 0.06) ripples.push({x:Math.random()*w, y:Math.random()*h, r:0, life:1});
+    for (const r of ripples){
+      r.r += 1.8; r.life -= 0.012;
+      ctx.strokeStyle = `rgba(0,229,255,${r.life*0.7})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(r.x, r.y, r.r, 0, Math.PI*2); ctx.stroke();
+    }
+    for (let i=ripples.length-1;i>=0;i--) if (ripples[i].life<=0) ripples.splice(i,1);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// CASE 10: Hex Pulse
+(function(){
+  const c = document.getElementById('c10');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const size = 18;
+  function hex(cx,cy,r){
+    ctx.beginPath();
+    for (let i=0;i<6;i++){
+      const a = Math.PI/3*i + Math.PI/6;
+      const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+      if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+  }
+  let t=0;
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    const dx = size*Math.sqrt(3);
+    const dy = size*1.5;
+    for (let row=-1, y=0; y<h+dy; row++, y+=dy){
+      for (let col=-1, x=(row%2?dx/2:0)-dx; x<w+dx; col++, x+=dx){
+        const dist = Math.hypot(x-w/2, y-h/2);
+        const phase = Math.sin(t - dist*0.02);
+        const op = (phase+1)/2 * 0.6;
+        ctx.strokeStyle = `rgba(0,191,165,${op})`;
+        ctx.lineWidth = 1;
+        hex(x,y,size*0.55); ctx.stroke();
+      }
+    }
+    t += 0.06;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// CASE 11: Wave Grid
+(function(){
+  const c = document.getElementById('c11');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  let t=0;
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    const cols=40, rows=10;
+    const dx = w/cols, dy = h/rows;
+    ctx.strokeStyle='rgba(0,229,255,0.5)';
+    ctx.lineWidth=1;
+    // 横線
+    for (let r=0;r<=rows;r++){
+      ctx.beginPath();
+      for (let cc=0;cc<=cols;cc++){
+        const x = cc*dx;
+        const y = r*dy + Math.sin(cc*0.3 + r*0.5 + t)*5;
+        if (cc===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+    // 縦線（淡）
+    ctx.strokeStyle='rgba(0,191,165,0.18)';
+    for (let cc=0;cc<=cols;cc++){
+      ctx.beginPath();
+      ctx.moveTo(cc*dx,0); ctx.lineTo(cc*dx,h);
+      ctx.stroke();
+    }
+    t += 0.04;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// CASE 12: Diagonal Streams
+(function(){
+  const c = document.getElementById('c12');
+  let { ctx, w, h } = fit(c);
+  window.addEventListener('resize', () => ({ ctx, w, h } = fit(c)));
+  const streams = [];
+  function spawn(){
+    streams.push({x: -50, y: Math.random()*h*1.4 - 20, len: 60+Math.random()*120, speed: 2+Math.random()*4, hue:170+Math.random()*30});
+  }
+  for (let i=0;i<25;i++) spawn();
+  function loop(){
+    ctx.fillStyle='rgba(255,255,255,0.18)';
+    ctx.fillRect(0,0,w,h);
+    for (const s of streams){
+      s.x += s.speed;
+      s.y += s.speed*0.4;
+      const grd = ctx.createLinearGradient(s.x-s.len, s.y-s.len*0.4, s.x, s.y);
+      grd.addColorStop(0, `hsla(${s.hue},100%,55%,0)`);
+      grd.addColorStop(1, `hsla(${s.hue},100%,55%,0.9)`);
+      ctx.strokeStyle=grd;
+      ctx.lineWidth=1.4;
+      ctx.beginPath();
+      ctx.moveTo(s.x-s.len, s.y-s.len*0.4);
+      ctx.lineTo(s.x, s.y);
+      ctx.stroke();
+      if (s.x > w+50 || s.y > h+50){
+        s.x = -50 - Math.random()*100;
+        s.y = Math.random()*h*1.4 - 50;
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body></html>

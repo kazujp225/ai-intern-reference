@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>特集：トップAI企業 派手だけどいい感じ案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fafafa;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a}
+  header{text-align:center;padding:60px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:30px;margin:0 0 8px;font-weight:900;letter-spacing:-0.01em}
+  header p{color:#666;font-size:13px;margin:0}
+
+  section{padding:70px 0;border-top:1px solid #eee;background:#fff;position:relative;overflow:hidden}
+  .label{max-width:1200px;margin:0 auto 8px;padding:0 40px;font-size:11px;letter-spacing:0.3em;color:#888;position:relative}
+  .nm{max-width:1200px;margin:0 auto 6px;padding:0 40px;font-size:20px;font-weight:900;color:#0a0a0a;position:relative}
+  .ds{max-width:1200px;margin:0 auto 40px;padding:0 40px;font-size:12px;color:#666;position:relative}
+
+  /* logos */
+  .l-openai{color:#10a37f}
+  .l-google{background:linear-gradient(135deg,#4285F4,#9168C0,#1BA1E3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .l-anthropic{color:#d97706}
+  .l-meta{background:linear-gradient(135deg,#0668E1,#00C2FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+  /* ============ G: オーロラ背景 + ミニマルカード ============ */
+  .G-bg::before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:1200px;height:600px;background:radial-gradient(ellipse at 30% 50%,rgba(124,58,237,0.25),transparent 50%),radial-gradient(ellipse at 70% 50%,rgba(6,182,212,0.25),transparent 50%),radial-gradient(ellipse at 50% 70%,rgba(255,61,166,0.2),transparent 50%);filter:blur(60px);pointer-events:none}
+  .G{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+  .G-card{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.9);border-radius:20px;padding:32px 24px;text-align:center;text-decoration:none;color:#0a0a0a;transition:.3s;box-shadow:0 8px 32px rgba(0,0,0,0.06)}
+  .G-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(124,58,237,0.18)}
+  .G-card .lg{font-size:42px;font-weight:900;line-height:1;margin-bottom:18px;letter-spacing:-0.03em}
+  .G-card .nm{font-size:14px;font-weight:800;color:#0a0a0a;margin-bottom:4px}
+  .G-card .pd{font-size:10px;letter-spacing:0.2em;color:#888}
+  .G-card .div{width:30px;height:2px;background:#0a0a0a;margin:14px auto 0;border-radius:2px}
+
+  /* ============ H: ブルータリスト・ボールド ============ */
+  .H-bg{background:#fff}
+  .H{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:3px solid #0a0a0a}
+  .H-card{padding:50px 40px;text-decoration:none;color:#0a0a0a;border-right:3px solid #0a0a0a;border-bottom:3px solid #0a0a0a;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;transition:.2s;position:relative;background:#fff}
+  .H-card:nth-child(2n){border-right:none}
+  .H-card:nth-child(n+3){border-bottom:none}
+  .H-card:hover{background:#fef08a}
+  .H-card .num{font-size:90px;font-weight:900;line-height:0.85;letter-spacing:-0.05em;font-family:Georgia,serif}
+  .H-card .body h3{font-size:32px;margin:0 0 8px;font-weight:900;letter-spacing:-0.02em}
+  .H-card .body p{font-size:12px;color:#666;margin:0 0 14px;letter-spacing:0.15em}
+  .H-card .body .tag{display:inline-block;background:#0a0a0a;color:#fff;padding:5px 12px;font-size:10px;font-weight:900;letter-spacing:0.2em}
+  .H-card .arrow{position:absolute;top:24px;right:24px;font-size:28px;font-weight:900}
+
+  /* ============ I: グラデメッシュ + ガラスカード ============ */
+  .I-bg{background:linear-gradient(135deg,#fdf2f8 0%,#eef2ff 25%,#ecfeff 50%,#f0fdf4 75%,#fefce8 100%);background-size:200% 200%;animation:meshMove 12s ease infinite}
+  @keyframes meshMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .I{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+  .I-card{aspect-ratio:1;background:rgba(255,255,255,0.6);backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,0.9);border-radius:24px;padding:24px;text-decoration:none;color:#0a0a0a;display:flex;flex-direction:column;justify-content:space-between;transition:.35s cubic-bezier(.2,.8,.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.05)}
+  .I-card:hover{background:rgba(255,255,255,0.85);transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,0.12)}
+  .I-card .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .I-card .num{font-size:11px;color:#666;font-family:"SF Mono",monospace;letter-spacing:0.1em}
+  .I-card .pin{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.7);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid rgba(0,0,0,0.08)}
+  .I-card .lg{font-size:30px;font-weight:900;letter-spacing:-0.02em;margin:8px 0}
+  .I-card .nm{font-size:14px;font-weight:800;margin:0 0 2px}
+  .I-card .pd{font-size:10px;letter-spacing:0.2em;color:#888}
+
+  /* ============ J: アワード / メダル風 ============ */
+  .J-bg{background:radial-gradient(ellipse at top,#fef9c3,#fff)}
+  .J{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .J-card{background:#fff;border-radius:20px;padding:36px 24px 28px;text-align:center;text-decoration:none;color:#0a0a0a;border:1px solid #e5e5e5;position:relative;transition:.3s;box-shadow:0 4px 14px rgba(0,0,0,0.04)}
+  .J-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.1)}
+  .J-card .ribbon{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;padding:6px 22px;font-size:10px;font-weight:900;letter-spacing:0.15em;clip-path:polygon(0 0,100% 0,100% 100%,90% 75%,50% 100%,10% 75%,0 100%);padding-bottom:14px}
+  .J-card .medal{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#fef3c7,#fbbf24);margin:30px auto 18px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;box-shadow:inset 0 -4px 10px rgba(0,0,0,0.1),0 6px 18px rgba(251,191,36,0.4);border:3px solid #fff}
+  .J-card .medal.silver{background:linear-gradient(135deg,#f3f4f6,#9ca3af);box-shadow:inset 0 -4px 10px rgba(0,0,0,0.1),0 6px 18px rgba(156,163,175,0.4)}
+  .J-card .medal.bronze{background:linear-gradient(135deg,#fef3c7,#d97706);box-shadow:inset 0 -4px 10px rgba(0,0,0,0.1),0 6px 18px rgba(217,119,6,0.4)}
+  .J-card .nm{font-size:20px;font-weight:900;margin:0 0 4px}
+  .J-card .pd{font-size:11px;color:#666;letter-spacing:0.15em;margin:0 0 14px}
+  .J-card .stars{color:#fbbf24;letter-spacing:0.1em;font-size:14px;margin-bottom:6px}
+  .J-card .score{font-size:11px;color:#888}
+
+  /* ============ K: 縦長ヒーロー + アクセントバー ============ */
+  .K-bg{background:#fff}
+  .K{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .K-card{background:#fff;border:1px solid #ebebeb;border-radius:18px;overflow:hidden;text-decoration:none;color:#0a0a0a;transition:.3s;display:flex;flex-direction:column;position:relative}
+  .K-card::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;border-radius:18px 18px 0 0}
+  .K-card:nth-child(1)::before{background:linear-gradient(90deg,#10a37f,#0d7a5f)}
+  .K-card:nth-child(2)::before{background:linear-gradient(90deg,#4285F4,#9168C0)}
+  .K-card:nth-child(3)::before{background:linear-gradient(90deg,#d97706,#92400e)}
+  .K-card:nth-child(4)::before{background:linear-gradient(90deg,#0668E1,#00C2FF)}
+  .K-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.1)}
+  .K-card .visual{aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;margin-top:6px}
+  .K-card .visual::before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;filter:blur(50px);opacity:0.4;top:50%;left:50%;transform:translate(-50%,-50%)}
+  .K-card:nth-child(1) .visual::before{background:#10a37f}
+  .K-card:nth-child(2) .visual::before{background:#9168C0}
+  .K-card:nth-child(3) .visual::before{background:#d97706}
+  .K-card:nth-child(4) .visual::before{background:#00C2FF}
+  .K-card .visual .lg{font-size:48px;font-weight:900;letter-spacing:-0.03em;position:relative;z-index:1}
+  .K-card .info{padding:20px 24px 26px;border-top:1px solid #f0f0f0}
+  .K-card .info .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .K-card .info h3{font-size:18px;margin:0;font-weight:900}
+  .K-card .info .num{font-size:11px;color:#aaa;font-family:"SF Mono",monospace}
+  .K-card .info .pd{font-size:11px;color:#666;letter-spacing:0.15em;margin:0 0 14px}
+  .K-card .info .cta{font-size:11px;font-weight:700;display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px dashed #ddd}
+
+  /* ============ L: 重なり合うブロック (アシメ) ============ */
+  .L-bg{background:#0a0a0a}
+  .L-bg .label,.L-bg .nm,.L-bg .ds{color:#fff}
+  .L-bg .label{color:#999}
+  .L-bg .ds{color:#aaa}
+  .L{max-width:1200px;margin:0 auto;padding:0 40px;position:relative;height:520px}
+  .L-tile{position:absolute;background:#fff;border-radius:18px;padding:28px;text-decoration:none;color:#0a0a0a;transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+  .L-tile:hover{transform:translateY(-10px) rotate(0deg)!important;z-index:10;box-shadow:0 30px 80px rgba(124,58,237,0.4)}
+  .L-tile .lg{font-size:38px;font-weight:900;line-height:1;letter-spacing:-0.03em;margin-bottom:14px}
+  .L-tile h3{font-size:18px;margin:0 0 4px;font-weight:900}
+  .L-tile p{font-size:11px;color:#888;margin:0;letter-spacing:0.15em}
+  .L-tile .glow{position:absolute;inset:0;border-radius:18px;pointer-events:none;opacity:0.6}
+
+  .L-1{top:0;left:5%;width:280px;transform:rotate(-3deg)}
+  .L-1 .glow{box-shadow:0 0 80px rgba(16,163,127,0.4)}
+  .L-2{top:60px;left:30%;width:280px;transform:rotate(2deg);z-index:2}
+  .L-2 .glow{box-shadow:0 0 80px rgba(145,104,192,0.4)}
+  .L-3{top:30px;left:55%;width:280px;transform:rotate(-2deg)}
+  .L-3 .glow{box-shadow:0 0 80px rgba(217,119,6,0.4)}
+  .L-4{top:80px;left:80%;width:280px;transform:rotate(3deg);z-index:1}
+  .L-4 .glow{box-shadow:0 0 80px rgba(6,182,212,0.4)}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>特集：トップAI企業 / 派手でいい感じ案</h1>
+  <p>洗練された華やかさで6案</p>
+</header>
+
+<!-- ===== G ===== -->
+<section class="G-bg">
+  <div class="label">CASE G</div>
+  <div class="nm">オーロラ背景 + ミニマルカード</div>
+  <p class="ds">背景にぼかしの色グラデオーロラ、カードは白くシンプル。Apple/Stripe風の上品な華やかさ。</p>
+  <div class="G">
+    <a href="#" class="G-card"><div class="lg l-openai">OpenAI</div><div class="nm">OpenAI</div><div class="pd">CHATGPT</div><div class="div"></div></a>
+    <a href="#" class="G-card"><div class="lg l-google">Google</div><div class="nm">Google</div><div class="pd">GEMINI</div><div class="div"></div></a>
+    <a href="#" class="G-card"><div class="lg l-anthropic">Anthropic</div><div class="nm">Anthropic</div><div class="pd">CLAUDE</div><div class="div"></div></a>
+    <a href="#" class="G-card"><div class="lg l-meta">Meta</div><div class="nm">Meta AI</div><div class="pd">LLAMA</div><div class="div"></div></a>
+  </div>
+</section>
+
+<!-- ===== H ===== -->
+<section class="H-bg">
+  <div class="label">CASE H</div>
+  <div class="nm">ブルータリスト / 黒太枠 + 巨大ナンバー</div>
+  <p class="ds">3px黒ボーダー、巨大セリフ番号、ホバーで黄色背景。雑誌っぽい強い印象。</p>
+  <div class="H">
+    <a href="#" class="H-card"><div class="num">01</div><div class="body"><h3 class="l-openai">OpenAI</h3><p>CHATGPT・GPT-4</p><span class="tag">FOUNDATION</span></div><span class="arrow">↗</span></a>
+    <a href="#" class="H-card"><div class="num">02</div><div class="body"><h3 class="l-google">Google</h3><p>GEMINI・DEEPMIND</p><span class="tag">BIG TECH</span></div><span class="arrow">↗</span></a>
+    <a href="#" class="H-card"><div class="num">03</div><div class="body"><h3 class="l-anthropic">Anthropic</h3><p>CLAUDE</p><span class="tag">SAFETY</span></div><span class="arrow">↗</span></a>
+    <a href="#" class="H-card"><div class="num">04</div><div class="body"><h3 class="l-meta">Meta AI</h3><p>LLAMA</p><span class="tag">OPEN SOURCE</span></div><span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<!-- ===== I ===== -->
+<section class="I-bg">
+  <div class="label">CASE I</div>
+  <div class="nm">グラデメッシュ + ガラスカード</div>
+  <p class="ds">ゆっくり動くパステルグラデ背景に、すりガラスのような半透明カード。涼しげで上質。</p>
+  <div class="I">
+    <a href="#" class="I-card"><div class="top"><span class="num">// 001</span><span class="pin">↗</span></div><div><div class="lg l-openai">OpenAI</div><div class="nm">OpenAI</div><div class="pd">CHATGPT</div></div></a>
+    <a href="#" class="I-card"><div class="top"><span class="num">// 002</span><span class="pin">↗</span></div><div><div class="lg l-google">Google</div><div class="nm">Google</div><div class="pd">GEMINI</div></div></a>
+    <a href="#" class="I-card"><div class="top"><span class="num">// 003</span><span class="pin">↗</span></div><div><div class="lg l-anthropic">Anthropic</div><div class="nm">Anthropic</div><div class="pd">CLAUDE</div></div></a>
+    <a href="#" class="I-card"><div class="top"><span class="num">// 004</span><span class="pin">↗</span></div><div><div class="lg l-meta">Meta</div><div class="nm">Meta AI</div><div class="pd">LLAMA</div></div></a>
+  </div>
+</section>
+
+<!-- ===== J ===== -->
+<section class="J-bg">
+  <div class="label">CASE J</div>
+  <div class="nm">アワード / メダルランキング</div>
+  <p class="ds">金・銀・銅メダルとリボン。「特集」を「アワード」として演出するエンタメ感。</p>
+  <div class="J">
+    <a href="#" class="J-card"><div class="ribbon">CHAMPION</div><div class="medal">1</div><div class="nm">OpenAI</div><div class="pd">CHATGPT</div><div class="stars">★ ★ ★ ★ ★</div><div class="score">99 / 100</div></a>
+    <a href="#" class="J-card"><div class="ribbon">RUNNER UP</div><div class="medal silver">2</div><div class="nm">Google</div><div class="pd">GEMINI</div><div class="stars">★ ★ ★ ★ ★</div><div class="score">96 / 100</div></a>
+    <a href="#" class="J-card"><div class="ribbon">3rd PLACE</div><div class="medal bronze">3</div><div class="nm">Anthropic</div><div class="pd">CLAUDE</div><div class="stars">★ ★ ★ ★ ☆</div><div class="score">94 / 100</div></a>
+    <a href="#" class="J-card"><div class="ribbon">RISING</div><div class="medal" style="background:linear-gradient(135deg,#dbeafe,#3b82f6);box-shadow:inset 0 -4px 10px rgba(0,0,0,0.1),0 6px 18px rgba(59,130,246,0.4);color:#fff">4</div><div class="nm">Meta AI</div><div class="pd">LLAMA</div><div class="stars">★ ★ ★ ★ ☆</div><div class="score">91 / 100</div></a>
+  </div>
+</section>
+
+<!-- ===== K ===== -->
+<section class="K-bg">
+  <div class="label">CASE K</div>
+  <div class="nm">アクセントバー + ぼかしオーブ</div>
+  <p class="ds">カード上部にブランドカラーの細バー、中央に大きなぼかしオーブと巨大ロゴ。落ち着いた華やかさ。</p>
+  <div class="K">
+    <a href="#" class="K-card"><div class="visual"><span class="lg l-openai">OpenAI</span></div><div class="info"><div class="top"><h3>OpenAI</h3><span class="num">N°01</span></div><p class="pd">CHATGPT</p><div class="cta"><span>Read more</span><span>→</span></div></div></a>
+    <a href="#" class="K-card"><div class="visual"><span class="lg l-google">Google</span></div><div class="info"><div class="top"><h3>Google</h3><span class="num">N°02</span></div><p class="pd">GEMINI</p><div class="cta"><span>Read more</span><span>→</span></div></div></a>
+    <a href="#" class="K-card"><div class="visual"><span class="lg l-anthropic">Anthropic</span></div><div class="info"><div class="top"><h3>Anthropic</h3><span class="num">N°03</span></div><p class="pd">CLAUDE</p><div class="cta"><span>Read more</span><span>→</span></div></div></a>
+    <a href="#" class="K-card"><div class="visual"><span class="lg l-meta">Meta</span></div><div class="info"><div class="top"><h3>Meta AI</h3><span class="num">N°04</span></div><p class="pd">LLAMA</p><div class="cta"><span>Read more</span><span>→</span></div></div></a>
+  </div>
+</section>
+
+<!-- ===== L ===== -->
+<section class="L-bg">
+  <div class="label">CASE L</div>
+  <div class="nm">重なる斜めタイル（黒背景・色グロー）</div>
+  <p class="ds">アシメに散らばった4タイル。背景は黒で、各タイルの周りにブランドカラーのグローが浮かぶ。</p>
+  <div class="L">
+    <a href="#" class="L-tile L-1"><span class="glow"></span><div class="lg l-openai">OpenAI</div><h3>OpenAI</h3><p>CHATGPT</p></a>
+    <a href="#" class="L-tile L-2"><span class="glow"></span><div class="lg l-google">Google</div><h3>Google</h3><p>GEMINI</p></a>
+    <a href="#" class="L-tile L-3"><span class="glow"></span><div class="lg l-anthropic">Anthropic</div><h3>Anthropic</h3><p>CLAUDE</p></a>
+    <a href="#" class="L-tile L-4"><span class="glow"></span><div class="lg l-meta">Meta</div><h3>Meta AI</h3><p>LLAMA</p></a>
+  </div>
+</section>
+
+</body></html>
