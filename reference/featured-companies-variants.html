@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集企業セクション UI案一覧</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px;
+    margin: 60px auto 20px;
+    padding: 0 20px;
+    font-size: 1.4em;
+    font-weight: 900;
+    color: #10a37f;
+    border-left: 4px solid #10a37f;
+    padding-left: 16px;
+  }
+  .variant-label span {
+    display: block;
+    font-size: 0.55em;
+    font-weight: 500;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+
+  /* ===== 共通ロゴ画像 ===== */
+  .company-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .logo { overflow: hidden; }
+  .logo img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+  /* =========================================== */
+  /* 案1: カード型（角丸＋影＋白背景）          */
+  /* =========================================== */
+  .v1 {
+    background: transparent;
+    padding: 56px 40px 40px;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .v1 .section-title { font-size: 1.6em; font-weight: 900; color: #0a0a0a; margin-bottom: 8px; }
+  .v1 .section-title::before { content: "FEATURED"; display: block; font-family: "SF Mono",monospace; font-size: 0.55em; font-weight: 700; letter-spacing: 0.3em; color: #10a37f; margin-bottom: 8px; }
+  .v1 .section-sub { font-size: 0.85em; color: #6b7280; margin-bottom: 32px; }
+  .v1 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+  .v1 .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 28px 20px 24px;
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .v1 .card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+  .v1 .logo { width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; }
+  .v1 .name { font-size: 1.3em; font-weight: 900; color: #0a0a0a; }
+  .v1 .desc { font-size: 0.85em; color: #6b7280; }
+  .v1 .hover-detail { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s; }
+  .v1 .card:hover .hover-detail { max-height: 60px; opacity: 1; margin-top: 8px; }
+  .v1 .hover-stat { font-size: 0.8em; color: #10a37f; font-weight: 600; }
+  .v1 .hover-point { font-size: 0.75em; color: #6b7280; }
+
+  /* =========================================== */
+  /* 案2: 横長バナー型                           */
+  /* =========================================== */
+  .v2 {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 56px 40px 40px;
+    text-align: center;
+  }
+  .v2 .section-title { font-size: 1.6em; font-weight: 900; color: #0a0a0a; margin-bottom: 8px; }
+  .v2 .section-title::before { content: "FEATURED"; display: block; font-family: "SF Mono",monospace; font-size: 0.55em; font-weight: 700; letter-spacing: 0.3em; color: #10a37f; margin-bottom: 8px; }
+  .v2 .section-sub { font-size: 0.85em; color: #6b7280; margin-bottom: 32px; }
+  .v2 .list { display: flex; flex-direction: column; gap: 14px; }
+  .v2 .card {
+    display: flex; align-items: center; gap: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px 28px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .v2 .card:hover { transform: translateX(6px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .v2 .logo { width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .v2 .info { text-align: left; flex: 1; }
+  .v2 .name { font-size: 1.2em; font-weight: 900; color: #0a0a0a; }
+  .v2 .desc { font-size: 0.85em; color: #6b7280; margin-top: 2px; }
+  .v2 .stat { font-size: 0.8em; color: #10a37f; font-weight: 700; flex-shrink: 0; }
+  .v2 .arrow { color: #d1d5db; font-size: 1.4em; flex-shrink: 0; }
+
+  /* =========================================== */
+  /* 案3: ダーク背景＋グロー演出                 */
+  /* =========================================== */
+  .v3 {
+    background: #0a0a0a;
+    padding: 56px 40px 50px;
+    text-align: center;
+    border-radius: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .v3 .section-title { font-size: 1.6em; font-weight: 900; color: #f5f5f5; margin-bottom: 8px; }
+  .v3 .section-title::before { content: "FEATURED"; display: block; font-family: "SF Mono",monospace; font-size: 0.55em; font-weight: 700; letter-spacing: 0.3em; color: #10a37f; margin-bottom: 8px; }
+  .v3 .section-sub { font-size: 0.85em; color: #9ca3af; margin-bottom: 40px; }
+  .v3 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+  .v3 .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px 20px 28px;
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .v3 .card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 16px;
+    background: radial-gradient(circle at 50% 30%, rgba(16,163,127,0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .v3 .card:hover::after { opacity: 1; }
+  .v3 .card:hover { border-color: rgba(16,163,127,0.4); transform: translateY(-4px); }
+  .v3 .logo { width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; filter: brightness(0) invert(1); }
+  .v3 .card:hover .logo { filter: brightness(1) drop-shadow(0 0 12px rgba(16,163,127,0.6)); }
+  .v3 .name { font-size: 1.3em; font-weight: 900; color: #f5f5f5; position: relative; z-index: 1; }
+  .v3 .desc { font-size: 0.85em; color: #6b7280; position: relative; z-index: 1; }
+  .v3 .stat { font-size: 0.75em; color: #10a37f; font-weight: 700; margin-top: 4px; position: relative; z-index: 1; opacity: 0; transition: opacity 0.3s; }
+  .v3 .card:hover .stat { opacity: 1; }
+
+  /* =========================================== */
+  /* 案4: ロゴだけ大きく横並び（ミニマル）       */
+  /* =========================================== */
+  .v4 {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 56px 40px 40px;
+    text-align: center;
+  }
+  .v4 .section-title { font-size: 1em; font-weight: 700; color: #9ca3af; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 40px; }
+  .v4 .logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  .v4 .logo-item {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0.5;
+  }
+  .v4 .logo-item:hover { opacity: 1; transform: scale(1.1); }
+  .v4 .logo { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+  .v4 .name { font-size: 0.85em; font-weight: 700; color: #6b7280; }
+
+  /* =========================================== */
+  /* 案5: スライドショー型（1社ずつ大きく）      */
+  /* =========================================== */
+  .v5 {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 56px 40px 40px;
+    text-align: center;
+    position: relative;
+  }
+  .v5 .section-title { font-size: 1.6em; font-weight: 900; color: #0a0a0a; margin-bottom: 8px; }
+  .v5 .section-title::before { content: "FEATURED"; display: block; font-family: "SF Mono",monospace; font-size: 0.55em; font-weight: 700; letter-spacing: 0.3em; color: #10a37f; margin-bottom: 8px; }
+  .v5 .section-sub { font-size: 0.85em; color: #6b7280; margin-bottom: 32px; }
+  .v5 .slide-container { position: relative; overflow: hidden; }
+  .v5 .slide-track {
+    display: flex;
+    transition: transform 0.4s ease;
+  }
+  .v5 .slide {
+    min-width: 100%;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 40px 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .v5 .logo { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+  .v5 .name { font-size: 1.8em; font-weight: 900; color: #0a0a0a; }
+  .v5 .desc { font-size: 1em; color: #6b7280; }
+  .v5 .stat { font-size: 1em; color: #10a37f; font-weight: 800; }
+  .v5 .point { font-size: 0.9em; color: #374151; }
+  .v5 .nav-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 1.2em; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    z-index: 2;
+  }
+  .v5 .nav-btn:hover { background: #f0fdf4; }
+  .v5 .nav-prev { left: -22px; }
+  .v5 .nav-next { right: -22px; }
+  .v5 .dots { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+  .v5 .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #d1d5db; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .v5 .dot.active { background: #10a37f; }
+</style>
+</head>
+<body>
+
+<!-- ===== 案1 ===== -->
+<h2 class="variant-label">案1: カード型（角丸＋影＋白背景）<span>モダンSaaS風。ホバーで詳細展開。</span></h2>
+<div class="v1">
+  <h2 class="section-title">特集：トップAI企業紹介</h2>
+  <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+  <div class="grid">
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/openai.svg" alt="OpenAI" width="60" height="60"></div>
+      <span class="name">OpenAI</span>
+      <span class="desc">ChatGPT · GPT-4o</span>
+      <div class="hover-detail"><span class="hover-stat">募集中: 12件</span><span class="hover-point">AGI研究の最前線</span></div>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/google.svg" alt="Google" width="60" height="60"></div>
+      <span class="name">Google</span>
+      <span class="desc">Gemini · DeepMind</span>
+      <div class="hover-detail"><span class="hover-stat">募集中: 8件</span><span class="hover-point">世界最大AIインフラ</span></div>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/anthropic.svg" alt="Anthropic" width="60" height="60"></div>
+      <span class="name">Anthropic</span>
+      <span class="desc">Claude · Sonnet</span>
+      <div class="hover-detail"><span class="hover-stat">募集中: 6件</span><span class="hover-point">AI安全性のリーダー</span></div>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/meta.svg" alt="Meta" width="60" height="60"></div>
+      <span class="name">Meta AI</span>
+      <span class="desc">LLaMA · FAIR</span>
+      <div class="hover-detail"><span class="hover-stat">募集中: 9件</span><span class="hover-point">オープンソースAI先駆者</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- ===== 案2 ===== -->
+<h2 class="variant-label">案2: 横長バナー型<span>求人サイト風。情報量が多く比較しやすい。</span></h2>
+<div class="v2">
+  <h2 class="section-title">特集：トップAI企業紹介</h2>
+  <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+  <div class="list">
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/openai.svg" alt="OpenAI" width="60" height="60"></div>
+      <div class="info"><span class="name">OpenAI</span><br><span class="desc">ChatGPT · GPT-4o ― AGI研究の最前線で働ける</span></div>
+      <span class="stat">12件募集中</span>
+      <span class="arrow">›</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/google.svg" alt="Google" width="60" height="60"></div>
+      <div class="info"><span class="name">Google</span><br><span class="desc">Gemini · DeepMind ― 世界最大規模のAIインフラ</span></div>
+      <span class="stat">8件募集中</span>
+      <span class="arrow">›</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/anthropic.svg" alt="Anthropic" width="60" height="60"></div>
+      <div class="info"><span class="name">Anthropic</span><br><span class="desc">Claude · Sonnet ― AI安全性研究のリーダー</span></div>
+      <span class="stat">6件募集中</span>
+      <span class="arrow">›</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/meta.svg" alt="Meta" width="60" height="60"></div>
+      <div class="info"><span class="name">Meta AI</span><br><span class="desc">LLaMA · FAIR ― オープンソースAIの先駆者</span></div>
+      <span class="stat">9件募集中</span>
+      <span class="arrow">›</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== 案3 ===== -->
+<h2 class="variant-label">案3: ダーク背景＋グロー演出<span>テック・AI感が強い。ホバーでロゴが光る。</span></h2>
+<div class="v3">
+  <h2 class="section-title">特集：トップAI企業紹介</h2>
+  <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+  <div class="grid">
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/openai.svg" alt="OpenAI" width="60" height="60"></div>
+      <span class="name">OpenAI</span>
+      <span class="desc">ChatGPT · GPT-4o</span>
+      <span class="stat">募集中: 12件</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/google.svg" alt="Google" width="60" height="60"></div>
+      <span class="name">Google</span>
+      <span class="desc">Gemini · DeepMind</span>
+      <span class="stat">募集中: 8件</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/anthropic.svg" alt="Anthropic" width="60" height="60"></div>
+      <span class="name">Anthropic</span>
+      <span class="desc">Claude · Sonnet</span>
+      <span class="stat">募集中: 6件</span>
+    </a>
+    <a href="#" class="card">
+      <div class="logo"><img src="images/logo/meta.svg" alt="Meta" width="60" height="60"></div>
+      <span class="name">Meta AI</span>
+      <span class="desc">LLaMA · FAIR</span>
+      <span class="stat">募集中: 9件</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== 案4 ===== -->
+<h2 class="variant-label">案4: ロゴだけ大きく横並び（ミニマル）<span>枠なし。ロゴが主役のシンプルなレイアウト。</span></h2>
+<div class="v4">
+  <h2 class="section-title">Trusted by top AI companies</h2>
+  <div class="logos">
+    <a href="#" class="logo-item">
+      <div class="logo"><img src="images/logo/openai.svg" alt="OpenAI" width="60" height="60"></div>
+      <span class="name">OpenAI</span>
+    </a>
+    <a href="#" class="logo-item">
+      <div class="logo"><img src="images/logo/google.svg" alt="Google" width="60" height="60"></div>
+      <span class="name">Google</span>
+    </a>
+    <a href="#" class="logo-item">
+      <div class="logo"><img src="images/logo/anthropic.svg" alt="Anthropic" width="60" height="60"></div>
+      <span class="name">Anthropic</span>
+    </a>
+    <a href="#" class="logo-item">
+      <div class="logo"><img src="images/logo/meta.svg" alt="Meta" width="60" height="60"></div>
+      <span class="name">Meta AI</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== 案5 ===== -->
+<h2 class="variant-label">案5: スライドショー型（1社ずつ大きく）<span>1社をフォーカス。左右ボタンで切り替え。</span></h2>
+<div class="v5">
+  <h2 class="section-title">特集：トップAI企業紹介</h2>
+  <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+  <div class="slide-container">
+    <div class="slide-track" id="v5-track">
+      <div class="slide">
+        <div class="logo"><img src="images/logo/openai.svg" alt="OpenAI" width="60" height="60"></div>
+        <span class="name">OpenAI</span>
+        <span class="desc">ChatGPT · GPT-4o</span>
+        <span class="stat">募集中: 12件</span>
+        <span class="point">AGI研究の最前線で働ける</span>
+      </div>
+      <div class="slide">
+        <div class="logo"><img src="images/logo/google.svg" alt="Google" width="60" height="60"></div>
+        <span class="name">Google</span>
+        <span class="desc">Gemini · DeepMind</span>
+        <span class="stat">募集中: 8件</span>
+        <span class="point">世界最大規模のAIインフラ</span>
+      </div>
+      <div class="slide">
+        <div class="logo"><img src="images/logo/anthropic.svg" alt="Anthropic" width="60" height="60"></div>
+        <span class="name">Anthropic</span>
+        <span class="desc">Claude · Sonnet</span>
+        <span class="stat">募集中: 6件</span>
+        <span class="point">AI安全性研究のリーダー</span>
+      </div>
+      <div class="slide">
+        <div class="logo"><img src="images/logo/meta.svg" alt="Meta" width="60" height="60"></div>
+        <span class="name">Meta AI</span>
+        <span class="desc">LLaMA · FAIR</span>
+        <span class="stat">募集中: 9件</span>
+        <span class="point">オープンソースAIの先駆者</span>
+      </div>
+    </div>
+    <button class="nav-btn nav-prev" onclick="v5Move(-1)">‹</button>
+    <button class="nav-btn nav-next" onclick="v5Move(1)">›</button>
+  </div>
+  <div class="dots" id="v5-dots">
+    <button class="dot active" onclick="v5Go(0)"></button>
+    <button class="dot" onclick="v5Go(1)"></button>
+    <button class="dot" onclick="v5Go(2)"></button>
+    <button class="dot" onclick="v5Go(3)"></button>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+// 案5 スライドショー
+let v5Index = 0;
+function v5Go(i) {
+  v5Index = i;
+  document.getElementById('v5-track').style.transform = 'translateX(-' + (i * 100) + '%)';
+  document.querySelectorAll('#v5-dots .dot').forEach(function(d, idx) {
+    d.classList.toggle('active', idx === i);
+  });
+}
+function v5Move(dir) {
+  v5Index = (v5Index + dir + 4) % 4;
+  v5Go(v5Index);
+}
+</script>
+</body>
+</html>

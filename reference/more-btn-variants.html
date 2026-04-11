@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>もっと見るボタン UI案一覧</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 700px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+
+  .demo { max-width: 700px; margin: 0 auto; padding: 30px 20px; text-align: center; }
+
+  /* ===== 案1: グラデーション＋矢印 ===== */
+  .v1 .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, #10a37f, #06b6d4);
+    color: #fff; padding: 16px 36px; border-radius: 12px;
+    font-size: 1em; font-weight: 800; text-decoration: none;
+    box-shadow: 0 4px 16px rgba(16,163,127,0.3);
+    transition: all 0.3s;
+  }
+  .v1 .btn:hover { box-shadow: 0 6px 24px rgba(16,163,127,0.4); transform: translateY(-2px); }
+  .v1 .btn .arrow { transition: transform 0.3s; font-size: 1.2em; }
+  .v1 .btn:hover .arrow { transform: translateX(4px); }
+
+  /* ===== 案2: アウトラインボタン ===== */
+  .v2 .btn {
+    display: inline-block;
+    background: transparent; color: #10a37f;
+    padding: 16px 40px; border-radius: 12px;
+    border: 2px solid #10a37f;
+    font-size: 1em; font-weight: 800; text-decoration: none;
+    transition: all 0.3s;
+  }
+  .v2 .btn:hover { background: #10a37f; color: #fff; box-shadow: 0 4px 16px rgba(16,163,127,0.25); }
+
+  /* ===== 案3: ピル型＋カウンター ===== */
+  .v3 .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #10a37f; color: #fff;
+    padding: 14px 28px; border-radius: 999px;
+    font-size: 1em; font-weight: 800; text-decoration: none;
+    box-shadow: 0 4px 16px rgba(16,163,127,0.25);
+    transition: all 0.3s;
+  }
+  .v3 .btn:hover { background: #0d8c6e; transform: translateY(-2px); }
+  .v3 .badge {
+    background: rgba(255,255,255,0.25); padding: 4px 12px;
+    border-radius: 999px; font-size: 0.8em; font-weight: 700;
+  }
+
+  /* ===== 案4: テキストリンク型 ===== */
+  .v4 .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; color: #10a37f;
+    padding: 12px 0; border: none; border-bottom: 2px solid #10a37f;
+    font-size: 1em; font-weight: 800; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .v4 .btn:hover { color: #0d8c6e; border-color: #0d8c6e; }
+  .v4 .btn .arrow { transition: transform 0.2s; }
+  .v4 .btn:hover .arrow { transform: translateX(4px); }
+
+  /* ===== 案5: CTA大型＋サブテキスト ===== */
+  .v5 .btn-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
+  .v5 .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #10a37f; color: #fff;
+    padding: 18px 48px; border-radius: 14px;
+    font-size: 1.1em; font-weight: 900; text-decoration: none;
+    box-shadow: 0 6px 20px rgba(16,163,127,0.3);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .v5 .btn::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+  .v5 .btn:hover::before { transform: translateX(100%); }
+  .v5 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(16,163,127,0.35); }
+  .v5 .sub { font-size: 0.75em; color: #9ca3af; }
+</style>
+</head>
+<body>
+
+<h2 class="variant-label">案1: グラデーション＋矢印アイコン<span>緑→シアンのグラデ。矢印がホバーで動く。</span></h2>
+<div class="demo v1">
+  <a href="#" class="btn">もっとAIインターンを見る（人間のインターンはない）<span class="arrow">→</span></a>
+</div>
+
+<h2 class="variant-label">案2: アウトラインボタン<span>白背景＋緑枠。ホバーで塗りつぶしに変化。</span></h2>
+<div class="demo v2">
+  <a href="#" class="btn">もっとAIインターンを見る（人間のインターンはない）</a>
+</div>
+
+<h2 class="variant-label">案3: ピル型＋カウンター<span>角丸ピル。右に「+120件」のバッジ付き。</span></h2>
+<div class="demo v3">
+  <a href="#" class="btn">もっとAIインターンを見る<span class="badge">+120件</span></a>
+</div>
+
+<h2 class="variant-label">案4: テキストリンク型（ミニマル）<span>枠なし。下線＋矢印だけ。ミニマル。</span></h2>
+<div class="demo v4">
+  <a href="#" class="btn">もっとAIインターンを見る（人間のインターンはない）<span class="arrow">→</span></a>
+</div>
+
+<h2 class="variant-label">案5: CTA大型＋サブテキスト<span>大きめボタン＋光るホバーエフェクト＋「全て無料」サブテキスト。</span></h2>
+<div class="demo v5">
+  <div class="btn-wrap">
+    <a href="#" class="btn">もっとAIインターンを見る（人間のインターンはない）<span>→</span></a>
+    <span class="sub">※ 全て無料で閲覧できます</span>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+</body>
+</html>

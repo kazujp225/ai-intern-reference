@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI_INTERN | ネットワーク背景デモ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'ai-green': '#28b376',
+        'ai-dark': '#1a1a1a',
+      }
+    }
+  }
+}
+</script>
+<style>
+    #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+        background: radial-gradient(circle at 80% 50%, rgba(40, 179, 118, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
+    }
+
+    canvas {
+        display: block;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .handwritten-tilt {
+        transform: rotate(-8deg);
+        display: inline-block;
+    }
+
+    .glass-header {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+</style>
+</head>
+<body class="bg-white">
+
+<div id="canvas-container">
+    <canvas id="network-canvas"></canvas>
+</div>
+
+<div class="content-wrapper">
+
+    <header class="glass-header fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-widest flex items-center">
+                <span class="text-ai-green mr-1">[</span>
+                <span class="text-ai-dark">AI</span>
+                <span class="text-gray-400 mx-1">_</span>
+                <span class="text-ai-dark">INTERN</span>
+                <span class="text-ai-green ml-1">]</span>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-bold">
+                <a href="#" class="text-ai-dark border-b-2 border-ai-dark pb-1">AIインターン</a>
+                <a href="#" class="text-gray-500 hover:text-ai-dark transition">AI勉強会</a>
+                <a href="#" class="text-gray-500 hover:text-ai-dark transition text-xs font-normal">採用担当者様</a>
+                <a href="#" class="text-gray-600 hover:text-ai-dark transition">Login</a>
+                <a href="#" class="bg-ai-dark text-white px-6 py-2.5 rounded hover:bg-gray-800 transition tracking-wider text-xs">REGISTER</a>
+            </nav>
+
+            <button class="md:hidden text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-6 w-full relative">
+
+            <div class="w-full lg:w-3/5 space-y-8 relative z-10">
+                <div class="inline-flex items-center bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-700 px-3 py-1.5 rounded-sm shadow-sm border border-yellow-200">
+                    <svg class="w-4 h-4 mr-1 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <span class="text-xs font-bold tracking-wider">求人数No.1<span class="text-[10px] align-top">*</span></span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-ai-dark tracking-tight">
+                    AIと共創し、<br class="hidden md:block">未来を切り開く。<br>
+                    <span class="text-3xl md:text-4xl lg:text-5xl mt-2 block text-gray-800">AI特化インターンなら、AI_INTERN</span>
+                </h1>
+
+                <p class="text-lg md:text-xl text-gray-600 font-medium">
+                    実践的なAIスキルを身につけ、次世代のキャリアを始めよう。
+                </p>
+
+                <div class="pt-4 relative">
+                    <p class="text-sm font-bold text-gray-700 mb-2 tracking-widest pl-4">
+                        <span class="text-gray-400">\</span> GPTより先に動け。登録30秒。 <span class="text-gray-400">/</span>
+                    </p>
+                    <a href="#" class="inline-flex items-center justify-center bg-white border-2 border-ai-green text-ai-green rounded-full px-10 py-4 font-bold text-lg hover:bg-ai-green hover:text-white transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        <span class="bg-ai-green text-white text-xs px-2 py-0.5 rounded mr-3 leading-none self-center">無料</span>
+                        新規登録する
+                    </a>
+
+                    <div class="absolute top-12 left-64 ml-4 hidden md:block handwritten-tilt pointer-events-none">
+                        <span class="text-2xl font-bold text-gray-700">真の成果を、その手に</span>
+                        <svg class="absolute w-[110%] h-4 -bottom-1 -left-2 text-ai-green opacity-80" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 12 100 2" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="w-full max-w-4xl mx-auto px-6 pb-12 relative z-10">
+        <div class="mb-2 flex flex-wrap items-center text-xs md:text-sm text-gray-600 font-bold">
+            <span class="mr-3">人気:</span>
+            <div class="flex flex-wrap gap-x-4 gap-y-2">
+                <a href="#" class="hover:text-ai-green transition">LLM</a>
+                <a href="#" class="hover:text-ai-green transition">RAG</a>
+                <a href="#" class="hover:text-ai-green transition">AIエージェント</a>
+                <a href="#" class="hover:text-ai-green transition">Python</a>
+                <a href="#" class="hover:text-ai-green transition">GPT</a>
+                <a href="#" class="hover:text-ai-green transition">フルリモート</a>
+                <a href="#" class="hover:text-ai-green transition">未経験OK</a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-full shadow-2xl flex items-center p-2 border border-gray-100">
+            <input type="text" placeholder="スキル、企業、条件で探す" class="flex-grow bg-transparent border-none outline-none px-6 py-3 text-gray-700 placeholder-gray-400">
+            <button class="bg-ai-green text-white rounded-full p-3 hover:bg-green-600 transition shadow-md">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+    }
+    window.addEventListener('resize', resize);
+
+    const mouse = {
+        x: null,
+        y: null,
+        radius: 200
+    };
+
+    window.addEventListener('mousemove', (event) => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+    });
+
+    window.addEventListener('mouseout', () => {
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+
+    class Particle {
+        constructor(x, y, dx, dy, size, color) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.size = size;
+            this.baseSize = size;
+            this.color = color;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+
+        update() {
+            if (this.x > width || this.x < 0) this.dx = -this.dx;
+            if (this.y > height || this.y < 0) this.dy = -this.dy;
+
+            this.x += this.dx;
+            this.y += this.dy;
+
+            if (mouse.x != null && mouse.y != null) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius) {
+                    if (this.size < this.baseSize * 2) {
+                        this.size += 0.2;
+                    }
+                } else if (this.size > this.baseSize) {
+                    this.size -= 0.1;
+                }
+            }
+
+            this.draw();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        let numberOfParticles = (width * height) / 12000;
+
+        const colors = ['rgba(40, 179, 118, 0.6)', 'rgba(59, 130, 246, 0.4)', 'rgba(200, 200, 200, 0.5)'];
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            let size = (Math.random() * 2) + 1;
+            let x = (Math.random() * ((width - size * 2) - (size * 2)) + size * 2);
+            let y = (Math.random() * ((height - size * 2) - (size * 2)) + size * 2);
+            let dx = (Math.random() - 0.5) * 0.8;
+            let dy = (Math.random() - 0.5) * 0.8;
+            let color = colors[Math.floor(Math.random() * colors.length)];
+
+            particles.push(new Particle(x, y, dx, dy, size, color));
+        }
+    }
+
+    function connect() {
+        let opacityValue = 1;
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+                let dx = particles[a].x - particles[b].x;
+                let dy = particles[a].y - particles[b].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 120) {
+                    opacityValue = 1 - (distance / 120);
+                    ctx.strokeStyle = `rgba(150, 160, 170, ${opacityValue * 0.3})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(particles[b].x, particles[b].y);
+                    ctx.stroke();
+                }
+            }
+
+            if (mouse.x != null && mouse.y != null) {
+                let dxMouse = particles[a].x - mouse.x;
+                let dyMouse = particles[a].y - mouse.y;
+                let distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+                if (distanceMouse < mouse.radius) {
+                    opacityValue = 1 - (distanceMouse / mouse.radius);
+                    ctx.strokeStyle = `rgba(40, 179, 118, ${opacityValue * 0.4})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+        }
+        connect();
+    }
+
+    resize();
+    animate();
+</script>
+
+</body>
+</html>

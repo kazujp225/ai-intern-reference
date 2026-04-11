@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヘッダー/ナビ UIバリアント</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f3ed;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a}
+  .spacer{height:40px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:11px;color:#6b7280;letter-spacing:0.1em;font-family:"SF Mono",monospace}
+  .label-wrap{padding:30px 40px 10px}
+  .label{font-size:11px;letter-spacing:0.3em;color:#10a37f;font-weight:700;font-family:"SF Mono",monospace}
+  .nm{font-size:18px;font-weight:900;margin-top:4px}
+  .ds{font-size:12px;color:#6b7280;margin-top:4px;line-height:1.6}
+
+  /* ============================================== */
+  /* === 案1: ミニマル白 (現在ベース改良) === */
+  /* ============================================== */
+  .h1{background:#fff;padding:0 48px;height:70px;display:flex;align-items:center;border-bottom:1px solid rgba(15,23,42,0.08)}
+  .h1 .logo{font-size:1.3em;font-weight:900;font-family:"SF Mono",monospace;color:#0a0a0a;text-decoration:none;letter-spacing:2px}
+  .h1 .logo span{color:#10a37f}
+  .h1 .nav{margin-left:auto;display:flex;align-items:center;gap:24px}
+  .h1 .nav a{color:#6b7280;text-decoration:none;font-size:13px;font-weight:600;transition:color 0.2s}
+  .h1 .nav a:hover{color:#0a0a0a}
+  .h1 .nav a.current{color:#0a0a0a;border-bottom:2px solid #10a37f;padding-bottom:2px}
+  .h1 .nav .login{color:#0a0a0a;font-weight:700}
+  .h1 .nav .register{background:#0a0a0a;color:#fff;padding:8px 20px;border-radius:6px;font-weight:700;font-size:12px;transition:background 0.2s}
+  .h1 .nav .register:hover{background:#10a37f}
+
+  /* ============================================== */
+  /* === 案2: ダークヘッダー === */
+  /* ============================================== */
+  .h2{background:#0a0a0a;padding:0 48px;height:64px;display:flex;align-items:center}
+  .h2 .logo{font-size:1.2em;font-weight:900;font-family:"SF Mono",monospace;color:#fff;text-decoration:none;letter-spacing:2px}
+  .h2 .logo span{color:#10a37f}
+  .h2 .nav{margin-left:auto;display:flex;align-items:center;gap:22px}
+  .h2 .nav a{color:#9ca3af;text-decoration:none;font-size:12px;font-weight:600;transition:color 0.2s}
+  .h2 .nav a:hover{color:#fff}
+  .h2 .nav a.current{color:#10a37f}
+  .h2 .nav .register{background:#10a37f;color:#fff;padding:7px 18px;border-radius:6px;font-weight:800;font-size:11px;transition:background 0.2s}
+  .h2 .nav .register:hover{background:#0d8c6e}
+
+  /* ============================================== */
+  /* === 案3: グラスモーフィズム (半透明) === */
+  /* ============================================== */
+  .h3-bg{background:linear-gradient(135deg,#0a0a0a 0%,#1f2937 50%,#10a37f 100%);padding-top:80px;padding-bottom:40px}
+  .h3{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(15,23,42,0.1);padding:0 48px;height:60px;display:flex;align-items:center}
+  .h3 .logo{font-size:1.2em;font-weight:900;font-family:"SF Mono",monospace;color:#0a0a0a;text-decoration:none;letter-spacing:2px}
+  .h3 .logo span{color:#10a37f}
+  .h3 .nav{margin-left:auto;display:flex;align-items:center;gap:20px}
+  .h3 .nav a{color:#374151;text-decoration:none;font-size:12px;font-weight:600;transition:color 0.2s}
+  .h3 .nav a:hover{color:#0a0a0a}
+  .h3 .nav a.current{color:#10a37f;font-weight:800}
+  .h3 .nav .register{background:#0a0a0a;color:#fff;padding:7px 18px;border-radius:999px;font-weight:800;font-size:11px}
+  .h3 .nav .register:hover{background:#10a37f}
+
+  /* ============================================== */
+  /* === 案4: 左ロゴ + 中央ナビ + 右ボタン === */
+  /* ============================================== */
+  .h4{background:#fff;padding:0 48px;height:72px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;border-bottom:1px solid rgba(15,23,42,0.08)}
+  .h4 .logo{font-size:1.3em;font-weight:900;color:#0a0a0a;text-decoration:none;display:flex;align-items:center;gap:8px}
+  .h4 .logo .icon{width:32px;height:32px;background:#10a37f;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;font-family:"SF Mono",monospace}
+  .h4 .logo .text{font-family:-apple-system,sans-serif;letter-spacing:-0.02em}
+  .h4 .nav{display:flex;justify-content:center;gap:8px}
+  .h4 .nav a{color:#6b7280;text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;transition:all 0.2s}
+  .h4 .nav a:hover{background:#f3f4f6;color:#0a0a0a}
+  .h4 .nav a.current{background:#0a0a0a;color:#fff}
+  .h4 .right{display:flex;align-items:center;gap:14px}
+  .h4 .right .login{color:#6b7280;text-decoration:none;font-size:12px;font-weight:600}
+  .h4 .right .register{background:#10a37f;color:#fff;padding:8px 22px;border-radius:8px;font-weight:800;font-size:12px;text-decoration:none;transition:background 0.2s}
+  .h4 .right .register:hover{background:#0d8c6e}
+
+  /* ============================================== */
+  /* === 案5: ターミナル風 === */
+  /* ============================================== */
+  .h5{background:#0a0a0a;padding:0 40px;height:56px;display:flex;align-items:center;gap:20px;font-family:"SF Mono","Menlo",monospace}
+  .h5 .dots{display:flex;gap:6px}
+  .h5 .dots span{width:10px;height:10px;border-radius:50%}
+  .h5 .dots span:nth-child(1){background:#ef4444}
+  .h5 .dots span:nth-child(2){background:#f59e0b}
+  .h5 .dots span:nth-child(3){background:#10b981}
+  .h5 .logo{color:#10a37f;font-size:13px;font-weight:700;text-decoration:none}
+  .h5 .logo::before{content:"$ ";color:#6b7280}
+  .h5 .nav{margin-left:auto;display:flex;align-items:center;gap:16px}
+  .h5 .nav a{color:#6b7280;text-decoration:none;font-size:11px;font-weight:600;transition:color 0.2s}
+  .h5 .nav a:hover{color:#10a37f}
+  .h5 .nav a.current{color:#10a37f}
+  .h5 .nav .register{background:#10a37f;color:#0a0a0a;padding:5px 14px;border-radius:4px;font-weight:800;font-size:10px}
+
+  /* ============================================== */
+  /* === 案6: 2段ヘッダー (トップバー + ナビ) === */
+  /* ============================================== */
+  .h6-top{background:#0a0a0a;padding:0 48px;height:32px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#6b7280;font-family:"SF Mono",monospace;letter-spacing:0.05em}
+  .h6-top a{color:#9ca3af;text-decoration:none;margin-left:16px;transition:color 0.15s}
+  .h6-top a:hover{color:#fff}
+  .h6-main{background:#fff;padding:0 48px;height:58px;display:flex;align-items:center;border-bottom:1px solid rgba(15,23,42,0.08)}
+  .h6-main .logo{font-size:1.4em;font-weight:900;color:#0a0a0a;text-decoration:none;font-family:-apple-system,sans-serif;letter-spacing:-0.02em}
+  .h6-main .logo b{color:#10a37f}
+  .h6-main .nav{margin-left:40px;display:flex;gap:24px}
+  .h6-main .nav a{color:#374151;text-decoration:none;font-size:13px;font-weight:600;transition:color 0.2s;position:relative}
+  .h6-main .nav a:hover{color:#0a0a0a}
+  .h6-main .nav a.current::after{content:"";position:absolute;left:0;right:0;bottom:-18px;height:2px;background:#10a37f}
+  .h6-main .right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .h6-main .right .search{width:180px;padding:7px 12px;border:1px solid rgba(15,23,42,0.15);border-radius:6px;font-size:12px;outline:none;transition:border-color 0.2s}
+  .h6-main .right .search:focus{border-color:#10a37f}
+  .h6-main .right .register{background:#0a0a0a;color:#fff;padding:7px 18px;border-radius:6px;font-weight:700;font-size:12px;text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="label-wrap"><div class="label">CASE 01</div><div class="nm">ミニマル白</div><div class="ds">現在ベースの改良。細ボーダー+緑アクセント。クリーンでモダン。</div></div>
+<div class="h1">
+  <a href="#" class="logo"><span>[</span>AI_INTERN<span>]</span></a>
+  <div class="nav">
+    <a href="#" class="current">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#" class="login">login</a>
+    <a href="#" class="register">REGISTER</a>
+  </div>
+</div>
+<div class="spacer">↓ ページ本体 ↓</div>
+
+<div class="label-wrap"><div class="label">CASE 02</div><div class="nm">ダークヘッダー</div><div class="ds">黒背景+緑アクセント。プロフェッショナル感。エンジニア向きのクール印象。</div></div>
+<div class="h2">
+  <a href="#" class="logo"><span>[</span>AI_INTERN<span>]</span></a>
+  <div class="nav">
+    <a href="#" class="current">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#">採用担当者様</a>
+    <a href="#">login</a>
+    <a href="#" class="register">REGISTER</a>
+  </div>
+</div>
+<div class="spacer">↓ ページ本体 ↓</div>
+
+<div class="label-wrap"><div class="label">CASE 03</div><div class="nm">グラスモーフィズム (半透明)</div><div class="ds">固定ヘッダー。スクロールで背景が透ける。blur+半透明白。Apple風。</div></div>
+<div class="h3-bg">
+  <div class="h3">
+    <a href="#" class="logo"><span>[</span>AI_INTERN<span>]</span></a>
+    <div class="nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#">採用担当者様</a>
+      <a href="#">login</a>
+      <a href="#" class="register">REGISTER</a>
+    </div>
+  </div>
+  <div style="text-align:center;color:#fff;font-size:11px;letter-spacing:0.1em;padding-top:20px">↑ 固定ヘッダー (スクロールで背景が透ける)</div>
+</div>
+
+<div class="label-wrap"><div class="label">CASE 04</div><div class="nm">ロゴアイコン + 中央ナビ + 右ボタン</div><div class="ds">3分割レイアウト。ロゴにアイコン付き。ナビが中央でバランス良い。ピルボタンのナビ。</div></div>
+<div class="h4">
+  <a href="#" class="logo"><div class="icon">AI</div><div class="text">AI_INTERN</div></a>
+  <div class="nav">
+    <a href="#" class="current">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#">採用担当者様</a>
+  </div>
+  <div class="right">
+    <a href="#" class="login">login</a>
+    <a href="#" class="register">無料登録</a>
+  </div>
+</div>
+<div class="spacer">↓ ページ本体 ↓</div>
+
+<div class="label-wrap"><div class="label">CASE 05</div><div class="nm">ターミナル風</div><div class="ds">黒背景+信号機ドット+$プロンプト。エンジニア向け遊び心。コンパクト。</div></div>
+<div class="h5">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <a href="#" class="logo">ai-intern --serve</a>
+  <div class="nav">
+    <a href="#" class="current">intern</a>
+    <a href="#">study</a>
+    <a href="#">corp</a>
+    <a href="#">login</a>
+    <a href="#" class="register">register</a>
+  </div>
+</div>
+<div class="spacer">↓ ページ本体 ↓</div>
+
+<div class="label-wrap"><div class="label">CASE 06</div><div class="nm">2段ヘッダー (トップバー + メインナビ)</div><div class="ds">上部に黒の情報バー(採用担当者/login)、下に白のメインナビ+検索。情報量が多いサイト向け。</div></div>
+<div class="h6-top">
+  <span>AI特化インターン掲載数 日本一（自称）</span>
+  <div><a href="#">採用担当者様</a><a href="#">login</a></div>
+</div>
+<div class="h6-main">
+  <a href="#" class="logo">AI<b>_</b>INTERN</a>
+  <div class="nav">
+    <a href="#" class="current">AIインターン</a>
+    <a href="#">AI勉強会</a>
+    <a href="#">企業一覧</a>
+  </div>
+  <div class="right">
+    <input class="search" type="text" placeholder="スキル、企業で検索...">
+    <a href="#" class="register">無料登録</a>
+  </div>
+</div>
+<div class="spacer">↓ ページ本体 ↓</div>
+
+</body></html>

@@ -1,0 +1,134 @@
+<!-- ========================================
+     ネットワーク背景アニメーション（コピペ用）
+     以下の3つをページに貼り付けるだけで使えます：
+       1. CSS（<style>内 or 既存CSSに追加）
+       2. HTML（<body>直下に配置）
+       3. JS（</body>直前に配置）
+     ======================================== -->
+
+<!-- ===== 1. CSS ===== -->
+<style>
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at 80% 50%, rgba(40, 179, 118, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
+}
+#canvas-container canvas {
+    display: block;
+}
+</style>
+
+<!-- ===== 2. HTML ===== -->
+<div id="canvas-container">
+    <canvas id="network-canvas"></canvas>
+</div>
+
+<!-- ===== 3. JS ===== -->
+<script>
+(function() {
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+    }
+    window.addEventListener('resize', resize);
+
+    const mouse = { x: null, y: null, radius: 200 };
+    window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+    window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+
+    class Particle {
+        constructor(x, y, dx, dy, size, color) {
+            this.x = x; this.y = y; this.dx = dx; this.dy = dy;
+            this.size = size; this.baseSize = size; this.color = color;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        update() {
+            if (this.x > width || this.x < 0) this.dx = -this.dx;
+            if (this.y > height || this.y < 0) this.dy = -this.dy;
+            this.x += this.dx;
+            this.y += this.dy;
+            if (mouse.x != null && mouse.y != null) {
+                let d = Math.hypot(mouse.x - this.x, mouse.y - this.y);
+                if (d < mouse.radius) {
+                    if (this.size < this.baseSize * 2) this.size += 0.2;
+                } else if (this.size > this.baseSize) {
+                    this.size -= 0.1;
+                }
+            }
+            this.draw();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        const n = (width * height) / 12000;
+        const colors = ['rgba(40,179,118,0.6)', 'rgba(59,130,246,0.4)', 'rgba(200,200,200,0.5)'];
+        for (let i = 0; i < n; i++) {
+            let size = Math.random() * 2 + 1;
+            particles.push(new Particle(
+                Math.random() * (width - size * 4) + size * 2,
+                Math.random() * (height - size * 4) + size * 2,
+                (Math.random() - 0.5) * 0.8,
+                (Math.random() - 0.5) * 0.8,
+                size,
+                colors[Math.floor(Math.random() * colors.length)]
+            ));
+        }
+    }
+
+    function connect() {
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+                let d = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
+                if (d < 120) {
+                    ctx.strokeStyle = `rgba(150,160,170,${(1 - d / 120) * 0.3})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(particles[b].x, particles[b].y);
+                    ctx.stroke();
+                }
+            }
+            if (mouse.x != null && mouse.y != null) {
+                let d = Math.hypot(particles[a].x - mouse.x, particles[a].y - mouse.y);
+                if (d < mouse.radius) {
+                    ctx.strokeStyle = `rgba(40,179,118,${(1 - d / mouse.radius) * 0.4})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) particles[i].update();
+        connect();
+    }
+
+    resize();
+    animate();
+})();
+</script>

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AIインターン経験者のヤバい声 横スライドバリアント</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f3ed;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a;
+    background-image:linear-gradient(rgba(15,23,42,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(15,23,42,0.045) 1px,transparent 1px);
+    background-size:24px 24px}
+  header{text-align:center;padding:50px 20px 30px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:24px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:13px;margin:0}
+  section{padding:60px 20px;border-top:1px dashed rgba(15,23,42,0.2)}
+  .label{max-width:1100px;margin:0 auto 4px;padding:0 20px;font-size:11px;letter-spacing:0.3em;color:#10a37f;font-weight:700;font-family:"SF Mono",monospace}
+  .nm{max-width:1100px;margin:0 auto 6px;padding:0 20px;font-size:20px;font-weight:900}
+  .ds{max-width:1100px;margin:0 auto 36px;padding:0 20px;font-size:13px;color:#6b7280;line-height:1.7}
+
+  /* 共通カードスタイル */
+  .voice-card{background:#fff;border:1px solid rgba(15,23,42,0.12);padding:24px 28px;flex-shrink:0;display:flex;flex-direction:column}
+  .voice-card .who{font-size:12px;font-weight:700;color:#0a0a0a;margin-bottom:4px}
+  .voice-card .school{font-size:11px;color:#6b7280;margin-bottom:12px}
+  .voice-card .stars{color:#10a37f;font-size:12px;margin-bottom:10px;letter-spacing:0.05em}
+  .voice-card .text{font-size:13px;line-height:1.75;color:#374151;flex:1}
+
+  /* ============================================== */
+  /* === 案1: CSSスナップスクロール === */
+  /* ============================================== */
+  .v1-wrap{max-width:1100px;margin:0 auto;position:relative}
+  .v1{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:10px 4px 20px;scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.2) transparent}
+  .v1::-webkit-scrollbar{height:6px}
+  .v1::-webkit-scrollbar-track{background:transparent}
+  .v1::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.2);border-radius:3px}
+  .v1 .voice-card{scroll-snap-align:start;width:340px;min-width:340px;border-radius:12px;transition:transform 0.2s,box-shadow 0.2s}
+  .v1 .voice-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(15,23,42,0.12)}
+  .v1-dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
+  .v1-dots span{width:8px;height:8px;border-radius:50%;background:rgba(15,23,42,0.15)}
+  .v1-dots span:first-child{background:#10a37f}
+
+  /* ============================================== */
+  /* === 案2: 1枚ずつフル幅 === */
+  /* ============================================== */
+  .v2-wrap{max-width:760px;margin:0 auto;position:relative}
+  .v2{display:flex;overflow:hidden;position:relative}
+  .v2 .voice-card{min-width:100%;width:100%;padding:36px 44px;border:none;background:#fcfbf7;border:1px solid rgba(15,23,42,0.15);border-radius:0;transition:transform 0.5s ease}
+  .v2 .voice-card .who{font-size:16px;font-weight:900}
+  .v2 .voice-card .school{font-size:12px}
+  .v2 .voice-card .text{font-size:15px;line-height:1.85}
+  .v2-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:#0a0a0a;color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;transition:background 0.2s}
+  .v2-nav:hover{background:#10a37f}
+  .v2-nav.prev{left:-22px}
+  .v2-nav.next{right:-22px}
+  .v2-pager{text-align:center;margin-top:18px;font-family:"SF Mono",monospace;font-size:12px;color:#6b7280;letter-spacing:0.1em}
+  .v2-pager .cur{color:#0a0a0a;font-weight:900;font-size:16px}
+
+  /* ============================================== */
+  /* === 案3: マーキー自動流れ === */
+  /* ============================================== */
+  .v3-wrap{overflow:hidden;position:relative;padding:10px 0 20px}
+  .v3-wrap:hover .v3{animation-play-state:paused}
+  .v3{display:flex;gap:20px;animation:marquee 40s linear infinite;width:max-content}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .v3 .voice-card{width:320px;min-width:320px;border-radius:12px}
+  .v3-label{text-align:center;margin-top:14px;font-size:11px;color:#9ca3af;font-family:"SF Mono",monospace;letter-spacing:0.15em}
+
+  /* ============================================== */
+  /* === 案4: カードスタック切替 === */
+  /* ============================================== */
+  .v4-wrap{max-width:500px;margin:0 auto;position:relative;height:340px;perspective:800px}
+  .v4-wrap .voice-card{position:absolute;top:0;left:0;right:0;width:100%;height:100%;border-radius:16px;cursor:pointer;transition:transform 0.6s cubic-bezier(.4,0,.2,1),opacity 0.6s;backface-visibility:hidden}
+  .v4-wrap .voice-card:nth-child(1){transform:translateX(0) scale(1);z-index:6;opacity:1}
+  .v4-wrap .voice-card:nth-child(2){transform:translateX(30px) scale(0.95);z-index:5;opacity:0.85}
+  .v4-wrap .voice-card:nth-child(3){transform:translateX(60px) scale(0.90);z-index:4;opacity:0.7}
+  .v4-wrap .voice-card:nth-child(4){transform:translateX(90px) scale(0.85);z-index:3;opacity:0.55}
+  .v4-wrap .voice-card:nth-child(5){transform:translateX(120px) scale(0.80);z-index:2;opacity:0.4}
+  .v4-wrap .voice-card:nth-child(6){transform:translateX(150px) scale(0.75);z-index:1;opacity:0.25}
+  .v4-wrap .voice-card .who{font-size:16px;font-weight:900}
+  .v4-wrap .voice-card .text{font-size:14px;line-height:1.8}
+  .v4-nav{display:flex;justify-content:center;gap:16px;margin-top:20px}
+  .v4-nav button{width:40px;height:40px;border-radius:50%;border:2px solid #0a0a0a;background:#fff;cursor:pointer;font-size:16px;font-weight:900;transition:all 0.2s}
+  .v4-nav button:hover{background:#0a0a0a;color:#fff}
+  .v4-counter{text-align:center;margin-top:12px;font-family:"SF Mono",monospace;font-size:12px;color:#6b7280}
+
+  /* ============================================== */
+  /* === 案5: カバーフロー === */
+  /* ============================================== */
+  .v5{position:relative;height:320px;perspective:1000px;display:flex;align-items:center;justify-content:center}
+  .v5 .v5c{position:absolute;width:340px;padding:24px 28px;border-radius:16px;transition:all 0.6s cubic-bezier(.4,0,.2,1);cursor:pointer;box-shadow:0 4px 20px rgba(15,23,42,0.15)}
+
+  /* ============================================== */
+  /* === 案6: 横スクロール大小交互 === */
+  /* ============================================== */
+  .v6{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:10px 4px 20px;scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.2) transparent;align-items:stretch}
+  .v6::-webkit-scrollbar{height:6px}
+  .v6::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.2);border-radius:3px}
+  .v6 .v6-lg{scroll-snap-align:start;width:400px;min-width:400px;border-radius:16px;font-size:14px}
+  .v6 .v6-lg .text{font-size:14px;line-height:1.75}
+  .v6 .v6-sm{scroll-snap-align:start;width:200px;min-width:200px;border-radius:16px;background:#0a0a0a !important;color:#fff !important;font-size:12px;justify-content:center;text-align:center}
+  .v6 .v6-sm .who{color:#10a37f !important;font-size:13px}
+  .v6 .v6-sm .school{color:#9ca3af !important}
+  .v6 .v6-sm .stars{color:#fbbf24 !important}
+  .v6 .v6-sm .text{color:#e5e7eb !important;font-size:12px}
+
+  /* ============================================== */
+  /* === 案7: 2段マーキー逆方向 === */
+  /* ============================================== */
+  .v7-wrap{overflow:hidden;padding:10px 0}
+  .v7-wrap:hover .v7{animation-play-state:paused}
+  .v7{display:flex;gap:16px;width:max-content}
+  .v7 .voice-card{width:300px;min-width:300px;border-radius:10px;padding:16px 20px}
+  .v7 .voice-card .who{font-size:12px;font-weight:800;margin-bottom:6px}
+  .v7 .voice-card .text{font-size:12px;line-height:1.65}
+  .v7-row1{animation:marqueeL 30s linear infinite;margin-bottom:16px}
+  .v7-row2{animation:marqueeR 35s linear infinite}
+  @keyframes marqueeL{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes marqueeR{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+
+  /* ============================================== */
+  /* === 案8: ピル型タブ + スライド === */
+  /* ============================================== */
+  .v8-tabs{display:flex;gap:8px;margin-bottom:20px;justify-content:center;flex-wrap:wrap}
+  .v8-tab{padding:8px 18px;border:1px solid rgba(15,23,42,0.2);background:#fcfbf7;border-radius:999px;font-size:13px;font-weight:700;color:#6b7280;cursor:pointer;transition:all 0.2s;font-family:-apple-system,sans-serif}
+  .v8-tab.active{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
+  .v8-tab:hover:not(.active){background:#f0f0f0}
+  .v8-slider{overflow:hidden;position:relative}
+  .v8-slider .v8c{min-width:100%;width:100%;background:#fcfbf7;border:1px solid rgba(15,23,42,0.15);border-radius:12px;padding:32px 36px;transition:transform 0.4s ease;flex-shrink:0}
+  .v8-slider{display:flex}
+  .v8-slider .v8c .who{font-size:16px;font-weight:900}
+  .v8-slider .v8c .school{font-size:12px}
+  .v8-slider .v8c .text{font-size:15px;line-height:1.85}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>「ヤバい声」横スライドバリアント</h1>
+  <p>4案・上から順にご確認ください</p>
+</header>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">CSSスナップスクロール</div>
+  <p class="ds">ライブラリ不要。マウスホイール・ドラッグ・スワイプで横スクロール。カードがピタッと吸い付くスナップ動作。薄いスクロールバー付き。</p>
+  <div class="v1-wrap">
+    <div class="v1">
+      <div class="voice-card"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+      <div class="voice-card"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金メダル獲得、某外資AIラボ内定</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card"><div class="who">副業AIエンジニアとして月30万稼ぐように</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">インターン先の論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card"><div class="who">AIスタートアップを在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div></div>
+    </div>
+    <div class="v1-dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">1枚ずつフル幅</div>
+  <p class="ds">1枚だけ大きくフォーカス表示。左右の矢印ボタンで切り替え。テキストが大きく読みやすい。ページャー付き。</p>
+  <div class="v2-wrap">
+    <button class="v2-nav prev" onclick="v2slide(-1)">←</button>
+    <button class="v2-nav next" onclick="v2slide(1)">→</button>
+    <div class="v2" id="v2">
+      <div class="voice-card"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+      <div class="voice-card"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金メダル獲得、某外資AIラボ内定</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card"><div class="who">副業AIエンジニアとして月30万稼ぐように</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">インターン先の論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card"><div class="who">AIスタートアップを在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div></div>
+    </div>
+    <div class="v2-pager"><span class="cur" id="v2cur">01</span> / 06</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">マーキー自動流れ</div>
+  <p class="ds">カードが自動で左に流れ続けるマーキー。ホバーで停止。無限ループ。テレビのテロップ風。</p>
+  <div class="v3-wrap">
+    <div class="v3">
+      <div class="voice-card"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div></div>
+      <div class="voice-card"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ち。3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金メダル獲得</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card"><div class="who">副業AIエンジニアで月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系・経験ゼロからフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先の研究がICMLに採択。研究室とダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card"><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。インターンが人生変える、マジだった。</div></div>
+      <!-- ループ用コピー -->
+      <div class="voice-card"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div></div>
+      <div class="voice-card"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ち。3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金メダル獲得</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card"><div class="who">副業AIエンジニアで月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系・経験ゼロからフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先の研究がICMLに採択。研究室とダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card"><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。インターンが人生変える、マジだった。</div></div>
+    </div>
+    <div class="v3-label">HOVER TO PAUSE · AUTO SCROLL</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">カードスタック切替</div>
+  <p class="ds">カードが奥行きをもって重なり、クリックで次のカードが前面にスライド。Tinder風の奥行き演出。</p>
+  <div style="max-width:600px;margin:0 auto">
+    <div class="v4-wrap" id="v4">
+      <div class="voice-card" style="background:#fef3c7"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+      <div class="voice-card" style="background:#fce7f3"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card" style="background:#dbeafe"><div class="who">Kaggle金メダル獲得、某外資AIラボ内定</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card" style="background:#d1fae5"><div class="who">副業AIエンジニアとして月30万稼ぐように</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。</div></div>
+      <div class="voice-card" style="background:#fed7aa"><div class="who">インターン先の論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card" style="background:#e9d5ff"><div class="who">AIスタートアップを在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div></div>
+    </div>
+    <div class="v4-nav"><button onclick="v4slide(-1)">←</button><button onclick="v4slide(1)">→</button></div>
+    <div class="v4-counter"><span id="v4cur">01</span> / 06</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">カバーフロー (iTunes風)</div>
+  <p class="ds">中央のカードが大きく、左右のカードは小さく傾く。3D遠近感で奥行きを演出。←→で切替。</p>
+  <div style="max-width:900px;margin:0 auto;position:relative">
+    <div class="v5" id="v5">
+      <div class="voice-card v5c" style="background:#fef3c7"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div></div>
+      <div class="voice-card v5c" style="background:#fce7f3"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card v5c" style="background:#dbeafe"><div class="who">Kaggle金メダル獲得</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card v5c" style="background:#d1fae5"><div class="who">副業AIエンジニアで月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系・経験ゼロからフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card v5c" style="background:#fed7aa"><div class="who">論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先の研究がICMLに採択。研究室とダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card v5c" style="background:#e9d5ff"><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。インターンが人生変える、マジだった。</div></div>
+    </div>
+    <div class="v4-nav"><button onclick="v5slide(-1)">←</button><button onclick="v5slide(1)">→</button></div>
+    <div class="v4-counter"><span id="v5cur">01</span> / 06</div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">横スクロール + 大小交互</div>
+  <p class="ds">大きいカードと小さいカードが交互に並ぶ。リズム感のある横スクロール。スナップ付き。</p>
+  <div class="v1-wrap">
+    <div class="v6">
+      <div class="voice-card v6-lg"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+      <div class="voice-card v6-sm"><div class="who">AI SaaS PdM経験</div><div class="school">慶應SFC 2年 Aさん</div><div class="stars">★★★★★</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー獲得。</div></div>
+      <div class="voice-card v6-lg"><div class="who">Kaggle金メダル獲得、某外資AIラボ内定</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card v6-sm"><div class="who">副業月30万</div><div class="school">早稲田商 3年 Kさん</div><div class="stars">★★★★★</div><div class="text">文系・経験ゼロから副業フリーランスへ。</div></div>
+      <div class="voice-card v6-lg"><div class="who">インターン先の論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card v6-sm"><div class="who">在学中起業</div><div class="school">東大経済 4年 Nさん</div><div class="stars">★★★★★</div><div class="text">シード3000万調達。マジだった。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 07</div>
+  <div class="nm">2段マーキー (逆方向)</div>
+  <p class="ds">2列が逆方向に流れるマーキー。上段は右→左、下段は左→右。情報量が多く、動きで目を引く。</p>
+  <div class="v7-wrap">
+    <div class="v7 v7-row1">
+      <div class="voice-card"><div class="who">某ユニコーン就職 · Mさん</div><div class="text">loss下げから3ヶ月でRAGパイプライン。成長速度バグってる。</div></div>
+      <div class="voice-card"><div class="who">PdM経験 · Aさん</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金 · Sさん</div><div class="text">H100×8枚。研究室より計算資源潤沢。GPUは正義。</div></div>
+      <div class="voice-card"><div class="who">某ユニコーン就職 · Mさん</div><div class="text">loss下げから3ヶ月でRAGパイプライン。成長速度バグってる。</div></div>
+      <div class="voice-card"><div class="who">PdM経験 · Aさん</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー。</div></div>
+      <div class="voice-card"><div class="who">Kaggle金 · Sさん</div><div class="text">H100×8枚。研究室より計算資源潤沢。GPUは正義。</div></div>
+    </div>
+    <div class="v7 v7-row2">
+      <div class="voice-card"><div class="who">月30万 · Kさん</div><div class="text">文系・経験ゼロから副業フリーランス。同期がES悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">ICML採択 · Tさん</div><div class="text">インターン先の研究がICMLに。ダブルで論文書いてる。CV最強。</div></div>
+      <div class="voice-card"><div class="who">在学起業 · Nさん</div><div class="text">CEOに「起業しろ」で本当にした。シード3000万調達。マジだった。</div></div>
+      <div class="voice-card"><div class="who">月30万 · Kさん</div><div class="text">文系・経験ゼロから副業フリーランス。同期がES悩んでる間に稼いでます。</div></div>
+      <div class="voice-card"><div class="who">ICML採択 · Tさん</div><div class="text">インターン先の研究がICMLに。ダブルで論文書いてる。CV最強。</div></div>
+      <div class="voice-card"><div class="who">在学起業 · Nさん</div><div class="text">CEOに「起業しろ」で本当にした。シード3000万調達。マジだった。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<section>
+  <div class="label">CASE 08</div>
+  <div class="nm">ピル型タブ + 横スライド</div>
+  <p class="ds">上部にピル型タブ(名前)が横並び。タブクリックでカードがスライドして切り替わる。一覧性とフォーカスの両立。</p>
+  <div style="max-width:700px;margin:0 auto">
+    <div class="v8-tabs" id="v8tabs">
+      <button class="v8-tab active" onclick="v8go(0)">Mさん</button>
+      <button class="v8-tab" onclick="v8go(1)">Aさん</button>
+      <button class="v8-tab" onclick="v8go(2)">Sさん</button>
+      <button class="v8-tab" onclick="v8go(3)">Kさん</button>
+      <button class="v8-tab" onclick="v8go(4)">Tさん</button>
+      <button class="v8-tab" onclick="v8go(5)">Nさん</button>
+    </div>
+    <div class="v8-slider" id="v8">
+      <div class="voice-card v8c"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+      <div class="voice-card v8c"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？3社オファー来てるので選ぶ側です。</div></div>
+      <div class="voice-card v8c"><div class="who">Kaggle金メダル獲得、某外資AIラボ内定</div><div class="school">東京工業大学 情報理工学院 M1 Sさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="voice-card v8c"><div class="who">副業AIエンジニアとして月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">完全文系、プログラミング経験ゼロからスタート。LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="voice-card v8c"><div class="who">インターン先の論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">インターン先の研究がICMLに採択。研究室とダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="voice-card v8c"><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★ ★ ★ ★ ★</div><div class="text">CEOに「お前、起業しろ」と言われて本当にした。シード3000万調達。インターンが人生変える、マジだった。</div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+// === 案2: 1枚ずつフル幅 ===
+let v2idx = 0;
+const v2cards = document.querySelectorAll('#v2 .voice-card');
+function v2slide(dir) {
+  v2idx = (v2idx + dir + v2cards.length) % v2cards.length;
+  v2cards.forEach(c => c.style.transform = `translateX(-${v2idx * 100}%)`);
+  document.getElementById('v2cur').textContent = String(v2idx + 1).padStart(2, '0');
+}
+
+// === 案5: カバーフロー ===
+let v5idx = 0;
+const v5cards = document.querySelectorAll('#v5 .v5c');
+function v5render() {
+  v5cards.forEach((c, i) => {
+    const diff = i - v5idx;
+    const absDiff = Math.abs(diff);
+    if (absDiff > 2) { c.style.opacity = '0'; c.style.pointerEvents = 'none'; }
+    else {
+      c.style.opacity = absDiff === 0 ? '1' : absDiff === 1 ? '0.7' : '0.4';
+      c.style.pointerEvents = absDiff === 0 ? 'auto' : 'none';
+    }
+    c.style.transform = `translateX(${diff * 280}px) scale(${1 - absDiff * 0.15}) rotateY(${diff * -25}deg)`;
+    c.style.zIndex = 10 - absDiff;
+  });
+  document.getElementById('v5cur').textContent = String(v5idx + 1).padStart(2, '0');
+}
+function v5slide(dir) { v5idx = (v5idx + dir + v5cards.length) % v5cards.length; v5render(); }
+v5render();
+
+// === 案8: ピル型タブ ===
+function v8go(idx) {
+  document.querySelectorAll('#v8 .v8c').forEach(c => c.style.transform = `translateX(-${idx * 100}%)`);
+  document.querySelectorAll('.v8-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+// === 案4: カードスタック ===
+let v4idx = 0;
+const v4cards = document.querySelectorAll('#v4 .voice-card');
+function v4render() {
+  v4cards.forEach((c, i) => {
+    const offset = (i - v4idx + v4cards.length) % v4cards.length;
+    c.style.transform = `translateX(${offset * 30}px) scale(${1 - offset * 0.05})`;
+    c.style.zIndex = v4cards.length - offset;
+    c.style.opacity = Math.max(0.2, 1 - offset * 0.15);
+  });
+  document.getElementById('v4cur').textContent = String(v4idx + 1).padStart(2, '0');
+}
+function v4slide(dir) {
+  v4idx = (v4idx + dir + v4cards.length) % v4cards.length;
+  v4render();
+}
+v4render();
+</script>
+
+</body></html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>体験者の声 UI案一覧</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+  .section-title { font-size: 1.6em; font-weight: 900; color: #1a1a1a; margin-bottom: 24px; }
+
+  /* =========================================== */
+  /* 案1: カード型グリッド（2列）               */
+  /* =========================================== */
+  .v1 { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .v1 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .v1 .card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+    padding: 24px; position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+  }
+  .v1 .card:hover { transform: translateY(-3px); }
+  .v1 .card::before {
+    content: "\201C"; position: absolute; top: 12px; left: 20px;
+    font-size: 3em; color: #10a37f; opacity: 0.2; font-family: Georgia, serif; line-height: 1;
+  }
+  .v1 .card-header { margin-bottom: 12px; }
+  .v1 .card-result { font-size: 0.85em; font-weight: 800; color: #10a37f; margin-bottom: 4px; }
+  .v1 .card-person { font-size: 0.75em; color: #6b7280; }
+  .v1 .card-stars { color: #fbbf24; font-size: 0.8em; margin-bottom: 8px; }
+  .v1 .card-text { font-size: 0.85em; color: #374151; line-height: 1.7; }
+
+  /* =========================================== */
+  /* 案2: チャット/SNS風タイムライン             */
+  /* =========================================== */
+  .v2 { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  .v2 .chat-list { display: flex; flex-direction: column; gap: 20px; }
+  .v2 .chat-item { display: flex; gap: 12px; max-width: 85%; }
+  .v2 .chat-item:nth-child(even) { align-self: flex-end; flex-direction: row-reverse; }
+  .v2 .chat-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #10a37f, #06b6d4);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: 0.9em;
+  }
+  .v2 .chat-item:nth-child(even) .chat-avatar { background: linear-gradient(135deg, #7c3aed, #db2777); }
+  .v2 .chat-bubble {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+    padding: 16px 18px; position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .v2 .chat-item:nth-child(even) .chat-bubble { background: #f0fdf4; border-color: #bbf7d0; }
+  .v2 .chat-name { font-size: 0.75em; font-weight: 700; color: #10a37f; margin-bottom: 2px; }
+  .v2 .chat-item:nth-child(even) .chat-name { color: #7c3aed; text-align: right; }
+  .v2 .chat-uni { font-size: 0.7em; color: #9ca3af; margin-bottom: 8px; }
+  .v2 .chat-item:nth-child(even) .chat-uni { text-align: right; }
+  .v2 .chat-text { font-size: 0.85em; color: #374151; line-height: 1.7; }
+  .v2 .chat-meta { font-size: 0.65em; color: #9ca3af; margin-top: 6px; }
+
+  /* =========================================== */
+  /* 案3: 大きな引用カード（自動切替）           */
+  /* =========================================== */
+  .v3 { max-width: 800px; margin: 0 auto; padding: 40px 20px; position: relative; }
+  .v3 .slide-wrap { position: relative; overflow: hidden; border-radius: 20px; }
+  .v3 .slide-track { display: flex; transition: transform 0.5s ease; }
+  .v3 .slide {
+    min-width: 100%; padding: 48px 40px;
+    background: #fff; border: 1px solid #e5e7eb;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 16px;
+  }
+  .v3 .slide-quote-mark { font-size: 4em; color: #10a37f; opacity: 0.2; font-family: Georgia, serif; line-height: 0.6; }
+  .v3 .slide-text { font-size: 1.1em; color: #374151; line-height: 1.8; max-width: 600px; }
+  .v3 .slide-result { font-size: 0.9em; font-weight: 800; color: #10a37f; }
+  .v3 .slide-person { font-size: 0.85em; color: #6b7280; }
+  .v3 .slide-stars { color: #fbbf24; font-size: 1em; }
+  .v3 .nav-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 1.2em; cursor: pointer; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .v3 .nav-btn:hover { background: #f0fdf4; }
+  .v3 .nav-prev { left: 12px; }
+  .v3 .nav-next { right: 12px; }
+  .v3 .dots { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+  .v3 .dot { width: 8px; height: 8px; border-radius: 50%; background: #d1d5db; border: none; cursor: pointer; transition: background 0.2s; }
+  .v3 .dot.active { background: #10a37f; }
+
+  /* =========================================== */
+  /* 案4: マガジン風（交互配置）                 */
+  /* =========================================== */
+  .v4 { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  .v4 .mag-list { display: flex; flex-direction: column; gap: 32px; }
+  .v4 .mag-item {
+    display: flex; gap: 24px; align-items: center;
+    background: #fff; border-radius: 16px; padding: 28px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+  }
+  .v4 .mag-item:hover { transform: translateY(-3px); }
+  .v4 .mag-item:nth-child(even) { flex-direction: row-reverse; }
+  .v4 .mag-avatar {
+    width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2em; font-weight: 900; color: #fff;
+  }
+  .v4 .mag-item:nth-child(1) .mag-avatar { background: linear-gradient(135deg, #10a37f, #06b6d4); }
+  .v4 .mag-item:nth-child(2) .mag-avatar { background: linear-gradient(135deg, #7c3aed, #db2777); }
+  .v4 .mag-item:nth-child(3) .mag-avatar { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .v4 .mag-item:nth-child(4) .mag-avatar { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+  .v4 .mag-item:nth-child(5) .mag-avatar { background: linear-gradient(135deg, #ef4444, #f97316); }
+  .v4 .mag-item:nth-child(6) .mag-avatar { background: linear-gradient(135deg, #06b6d4, #10a37f); }
+  .v4 .mag-info { flex: 1; }
+  .v4 .mag-result { font-size: 0.9em; font-weight: 800; color: #10a37f; margin-bottom: 2px; }
+  .v4 .mag-person { font-size: 0.8em; color: #6b7280; margin-bottom: 10px; }
+  .v4 .mag-text { font-size: 0.88em; color: #374151; line-height: 1.7; }
+  .v4 .mag-stars { color: #fbbf24; font-size: 0.8em; margin-top: 8px; }
+
+  /* =========================================== */
+  /* 案5: ターミナル/コンソール風                */
+  /* =========================================== */
+  .v5 { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  .v5 .terminal {
+    background: #0a0a0a; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .v5 .terminal-bar {
+    background: #1f1f1f; padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .v5 .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .v5 .terminal-dot.r { background: #ff5f56; }
+  .v5 .terminal-dot.y { background: #ffbd2e; }
+  .v5 .terminal-dot.g { background: #27c93f; }
+  .v5 .terminal-title { color: #6b7280; font-size: 0.75em; font-family: "SF Mono", monospace; margin-left: auto; }
+  .v5 .terminal-body { padding: 24px; font-family: "SF Mono", "Menlo", monospace; font-size: 0.82em; line-height: 1.8; }
+  .v5 .term-line { margin-bottom: 16px; }
+  .v5 .term-prompt { color: #10a37f; }
+  .v5 .term-cmd { color: #e5e7eb; }
+  .v5 .term-output { color: #9ca3af; padding-left: 16px; display: block; margin-top: 4px; }
+  .v5 .term-name { color: #fbbf24; font-weight: 700; }
+  .v5 .term-uni { color: #6b7280; }
+  .v5 .term-result { color: #10a37f; font-weight: 700; }
+  .v5 .term-text { color: #d1d5db; }
+  .v5 .term-stars { color: #fbbf24; }
+  .v5 .term-separator { border: none; border-top: 1px solid #1f1f1f; margin: 12px 0; }
+</style>
+</head>
+<body>
+
+<!-- ===== 案1: カードグリッド ===== -->
+<h2 class="variant-label">案1: カード型グリッド（2列）<span>吹き出し風カードを2列に並べて全件表示。一覧性が高い。</span></h2>
+<div class="v1">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">某AIユニコーン企業にそのまま就職</div>
+        <div class="card-person">東京大学 工学部 3年生 Mさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">AI SaaSスタートアップでPdM経験</div>
+        <div class="card-person">慶應義塾大学 SFC 2年生 Aさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">Kaggle金メダル獲得、某外資AIラボ内定</div>
+        <div class="card-person">東京工業大学 情報理工学院 M1 Sさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">副業AIエンジニアとして月30万稼ぐように</div>
+        <div class="card-person">早稲田大学 商学部 3年生 Kさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">インターン先の論文がICML採択</div>
+        <div class="card-person">京都大学 情報学研究科 M1 Tさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。CV最強伝説の始まり。</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-result">AIスタートアップを在学中に共同創業</div>
+        <div class="card-person">東京大学 経済学部 4年生 Nさん</div>
+      </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案2: チャット風 ===== -->
+<h2 class="variant-label">案2: チャット/SNS風タイムライン<span>LINE/Twitter風の左右交互吹き出し。カジュアルでZ世代向け。</span></h2>
+<div class="v2">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="chat-list">
+    <div class="chat-item">
+      <div class="chat-avatar">M</div>
+      <div class="chat-bubble">
+        <div class="chat-name">某AIユニコーン企業にそのまま就職</div>
+        <div class="chat-uni">東京大学 工学部 3年生 Mさん</div>
+        <div class="chat-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div>
+        <div class="chat-meta">★★★★★ · 2日前</div>
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar">A</div>
+      <div class="chat-bubble">
+        <div class="chat-name">AI SaaSスタートアップでPdM経験</div>
+        <div class="chat-uni">慶應義塾大学 SFC 2年生 Aさん</div>
+        <div class="chat-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？3社オファー来てるので選ぶ側です。</div>
+        <div class="chat-meta">★★★★★ · 5日前</div>
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar">S</div>
+      <div class="chat-bubble">
+        <div class="chat-name">Kaggle金メダル獲得、某外資AIラボ内定</div>
+        <div class="chat-uni">東京工業大学 情報理工学院 M1 Sさん</div>
+        <div class="chat-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div>
+        <div class="chat-meta">★★★★★ · 1週間前</div>
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar">K</div>
+      <div class="chat-bubble">
+        <div class="chat-name">副業AIエンジニアとして月30万稼ぐように</div>
+        <div class="chat-uni">早稲田大学 商学部 3年生 Kさん</div>
+        <div class="chat-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。すみません。</div>
+        <div class="chat-meta">★★★★★ · 2週間前</div>
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar">T</div>
+      <div class="chat-bubble">
+        <div class="chat-name">インターン先の論文がICML採択</div>
+        <div class="chat-uni">京都大学 情報学研究科 M1 Tさん</div>
+        <div class="chat-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+        <div class="chat-meta">★★★★★ · 3週間前</div>
+      </div>
+    </div>
+    <div class="chat-item">
+      <div class="chat-avatar">N</div>
+      <div class="chat-bubble">
+        <div class="chat-name">AIスタートアップを在学中に共同創業</div>
+        <div class="chat-uni">東京大学 経済学部 4年生 Nさん</div>
+        <div class="chat-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</div>
+        <div class="chat-meta">★★★★★ · 1ヶ月前</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案3: 大きな引用カード ===== -->
+<h2 class="variant-label">案3: 大きな引用カード（自動切替）<span>画面幅いっぱいに1件ずつ大きく表示。数秒で自動切替＋矢印操作。</span></h2>
+<div class="v3">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="slide-wrap">
+    <div class="slide-track" id="v3-track">
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">某AIユニコーン企業にそのまま就職</div>
+        <div class="slide-person">東京大学 工学部 3年生 Mさん</div>
+      </div>
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">AI SaaSスタートアップでPdM経験</div>
+        <div class="slide-person">慶應義塾大学 SFC 2年生 Aさん</div>
+      </div>
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">Kaggle金メダル獲得、某外資AIラボ内定</div>
+        <div class="slide-person">東京工業大学 情報理工学院 M1 Sさん</div>
+      </div>
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">副業AIエンジニアとして月30万稼ぐように</div>
+        <div class="slide-person">早稲田大学 商学部 3年生 Kさん</div>
+      </div>
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">インターン先の論文がICML採択</div>
+        <div class="slide-person">京都大学 情報学研究科 M1 Tさん</div>
+      </div>
+      <div class="slide">
+        <div class="slide-quote-mark">"</div>
+        <div class="slide-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div>
+        <div class="slide-stars">★★★★★</div>
+        <div class="slide-result">AIスタートアップを在学中に共同創業</div>
+        <div class="slide-person">東京大学 経済学部 4年生 Nさん</div>
+      </div>
+    </div>
+    <button class="nav-btn nav-prev" onclick="v3Move(-1)">‹</button>
+    <button class="nav-btn nav-next" onclick="v3Move(1)">›</button>
+  </div>
+  <div class="dots" id="v3-dots">
+    <button class="dot active" onclick="v3Go(0)"></button>
+    <button class="dot" onclick="v3Go(1)"></button>
+    <button class="dot" onclick="v3Go(2)"></button>
+    <button class="dot" onclick="v3Go(3)"></button>
+    <button class="dot" onclick="v3Go(4)"></button>
+    <button class="dot" onclick="v3Go(5)"></button>
+  </div>
+</div>
+
+<!-- ===== 案4: マガジン風 ===== -->
+<h2 class="variant-label">案4: マガジン風（交互配置）<span>左右交互にアバターとテキストを配置。雑誌のインタビュー記事風。</span></h2>
+<div class="v4">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="mag-list">
+    <div class="mag-item">
+      <div class="mag-avatar">M</div>
+      <div class="mag-info">
+        <div class="mag-result">某AIユニコーン企業にそのまま就職</div>
+        <div class="mag-person">東京大学 工学部 3年生 Mさん</div>
+        <div class="mag-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="mag-item">
+      <div class="mag-avatar">A</div>
+      <div class="mag-info">
+        <div class="mag-result">AI SaaSスタートアップでPdM経験</div>
+        <div class="mag-person">慶應義塾大学 SFC 2年生 Aさん</div>
+        <div class="mag-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？3社オファー来てるので選ぶ側です。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="mag-item">
+      <div class="mag-avatar">S</div>
+      <div class="mag-info">
+        <div class="mag-result">Kaggle金メダル獲得、某外資AIラボ内定</div>
+        <div class="mag-person">東京工業大学 情報理工学院 M1 Sさん</div>
+        <div class="mag-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="mag-item">
+      <div class="mag-avatar">K</div>
+      <div class="mag-info">
+        <div class="mag-result">副業AIエンジニアとして月30万稼ぐように</div>
+        <div class="mag-person">早稲田大学 商学部 3年生 Kさん</div>
+        <div class="mag-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。すみません。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="mag-item">
+      <div class="mag-avatar">T</div>
+      <div class="mag-info">
+        <div class="mag-result">インターン先の論文がICML採択</div>
+        <div class="mag-person">京都大学 情報学研究科 M1 Tさん</div>
+        <div class="mag-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。CV最強伝説の始まり。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+    <div class="mag-item">
+      <div class="mag-avatar">N</div>
+      <div class="mag-info">
+        <div class="mag-result">AIスタートアップを在学中に共同創業</div>
+        <div class="mag-person">東京大学 経済学部 4年生 Nさん</div>
+        <div class="mag-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</div>
+        <div class="mag-stars">★★★★★</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案5: ターミナル風 ===== -->
+<h2 class="variant-label">案5: ターミナル/コンソール風<span>黒背景＋グリーンテキスト。AI/テック感が最も強い。</span></h2>
+<div class="v5">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="terminal-dot r"></span>
+      <span class="terminal-dot y"></span>
+      <span class="terminal-dot g"></span>
+      <span class="terminal-title">ai_intern_testimonials.sh</span>
+    </div>
+    <div class="terminal-body">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd">cat testimonial --user="Mさん"</span>
+        <span class="term-output">
+          <span class="term-name">Mさん</span> <span class="term-uni">東京大学 工学部 3年生</span><br>
+          <span class="term-result">→ 某AIユニコーン企業にそのまま就職</span><br>
+          <span class="term-stars">★★★★★</span><br>
+          <span class="term-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。</span>
+        </span>
+      </div>
+      <hr class="term-separator">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd">cat testimonial --user="Aさん"</span>
+        <span class="term-output">
+          <span class="term-name">Aさん</span> <span class="term-uni">慶應義塾大学 SFC 2年生</span><br>
+          <span class="term-result">→ AI SaaSスタートアップでPdM経験</span><br>
+          <span class="term-stars">★★★★★</span><br>
+          <span class="term-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。</span>
+        </span>
+      </div>
+      <hr class="term-separator">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd">cat testimonial --user="Sさん"</span>
+        <span class="term-output">
+          <span class="term-name">Sさん</span> <span class="term-uni">東京工業大学 情報理工学院 M1</span><br>
+          <span class="term-result">→ Kaggle金メダル獲得、某外資AIラボ内定</span><br>
+          <span class="term-stars">★★★★★</span><br>
+          <span class="term-text">インターン先でH100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</span>
+        </span>
+      </div>
+      <hr class="term-separator">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd">cat testimonial --user="Kさん"</span>
+        <span class="term-output">
+          <span class="term-name">Kさん</span> <span class="term-uni">早稲田大学 商学部 3年生</span><br>
+          <span class="term-result">→ 副業AIエンジニアとして月30万稼ぐように</span><br>
+          <span class="term-stars">★★★★★</span><br>
+          <span class="term-text">完全文系、プログラミング経験ゼロからスタート。同期がESで悩んでる間に稼いでます。すみません。</span>
+        </span>
+      </div>
+      <hr class="term-separator">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd">cat testimonial --user="Nさん"</span>
+        <span class="term-output">
+          <span class="term-name">Nさん</span> <span class="term-uni">東京大学 経済学部 4年生</span><br>
+          <span class="term-result">→ AIスタートアップを在学中に共同創業</span><br>
+          <span class="term-stars">★★★★★</span><br>
+          <span class="term-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</span>
+        </span>
+      </div>
+      <hr class="term-separator">
+      <div class="term-line">
+        <span class="term-prompt">$ </span><span class="term-cmd" style="animation: blink 1s infinite;">_</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+// 案3: スライドショー
+var v3Idx = 0;
+var v3Total = 6;
+function v3Go(i) {
+  v3Idx = i;
+  document.getElementById('v3-track').style.transform = 'translateX(-' + (i * 100) + '%)';
+  document.querySelectorAll('#v3-dots .dot').forEach(function(d, idx) { d.classList.toggle('active', idx === i); });
+}
+function v3Move(dir) {
+  v3Idx = (v3Idx + dir + v3Total) % v3Total;
+  v3Go(v3Idx);
+}
+// 自動切替
+setInterval(function() { v3Move(1); }, 5000);
+
+// ターミナル風カーソル点滅
+var style = document.createElement('style');
+style.textContent = '@keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }';
+document.head.appendChild(style);
+</script>
+</body>
+</html>

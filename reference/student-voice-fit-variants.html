@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ヤバい声 — セクション幅に合うUI案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f3ed;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a}
+  header{text-align:center;padding:40px 20px 24px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:20px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:12px;margin:0}
+  section{padding:50px 20px;border-top:1px dashed rgba(15,23,42,0.2)}
+  .label{max-width:640px;margin:0 auto 4px;font-size:11px;letter-spacing:0.3em;color:#10a37f;font-weight:700;font-family:"SF Mono",monospace}
+  .nm{max-width:640px;margin:0 auto 6px;font-size:18px;font-weight:900}
+  .ds{max-width:640px;margin:0 auto 30px;font-size:12px;color:#6b7280;line-height:1.7}
+  .stage{max-width:640px;margin:0 auto}
+
+  /* ============================================== */
+  /* === 案1: 横スクロール 2枚見え (スナップ) === */
+  /* ============================================== */
+  .v1{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:6px 2px 14px;scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.15) transparent}
+  .v1::-webkit-scrollbar{height:5px}
+  .v1::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.15);border-radius:3px}
+  .v1 .c{scroll-snap-align:start;flex:0 0 calc(50% - 7px);background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;padding:18px 18px 16px;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s}
+  .v1 .c:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(15,23,42,0.1)}
+  .v1 .who{font-size:11px;font-weight:800;color:#0a0a0a;margin-bottom:2px}
+  .v1 .school{font-size:10px;color:#6b7280;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(15,23,42,0.08)}
+  .v1 .stars{font-size:11px;color:#10a37f;margin-bottom:8px}
+  .v1 .text{font-size:12px;line-height:1.7;color:#374151;flex:1}
+
+  /* ============================================== */
+  /* === 案2: 1枚フル幅スライダー (矢印) === */
+  /* ============================================== */
+  .v2-wrap{position:relative;overflow:hidden;border-radius:12px;border:1px solid rgba(15,23,42,0.12);background:#fff}
+  .v2{display:flex;transition:transform 0.4s ease}
+  .v2 .c{min-width:100%;padding:28px 32px;display:flex;flex-direction:column}
+  .v2 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .v2 .who{font-size:13px;font-weight:800}
+  .v2 .school{font-size:11px;color:#6b7280}
+  .v2 .stars{font-size:12px;color:#10a37f}
+  .v2 .text{font-size:14px;line-height:1.8;color:#374151}
+  .v2-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:#0a0a0a;color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;z-index:2;opacity:0.8;transition:opacity 0.2s}
+  .v2-btn:hover{opacity:1}
+  .v2-btn.prev{left:8px}
+  .v2-btn.next{right:8px}
+  .v2-pager{text-align:center;margin-top:12px;font-family:"SF Mono",monospace;font-size:11px;color:#6b7280}
+  .v2-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+  .v2-dots span{width:6px;height:6px;border-radius:50%;background:rgba(15,23,42,0.15);transition:background 0.2s}
+  .v2-dots span.on{background:#10a37f}
+
+  /* ============================================== */
+  /* === 案3: アコーディオン縦展開 === */
+  /* ============================================== */
+  .v3 .item{border:1px solid rgba(15,23,42,0.12);border-radius:10px;margin-bottom:10px;overflow:hidden;background:#fff;transition:box-shadow 0.2s}
+  .v3 .item:hover{box-shadow:0 4px 12px rgba(15,23,42,0.08)}
+  .v3 .item .head{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+  .v3 .item .head .left{display:flex;align-items:center;gap:10px}
+  .v3 .item .head .ava{width:32px;height:32px;border-radius:50%;background:#10a37f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0}
+  .v3 .item:nth-child(2) .ava{background:#7c3aed}
+  .v3 .item:nth-child(3) .ava{background:#dc2626}
+  .v3 .item:nth-child(4) .ava{background:#0a0a0a}
+  .v3 .item:nth-child(5) .ava{background:#f59e0b}
+  .v3 .item:nth-child(6) .ava{background:#06b6d4}
+  .v3 .item .head .nm{font-size:12px;font-weight:800;color:#0a0a0a}
+  .v3 .item .head .sub{font-size:10px;color:#6b7280}
+  .v3 .item .head .arrow{font-size:14px;color:#6b7280;transition:transform 0.3s;font-family:"SF Mono",monospace}
+  .v3 .item.open .head .arrow{transform:rotate(180deg)}
+  .v3 .item .body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+  .v3 .item.open .body{max-height:200px}
+  .v3 .item .body-inner{padding:0 18px 16px;font-size:13px;line-height:1.75;color:#374151;border-top:1px solid rgba(15,23,42,0.08);padding-top:14px}
+  .v3 .item .body-inner .stars{color:#10a37f;font-size:11px;display:block;margin-bottom:6px}
+
+  /* ============================================== */
+  /* === 案4: 2列タイル (コンパクト) === */
+  /* ============================================== */
+  .v4{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .v4 .c{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;padding:16px;transition:transform 0.2s,box-shadow 0.2s}
+  .v4 .c:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(15,23,42,0.1)}
+  .v4 .who{font-size:10px;font-weight:800;color:#0a0a0a;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .v4 .school{font-size:9px;color:#6b7280;margin-bottom:6px}
+  .v4 .stars{font-size:10px;color:#10a37f;margin-bottom:6px}
+  .v4 .text{font-size:11px;line-height:1.65;color:#374151;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ============================================== */
+  /* === 案5: チャットバブル横スクロール === */
+  /* ============================================== */
+  .v5{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.15) transparent}
+  .v5::-webkit-scrollbar{height:5px}
+  .v5::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.15);border-radius:3px}
+  .v5 .c{scroll-snap-align:start;flex:0 0 280px;display:flex;gap:10px;align-items:flex-start}
+  .v5 .ava{width:34px;height:34px;border-radius:50%;background:#10a37f;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0}
+  .v5 .c:nth-child(2) .ava{background:#7c3aed}
+  .v5 .c:nth-child(3) .ava{background:#dc2626}
+  .v5 .c:nth-child(4) .ava{background:#0a0a0a}
+  .v5 .c:nth-child(5) .ava{background:#f59e0b}
+  .v5 .c:nth-child(6) .ava{background:#06b6d4}
+  .v5 .bubble{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:14px 14px 14px 4px;padding:14px 16px;flex:1}
+  .v5 .bubble .nm{font-size:10px;font-weight:800;color:#0a0a0a;margin-bottom:2px}
+  .v5 .bubble .sub{font-size:9px;color:#6b7280;margin-bottom:6px}
+  .v5 .bubble .text{font-size:12px;line-height:1.65;color:#374151}
+  .v5 .bubble .stars{font-size:10px;color:#10a37f;margin-top:6px;display:block}
+
+  /* ============================================== */
+  /* === 案6: マーキー1列 (コンパクト) === */
+  /* ============================================== */
+  .v6-wrap{overflow:hidden;padding:6px 0 14px}
+  .v6-wrap:hover .v6{animation-play-state:paused}
+  .v6{display:flex;gap:14px;animation:v6m 35s linear infinite;width:max-content}
+  @keyframes v6m{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .v6 .c{width:260px;min-width:260px;background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;padding:16px;transition:transform 0.2s}
+  .v6 .c:hover{transform:translateY(-3px)}
+  .v6 .who{font-size:11px;font-weight:800;color:#0a0a0a;margin-bottom:2px}
+  .v6 .school{font-size:10px;color:#6b7280;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(15,23,42,0.08)}
+  .v6 .stars{font-size:10px;color:#10a37f;margin-bottom:6px}
+  .v6 .text{font-size:11px;line-height:1.65;color:#374151}
+
+  /* ============================================== */
+  /* === 案7: 縦タイムライン === */
+  /* ============================================== */
+  .v7{padding:0 0 0 40px;position:relative}
+  .v7::before{content:"";position:absolute;left:14px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,rgba(15,23,42,0.2) 5%,rgba(15,23,42,0.2) 95%,transparent)}
+  .v7 .item{position:relative;margin-bottom:20px}
+  .v7 .item::before{content:"";position:absolute;left:-32px;top:10px;width:10px;height:10px;border-radius:50%;background:#10a37f;border:2px solid #fcfbf7;box-shadow:0 0 0 2px rgba(15,23,42,0.2)}
+  .v7 .item .card{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;padding:16px 18px}
+  .v7 .who{font-size:11px;font-weight:800;color:#10a37f;margin-bottom:2px}
+  .v7 .school{font-size:10px;color:#6b7280;margin-bottom:8px}
+  .v7 .text{font-size:12px;line-height:1.7;color:#374151}
+
+  /* ============================================== */
+  /* === 案8: 引用カード 1列 === */
+  /* ============================================== */
+  .v8 .item{background:#fff;border-left:4px solid #10a37f;border-radius:0 10px 10px 0;padding:20px 24px;margin-bottom:14px;transition:transform 0.2s,box-shadow 0.2s}
+  .v8 .item:hover{transform:translateX(4px);box-shadow:0 4px 12px rgba(15,23,42,0.08)}
+  .v8 .item:nth-child(2){border-left-color:#7c3aed}
+  .v8 .item:nth-child(3){border-left-color:#dc2626}
+  .v8 .item:nth-child(4){border-left-color:#f59e0b}
+  .v8 .item:nth-child(5){border-left-color:#06b6d4}
+  .v8 .item:nth-child(6){border-left-color:#0a0a0a}
+  .v8 .text{font-size:13px;line-height:1.75;color:#374151;margin-bottom:10px;font-style:italic}
+  .v8 .text::before{content:"\201C";font-size:24px;color:#10a37f;line-height:0;vertical-align:-8px;margin-right:4px;font-style:normal}
+  .v8 .meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#6b7280}
+  .v8 .meta .nm{font-weight:800;color:#0a0a0a}
+  .v8 .meta .stars{color:#10a37f}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>「ヤバい声」セクション幅に合うUI案</h1>
+  <p>実際のセクション幅 (max-width: 640px) で8案表示</p>
+</header>
+
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">横スクロール 2枚見え (スナップ)</div>
+  <p class="ds">2枚が同時に見え、スワイプで次へ。スナップで止まる。現在のSlick風に近いがライブラリ不要。</p>
+  <div class="stage">
+    <div class="v1">
+      <div class="c"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div><div class="stars">★★★★★</div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div></div>
+      <div class="c"><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div><div class="stars">★★★★★</div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。3社オファー来てるので選ぶ側です。</div></div>
+      <div class="c"><div class="who">Kaggle金メダル獲得</div><div class="school">東京工業大学 情理 M1 Sさん</div><div class="stars">★★★★★</div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="c"><div class="who">副業AIエンジニアで月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div><div class="stars">★★★★★</div><div class="text">完全文系・経験ゼロからフリーランス案件を受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+      <div class="c"><div class="who">論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div><div class="stars">★★★★★</div><div class="text">インターン先の研究がICMLに採択。ダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+      <div class="c"><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div><div class="stars">★★★★★</div><div class="text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。マジだった。</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">1枚フル幅スライダー</div>
+  <p class="ds">1枚だけ表示、←→で切替。文字が大きく読みやすい。ドットインジケーター付き。</p>
+  <div class="stage">
+    <div class="v2-wrap">
+      <button class="v2-btn prev" onclick="v2go(-1)">←</button>
+      <button class="v2-btn next" onclick="v2go(1)">→</button>
+      <div class="v2" id="v2">
+        <div class="c"><div class="top"><div><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東京大学 工学部 3年生 Mさん</div></div><div class="stars">★★★★★</div></div><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div>
+        <div class="c"><div class="top"><div><div class="who">AI SaaSスタートアップでPdM経験</div><div class="school">慶應義塾大学 SFC 2年生 Aさん</div></div><div class="stars">★★★★★</div></div><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。3社オファー来てるので選ぶ側です。</div></div>
+        <div class="c"><div class="top"><div><div class="who">Kaggle金メダル獲得</div><div class="school">東京工業大学 情理 M1 Sさん</div></div><div class="stars">★★★★★</div></div><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div></div>
+        <div class="c"><div class="top"><div><div class="who">副業AIエンジニアで月30万</div><div class="school">早稲田大学 商学部 3年生 Kさん</div></div><div class="stars">★★★★★</div></div><div class="text">完全文系・経験ゼロからフリーランス案件を受けられるように。同期がESで悩んでる間に稼いでます。</div></div>
+        <div class="c"><div class="top"><div><div class="who">論文がICML採択</div><div class="school">京都大学 情報学研究科 M1 Tさん</div></div><div class="stars">★★★★★</div></div><div class="text">インターン先の研究がICMLに採択。ダブルで論文書いてる状態。CV最強伝説の始まり。</div></div>
+        <div class="c"><div class="top"><div><div class="who">在学中に共同創業</div><div class="school">東京大学 経済学部 4年生 Nさん</div></div><div class="stars">★★★★★</div></div><div class="text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。マジだった。</div></div>
+      </div>
+    </div>
+    <div class="v2-dots" id="v2dots"><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">アコーディオン縦展開</div>
+  <p class="ds">タイトル/名前だけ見え、クリックで本文が展開する。省スペースで全員分を一覧。</p>
+  <div class="stage">
+    <div class="v3">
+      <div class="item open"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">M</div><div><div class="nm">某AIユニコーン企業にそのまま就職</div><div class="sub">東京大学 工学部 3年生 Mさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div></div></div>
+      <div class="item"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">A</div><div><div class="nm">AI SaaSスタートアップでPdM経験</div><div class="sub">慶應義塾大学 SFC 2年生 Aさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。3社オファー来てるので選ぶ側です。</div></div></div>
+      <div class="item"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">S</div><div><div class="nm">Kaggle金メダル獲得</div><div class="sub">東京工業大学 情理 M1 Sさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>H100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</div></div></div>
+      <div class="item"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">K</div><div><div class="nm">副業AIエンジニアで月30万</div><div class="sub">早稲田大学 商学部 3年生 Kさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>完全文系・経験ゼロからフリーランス案件を受けられるように。同期がESで悩んでる間に稼いでます。</div></div></div>
+      <div class="item"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">T</div><div><div class="nm">論文がICML採択</div><div class="sub">京都大学 情報学研究科 M1 Tさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>インターン先の研究がICMLに採択。ダブルで論文書いてる状態。CV最強伝説の始まり。</div></div></div>
+      <div class="item"><div class="head" onclick="v3toggle(this)"><div class="left"><div class="ava">N</div><div><div class="nm">在学中に共同創業</div><div class="sub">東京大学 経済学部 4年生 Nさん</div></div></div><div class="arrow">▼</div></div><div class="body"><div class="body-inner"><span class="stars">★★★★★</span>CEOに「起業しろ」と言われて本当にした。シード3000万調達。マジだった。</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">2列タイル (コンパクト)</div>
+  <p class="ds">2列グリッドで6枚を一覧表示。4行クランプで省スペース。全員が見渡せる。</p>
+  <div class="stage">
+    <div class="v4">
+      <div class="c"><div class="who">某AIユニコーン企業にそのまま就職</div><div class="school">東大工 3年 Mさん</div><div class="stars">★★★★★</div><div class="text">初日に「loss下げといて」で泣きそうになったけど、3ヶ月後にRAGパイプライン組んでた。成長速度がバグってる。</div></div>
+      <div class="c"><div class="who">AI SaaS PdM経験</div><div class="school">慶應SFC 2年 Aさん</div><div class="stars">★★★★★</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー獲得、選ぶ側です。</div></div>
+      <div class="c"><div class="who">Kaggle金メダル獲得</div><div class="school">東工大 情理 M1 Sさん</div><div class="stars">★★★★★</div><div class="text">H100×8枚。研究室より計算資源潤沢。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="c"><div class="who">副業月30万</div><div class="school">早稲田商 3年 Kさん</div><div class="stars">★★★★★</div><div class="text">文系・経験ゼロからフリーランスへ。同期がES悩んでる間に稼いでます。</div></div>
+      <div class="c"><div class="who">ICML論文採択</div><div class="school">京大情報 M1 Tさん</div><div class="stars">★★★★★</div><div class="text">インターン先の研究がICMLに。ダブルで論文書いてる。CV最強伝説の始まり。</div></div>
+      <div class="c"><div class="who">在学中に起業</div><div class="school">東大経済 4年 Nさん</div><div class="stars">★★★★★</div><div class="text">CEOに「起業しろ」で本当にした。シード3000万調達。マジだった。</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">チャットバブル横スクロール</div>
+  <p class="ds">アバター + 吹き出しのチャット風カード。横スクロールで会話が続く。カジュアルで親しみやすい。</p>
+  <div class="stage">
+    <div class="v5">
+      <div class="c"><div class="ava">M</div><div class="bubble"><div class="nm">Mさん · 東大工3年</div><div class="sub">某AIユニコーン就職</div><div class="text">初日に「loss下げといて」で泣きそうになったけど、3ヶ月後にRAGパイプライン組んでた。成長速度がバグってる。</div><span class="stars">★★★★★</span></div></div>
+      <div class="c"><div class="ava">A</div><div class="bubble"><div class="nm">Aさん · 慶應SFC2年</div><div class="sub">PdM経験</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー来てるので選ぶ側です。</div><span class="stars">★★★★★</span></div></div>
+      <div class="c"><div class="ava">S</div><div class="bubble"><div class="nm">Sさん · 東工大M1</div><div class="sub">Kaggle金メダル</div><div class="text">H100×8枚。研究室より計算資源潤沢。GPUは正義、AI_INTERNは神。</div><span class="stars">★★★★★</span></div></div>
+      <div class="c"><div class="ava">K</div><div class="bubble"><div class="nm">Kさん · 早稲田商3年</div><div class="sub">副業月30万</div><div class="text">文系・経験ゼロからフリーランスへ。同期がES悩んでる間に稼いでます。</div><span class="stars">★★★★★</span></div></div>
+      <div class="c"><div class="ava">T</div><div class="bubble"><div class="nm">Tさん · 京大M1</div><div class="sub">ICML採択</div><div class="text">研究がICMLに採択。ダブルで論文書いてる。CV最強伝説の始まり。</div><span class="stars">★★★★★</span></div></div>
+      <div class="c"><div class="ava">N</div><div class="bubble"><div class="nm">Nさん · 東大経済4年</div><div class="sub">在学起業</div><div class="text">「起業しろ」で本当にした。3000万調達。マジだった。</div><span class="stars">★★★★★</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">マーキー自動流れ (コンパクト)</div>
+  <p class="ds">カードが自動で左に流れ続ける。ホバーで停止。無限ループ。操作不要で動きが目を引く。</p>
+  <div class="stage">
+    <div class="v6-wrap">
+      <div class="v6">
+        <div class="c"><div class="who">某ユニコーン就職 · Mさん</div><div class="school">東大工3年</div><div class="stars">★★★★★</div><div class="text">loss下げから3ヶ月でRAGパイプライン。成長速度バグってる。</div></div>
+        <div class="c"><div class="who">PdM経験 · Aさん</div><div class="school">慶應SFC2年</div><div class="stars">★★★★★</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー。</div></div>
+        <div class="c"><div class="who">Kaggle金 · Sさん</div><div class="school">東工大M1</div><div class="stars">★★★★★</div><div class="text">H100×8枚。GPUは正義、AI_INTERNは神。</div></div>
+        <div class="c"><div class="who">月30万 · Kさん</div><div class="school">早稲田商3年</div><div class="stars">★★★★★</div><div class="text">文系・経験ゼロから副業フリーランスへ。</div></div>
+        <div class="c"><div class="who">ICML採択 · Tさん</div><div class="school">京大M1</div><div class="stars">★★★★★</div><div class="text">研究がICMLに。ダブルで論文。CV最強。</div></div>
+        <div class="c"><div class="who">起業 · Nさん</div><div class="school">東大経済4年</div><div class="stars">★★★★★</div><div class="text">シード3000万調達。マジだった。</div></div>
+        <div class="c"><div class="who">某ユニコーン就職 · Mさん</div><div class="school">東大工3年</div><div class="stars">★★★★★</div><div class="text">loss下げから3ヶ月でRAGパイプライン。成長速度バグってる。</div></div>
+        <div class="c"><div class="who">PdM経験 · Aさん</div><div class="school">慶應SFC2年</div><div class="stars">★★★★★</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。3社オファー。</div></div>
+        <div class="c"><div class="who">Kaggle金 · Sさん</div><div class="school">東工大M1</div><div class="stars">★★★★★</div><div class="text">H100×8枚。GPUは正義、AI_INTERNは神。</div></div>
+        <div class="c"><div class="who">月30万 · Kさん</div><div class="school">早稲田商3年</div><div class="stars">★★★★★</div><div class="text">文系・経験ゼロから副業フリーランスへ。</div></div>
+        <div class="c"><div class="who">ICML採択 · Tさん</div><div class="school">京大M1</div><div class="stars">★★★★★</div><div class="text">研究がICMLに。ダブルで論文。CV最強。</div></div>
+        <div class="c"><div class="who">起業 · Nさん</div><div class="school">東大経済4年</div><div class="stars">★★★★★</div><div class="text">シード3000万調達。マジだった。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 07</div>
+  <div class="nm">縦タイムライン</div>
+  <p class="ds">左の緑ドット + 縦ラインで体験談を時系列風に表示。ストーリー感のある構成。</p>
+  <div class="stage">
+    <div class="v7">
+      <div class="item"><div class="card"><div class="who">Mさん · 某AIユニコーン就職</div><div class="school">東京大学 工学部 3年</div><div class="text">初日に「loss下げといて」で泣きそうになったけど、3ヶ月後にRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div></div></div>
+      <div class="item"><div class="card"><div class="who">Aさん · PdM経験</div><div class="school">慶應義塾大学 SFC 2年</div><div class="text">文系でもプロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。3社オファー来てるので選ぶ側です。</div></div></div>
+      <div class="item"><div class="card"><div class="who">Sさん · Kaggle金メダル</div><div class="school">東京工業大学 情理 M1</div><div class="text">H100を8枚自由に使わせてもらった。研究室より計算資源潤沢。GPUは正義。</div></div></div>
+      <div class="item"><div class="card"><div class="who">Kさん · 副業月30万</div><div class="school">早稲田大学 商学部 3年</div><div class="text">完全文系・経験ゼロからフリーランス案件を受けられるように。</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 08</div>
+  <div class="nm">引用カード 1列</div>
+  <p class="ds">左ボーダー色 + 引用符の1列リスト。シンプルで上品。ホバーで右にスライド。色分けでリズム感。</p>
+  <div class="stage">
+    <div class="v8">
+      <div class="item"><div class="text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div><div class="meta"><span class="nm">Mさん · 東大工3年</span><span class="stars">★★★★★</span></div></div>
+      <div class="item"><div class="text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。3社オファー来てるので選ぶ側です。</div><div class="meta"><span class="nm">Aさん · 慶應SFC2年</span><span class="stars">★★★★★</span></div></div>
+      <div class="item"><div class="text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AI_INTERNは神。</div><div class="meta"><span class="nm">Sさん · 東工大M1</span><span class="stars">★★★★★</span></div></div>
+      <div class="item"><div class="text">完全文系、経験ゼロからフリーランス案件を受けられるように。同期がESで悩んでる間に稼いでます。</div><div class="meta"><span class="nm">Kさん · 早稲田商3年</span><span class="stars">★★★★★</span></div></div>
+      <div class="item"><div class="text">インターン先の研究がICMLに採択された。ダブルで論文書いてる状態。CV最強伝説の始まり。</div><div class="meta"><span class="nm">Tさん · 京大M1</span><span class="stars">★★★★★</span></div></div>
+      <div class="item"><div class="text">CEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</div><div class="meta"><span class="nm">Nさん · 東大経済4年</span><span class="stars">★★★★★</span></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+// 案2: フル幅スライダー
+let v2i = 0;
+function v2go(d) {
+  const cards = document.querySelectorAll('#v2 .c');
+  v2i = (v2i + d + cards.length) % cards.length;
+  cards.forEach(c => c.style.transform = `translateX(-${v2i * 100}%)`);
+  document.querySelectorAll('#v2dots span').forEach((s, i) => s.className = i === v2i ? 'on' : '');
+}
+// 案3: アコーディオン
+function v3toggle(el) {
+  el.closest('.item').classList.toggle('open');
+}
+</script>
+</body></html>

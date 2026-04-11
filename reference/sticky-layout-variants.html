@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>付箋ボード レイアウト案一覧</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+  .section-title { font-size: 1.6em; font-weight: 900; color: #1a1a1a; margin-bottom: 24px; }
+
+  /* ===== 共通付箋スタイル ===== */
+  .sticky {
+    padding: 20px 18px; border-radius: 2px; position: relative;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+    min-height: 140px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .sticky:hover { z-index: 10; box-shadow: 4px 6px 16px rgba(0,0,0,0.25); }
+  .sticky::before {
+    content: ""; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 12px; background: rgba(0,0,0,0.08); border-radius: 2px;
+  }
+  .sticky-result { font-size: 0.8em; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+  .sticky-person { font-size: 0.7em; color: #555; margin-bottom: 8px; }
+  .sticky-text { font-size: 0.8em; color: #333; line-height: 1.6; }
+  .sticky-stars { color: #f59e0b; font-size: 0.75em; margin-top: 8px; }
+  .c1 { background: #fff9c4; }
+  .c2 { background: #c8e6c9; }
+  .c3 { background: #bbdefb; }
+  .c4 { background: #f8bbd0; }
+  .c5 { background: #e1bee7; }
+  .c6 { background: #ffe0b2; }
+
+  /* コルクボード背景 */
+  .cork-bg {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='%23d4a76a' opacity='0.12'/%3E%3Ccircle cx='3' cy='3' r='0.8' fill='%23b8956a' opacity='0.15'/%3E%3C/svg%3E");
+    background-color: #c9a96e;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  /* =========================================== */
+  /* A: 散らばり型（ランダム配置）              */
+  /* =========================================== */
+  .va { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+  .va .board {
+    height: 520px; padding: 40px; position: relative;
+  }
+  .va .sticky { position: absolute; width: 250px; cursor: default; }
+  .va .sticky:hover { transform: scale(1.06) rotate(0deg) !important; }
+  .va .s1 { top: 20px; left: 30px; transform: rotate(-3deg); }
+  .va .s2 { top: 10px; left: 340px; transform: rotate(2deg); }
+  .va .s3 { top: 30px; right: 40px; transform: rotate(-1.5deg); }
+  .va .s4 { top: 260px; left: 60px; transform: rotate(1.5deg); }
+  .va .s5 { top: 280px; left: 380px; transform: rotate(-2deg); }
+  .va .s6 { top: 250px; right: 60px; transform: rotate(2.5deg); }
+
+  /* ===== ピン装飾 ===== */
+  .pin-sticky::before {
+    content: ""; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 16px; height: 16px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #ff6b6b, #cc3333);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .pin-sticky:nth-child(2)::before { background: radial-gradient(circle at 40% 35%, #4ecdc4, #2ba89e); }
+  .pin-sticky:nth-child(3)::before { background: radial-gradient(circle at 40% 35%, #ffe66d, #e6c200); }
+  .pin-sticky:nth-child(4)::before { background: radial-gradient(circle at 40% 35%, #a78bfa, #7c3aed); }
+  .pin-sticky:nth-child(5)::before { background: radial-gradient(circle at 40% 35%, #f97316, #ea580c); }
+  .pin-sticky:nth-child(6)::before { background: radial-gradient(circle at 40% 35%, #3b82f6, #2563eb); }
+
+  /* =========================================== */
+  /* B: マルキー（自動横スクロール）             */
+  /* =========================================== */
+  .vb { max-width: 100%; margin: 0 auto; padding: 40px 20px; overflow: hidden; }
+  .vb .section-title { max-width: 1100px; margin: 0 auto 24px; }
+  .vb .marquee-wrap {
+    padding: 32px 0; overflow: hidden;
+  }
+  .vb .marquee-track {
+    display: flex; gap: 20px; width: max-content;
+    animation: marqueeScroll 35s linear infinite;
+  }
+  .vb .marquee-track:hover { animation-play-state: paused; }
+  @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .vb .sticky { flex: 0 0 280px; }
+  .vb .sticky:hover { transform: scale(1.04) rotate(0deg) !important; }
+  .vb .sticky:nth-child(odd) { transform: rotate(-1.5deg); }
+  .vb .sticky:nth-child(even) { transform: rotate(1.5deg); }
+
+  /* =========================================== */
+  /* C: 2段マルキー（逆方向）                    */
+  /* =========================================== */
+  .vc { max-width: 100%; margin: 0 auto; padding: 40px 20px; overflow: hidden; }
+  .vc .section-title { max-width: 1100px; margin: 0 auto 24px; }
+  .vc .row { overflow: hidden; margin-bottom: 16px; }
+  .vc .row-track {
+    display: flex; gap: 20px; width: max-content;
+  }
+  .vc .row1 .row-track { animation: marqueeR 30s linear infinite; }
+  .vc .row2 .row-track { animation: marqueeL 30s linear infinite; }
+  @keyframes marqueeR { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @keyframes marqueeL { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+  .vc .row-track:hover { animation-play-state: paused; }
+  .vc .sticky { flex: 0 0 260px; }
+  .vc .sticky:hover { transform: scale(1.04) rotate(0deg) !important; }
+  .vc .row1 .sticky:nth-child(odd) { transform: rotate(-1deg); }
+  .vc .row1 .sticky:nth-child(even) { transform: rotate(1.5deg); }
+  .vc .row2 .sticky:nth-child(odd) { transform: rotate(2deg); }
+  .vc .row2 .sticky:nth-child(even) { transform: rotate(-1.5deg); }
+
+  /* =========================================== */
+  /* D: ピン留めウォール（横幅いっぱい）         */
+  /* =========================================== */
+  .vd { padding: 40px 0; }
+  .vd .section-title { max-width: 1100px; margin: 0 auto 24px; padding: 0 20px; }
+  .vd .wall {
+    width: 100%; min-height: 440px; padding: 40px;
+    display: flex; flex-wrap: wrap; gap: 24px;
+    justify-content: center; align-items: flex-start;
+  }
+  .vd .sticky { width: 260px; }
+  .vd .sticky:hover { transform: scale(1.05) rotate(0deg) !important; }
+  .vd .sticky:nth-child(1) { transform: rotate(-2deg); }
+  .vd .sticky:nth-child(2) { transform: rotate(1.5deg); margin-top: 20px; }
+  .vd .sticky:nth-child(3) { transform: rotate(-1deg); }
+  .vd .sticky:nth-child(4) { transform: rotate(2.5deg); margin-top: 30px; }
+  .vd .sticky:nth-child(5) { transform: rotate(-1.5deg); margin-top: 10px; }
+  .vd .sticky:nth-child(6) { transform: rotate(1deg); margin-top: 25px; }
+
+  /* =========================================== */
+  /* E: Masonry（Pinterest風）                   */
+  /* =========================================== */
+  .ve { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .ve .masonry {
+    columns: 3; column-gap: 16px; padding: 32px;
+  }
+  .ve .sticky {
+    break-inside: avoid; margin-bottom: 16px;
+    display: inline-block; width: 100%;
+  }
+  .ve .sticky:hover { transform: scale(1.04) rotate(0deg) !important; }
+  .ve .sticky:nth-child(1) { transform: rotate(-1deg); }
+  .ve .sticky:nth-child(2) { transform: rotate(1.5deg); }
+  .ve .sticky:nth-child(3) { transform: rotate(-0.5deg); }
+  .ve .sticky:nth-child(4) { transform: rotate(1deg); }
+  .ve .sticky:nth-child(5) { transform: rotate(-1.5deg); }
+  .ve .sticky:nth-child(6) { transform: rotate(0.5deg); }
+</style>
+</head>
+<body>
+
+<!-- ===== A: 散らばり型 ===== -->
+<h2 class="variant-label">レイアウトA: 散らばり型（ランダム配置）<span>本物のコルクボードのようにランダムに散らばった配置。ピン付き。</span></h2>
+<div class="va">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="board cork-bg">
+    <div class="sticky pin-sticky c1 s1"><div class="sticky-result">某AIユニコーン企業にそのまま就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後にはRAGパイプライン組んでた。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c2 s2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c3 s3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c4 s4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、経験ゼロからスタート。同期がESで悩んでる間に稼いでます。すみません。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c5 s5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">インターン先の研究がICMLに採択。ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c6 s6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+  </div>
+</div>
+
+<!-- ===== B: マルキー ===== -->
+<h2 class="variant-label">レイアウトB: マルキー（自動横スクロール）<span>付箋がゆっくり左に流れ続ける。ホバーで停止。無限ループ。</span></h2>
+<div class="vb">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="marquee-wrap cork-bg">
+    <div class="marquee-track">
+      <div class="sticky c1"><div class="sticky-result">某AIユニコーン企業に就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">3ヶ月後にはRAGパイプライン組んでた。成長速度がバグってる。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。3社オファー。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、経験ゼロ。同期がES悩んでる間に稼いでます。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+      <!-- ループ用複製 -->
+      <div class="sticky c1"><div class="sticky-result">某AIユニコーン企業に就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">3ヶ月後にはRAGパイプライン組んでた。成長速度がバグってる。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。3社オファー。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、経験ゼロ。同期がES悩んでる間に稼いでます。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== C: 2段マルキー ===== -->
+<h2 class="variant-label">レイアウトC: 2段マルキー（逆方向）<span>上段が右→左、下段が左→右。動きがあって目を引く。</span></h2>
+<div class="vc">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="row row1">
+    <div class="row-track">
+      <div class="sticky c1"><div class="sticky-result">某AIユニコーン企業に就職</div><div class="sticky-person">東大 Mさん</div><div class="sticky-text">3ヶ月後にはRAGパイプライン組んでた。成長速度がバグってる。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 Aさん</div><div class="sticky-text">プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 Sさん</div><div class="sticky-text">H100を8枚。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+      <!-- 複製 -->
+      <div class="sticky c1"><div class="sticky-result">某AIユニコーン企業に就職</div><div class="sticky-person">東大 Mさん</div><div class="sticky-text">3ヶ月後にはRAGパイプライン組んでた。成長速度がバグってる。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 Aさん</div><div class="sticky-text">プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 Sさん</div><div class="sticky-text">H100を8枚。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+    </div>
+  </div>
+  <div class="row row2">
+    <div class="row-track">
+      <div class="sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 Kさん</div><div class="sticky-text">完全文系、経験ゼロ。同期がES悩んでる間に稼いでます。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 Tさん</div><div class="sticky-text">ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 Nさん</div><div class="sticky-text">シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+      <!-- 複製 -->
+      <div class="sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 Kさん</div><div class="sticky-text">完全文系、経験ゼロ。同期がES悩んでる間に稼いでます。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 Tさん</div><div class="sticky-text">ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+      <div class="sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 Nさん</div><div class="sticky-text">シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== D: ピン留めウォール ===== -->
+<h2 class="variant-label">レイアウトD: ピン留めウォール（横幅いっぱい）<span>画面幅いっぱいのコルクボードに、ピンで付箋を留めた配置。</span></h2>
+<div class="vd">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="wall cork-bg">
+    <div class="sticky pin-sticky c1"><div class="sticky-result">某AIユニコーン企業に就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後にはRAGパイプライン組んでた。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、経験ゼロからスタート。同期がESで悩んでる間に稼いでます。すみません。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">インターン先の研究がICMLに採択。ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky pin-sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">CEOに「起業しろ」と言われて本当にした。シード3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+  </div>
+</div>
+
+<!-- ===== E: Masonry ===== -->
+<h2 class="variant-label">レイアウトE: Masonry（Pinterest風）<span>3列、高さ不揃い。内容の長さに合わせてぴったり詰まる。コルクボード背景。</span></h2>
+<div class="ve">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="masonry cork-bg">
+    <div class="sticky c1"><div class="sticky-result">某AIユニコーン企業にそのまま就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky c2"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">プロンプトエンジニアリングなら戦える。CTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky c3"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky c4"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky c5"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">ICMLに採択。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky c6"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+</body>
+</html>

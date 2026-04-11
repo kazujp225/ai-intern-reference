@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統計カウンター UI案一覧</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+
+  /* =========================================== */
+  /* 案1: アイコン付きカード型                   */
+  /* =========================================== */
+  .v1 { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  .v1 .cards { display: flex; gap: 16px; }
+  .v1 .card {
+    flex: 1; padding: 24px 20px; border-radius: 16px; text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .v1 .card:hover { transform: translateY(-3px); }
+  .v1 .card:nth-child(1) { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .v1 .card:nth-child(2) { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .v1 .card:nth-child(3) { background: #fdf4ff; border: 1px solid #e9d5ff; }
+  .v1 .card-icon { font-size: 1.8em; margin-bottom: 8px; }
+  .v1 .card-num { font-size: 2.6em; font-weight: 900; line-height: 1; }
+  .v1 .card:nth-child(1) .card-num { color: #10a37f; }
+  .v1 .card:nth-child(2) .card-num { color: #3b82f6; }
+  .v1 .card:nth-child(3) .card-num { color: #8b5cf6; }
+  .v1 .card-unit { font-size: 0.9em; font-weight: 700; color: #6b7280; }
+  .v1 .card-label { font-size: 0.8em; color: #6b7280; margin-top: 6px; }
+
+  /* =========================================== */
+  /* 案2: 円形プログレス風                       */
+  /* =========================================== */
+  .v2 { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  .v2 .circles { display: flex; gap: 32px; justify-content: center; }
+  .v2 .circle-item { text-align: center; }
+  .v2 .circle-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .v2 .circle-ring::before {
+    content: ""; position: absolute; inset: -4px;
+    border-radius: 50%;
+    border: 4px solid #e5e7eb;
+  }
+  .v2 .circle-ring::after {
+    content: ""; position: absolute; inset: -4px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: #10a37f;
+    border-right-color: #10a37f;
+  }
+  .v2 .circle-item:nth-child(2) .circle-ring::after { border-top-color: #3b82f6; border-right-color: #3b82f6; border-bottom-color: #3b82f6; }
+  .v2 .circle-item:nth-child(3) .circle-ring::after { border-top-color: #8b5cf6; border-right-color: #8b5cf6; }
+  .v2 .circle-num { font-size: 2.4em; font-weight: 900; color: #10a37f; line-height: 1; }
+  .v2 .circle-item:nth-child(2) .circle-num { color: #3b82f6; }
+  .v2 .circle-item:nth-child(3) .circle-num { color: #8b5cf6; }
+  .v2 .circle-unit { font-size: 0.85em; font-weight: 700; color: #6b7280; }
+  .v2 .circle-label { font-size: 0.8em; color: #6b7280; margin-top: 10px; font-weight: 600; }
+
+  /* =========================================== */
+  /* 案3: 横一列バー型（ミニマル）               */
+  /* =========================================== */
+  .v3 { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  .v3 .bar {
+    display: flex; align-items: baseline; justify-content: center;
+    gap: 48px;
+  }
+  .v3 .bar-item { display: flex; align-items: baseline; gap: 4px; }
+  .v3 .bar-num { font-size: 3.5em; font-weight: 900; color: #1a1a1a; line-height: 1; }
+  .v3 .bar-unit { font-size: 1em; font-weight: 700; color: #10a37f; }
+  .v3 .bar-label { font-size: 0.8em; color: #9ca3af; margin-left: 2px; }
+
+  /* =========================================== */
+  /* 案4: グラデーション背景＋ダーク             */
+  /* =========================================== */
+  .v4 { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  .v4 .dark-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0;
+    background: #0a0a0a;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .v4 .dark-item {
+    flex: 1; text-align: center;
+    padding: 0 20px;
+  }
+  .v4 .dark-item + .dark-item { border-left: 1px solid #1f2937; }
+  .v4 .dark-num {
+    font-size: 2.8em; font-weight: 900; line-height: 1;
+    background: linear-gradient(135deg, #10a37f, #06b6d4);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .v4 .dark-item:nth-child(2) .dark-num { background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .v4 .dark-item:nth-child(3) .dark-num { background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .v4 .dark-unit { font-size: 0.9em; font-weight: 700; color: #6b7280; }
+  .v4 .dark-label { font-size: 0.8em; color: #4b5563; margin-top: 6px; }
+
+  /* =========================================== */
+  /* 案5: 縦並びスタック＋棒グラフ               */
+  /* =========================================== */
+  .v5 { max-width: 500px; margin: 0 auto; padding: 40px 20px; }
+  .v5 .stack { display: flex; flex-direction: column; gap: 20px; }
+  .v5 .stack-item {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .v5 .stack-info { min-width: 140px; text-align: right; }
+  .v5 .stack-num { font-size: 2.2em; font-weight: 900; line-height: 1; }
+  .v5 .stack-item:nth-child(1) .stack-num { color: #10a37f; }
+  .v5 .stack-item:nth-child(2) .stack-num { color: #3b82f6; }
+  .v5 .stack-item:nth-child(3) .stack-num { color: #8b5cf6; }
+  .v5 .stack-unit { font-size: 0.85em; font-weight: 700; color: #6b7280; }
+  .v5 .stack-label { font-size: 0.75em; color: #9ca3af; }
+  .v5 .stack-bar-wrap {
+    flex: 1; height: 28px; background: #e5e7eb; border-radius: 14px; overflow: hidden;
+    position: relative;
+  }
+  .v5 .stack-bar {
+    height: 100%; border-radius: 14px;
+    animation: barGrow 1.5s ease-out forwards;
+    width: 0;
+  }
+  .v5 .stack-item:nth-child(1) .stack-bar { background: linear-gradient(90deg, #10a37f, #06b6d4); animation-delay: 0.1s; }
+  .v5 .stack-item:nth-child(2) .stack-bar { background: linear-gradient(90deg, #3b82f6, #8b5cf6); animation-delay: 0.3s; }
+  .v5 .stack-item:nth-child(3) .stack-bar { background: linear-gradient(90deg, #f59e0b, #ef4444); animation-delay: 0.5s; }
+  @keyframes barGrow { to { width: var(--bar-width); } }
+
+  /* カウントアップ共通 */
+  .count-up { display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- ===== 案1 ===== -->
+<h2 class="variant-label">案1: アイコン付きカード型<span>各数字の上にアイコン。カードごとに背景色で区別。</span></h2>
+<div class="v1">
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <div><span class="card-num count-up" data-target="248">0</span><span class="card-unit">人</span></div>
+      <div class="card-label">参加中のインターン生</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <div><span class="card-num count-up" data-target="89">0</span><span class="card-unit">社</span></div>
+      <div class="card-label">掲載企業</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💼</div>
+      <div><span class="card-num count-up" data-target="56">0</span><span class="card-unit">種</span></div>
+      <div class="card-label">AI職種</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案2 ===== -->
+<h2 class="variant-label">案2: 円形プログレス風<span>円の中に数字。円周にプログレスバー風アクセント。ダッシュボード的。</span></h2>
+<div class="v2">
+  <div class="circles">
+    <div class="circle-item">
+      <div class="circle-ring">
+        <span class="circle-num count-up" data-target="248">0</span>
+        <span class="circle-unit">人</span>
+      </div>
+      <div class="circle-label">参加中のインターン生</div>
+    </div>
+    <div class="circle-item">
+      <div class="circle-ring">
+        <span class="circle-num count-up" data-target="89">0</span>
+        <span class="circle-unit">社</span>
+      </div>
+      <div class="circle-label">掲載企業</div>
+    </div>
+    <div class="circle-item">
+      <div class="circle-ring">
+        <span class="circle-num count-up" data-target="56">0</span>
+        <span class="circle-unit">種</span>
+      </div>
+      <div class="circle-label">AI職種</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案3 ===== -->
+<h2 class="variant-label">案3: 横一列バー型（ミニマル）<span>区切り線なし。数字だけ極端に大きく。最もシンプル。</span></h2>
+<div class="v3">
+  <div class="bar">
+    <div class="bar-item">
+      <span class="bar-num count-up" data-target="248">0</span>
+      <span class="bar-unit">人</span>
+      <span class="bar-label">参加中</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-num count-up" data-target="89">0</span>
+      <span class="bar-unit">社</span>
+      <span class="bar-label">掲載企業</span>
+    </div>
+    <div class="bar-item">
+      <span class="bar-num count-up" data-target="56">0</span>
+      <span class="bar-unit">種</span>
+      <span class="bar-label">AI職種</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案4 ===== -->
+<h2 class="variant-label">案4: グラデーション背景＋ダーク<span>黒背景にグラデーション文字。サイバー/テック感。</span></h2>
+<div class="v4">
+  <div class="dark-bar">
+    <div class="dark-item">
+      <div><span class="dark-num count-up" data-target="248">0</span><span class="dark-unit">人</span></div>
+      <div class="dark-label">参加中のインターン生</div>
+    </div>
+    <div class="dark-item">
+      <div><span class="dark-num count-up" data-target="89">0</span><span class="dark-unit">社</span></div>
+      <div class="dark-label">掲載企業</div>
+    </div>
+    <div class="dark-item">
+      <div><span class="dark-num count-up" data-target="56">0</span><span class="dark-unit">種</span></div>
+      <div class="dark-label">AI職種</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案5 ===== -->
+<h2 class="variant-label">案5: 縦並びスタック＋棒グラフ<span>縦に積み重ね。横棒グラフで視覚的にボリューム感を表現。</span></h2>
+<div class="v5">
+  <div class="stack">
+    <div class="stack-item">
+      <div class="stack-info">
+        <span class="stack-num count-up" data-target="248">0</span><span class="stack-unit">人</span>
+        <div class="stack-label">参加中のインターン生</div>
+      </div>
+      <div class="stack-bar-wrap"><div class="stack-bar" style="--bar-width: 100%;"></div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-info">
+        <span class="stack-num count-up" data-target="89">0</span><span class="stack-unit">社</span>
+        <div class="stack-label">掲載企業</div>
+      </div>
+      <div class="stack-bar-wrap"><div class="stack-bar" style="--bar-width: 36%;"></div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-info">
+        <span class="stack-num count-up" data-target="56">0</span><span class="stack-unit">種</span>
+        <div class="stack-label">AI職種</div>
+      </div>
+      <div class="stack-bar-wrap"><div class="stack-bar" style="--bar-width: 23%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+// カウントアップアニメーション（全案共通）
+document.querySelectorAll('.count-up').forEach(function(el) {
+  var target = parseInt(el.dataset.target);
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var start = performance.now();
+        var duration = 1500;
+        function step(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.floor(eased * target);
+          if (progress < 1) requestAnimationFrame(step);
+          else el.textContent = target;
+        }
+        requestAnimationFrame(step);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

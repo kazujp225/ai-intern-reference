@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヘッダー背景 - バリアント集</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #e5e7eb;
+  }
+  .variant-label {
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+    font-size: 1em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-top: 48px;
+  }
+  .variant-label:first-child { margin-top: 0; }
+  .variant-label span {
+    display: block;
+    font-size: 0.72em;
+    font-weight: 400;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+
+  /* 共通ヘッダーレイアウト */
+  .header-demo {
+    position: relative;
+    overflow: hidden;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+  }
+  .header-demo .content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .header-demo .left { margin-right: auto; }
+  .header-demo .nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: monospace;
+  }
+  .header-demo .nav a {
+    text-decoration: none;
+    font-size: 0.8em;
+    transition: all 0.2s;
+  }
+  .header-demo canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     現行（参考）
+     ============================================================ -->
+<div class="variant-label">
+  現行デザイン（参考）
+  <span>白背景 + トライアングルフィールド canvas</span>
+</div>
+<div class="header-demo" style="background: #fff;">
+  <canvas class="tri-canvas"></canvas>
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #222; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #4caf50; font-weight: 400;">[</span>AI_INTERN<span style="color: #4caf50; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #222; border-bottom: 2px solid #222;">AIインターン</a>
+      <a href="#" style="color: #222;">AI勉強会</a>
+      <a href="#" style="color: #999; font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: #222;">login</a>
+      <a href="#" style="background: #222; color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案A: ダークヘッダー
+     ============================================================ -->
+<div class="variant-label">
+  案A: ダーク
+  <span>黒背景 × 白テキスト × グリーンアクセント</span>
+</div>
+<div class="header-demo" style="background: #0a0a0a;">
+  <canvas class="tri-canvas" data-color="0,229,255" data-line="0,191,165"></canvas>
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #10a37f; font-weight: 400;">[</span>AI_INTERN<span style="color: #10a37f; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #fff; border-bottom: 2px solid #10a37f;">AIインターン</a>
+      <a href="#" style="color: rgba(255,255,255,0.7);">AI勉強会</a>
+      <a href="#" style="color: rgba(255,255,255,0.4); font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: rgba(255,255,255,0.7);">login</a>
+      <a href="#" style="background: #10a37f; color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案B: グリーングラデーション
+     ============================================================ -->
+<div class="variant-label">
+  案B: グリーングラデーション
+  <span>ブランドカラーのグラデーション × 白テキスト</span>
+</div>
+<div class="header-demo" style="background: linear-gradient(135deg, #10a37f 0%, #059669 50%, #0d9488 100%);">
+  <canvas class="tri-canvas" data-color="255,255,255" data-line="255,255,255" data-opacity="0.15"></canvas>
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: rgba(255,255,255,0.6); font-weight: 400;">[</span>AI_INTERN<span style="color: rgba(255,255,255,0.6); font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #fff; border-bottom: 2px solid #fff;">AIインターン</a>
+      <a href="#" style="color: rgba(255,255,255,0.8);">AI勉強会</a>
+      <a href="#" style="color: rgba(255,255,255,0.5); font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: rgba(255,255,255,0.8);">login</a>
+      <a href="#" style="background: #fff; color: #10a37f; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案C: グラスモーフィズム（半透明）
+     ============================================================ -->
+<div class="variant-label">
+  案C: グラスモーフィズム
+  <span>すりガラス風の半透明 × ぼかし背景</span>
+</div>
+<div style="background: linear-gradient(135deg, #0a0a0a, #1f2937); padding: 0;">
+  <div class="header-demo" style="
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  ">
+    <canvas class="tri-canvas" data-color="16,163,127" data-line="16,163,127" data-opacity="0.4"></canvas>
+    <div class="content">
+      <div class="left">
+        <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px;">
+          <span style="color: #10a37f; font-weight: 400;">[</span>AI_INTERN<span style="color: #10a37f; font-weight: 400;">]</span>
+        </a>
+      </div>
+      <div class="nav">
+        <a href="#" style="color: #fff; border-bottom: 2px solid #10a37f;">AIインターン</a>
+        <a href="#" style="color: rgba(255,255,255,0.7);">AI勉強会</a>
+        <a href="#" style="color: rgba(255,255,255,0.4); font-size: 0.65em;">採用担当者様</a>
+        <a href="#" style="color: rgba(255,255,255,0.7);">login</a>
+        <a href="#" style="background: rgba(255,255,255,0.12); color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(255,255,255,0.2);">REGISTER</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案D: ソフトグレー
+     ============================================================ -->
+<div class="variant-label">
+  案D: ソフトグレー
+  <span>淡いグレー × クリーン × 下線アクセント</span>
+</div>
+<div class="header-demo" style="background: #f8f9fa; border-bottom: 1px solid #e5e7eb;">
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #1a1a1a; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #10a37f; font-weight: 400;">[</span>AI_INTERN<span style="color: #10a37f; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #1a1a1a; border-bottom: 2px solid #10a37f;">AIインターン</a>
+      <a href="#" style="color: #6b7280;">AI勉強会</a>
+      <a href="#" style="color: #9ca3af; font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: #6b7280;">login</a>
+      <a href="#" style="background: #1a1a1a; color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案E: ダーク + グリーンライン
+     ============================================================ -->
+<div class="variant-label">
+  案E: ダーク + グリーンアクセントライン
+  <span>黒背景 × 下部に光るグリーンライン × ターミナル感</span>
+</div>
+<div style="position: relative;">
+  <div class="header-demo" style="background: #0a0a0a;">
+    <canvas class="tri-canvas" data-color="0,229,255" data-line="0,191,165" data-opacity="0.3"></canvas>
+    <div class="content">
+      <div class="left">
+        <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #10a37f; text-decoration: none; letter-spacing: 3px;">
+          <span style="color: rgba(16,163,127,0.5); font-weight: 400;">[</span>AI_INTERN<span style="color: rgba(16,163,127,0.5); font-weight: 400;">]</span>
+        </a>
+      </div>
+      <div class="nav">
+        <a href="#" style="color: #10a37f; border-bottom: 2px solid #10a37f;">AIインターン</a>
+        <a href="#" style="color: rgba(255,255,255,0.6);">AI勉強会</a>
+        <a href="#" style="color: rgba(255,255,255,0.3); font-size: 0.65em;">採用担当者様</a>
+        <a href="#" style="color: rgba(255,255,255,0.6);">login</a>
+        <a href="#" style="background: transparent; color: #10a37f; padding: 6px 18px; border-radius: 4px; font-weight: 700; border: 1.5px solid #10a37f;">REGISTER</a>
+      </div>
+    </div>
+  </div>
+  <!-- グリーンライン -->
+  <div style="height: 2px; background: linear-gradient(90deg, transparent 0%, #10a37f 30%, #00e5ff 70%, transparent 100%); box-shadow: 0 0 10px rgba(16,163,127,0.5), 0 0 20px rgba(16,163,127,0.2);"></div>
+</div>
+
+
+<!-- ============================================================
+     案F: ネイビーグラデーション
+     ============================================================ -->
+<div class="variant-label">
+  案F: ネイビーグラデーション
+  <span>ネイビー〜ダークブルー × 落ち着き × 信頼感</span>
+</div>
+<div class="header-demo" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+  <canvas class="tri-canvas" data-color="99,102,241" data-line="99,102,241" data-opacity="0.25"></canvas>
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #818cf8; font-weight: 400;">[</span>AI_INTERN<span style="color: #818cf8; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #fff; border-bottom: 2px solid #818cf8;">AIインターン</a>
+      <a href="#" style="color: rgba(255,255,255,0.65);">AI勉強会</a>
+      <a href="#" style="color: rgba(255,255,255,0.35); font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: rgba(255,255,255,0.65);">login</a>
+      <a href="#" style="background: #818cf8; color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案G: メッシュグラデーション
+     ============================================================ -->
+<div class="variant-label">
+  案G: メッシュグラデーション
+  <span>複数色のメッシュ背景 × 遊び心 × Z世代向け</span>
+</div>
+<div class="header-demo" style="
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(16,163,127,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(245,158,11,0.08) 0%, transparent 50%),
+    #fff;
+  border-bottom: 1px solid #e5e7eb;
+">
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #1a1a1a; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #10a37f; font-weight: 400;">[</span>AI_INTERN<span style="color: #10a37f; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: #1a1a1a; border-bottom: 2px solid #10a37f;">AIインターン</a>
+      <a href="#" style="color: #6b7280;">AI勉強会</a>
+      <a href="#" style="color: #9ca3af; font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: #6b7280;">login</a>
+      <a href="#" style="background: #1a1a1a; color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     案H: ダーク + オーロラグラデーション
+     ============================================================ -->
+<div class="variant-label">
+  案H: オーロラグラデーション
+  <span>ダーク × 流れるオーロラ × プレミアム感</span>
+</div>
+<style>
+  @keyframes auroraShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+</style>
+<div class="header-demo" style="
+  background: linear-gradient(135deg, #0a0a0a 0%, #0d1f1a 25%, #0a0a0a 50%, #1a0d2e 75%, #0a0a0a 100%);
+  background-size: 300% 300%;
+  animation: auroraShift 8s ease infinite;
+">
+  <canvas class="tri-canvas" data-color="16,163,127" data-line="16,163,127" data-opacity="0.2"></canvas>
+  <div class="content">
+    <div class="left">
+      <a href="#" style="font-size: 1.4em; font-weight: 900; font-family: monospace; color: #fff; text-decoration: none; letter-spacing: 3px;">
+        <span style="color: #10a37f; font-weight: 400;">[</span>AI_INTERN<span style="color: #10a37f; font-weight: 400;">]</span>
+      </a>
+    </div>
+    <div class="nav">
+      <a href="#" style="color: rgba(255,255,255,0.9); border-bottom: 2px solid #10a37f;">AIインターン</a>
+      <a href="#" style="color: rgba(255,255,255,0.6);">AI勉強会</a>
+      <a href="#" style="color: rgba(255,255,255,0.3); font-size: 0.65em;">採用担当者様</a>
+      <a href="#" style="color: rgba(255,255,255,0.6);">login</a>
+      <a href="#" style="background: linear-gradient(135deg, #10a37f, #059669); color: #fff; padding: 6px 18px; border-radius: 4px; font-weight: 700;">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+
+<div style="height: 60px;"></div>
+
+<!-- トライアングルフィールド canvas 描画スクリプト -->
+<script>
+document.querySelectorAll('.tri-canvas').forEach(c => {
+  const dotColor = c.dataset.color || '0,229,255';
+  const lineColor = c.dataset.line || '0,191,165';
+  const baseOpacity = parseFloat(c.dataset.opacity) || 0.5;
+
+  function fit() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = c.parentElement.clientWidth;
+    const h = c.parentElement.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    const ctx = c.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+  let { ctx, w, h } = fit();
+  const N = 30;
+  const ps = [];
+  for (let i = 0; i < N; i++) ps.push({
+    x: Math.random() * w, y: Math.random() * h,
+    vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.25
+  });
+  window.addEventListener('resize', () => {
+    ({ ctx, w, h } = fit());
+    ps.forEach(p => { p.x = Math.random() * w; p.y = Math.random() * h; });
+  });
+  function loop() {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of ps) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+    }
+    for (let i = 0; i < N; i++) {
+      const dists = [];
+      for (let j = 0; j < N; j++) if (i !== j) {
+        dists.push({ j, d: Math.hypot(ps[i].x - ps[j].x, ps[i].y - ps[j].y) });
+      }
+      dists.sort((a, b) => a.d - b.d);
+      for (let k = 0; k < 3; k++) {
+        const j = dists[k].j, d = dists[k].d;
+        if (d < 180) {
+          ctx.strokeStyle = `rgba(${lineColor},${(1 - d / 180) * baseOpacity})`;
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(ps[i].x, ps[i].y);
+          ctx.lineTo(ps[j].x, ps[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.fillStyle = `rgba(${dotColor},0.6)`;
+    for (const p of ps) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+});
+</script>
+
+</body>
+</html>

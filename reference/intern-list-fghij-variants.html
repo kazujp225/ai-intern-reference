@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターン一覧 UI案 F〜J</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+  .section-title { font-size: 1.6em; font-weight: 900; color: #1a1a1a; margin-bottom: 6px; }
+  .section-sub { font-size: 0.85em; color: #6b7280; margin-bottom: 24px; }
+
+  /* =========================================== */
+  /* 案F: タイムライン型                         */
+  /* =========================================== */
+  .vf { max-width: 800px; margin: 0 auto; padding: 40px 20px 50px; }
+  .vf .timeline { position: relative; padding-left: 40px; }
+  .vf .timeline::before {
+    content: ""; position: absolute; left: 15px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(to bottom, #10a37f, #d1d5db);
+  }
+  .vf .tl-item {
+    position: relative; margin-bottom: 24px;
+    opacity: 0; transform: translateY(20px);
+    animation: tlFadeIn 0.5s forwards;
+  }
+  .vf .tl-item:nth-child(1) { animation-delay: 0.1s; }
+  .vf .tl-item:nth-child(2) { animation-delay: 0.2s; }
+  .vf .tl-item:nth-child(3) { animation-delay: 0.3s; }
+  .vf .tl-item:nth-child(4) { animation-delay: 0.4s; }
+  .vf .tl-item:nth-child(5) { animation-delay: 0.5s; }
+  .vf .tl-item:nth-child(6) { animation-delay: 0.6s; }
+  .vf .tl-item:nth-child(7) { animation-delay: 0.7s; }
+  .vf .tl-item:nth-child(8) { animation-delay: 0.8s; }
+  @keyframes tlFadeIn { to { opacity: 1; transform: translateY(0); } }
+  .vf .tl-dot {
+    position: absolute; left: -33px; top: 18px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #10a37f; border: 3px solid #f5f5f5;
+    box-shadow: 0 0 0 2px #10a37f;
+  }
+  .vf .tl-item:nth-child(even) .tl-dot { background: #3b82f6; box-shadow: 0 0 0 2px #3b82f6; }
+  .vf .tl-card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    padding: 20px; display: flex; gap: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; color: #1a1a1a;
+  }
+  .vf .tl-card:hover { transform: translateX(6px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .vf .tl-thumb { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+  .vf .tl-info { flex: 1; }
+  .vf .tl-role { font-size: 0.7em; color: #10a37f; font-weight: 700; }
+  .vf .tl-title { font-size: 0.9em; font-weight: 800; line-height: 1.5; margin: 4px 0; }
+  .vf .tl-company { font-size: 0.8em; color: #6b7280; }
+  .vf .tl-badge { font-size: 0.65em; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: #fff; background: #10a37f; margin-left: 8px; }
+  .vf .tl-badge.rare { background: #7c3aed; }
+  .vf .tl-badge.new { background: #3b82f6; }
+  .vf .tl-badge.hot { background: #ef4444; }
+
+  /* =========================================== */
+  /* 案G: Tinder風スワイプカード                 */
+  /* =========================================== */
+  .vg { max-width: 500px; margin: 0 auto; padding: 40px 20px 50px; text-align: center; }
+  .vg .swipe-container { position: relative; height: 480px; margin-bottom: 24px; }
+  .vg .swipe-card {
+    position: absolute; inset: 0;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.4s, opacity 0.4s;
+  }
+  .vg .swipe-card.hidden { display: none; }
+  .vg .swipe-card.exit-left { transform: translateX(-120%) rotate(-15deg); opacity: 0; }
+  .vg .swipe-card.exit-right { transform: translateX(120%) rotate(15deg); opacity: 0; }
+  .vg .swipe-thumb { width: 100%; height: 200px; object-fit: cover; }
+  .vg .swipe-content { padding: 24px; text-align: left; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .vg .swipe-role { font-size: 0.75em; color: #10a37f; font-weight: 700; }
+  .vg .swipe-title { font-size: 1.05em; font-weight: 900; line-height: 1.5; }
+  .vg .swipe-company { font-size: 0.85em; color: #6b7280; }
+  .vg .swipe-desc { font-size: 0.8em; color: #374151; line-height: 1.6; flex: 1; }
+  .vg .swipe-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .vg .swipe-tag { font-size: 0.7em; background: #f0fdf4; color: #166534; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .vg .swipe-actions { display: flex; justify-content: center; gap: 24px; }
+  .vg .swipe-btn {
+    width: 60px; height: 60px; border-radius: 50%; border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6em; cursor: pointer; background: #fff;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .vg .swipe-btn:hover { transform: scale(1.1); }
+  .vg .btn-skip { border-color: #ef4444; color: #ef4444; }
+  .vg .btn-skip:hover { background: #fef2f2; }
+  .vg .btn-like { border-color: #10a37f; color: #10a37f; }
+  .vg .btn-like:hover { background: #f0fdf4; }
+  .vg .btn-detail { border-color: #3b82f6; color: #3b82f6; font-size: 1em; }
+  .vg .btn-detail:hover { background: #eff6ff; }
+  .vg .swipe-counter { font-size: 0.85em; color: #9ca3af; margin-top: 16px; }
+
+  /* =========================================== */
+  /* 案H: Bento Grid                            */
+  /* =========================================== */
+  .vh { max-width: 1000px; margin: 0 auto; padding: 40px 20px 50px; }
+  .vh .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 180px;
+    gap: 14px;
+  }
+  .vh .bento-card {
+    position: relative; border-radius: 16px; overflow: hidden;
+    text-decoration: none; color: #fff;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .vh .bento-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .vh .bento-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .vh .bento-overlay {
+    position: absolute; inset: 0; padding: 20px;
+    background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,0.8) 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .vh .bento-role { font-size: 0.65em; color: #10a37f; font-weight: 700; }
+  .vh .bento-title { font-size: 0.85em; font-weight: 800; line-height: 1.4; margin: 4px 0; }
+  .vh .bento-company { font-size: 0.7em; color: rgba(255,255,255,0.7); }
+  .vh .bento-badge { position: absolute; top: 12px; left: 12px; font-size: 0.65em; font-weight: 700; background: #10a37f; color: #fff; padding: 3px 10px; border-radius: 6px; }
+  /* 大きいカード */
+  .vh .bento-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .vh .bento-card:nth-child(1) .bento-title { font-size: 1.15em; }
+  .vh .bento-card:nth-child(1) .bento-role { font-size: 0.8em; }
+  .vh .bento-card:nth-child(1) .bento-company { font-size: 0.85em; }
+  /* 中サイズカード */
+  .vh .bento-card:nth-child(4) { grid-column: 3 / 5; }
+  .vh .bento-card:nth-child(7) { grid-column: 1 / 3; }
+
+  /* =========================================== */
+  /* 案I: アコーディオン型                       */
+  /* =========================================== */
+  .vi { max-width: 800px; margin: 0 auto; padding: 40px 20px 50px; }
+  .vi .acc-item {
+    border-bottom: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  .vi .acc-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 8px; cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none; color: #1a1a1a;
+  }
+  .vi .acc-header:hover { background: #f9fafb; }
+  .vi .acc-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+  .vi .acc-main { flex: 1; min-width: 0; }
+  .vi .acc-title { font-size: 0.9em; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vi .acc-company { font-size: 0.75em; color: #6b7280; }
+  .vi .acc-badge { font-size: 0.65em; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: #fff; background: #10a37f; flex-shrink: 0; }
+  .vi .acc-badge.rare { background: #7c3aed; }
+  .vi .acc-badge.new { background: #3b82f6; }
+  .vi .acc-badge.hot { background: #ef4444; }
+  .vi .acc-arrow { font-size: 1.2em; color: #9ca3af; flex-shrink: 0; transition: transform 0.3s; }
+  .vi .acc-item.open .acc-arrow { transform: rotate(180deg); }
+  .vi .acc-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+    background: #fafafa; padding: 0 20px;
+  }
+  .vi .acc-item.open .acc-body { max-height: 300px; padding: 16px 20px; }
+  .vi .acc-desc { font-size: 0.85em; color: #374151; line-height: 1.7; margin-bottom: 12px; }
+  .vi .acc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .vi .acc-tag { font-size: 0.7em; background: #f0fdf4; color: #166534; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .vi .acc-link { font-size: 0.85em; color: #10a37f; font-weight: 700; text-decoration: none; }
+  .vi .acc-link:hover { text-decoration: underline; }
+
+  /* =========================================== */
+  /* 案J: カード + フィルタータブ                */
+  /* =========================================== */
+  .vj { max-width: 1000px; margin: 0 auto; padding: 40px 20px 50px; }
+  .vj .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .vj .filter-tab {
+    padding: 8px 18px; border-radius: 999px; border: 1px solid #e5e7eb;
+    background: #fff; font-size: 0.85em; font-weight: 600; color: #6b7280;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .vj .filter-tab:hover { border-color: #10a37f; color: #10a37f; }
+  .vj .filter-tab.active { background: #10a37f; color: #fff; border-color: #10a37f; }
+  .vj .card-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .vj .fcard {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+    overflow: hidden; text-decoration: none; color: #1a1a1a;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .vj .fcard.hidden { display: none; }
+  .vj .fcard:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .vj .fcard-thumb { width: 100%; height: 140px; object-fit: cover; }
+  .vj .fcard-content { padding: 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .vj .fcard-role { font-size: 0.7em; color: #10a37f; font-weight: 700; }
+  .vj .fcard-title { font-size: 0.9em; font-weight: 800; line-height: 1.5; }
+  .vj .fcard-company { font-size: 0.8em; color: #6b7280; }
+  .vj .fcard-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+  .vj .fcard-tag { font-size: 0.65em; background: #f0fdf4; color: #166534; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .vj .fcard-badge { position: absolute; top: 10px; left: 10px; font-size: 0.65em; font-weight: 700; background: #10a37f; color: #fff; padding: 3px 10px; border-radius: 6px; }
+  .vj .fcard { position: relative; }
+</style>
+</head>
+<body>
+
+<!-- ===== 案F: タイムライン ===== -->
+<h2 class="variant-label">案F: タイムライン型<span>縦線＋ノードでカードを配置。新着順が直感的。スクロールでアニメーション表示。</span></h2>
+<div class="vf">
+  <h2 class="section-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+  <p class="section-sub">厳選AIインターン</p>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card1.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">LLM Application Engineer<span class="tl-badge">Pickup</span></span>
+          <div class="tl-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div>
+          <span class="tl-company">株式会社ニューロンクラフト</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card2.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">Prompt Engineer<span class="tl-badge rare">激レア枠</span></span>
+          <div class="tl-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに殴り込み。</div>
+          <span class="tl-company">合同会社プロンプト・ラボ</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card3.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">Creative AI<span class="tl-badge new">new</span></span>
+          <div class="tl-title">【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。</div>
+          <span class="tl-company">株式会社ディフュージョン・ワークス</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card4.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">AI Agent Developer<span class="tl-badge hot">注目度MAX</span></span>
+          <div class="tl-title">【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】</div>
+          <span class="tl-company">株式会社オートノミー</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card5.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">Medical AI</span>
+          <div class="tl-title">【AIで命を救う。マジで。】医療画像診断AIの開発。</div>
+          <span class="tl-company">MedAI株式会社</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card6.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">Data Scientist<span class="tl-badge">未経験歓迎</span></span>
+          <div class="tl-title">【Excelで消耗するのはもうやめろ】pandas, SQL, 機械学習。</div>
+          <span class="tl-company">データドリブン株式会社</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card7.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">Robotics AI<span class="tl-badge new">new</span></span>
+          <div class="tl-title">【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。</div>
+          <span class="tl-company">RoboMind株式会社</span>
+        </div>
+      </a>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <a href="#" class="tl-card">
+        <img class="tl-thumb" src="images/thumbnails/card8.png" alt="">
+        <div class="tl-info">
+          <span class="tl-role">AI PMM<span class="tl-badge">Pickup</span></span>
+          <div class="tl-title">【コードが書けなくてもAI業界で天下取れる】AI製品のPMM / BizDev。</div>
+          <span class="tl-company">AIストラテジー株式会社</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案G: Tinder風 ===== -->
+<h2 class="variant-label">案G: Tinder風スワイプカード<span>1枚ずつ大きく表示。「興味あり」「スキップ」「詳細」のボタンで操作。</span></h2>
+<div class="vg">
+  <h2 class="section-title">AIインターンシップ一覧</h2>
+  <p class="section-sub">スワイプで探す</p>
+  <div class="swipe-container" id="swipe-container"></div>
+  <div class="swipe-actions">
+    <button class="swipe-btn btn-skip" onclick="swipeAction('left')">✕</button>
+    <button class="swipe-btn btn-detail" onclick="alert('詳細ページへ')">詳細</button>
+    <button class="swipe-btn btn-like" onclick="swipeAction('right')">♥</button>
+  </div>
+  <div class="swipe-counter" id="swipe-counter">1 / 8</div>
+</div>
+
+<!-- ===== 案H: Bento Grid ===== -->
+<h2 class="variant-label">案H: Bento Grid（弁当箱グリッド）<span>Apple風の不規則グリッド。大中小のカードでメリハリ。</span></h2>
+<div class="vh">
+  <h2 class="section-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+  <p class="section-sub">厳選AIインターン</p>
+  <div class="bento">
+    <a href="#" class="bento-card"><img src="images/thumbnails/card1.png" alt=""><div class="bento-overlay"><span class="bento-badge">Pickup</span><span class="bento-role">LLM Application Engineer</span><div class="bento-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div><span class="bento-company">株式会社ニューロンクラフト</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card2.png" alt=""><div class="bento-overlay"><span class="bento-role">Prompt Engineer</span><div class="bento-title">【日本語力、最強の武器】</div><span class="bento-company">合同会社プロンプト・ラボ</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card3.png" alt=""><div class="bento-overlay"><span class="bento-role">Creative AI</span><div class="bento-title">【イラストレーターを敵に回す覚悟】</div><span class="bento-company">ディフュージョン・ワークス</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card4.png" alt=""><div class="bento-overlay"><span class="bento-badge" style="background:#ef4444;">注目度MAX</span><span class="bento-role">AI Agent Developer</span><div class="bento-title">【AIエージェントが人間の仕事を奪う？お前が作る側だ。】</div><span class="bento-company">株式会社オートノミー</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card5.png" alt=""><div class="bento-overlay"><span class="bento-role">Medical AI</span><div class="bento-title">【AIで命を救う。マジで。】</div><span class="bento-company">MedAI株式会社</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card6.png" alt=""><div class="bento-overlay"><span class="bento-role">Data Scientist</span><div class="bento-title">【Excelで消耗するのはやめろ】</div><span class="bento-company">データドリブン株式会社</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card7.png" alt=""><div class="bento-overlay"><span class="bento-role">Robotics AI</span><div class="bento-title">【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。</div><span class="bento-company">RoboMind株式会社</span></div></a>
+    <a href="#" class="bento-card"><img src="images/thumbnails/card8.png" alt=""><div class="bento-overlay"><span class="bento-role">AI PMM</span><div class="bento-title">【コード不要でAI業界天下】</div><span class="bento-company">AIストラテジー株式会社</span></div></a>
+  </div>
+</div>
+
+<!-- ===== 案I: アコーディオン ===== -->
+<h2 class="variant-label">案I: アコーディオン型<span>コンパクトなリスト。クリックで詳細がスライド展開。全件が画面に収まる。</span></h2>
+<div class="vi">
+  <h2 class="section-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+  <p class="section-sub">厳選AIインターン</p>
+  <div class="acc-item open">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card1.png" alt="">
+      <div class="acc-main"><div class="acc-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div><span class="acc-company">株式会社ニューロンクラフト</span></div>
+      <span class="acc-badge">Pickup</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">「ChatGPT使えます」はもう古い。作る側に来い。自社LLMの開発に本気で取り組むスタートアップで、RAGパイプラインの設計・構築からモデルのファインチューニングまで全工程を経験。</p>
+      <div class="acc-tags"><span class="acc-tag">LLM</span><span class="acc-tag">RAG</span><span class="acc-tag">ファインチューニング</span><span class="acc-tag">Python</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card2.png" alt="">
+      <div class="acc-main"><div class="acc-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに殴り込み。</div><span class="acc-company">合同会社プロンプト・ラボ</span></div>
+      <span class="acc-badge rare">激レア枠</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要、必要なのは「言葉のセンス」だけ。</p>
+      <div class="acc-tags"><span class="acc-tag">プロンプト</span><span class="acc-tag">文系歓迎</span><span class="acc-tag">フルリモート</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card3.png" alt="">
+      <div class="acc-main"><div class="acc-title">【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。</div><span class="acc-company">株式会社ディフュージョン・ワークス</span></div>
+      <span class="acc-badge new">new</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">美大生のセンス × エンジニアの技術 = 無敵。画像生成AIの最前線で、クリエイティブとテクノロジーの境界を壊す。</p>
+      <div class="acc-tags"><span class="acc-tag">Diffusion</span><span class="acc-tag">Midjourney</span><span class="acc-tag">美大歓迎</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card4.png" alt="">
+      <div class="acc-main"><div class="acc-title">【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】</div><span class="acc-company">株式会社オートノミー</span></div>
+      <span class="acc-badge hot">注目度MAX</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">Devin? Claude Code? まだ序章。自律型AIエージェントの開発で、未来のSiriやAlexaを超えるものを作らないか？</p>
+      <div class="acc-tags"><span class="acc-tag">Agent</span><span class="acc-tag">自律型AI</span><span class="acc-tag">Claude</span><span class="acc-tag">LangChain</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card5.png" alt="">
+      <div class="acc-main"><div class="acc-title">【AIで命を救う。マジで。】医療画像診断AIの開発。</div><span class="acc-company">MedAI株式会社</span></div>
+      <span class="acc-badge" style="background:#6b7280;">─</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">「いいね」を増やすAIより、命を救うAIを作りたい人だけ来てほしい。東大医学部との共同研究プロジェクト。</p>
+      <div class="acc-tags"><span class="acc-tag">医療AI</span><span class="acc-tag">画像診断</span><span class="acc-tag">共同研究</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card6.png" alt="">
+      <div class="acc-main"><div class="acc-title">【Excelで消耗するのはもうやめろ】pandas, SQL, 機械学習。</div><span class="acc-company">データドリブン株式会社</span></div>
+      <span class="acc-badge">未経験歓迎</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">「データ分析できます」を本物にする3ヶ月。研修充実、メンター付き。唯一の条件：向上心がバグってること。</p>
+      <div class="acc-tags"><span class="acc-tag">未経験OK</span><span class="acc-tag">研修充実</span><span class="acc-tag">pandas</span><span class="acc-tag">SQL</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card7.png" alt="">
+      <div class="acc-main"><div class="acc-title">【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。</div><span class="acc-company">RoboMind株式会社</span></div>
+      <span class="acc-badge new">new</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">画面の中のAIじゃ物足りないなら、現実世界を動かすAIを作ろう。物理を裏切るAI、作りませんか？</p>
+      <div class="acc-tags"><span class="acc-tag">ロボティクス</span><span class="acc-tag">具身化AI</span><span class="acc-tag">物理シミュレーション</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+  <div class="acc-item">
+    <div class="acc-header" onclick="accToggle(this)">
+      <img class="acc-thumb" src="images/thumbnails/card8.png" alt="">
+      <div class="acc-main"><div class="acc-title">【コードが書けなくてもAI業界で天下取れる】AI製品のPMM / BizDev。</div><span class="acc-company">AIストラテジー株式会社</span></div>
+      <span class="acc-badge">Pickup</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <p class="acc-desc">技術を理解して、売る。「AIわかります」×「ビジネスできます」= 市場価値バグり散らかし人材。</p>
+      <div class="acc-tags"><span class="acc-tag">PMM</span><span class="acc-tag">BizDev</span><span class="acc-tag">文系OK</span><span class="acc-tag">ストックオプション</span></div>
+      <a href="#" class="acc-link">このインターンを詳しく見る →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案J: フィルター付きカード ===== -->
+<h2 class="variant-label">案J: カード + フィルタータブ<span>タブで「全て / Pickup / 未経験OK / 新着」をリアルタイム絞り込み。</span></h2>
+<div class="vj">
+  <h2 class="section-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
+  <p class="section-sub">厳選AIインターン</p>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="vjFilter('all')">全て</button>
+    <button class="filter-tab" onclick="vjFilter('pickup')">Pickup</button>
+    <button class="filter-tab" onclick="vjFilter('beginner')">未経験OK</button>
+    <button class="filter-tab" onclick="vjFilter('new')">新着</button>
+    <button class="filter-tab" onclick="vjFilter('hot')">注目</button>
+  </div>
+  <div class="card-grid" id="vj-grid">
+    <a href="#" class="fcard" data-cat="pickup">
+      <img class="fcard-thumb" src="images/thumbnails/card1.png" alt=""><span class="fcard-badge">Pickup</span>
+      <div class="fcard-content"><span class="fcard-role">LLM Application Engineer</span><div class="fcard-title">【GPTの裏側を知りたくないか？】自社LLM開発</div><span class="fcard-company">株式会社ニューロンクラフト</span><div class="fcard-tags"><span class="fcard-tag">LLM</span><span class="fcard-tag">RAG</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="hot">
+      <img class="fcard-thumb" src="images/thumbnails/card2.png" alt=""><span class="fcard-badge" style="background:#7c3aed;">激レア枠</span>
+      <div class="fcard-content"><span class="fcard-role">Prompt Engineer</span><div class="fcard-title">【日本語力、最強の武器になる】プロンプトエンジニア</div><span class="fcard-company">合同会社プロンプト・ラボ</span><div class="fcard-tags"><span class="fcard-tag">プロンプト</span><span class="fcard-tag">文系OK</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="new">
+      <img class="fcard-thumb" src="images/thumbnails/card3.png" alt=""><span class="fcard-badge" style="background:#3b82f6;">new</span>
+      <div class="fcard-content"><span class="fcard-role">Creative AI</span><div class="fcard-title">【イラストレーターを敵に回す覚悟はあるか？】</div><span class="fcard-company">ディフュージョン・ワークス</span><div class="fcard-tags"><span class="fcard-tag">Diffusion</span><span class="fcard-tag">美大歓迎</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="hot">
+      <img class="fcard-thumb" src="images/thumbnails/card4.png" alt=""><span class="fcard-badge" style="background:#ef4444;">注目度MAX</span>
+      <div class="fcard-content"><span class="fcard-role">AI Agent Developer</span><div class="fcard-title">【AIエージェントが人間の仕事を奪う？お前が作る側だ】</div><span class="fcard-company">株式会社オートノミー</span><div class="fcard-tags"><span class="fcard-tag">Agent</span><span class="fcard-tag">自律型AI</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="">
+      <img class="fcard-thumb" src="images/thumbnails/card5.png" alt="">
+      <div class="fcard-content"><span class="fcard-role">Medical AI</span><div class="fcard-title">【AIで命を救う。マジで。】医療画像診断AI</div><span class="fcard-company">MedAI株式会社</span><div class="fcard-tags"><span class="fcard-tag">医療AI</span><span class="fcard-tag">共同研究</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="beginner">
+      <img class="fcard-thumb" src="images/thumbnails/card6.png" alt=""><span class="fcard-badge">未経験歓迎</span>
+      <div class="fcard-content"><span class="fcard-role">Data Scientist</span><div class="fcard-title">【Excelで消耗するのはもうやめろ】データサイエンティスト</div><span class="fcard-company">データドリブン株式会社</span><div class="fcard-tags"><span class="fcard-tag">未経験OK</span><span class="fcard-tag">研修充実</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="new">
+      <img class="fcard-thumb" src="images/thumbnails/card7.png" alt=""><span class="fcard-badge" style="background:#3b82f6;">new</span>
+      <div class="fcard-content"><span class="fcard-role">Robotics AI</span><div class="fcard-title">【ソフトウェアに飽きたらハードで殴れ】ロボティクスAI</div><span class="fcard-company">RoboMind株式会社</span><div class="fcard-tags"><span class="fcard-tag">ロボティクス</span><span class="fcard-tag">具身化AI</span></div></div>
+    </a>
+    <a href="#" class="fcard" data-cat="pickup">
+      <img class="fcard-thumb" src="images/thumbnails/card8.png" alt=""><span class="fcard-badge">Pickup</span>
+      <div class="fcard-content"><span class="fcard-role">AI PMM</span><div class="fcard-title">【コードが書けなくてもAI業界で天下取れる】</div><span class="fcard-company">AIストラテジー株式会社</span><div class="fcard-tags"><span class="fcard-tag">PMM</span><span class="fcard-tag">BizDev</span></div></div>
+    </a>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+// 案G: Tinder風
+const swipeData = [
+  { role:"LLM Application Engineer", title:"【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。", company:"株式会社ニューロンクラフト", desc:"RAG構築からファインチューニングまで。「ChatGPT使えます」はもう古い。作る側に来い。", tags:["LLM","RAG","Python"], thumb:"images/thumbnails/card1.png" },
+  { role:"Prompt Engineer", title:"【日本語力、最強の武器になる】英語圏に殴り込み。", company:"合同会社プロンプト・ラボ", desc:"文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要。", tags:["プロンプト","文系OK"], thumb:"images/thumbnails/card2.png" },
+  { role:"Creative AI", title:"【イラストレーターを敵に回す覚悟はあるか？】", company:"株式会社ディフュージョン・ワークス", desc:"Stable Diffusion / Midjourney 時代のクリエイティブAI開発。美大生のセンス × エンジニアの技術 = 無敵。", tags:["Diffusion","美大歓迎"], thumb:"images/thumbnails/card3.png" },
+  { role:"AI Agent Developer", title:"【AIエージェントが人間の仕事を奪う？お前が作る側だ】", company:"株式会社オートノミー", desc:"自律型AIエージェントの開発で、未来のSiriやAlexaを超えるものを作らないか？", tags:["Agent","Claude"], thumb:"images/thumbnails/card4.png" },
+  { role:"Medical AI", title:"【AIで命を救う。マジで。】医療画像診断AI", company:"MedAI株式会社", desc:"「いいね」を増やすAIより、命を救うAIを作りたい人だけ来てほしい。", tags:["医療AI","共同研究"], thumb:"images/thumbnails/card5.png" },
+  { role:"Data Scientist", title:"【Excelで消耗するのはもうやめろ】", company:"データドリブン株式会社", desc:"pandas, SQL, 機械学習。「データ分析できます」を本物にする3ヶ月。", tags:["未経験OK","pandas"], thumb:"images/thumbnails/card6.png" },
+  { role:"Robotics AI", title:"【ソフトウェアに飽きたらハードで殴れ】", company:"RoboMind株式会社", desc:"具身化AI x ロボティクス。現実世界を動かすAIを作ろう。", tags:["ロボティクス","物理AI"], thumb:"images/thumbnails/card7.png" },
+  { role:"AI PMM", title:"【コードが書けなくてもAI業界で天下取れる】", company:"AIストラテジー株式会社", desc:"AI製品のPMM / BizDev。技術を理解して、売る。", tags:["PMM","BizDev"], thumb:"images/thumbnails/card8.png" }
+];
+let swipeIdx = 0;
+function renderSwipe() {
+  const c = document.getElementById('swipe-container');
+  c.innerHTML = '';
+  for (let i = swipeData.length - 1; i >= swipeIdx; i--) {
+    const d = swipeData[i];
+    const card = document.createElement('div');
+    card.className = 'swipe-card' + (i > swipeIdx ? '' : '');
+    card.style.zIndex = swipeData.length - i;
+    if (i > swipeIdx) { card.style.transform = 'scale(' + (1 - (i - swipeIdx) * 0.03) + ') translateY(' + ((i - swipeIdx) * 8) + 'px)'; card.style.opacity = i - swipeIdx > 2 ? '0' : '1'; }
+    card.innerHTML = '<img class="swipe-thumb" src="' + d.thumb + '" alt="">' +
+      '<div class="swipe-content"><span class="swipe-role">' + d.role + '</span>' +
+      '<div class="swipe-title">' + d.title + '</div>' +
+      '<span class="swipe-company">' + d.company + '</span>' +
+      '<p class="swipe-desc">' + d.desc + '</p>' +
+      '<div class="swipe-tags">' + d.tags.map(function(t){return '<span class="swipe-tag">'+t+'</span>';}).join('') + '</div></div>';
+    c.appendChild(card);
+  }
+  document.getElementById('swipe-counter').textContent = (swipeIdx + 1) + ' / ' + swipeData.length;
+}
+function swipeAction(dir) {
+  const cards = document.querySelectorAll('#swipe-container .swipe-card');
+  if (cards.length === 0) return;
+  const top = cards[cards.length - 1];
+  top.classList.add(dir === 'left' ? 'exit-left' : 'exit-right');
+  setTimeout(function() { swipeIdx++; if (swipeIdx >= swipeData.length) swipeIdx = 0; renderSwipe(); }, 400);
+}
+renderSwipe();
+
+// 案I: アコーディオン
+function accToggle(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// 案J: フィルター
+function vjFilter(cat) {
+  document.querySelectorAll('.vj .filter-tab').forEach(function(t) { t.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.querySelectorAll('#vj-grid .fcard').forEach(function(card) {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
+</body>
+</html>

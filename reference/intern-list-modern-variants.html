@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>AIインターンシップ一覧 — モダンUIバリアント</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f5f3ed;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#0a0a0a}
+  header{text-align:center;padding:40px 20px 24px;background:#fff;border-bottom:1px solid #eee}
+  header h1{font-size:20px;margin:0 0 6px;font-weight:800}
+  header p{color:#6b7280;font-size:12px;margin:0}
+  section{padding:50px 20px;border-top:1px dashed rgba(15,23,42,0.2)}
+  .label{max-width:700px;margin:0 auto 4px;font-size:11px;letter-spacing:0.3em;color:#10a37f;font-weight:700;font-family:"SF Mono",monospace}
+  .nm{max-width:700px;margin:0 auto 4px;font-size:18px;font-weight:900}
+  .ref{max-width:700px;margin:0 auto 4px;font-size:11px;color:#9ca3af;font-family:"SF Mono",monospace}
+  .ds{max-width:700px;margin:0 auto 30px;font-size:12px;color:#6b7280;line-height:1.7}
+  .stage{max-width:700px;margin:0 auto}
+  .tag{display:inline-block;font-size:9px;padding:3px 8px;border-radius:4px;font-weight:600;margin:0 4px 4px 0}
+
+  /* ============================================== */
+  /* 案1: Wantedly風 — カバー画像 + 話を聞きたい */
+  /* ============================================== */
+  .v1{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .v1 .card{background:#fff;border-radius:12px;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;border:1px solid rgba(15,23,42,0.08)}
+  .v1 .card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(15,23,42,0.12)}
+  .v1 .cover{height:120px;background:linear-gradient(135deg,#0a0a0a,#1f2937);display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;font-weight:900;font-family:Georgia,serif;position:relative}
+  .v1 .card:nth-child(2) .cover{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+  .v1 .card:nth-child(3) .cover{background:linear-gradient(135deg,#dc2626,#991b1b)}
+  .v1 .card:nth-child(4) .cover{background:linear-gradient(135deg,#10a37f,#0d8c6e)}
+  .v1 .cover .badge{position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.9);color:#0a0a0a;font-size:9px;padding:3px 8px;border-radius:4px;font-weight:800;font-family:-apple-system,sans-serif}
+  .v1 .body{padding:16px}
+  .v1 .company{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:600}
+  .v1 .title{font-size:13px;font-weight:800;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .v1 .tags{margin-bottom:12px}
+  .v1 .tags .tag{background:#f0faf0;color:#388e3c;border:1px solid #c8e6c9}
+  .v1 .want{display:block;text-align:center;background:#fff;color:#10a37f;border:2px solid #10a37f;border-radius:8px;padding:10px;font-size:13px;font-weight:800;transition:all 0.2s;text-decoration:none}
+  .v1 .want:hover{background:#10a37f;color:#fff}
+
+  /* ============================================== */
+  /* 案2: Indeed風 — シンプルリスト + 給与ハイライト */
+  /* ============================================== */
+  .v2{display:flex;flex-direction:column;gap:12px}
+  .v2 .card{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;padding:20px 22px;transition:border-color 0.2s;cursor:pointer;position:relative}
+  .v2 .card:hover{border-color:#2557a7}
+  .v2 .card.sponsored{border-left:4px solid #2557a7}
+  .v2 .card.sponsored::after{content:"スポンサー";position:absolute;top:8px;right:12px;font-size:9px;color:#9ca3af;font-weight:600}
+  .v2 .title{font-size:16px;font-weight:700;color:#2557a7;margin-bottom:6px;line-height:1.4}
+  .v2 .company{font-size:12px;color:#0a0a0a;font-weight:600;margin-bottom:2px}
+  .v2 .location{font-size:11px;color:#6b7280;margin-bottom:10px}
+  .v2 .salary-box{display:inline-flex;align-items:center;gap:6px;background:#f0f7ff;border:1px solid #cce0ff;border-radius:6px;padding:6px 12px;margin-bottom:10px}
+  .v2 .salary-box .icon{font-size:14px}
+  .v2 .salary-box .val{font-size:13px;font-weight:800;color:#2557a7}
+  .v2 .snippet{font-size:12px;color:#374151;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+  .v2 .meta{font-size:10px;color:#9ca3af;display:flex;gap:12px}
+
+  /* ============================================== */
+  /* 案3: LinkedIn風 — ロゴ + Easy Apply */
+  /* ============================================== */
+  .v3{display:flex;flex-direction:column;gap:0;background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;overflow:hidden}
+  .v3 .card{padding:18px 22px;display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:start;border-bottom:1px solid rgba(15,23,42,0.06);transition:background 0.15s;cursor:pointer}
+  .v3 .card:last-child{border-bottom:none}
+  .v3 .card:hover{background:#f3f6f8}
+  .v3 .logo{width:56px;height:56px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#0a0a0a;font-family:Georgia,serif;border:1px solid rgba(15,23,42,0.08)}
+  .v3 .title{font-size:14px;font-weight:700;color:#0a66c2;line-height:1.4;margin-bottom:2px}
+  .v3 .title:hover{text-decoration:underline}
+  .v3 .company{font-size:12px;color:#0a0a0a;font-weight:600;margin-bottom:2px}
+  .v3 .meta{font-size:11px;color:#6b7280;margin-bottom:6px}
+  .v3 .pills{display:flex;gap:6px;flex-wrap:wrap}
+  .v3 .pills .pill{font-size:10px;padding:3px 10px;border-radius:999px;font-weight:600}
+  .v3 .pills .pill.green{background:#e8f5e9;color:#2e7d32}
+  .v3 .pills .pill.blue{background:#e3f2fd;color:#1565c0}
+  .v3 .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .v3 .easy-apply{background:#0a66c2;color:#fff;font-size:11px;padding:8px 16px;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none;transition:background 0.2s}
+  .v3 .easy-apply:hover{background:#004182}
+  .v3 .save{font-size:10px;color:#6b7280;cursor:pointer}
+  .v3 .time{font-size:10px;color:#9ca3af}
+
+  /* ============================================== */
+  /* 案4: Green風 — カード + 給与バー */
+  /* ============================================== */
+  .v4{display:flex;flex-direction:column;gap:14px}
+  .v4 .card{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:12px;padding:22px;display:grid;grid-template-columns:1fr 140px;gap:16px;transition:box-shadow 0.2s;cursor:pointer}
+  .v4 .card:hover{box-shadow:0 6px 20px rgba(15,23,42,0.1)}
+  .v4 .top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .v4 .pickup{background:#10a37f;color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:800}
+  .v4 .company{font-size:11px;color:#6b7280;font-weight:600}
+  .v4 .title{font-size:14px;font-weight:800;line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .v4 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+  .v4 .tags .tag{background:#f3f4f6;color:#374151}
+  .v4 .info{font-size:10px;color:#6b7280;display:flex;gap:12px}
+  .v4 .right-col{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:10px;background:#fafafa;border-radius:8px}
+  .v4 .salary-label{font-size:9px;color:#6b7280;letter-spacing:0.1em;font-weight:600;text-transform:uppercase}
+  .v4 .salary-val{font-size:20px;font-weight:900;color:#10a37f;line-height:1}
+  .v4 .salary-unit{font-size:10px;color:#6b7280}
+  .v4 .salary-bar{width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:4px}
+  .v4 .salary-bar .fill{height:100%;background:linear-gradient(90deg,#10a37f,#34d399);border-radius:3px}
+
+  /* ============================================== */
+  /* 案5: YC / Wellfound風 — ミニマルクリーン */
+  /* ============================================== */
+  .v5{display:flex;flex-direction:column;gap:0}
+  .v5 .card{padding:20px 0;border-bottom:1px solid rgba(15,23,42,0.08);display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;cursor:pointer;transition:background 0.1s;margin:0 4px;border-radius:6px;padding-left:12px;padding-right:12px}
+  .v5 .card:hover{background:rgba(15,23,42,0.03)}
+  .v5 .logo{width:48px;height:48px;border-radius:10px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;font-family:Georgia,serif;border:1px solid rgba(15,23,42,0.08)}
+  .v5 .company{font-size:13px;font-weight:800;color:#0a0a0a;margin-bottom:1px}
+  .v5 .title{font-size:12px;color:#6b7280;line-height:1.4;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+  .v5 .details{display:flex;gap:8px;align-items:center;font-size:11px;color:#6b7280}
+  .v5 .details .dot{width:3px;height:3px;border-radius:50%;background:#9ca3af}
+  .v5 .salary{font-size:14px;font-weight:900;color:#0a0a0a;white-space:nowrap}
+
+  /* ============================================== */
+  /* 案6: カンバン風 (ステータス列) */
+  /* ============================================== */
+  .v6{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .v6 .col{background:rgba(15,23,42,0.03);border-radius:10px;padding:14px}
+  .v6 .col-title{font-size:11px;font-weight:800;color:#6b7280;letter-spacing:0.1em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .v6 .col-title .count{background:#e5e7eb;padding:2px 8px;border-radius:999px;font-size:10px;color:#374151}
+  .v6 .col:nth-child(1) .col-title{color:#dc2626}
+  .v6 .col:nth-child(2) .col-title{color:#10a37f}
+  .v6 .col:nth-child(3) .col-title{color:#2557a7}
+  .v6 .card{background:#fff;border:1px solid rgba(15,23,42,0.08);border-radius:8px;padding:14px;margin-bottom:10px;cursor:pointer;transition:box-shadow 0.2s}
+  .v6 .card:hover{box-shadow:0 4px 12px rgba(15,23,42,0.1)}
+  .v6 .card .company{font-size:10px;color:#6b7280;margin-bottom:2px;font-weight:600}
+  .v6 .card .title{font-size:11px;font-weight:700;line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .v6 .card .tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px}
+  .v6 .card .tags .tag{font-size:8px;padding:2px 5px;background:#f3f4f6;color:#374151;border-radius:3px}
+  .v6 .card .salary{font-size:11px;font-weight:900;color:#10a37f}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AIインターンシップ一覧 — モダンUI</h1>
+  <p>有名求人サイトを参考にした6案</p>
+</header>
+
+<section>
+  <div class="label">CASE 01</div>
+  <div class="nm">Wantedly風 — カバー画像 + 話を聞きたい</div>
+  <div class="ref">ref: wantedly.com</div>
+  <p class="ds">大きなカバー画像+社名+タイトル+「話を聞きたい」ボタン。ビジュアル重視でカジュアル。2列カードグリッド。</p>
+  <div class="stage">
+    <div class="v1">
+      <div class="card"><div class="cover">NC<div class="badge">Pickup</div></div><div class="body"><div class="company">株式会社ニューロンクラフト</div><div class="title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div><div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">フルリモート</span></div><a href="#" class="want">話を聞きたい</a></div></div>
+      <div class="card"><div class="cover">PL</div><div class="body"><div class="company">合同会社プロンプト・ラボ</div><div class="title">【日本語力、最強の武器になる】文系こそ来い。プログラミング不要。</div><div class="tags"><span class="tag">文系歓迎</span><span class="tag">CEO直下</span><span class="tag">フルリモート</span></div><a href="#" class="want">話を聞きたい</a></div></div>
+      <div class="card"><div class="cover">DW</div><div class="body"><div class="company">株式会社ディフュージョン・ワークス</div><div class="title">【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。</div><div class="tags"><span class="tag">A100</span><span class="tag">美大生歓迎</span></div><a href="#" class="want">話を聞きたい</a></div></div>
+      <div class="card"><div class="cover">AT</div><div class="body"><div class="company">株式会社オートノミー</div><div class="title">【AIエージェントが人間の仕事を奪う？お前が作る側だ。】</div><div class="tags"><span class="tag">自律型AI</span><span class="tag">H100</span><span class="tag">CTO直下</span></div><a href="#" class="want">話を聞きたい</a></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 02</div>
+  <div class="nm">Indeed風 — シンプルリスト + 給与ハイライト</div>
+  <div class="ref">ref: indeed.com</div>
+  <p class="ds">タイトル青リンク+会社名+場所+給与ボックス(水色背景)+本文スニペット。スポンサー枠は左青線。</p>
+  <div class="stage">
+    <div class="v2">
+      <div class="card sponsored"><div class="title">【GPTの裏側を知りたくないか？】自社LLM開発 RAG構築エンジニア</div><div class="company">株式会社ニューロンクラフト</div><div class="location">渋谷区 · フルリモート可</div><div class="salary-box"><span class="icon">💰</span><span class="val">時給 2,000〜4,000円</span></div><div class="snippet">自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。GPU使い放題、論文読み会あり。</div><div class="meta"><span>2日前</span><span>Pickup</span></div></div>
+      <div class="card"><div class="title">【日本語力、最強の武器になる】プロンプトエンジニア / AI業務設計</div><div class="company">合同会社プロンプト・ラボ</div><div class="location">完全フルリモート</div><div class="salary-box"><span class="icon">💰</span><span class="val">時給 1,800〜3,000円</span></div><div class="snippet">英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。プログラミング不要。</div><div class="meta"><span>3日前</span></div></div>
+      <div class="card"><div class="title">【AIエージェントが人間の仕事を奪う？お前が作る側だ。】AIエージェント開発</div><div class="company">株式会社オートノミー</div><div class="location">渋谷区 · リモート併用可</div><div class="salary-box"><span class="icon">💰</span><span class="val">時給 3,000〜6,000円 + SO</span></div><div class="snippet">自律型AIエージェントの開発で、未来のSiriやAlexaを超えるものを作らないか？</div><div class="meta"><span>5日前</span><span>Pickup</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 03</div>
+  <div class="nm">LinkedIn風 — ロゴ + Easy Apply</div>
+  <div class="ref">ref: linkedin.com/jobs</div>
+  <p class="ds">左にロゴ、中央にタイトル(青)+会社名+メタ+ピル型タグ、右にEasy Applyボタン。プロフェッショナル。</p>
+  <div class="stage">
+    <div class="v3">
+      <div class="card"><div class="logo">NC</div><div><div class="title">LLMアプリケーションエンジニア / RAG構築</div><div class="company">株式会社ニューロンクラフト</div><div class="meta">渋谷区 · フルリモート可 · 週3日〜</div><div class="pills"><span class="pill green">GPU使い放題</span><span class="pill green">自社LLM</span><span class="pill blue">¥2,000〜4,000/h</span></div></div><div class="right"><a href="#" class="easy-apply">簡単応募</a><span class="time">2日前</span></div></div>
+      <div class="card"><div class="logo">PL</div><div><div class="title">プロンプトエンジニア / AI業務設計</div><div class="company">合同会社プロンプト・ラボ</div><div class="meta">完全フルリモート · 週2日〜</div><div class="pills"><span class="pill green">文系歓迎</span><span class="pill green">CEO直下</span><span class="pill blue">¥1,800〜3,000/h</span></div></div><div class="right"><a href="#" class="easy-apply">簡単応募</a><span class="time">3日前</span></div></div>
+      <div class="card"><div class="logo">AT</div><div><div class="title">AIエージェント開発エンジニア</div><div class="company">株式会社オートノミー</div><div class="meta">渋谷区 · リモート併用可 · 週4日〜</div><div class="pills"><span class="pill green">自律型AI</span><span class="pill green">H100</span><span class="pill blue">¥3,000〜6,000/h</span></div></div><div class="right"><a href="#" class="easy-apply">簡単応募</a><span class="time">5日前</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 04</div>
+  <div class="nm">Green風 — カード + 給与バー</div>
+  <div class="ref">ref: green-japan.com</div>
+  <p class="ds">左に詳細テキスト、右に給与ゾーン(大きな数字+レンジバー)。給与の市場相場がビジュアルで分かる。</p>
+  <div class="stage">
+    <div class="v4">
+      <div class="card"><div><div class="top"><span class="pickup">Pickup</span><span class="company">株式会社ニューロンクラフト</span></div><div class="title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div><div class="tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">フルリモート</span><span class="tag">未経験OK</span></div><div class="info"><span>渋谷 / リモート</span><span>週3〜</span><span>2日前</span></div></div><div class="right-col"><div class="salary-label">HOURLY</div><div class="salary-val">¥4,000</div><div class="salary-unit">〜 / h</div><div class="salary-bar"><div class="fill" style="width:65%"></div></div></div></div>
+      <div class="card"><div><div class="top"><span class="company">合同会社プロンプト・ラボ</span></div><div class="title">【日本語力、最強の武器になる】文系こそ来い。プログラミング不要。</div><div class="tags"><span class="tag">文系歓迎</span><span class="tag">CEO直下</span><span class="tag">フルリモート</span></div><div class="info"><span>フルリモート</span><span>週2〜</span><span>3日前</span></div></div><div class="right-col"><div class="salary-label">HOURLY</div><div class="salary-val">¥3,000</div><div class="salary-unit">〜 / h</div><div class="salary-bar"><div class="fill" style="width:48%"></div></div></div></div>
+      <div class="card"><div><div class="top"><span class="pickup">Pickup</span><span class="company">株式会社オートノミー</span></div><div class="title">【AIエージェントが人間の仕事を奪う？】自律型AIエージェントの開発。</div><div class="tags"><span class="tag">自律型AI</span><span class="tag">H100</span><span class="tag">CTO直下</span></div><div class="info"><span>渋谷 / リモート</span><span>週4〜</span><span>5日前</span></div></div><div class="right-col"><div class="salary-label">HOURLY</div><div class="salary-val">¥6,000</div><div class="salary-unit">〜 / h</div><div class="salary-bar"><div class="fill" style="width:95%"></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 05</div>
+  <div class="nm">YC / Wellfound風 — ミニマルクリーン</div>
+  <div class="ref">ref: wellfound.com, workatastartup.com</div>
+  <p class="ds">装飾を極力排除。ロゴ+会社名(太字)+職種+場所・条件を横並び+給与。スタートアップ感。</p>
+  <div class="stage">
+    <div class="v5">
+      <div class="card"><div class="logo">NC</div><div><div class="company">株式会社ニューロンクラフト</div><div class="title">LLMアプリケーションエンジニア / RAG構築</div><div class="details"><span>渋谷</span><span class="dot"></span><span>フルリモート可</span><span class="dot"></span><span>週3〜</span></div></div><div class="salary">¥2,000〜4,000/h</div></div>
+      <div class="card"><div class="logo">PL</div><div><div class="company">合同会社プロンプト・ラボ</div><div class="title">プロンプトエンジニア / AI業務設計</div><div class="details"><span>フルリモート</span><span class="dot"></span><span>週2〜</span></div></div><div class="salary">¥1,800〜3,000/h</div></div>
+      <div class="card"><div class="logo">DW</div><div><div class="company">株式会社ディフュージョン・ワークス</div><div class="title">画像生成AIエンジニア / クリエイティブAI研究</div><div class="details"><span>六本木</span><span class="dot"></span><span>一部リモート</span><span class="dot"></span><span>週3〜</span></div></div><div class="salary">¥2,500〜5,000/h</div></div>
+      <div class="card"><div class="logo">AT</div><div><div class="company">株式会社オートノミー</div><div class="title">AIエージェント開発エンジニア</div><div class="details"><span>渋谷</span><span class="dot"></span><span>リモート併用</span><span class="dot"></span><span>週4〜</span></div></div><div class="salary">¥3,000〜6,000/h</div></div>
+      <div class="card"><div class="logo">MA</div><div><div class="company">MedAI株式会社</div><div class="title">医療AI研究エンジニア / 画像認識モデル開発</div><div class="details"><span>本郷</span><span class="dot"></span><span>出社メイン</span><span class="dot"></span><span>週3〜</span></div></div><div class="salary">¥2,000〜3,500/h</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 06</div>
+  <div class="nm">カンバン風 (ステータス列)</div>
+  <div class="ref">ref: Trello / Notion board view</div>
+  <p class="ds">「急募」「注目」「新着」の3列に分類してカンバンボードのように表示。ステータスが一目でわかる。</p>
+  <div class="stage">
+    <div class="v6">
+      <div class="col"><div class="col-title">急募 <span class="count">2</span></div>
+        <div class="card"><div class="company">プロンプト・ラボ</div><div class="title">【日本語力、最強の武器になる】プロンプトエンジニア</div><div class="tags"><span class="tag">文系歓迎</span><span class="tag">CEO直下</span></div><div class="salary">¥1,800〜3,000/h</div></div>
+        <div class="card"><div class="company">データドリブン</div><div class="title">【Excelで消耗するのはもうやめろ】データサイエンティスト</div><div class="tags"><span class="tag">未経験OK</span><span class="tag">研修3週間</span></div><div class="salary">¥1,500〜2,500/h</div></div>
+      </div>
+      <div class="col"><div class="col-title">注目 <span class="count">3</span></div>
+        <div class="card"><div class="company">ニューロンクラフト</div><div class="title">【GPTの裏側を知りたくないか？】LLMエンジニア</div><div class="tags"><span class="tag">GPU</span><span class="tag">自社LLM</span></div><div class="salary">¥2,000〜4,000/h</div></div>
+        <div class="card"><div class="company">オートノミー</div><div class="title">【AIエージェントが人間の仕事を奪う？】</div><div class="tags"><span class="tag">自律型AI</span><span class="tag">H100</span></div><div class="salary">¥3,000〜6,000/h</div></div>
+        <div class="card"><div class="company">AIストラテジー</div><div class="title">【コードが書けなくてもAI業界で天下取れる】PMM</div><div class="tags"><span class="tag">文系歓迎</span><span class="tag">CEO直下</span></div><div class="salary">¥1,800〜3,500/h</div></div>
+      </div>
+      <div class="col"><div class="col-title">新着 <span class="count">2</span></div>
+        <div class="card"><div class="company">ディフュージョン・ワークス</div><div class="title">【イラストレーターを敵に回す覚悟はあるか？】</div><div class="tags"><span class="tag">A100</span><span class="tag">美大</span></div><div class="salary">¥2,500〜5,000/h</div></div>
+        <div class="card"><div class="company">RoboMind</div><div class="title">【ソフトウェアに飽きたらハードで殴れ】ロボティクスAI</div><div class="tags"><span class="tag">ロボット</span><span class="tag">理系</span></div><div class="salary">¥2,200〜4,000/h</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="label">CASE 07</div>
+  <div class="nm">Netflix / Spotify風 — レコメンドカード</div>
+  <div class="ref">ref: netflix.com / spotify.com</div>
+  <p class="ds">横スクロールのカードレール。ジャンル/カテゴリごとに行が分かれる。ホバーで拡大+詳細オーバーレイ。</p>
+  <div class="stage">
+    <div class="v7">
+      <div class="v7-row"><div class="v7-label">あなたへのおすすめ</div><div class="v7-scroll">
+        <div class="v7-card" style="background:linear-gradient(135deg,#0a0a0a,#1f2937)"><div class="v7-inner"><div class="v7-company">ニューロンクラフト</div><div class="v7-title">LLMエンジニア</div><div class="v7-salary">¥2,000〜4,000/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>GPU使い放題</span><span>自社LLM</span><span>フルリモート</span></div><div class="v7-desc">自社LLMを開発中のスタートアップで全部やる。</div></div></div>
+        <div class="v7-card" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)"><div class="v7-inner"><div class="v7-company">プロンプト・ラボ</div><div class="v7-title">プロンプトエンジニア</div><div class="v7-salary">¥1,800〜3,000/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>文系歓迎</span><span>CEO直下</span></div><div class="v7-desc">日本語力を武器に。プログラミング不要。</div></div></div>
+        <div class="v7-card" style="background:linear-gradient(135deg,#dc2626,#991b1b)"><div class="v7-inner"><div class="v7-company">ディフュージョン・ワークス</div><div class="v7-title">画像生成AIエンジニア</div><div class="v7-salary">¥2,500〜5,000/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>A100</span><span>美大歓迎</span></div><div class="v7-desc">Stable Diffusion時代のクリエイティブAI。</div></div></div>
+        <div class="v7-card" style="background:linear-gradient(135deg,#10a37f,#0d8c6e)"><div class="v7-inner"><div class="v7-company">オートノミー</div><div class="v7-title">AIエージェント開発</div><div class="v7-salary">¥3,000〜6,000/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>自律型AI</span><span>H100</span></div><div class="v7-desc">自律型AIエージェントの開発。</div></div></div>
+      </div></div>
+      <div class="v7-row"><div class="v7-label">未経験からスタート</div><div class="v7-scroll">
+        <div class="v7-card" style="background:linear-gradient(135deg,#f59e0b,#d97706)"><div class="v7-inner"><div class="v7-company">データドリブン</div><div class="v7-title">データサイエンティスト</div><div class="v7-salary">¥1,500〜2,500/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>未経験OK</span><span>研修3週間</span></div><div class="v7-desc">pandas, SQL, 機械学習。研修充実。</div></div></div>
+        <div class="v7-card" style="background:linear-gradient(135deg,#06b6d4,#0e7490)"><div class="v7-inner"><div class="v7-company">MedAI</div><div class="v7-title">医療AI研究エンジニア</div><div class="v7-salary">¥2,000〜3,500/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>社会貢献</span><span>東大共同</span></div><div class="v7-desc">AIで命を救う。マジで。</div></div></div>
+        <div class="v7-card" style="background:linear-gradient(135deg,#374151,#0a0a0a)"><div class="v7-inner"><div class="v7-company">AIストラテジー</div><div class="v7-title">AI製品PMM</div><div class="v7-salary">¥1,800〜3,500/h</div></div><div class="v7-overlay"><div class="v7-tags"><span>文系歓迎</span><span>コード不要</span></div><div class="v7-desc">コードが書けなくてもAI業界で天下取れる。</div></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 08</div>
+  <div class="nm">Tinder / マッチング風 — スワイプカード</div>
+  <div class="ref">ref: tinder.com / dating apps</div>
+  <p class="ds">1枚ずつ大きなカードが中央に表示。「興味ある/スキップ」の2ボタン。マッチング体験のゲーム感覚。</p>
+  <div class="stage">
+    <div class="v8-wrap" id="v8wrap">
+      <div class="v8-card" data-i="0" style="background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.8)),linear-gradient(135deg,#0a0a0a,#374151)"><div class="v8-body"><div class="v8-salary">¥2,000〜4,000/h</div><div class="v8-title">【GPTの裏側を知りたくないか？】LLMエンジニア</div><div class="v8-company">株式会社ニューロンクラフト · 渋谷</div><div class="v8-tags"><span>GPU使い放題</span><span>自社LLM</span><span>フルリモート</span></div></div></div>
+      <div class="v8-card" data-i="1" style="background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.8)),linear-gradient(135deg,#7c3aed,#5b21b6)"><div class="v8-body"><div class="v8-salary">¥1,800〜3,000/h</div><div class="v8-title">【日本語力、最強の武器】プロンプトエンジニア</div><div class="v8-company">合同会社プロンプト・ラボ · リモート</div><div class="v8-tags"><span>文系歓迎</span><span>CEO直下</span></div></div></div>
+      <div class="v8-card" data-i="2" style="background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.8)),linear-gradient(135deg,#dc2626,#991b1b)"><div class="v8-body"><div class="v8-salary">¥2,500〜5,000/h</div><div class="v8-title">【イラストレーターを敵に回す覚悟はあるか？】</div><div class="v8-company">ディフュージョン・ワークス · 六本木</div><div class="v8-tags"><span>A100</span><span>美大歓迎</span></div></div></div>
+      <div class="v8-card" data-i="3" style="background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,0.8)),linear-gradient(135deg,#10a37f,#0d8c6e)"><div class="v8-body"><div class="v8-salary">¥3,000〜6,000/h</div><div class="v8-title">【AIエージェントが人間の仕事を奪う？】</div><div class="v8-company">株式会社オートノミー · 渋谷</div><div class="v8-tags"><span>自律型AI</span><span>H100</span><span>CTO直下</span></div></div></div>
+    </div>
+    <div class="v8-actions"><button class="v8-skip" onclick="v8next()">スキップ</button><button class="v8-like" onclick="v8next()">興味ある!</button></div>
+    <div class="v8-counter"><span id="v8cur">01</span> / 04</div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 09</div>
+  <div class="nm">ダークモード — ネオングロー</div>
+  <div class="ref">ref: cyberpunk / gaming sites</div>
+  <p class="ds">黒背景 + ネオングリーンのグロー装飾。エンジニア/ゲーマー向けのサイバーパンク感。ホバーでグロー強調。</p>
+  <div class="stage">
+    <div class="v9">
+      <div class="v9-card"><div class="v9-top"><span class="v9-badge">PICKUP</span><span class="v9-company">NEURON CRAFT</span><span class="v9-date">2d ago</span></div><div class="v9-title">【GPTの裏側を知りたくないか？】自社LLM開発スタートアップで全部やる。</div><div class="v9-tags"><span>GPU</span><span>LLM</span><span>REMOTE</span><span>未経験OK</span></div><div class="v9-bottom"><span class="v9-loc">渋谷 / リモート</span><span class="v9-salary">¥2,000〜4,000/h</span></div></div>
+      <div class="v9-card"><div class="v9-top"><span class="v9-company">PROMPT LAB</span><span class="v9-date">3d ago</span></div><div class="v9-title">【日本語力、最強の武器になる】文系プロンプトエンジニア。</div><div class="v9-tags"><span>文系</span><span>CEO直下</span><span>REMOTE</span></div><div class="v9-bottom"><span class="v9-loc">フルリモート</span><span class="v9-salary">¥1,800〜3,000/h</span></div></div>
+      <div class="v9-card"><div class="v9-top"><span class="v9-badge">PICKUP</span><span class="v9-company">AUTONOMY</span><span class="v9-date">5d ago</span></div><div class="v9-title">【AIエージェントが人間の仕事を奪う？お前が作る側だ。】</div><div class="v9-tags"><span>自律AI</span><span>H100</span><span>CTO直下</span></div><div class="v9-bottom"><span class="v9-loc">渋谷 / リモート</span><span class="v9-salary">¥3,000〜6,000/h</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 10</div>
+  <div class="nm">SNSフィード風 — いいね/コメント/シェア</div>
+  <div class="ref">ref: twitter.com / instagram</div>
+  <p class="ds">SNSの投稿フィードとして求人が流れてくる。いいね数/コメント/シェア付き。親しみやすいカジュアル感。</p>
+  <div class="stage">
+    <div class="v10">
+      <div class="v10-post"><div class="v10-header"><div class="v10-ava">NC</div><div class="v10-meta"><span class="v10-name">株式会社ニューロンクラフト</span><span class="v10-handle">@neuroncraft · 2日前</span></div></div><div class="v10-body">【新しいインターン募集!】GPTの裏側を知りたくないか？自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。<br><br>GPU使い放題 / フルリモート可 / 未経験OK<br><span class="v10-salary-inline">💰 時給 2,000〜4,000円</span></div><div class="v10-actions"><span class="v10-act">💬 24</span><span class="v10-act">🔁 128</span><span class="v10-act">❤️ 1.2K</span><span class="v10-act">📤</span></div></div>
+      <div class="v10-post"><div class="v10-header"><div class="v10-ava" style="background:#7c3aed">PL</div><div class="v10-meta"><span class="v10-name">合同会社プロンプト・ラボ</span><span class="v10-handle">@promptlab · 3日前</span></div></div><div class="v10-body">【文系こそ来い!】日本語力、最強の武器になる。プログラミング不要、必要なのは「言葉のセンス」だけ。<br><br>文系歓迎 / CEO直下 / フルリモート<br><span class="v10-salary-inline">💰 時給 1,800〜3,000円</span></div><div class="v10-actions"><span class="v10-act">💬 87</span><span class="v10-act">🔁 340</span><span class="v10-act">❤️ 2.4K</span><span class="v10-act">📤</span></div></div>
+      <div class="v10-post"><div class="v10-header"><div class="v10-ava" style="background:#10a37f">AT</div><div class="v10-meta"><span class="v10-name">株式会社オートノミー</span><span class="v10-handle">@autonomy_ai · 5日前</span></div></div><div class="v10-body">【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】自律型AIエージェントの開発。CTO直下でH100クラスタ使い放題。<br><br>週4日〜 / ストックオプション相談可<br><span class="v10-salary-inline">💰 時給 3,000〜6,000円</span></div><div class="v10-actions"><span class="v10-act">💬 156</span><span class="v10-act">🔁 892</span><span class="v10-act">❤️ 5.8K</span><span class="v10-act">📤</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 11</div>
+  <div class="nm">アプリストア風 — レビュー付きカード</div>
+  <div class="ref">ref: App Store / Google Play</div>
+  <p class="ds">アプリカードのようにスクリーンショット+星レビュー+インストールボタン。企業を「インストール」する感覚。</p>
+  <div class="stage">
+    <div class="v11">
+      <div class="v11-card"><div class="v11-icon">NC</div><div class="v11-info"><div class="v11-name">株式会社ニューロンクラフト</div><div class="v11-cat">LLMエンジニア · AI SaaS</div><div class="v11-rating">★★★★★ <span>4.9 (38件)</span></div></div><div class="v11-btn">応募</div></div>
+      <div class="v11-card"><div class="v11-icon" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">PL</div><div class="v11-info"><div class="v11-name">合同会社プロンプト・ラボ</div><div class="v11-cat">プロンプトエンジニア · AIコンサル</div><div class="v11-rating">★★★★★ <span>4.8 (24件)</span></div></div><div class="v11-btn">応募</div></div>
+      <div class="v11-card"><div class="v11-icon" style="background:linear-gradient(135deg,#dc2626,#991b1b)">DW</div><div class="v11-info"><div class="v11-name">ディフュージョン・ワークス</div><div class="v11-cat">画像生成AI · クリエイティブ</div><div class="v11-rating">★★★★☆ <span>4.7 (15件)</span></div></div><div class="v11-btn">応募</div></div>
+      <div class="v11-card"><div class="v11-icon" style="background:linear-gradient(135deg,#10a37f,#0d8c6e)">AT</div><div class="v11-info"><div class="v11-name">株式会社オートノミー</div><div class="v11-cat">AIエージェント · 自律型AI</div><div class="v11-rating">★★★★★ <span>5.0 (12件)</span></div></div><div class="v11-btn">応募</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">CASE 12</div>
+  <div class="nm">ベント / チケット風</div>
+  <div class="ref">ref: eventbrite / peatix</div>
+  <p class="ds">イベントチケットのように日付+場所+ミシン目の切り取り線。「このインターンに参加する」ボタン。</p>
+  <div class="stage">
+    <div class="v12">
+      <div class="v12-ticket"><div class="v12-left"><div class="v12-date"><span class="v12-mon">NOW</span><span class="v12-day">募集中</span></div></div><div class="v12-right"><div class="v12-company">株式会社ニューロンクラフト</div><div class="v12-title">【GPTの裏側を知りたくないか？】LLMエンジニア</div><div class="v12-info">渋谷 / リモート · 週3〜 · ¥2,000〜4,000/h</div><div class="v12-tags"><span class="tag">GPU使い放題</span><span class="tag">自社LLM</span><span class="tag">フルリモート</span></div></div></div>
+      <div class="v12-ticket"><div class="v12-left"><div class="v12-date"><span class="v12-mon">急募</span><span class="v12-day">残3枠</span></div></div><div class="v12-right"><div class="v12-company">合同会社プロンプト・ラボ</div><div class="v12-title">【日本語力、最強の武器になる】プロンプトエンジニア</div><div class="v12-info">フルリモート · 週2〜 · ¥1,800〜3,000/h</div><div class="v12-tags"><span class="tag">文系歓迎</span><span class="tag">CEO直下</span></div></div></div>
+      <div class="v12-ticket"><div class="v12-left"><div class="v12-date"><span class="v12-mon">NOW</span><span class="v12-day">募集中</span></div></div><div class="v12-right"><div class="v12-company">株式会社オートノミー</div><div class="v12-title">【AIエージェントが人間の仕事を奪う？】開発エンジニア</div><div class="v12-info">渋谷 / リモート · 週4〜 · ¥3,000〜6,000/h</div><div class="v12-tags"><span class="tag">自律型AI</span><span class="tag">H100</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* 案7: Netflix/Spotify風 */
+  .v7{display:flex;flex-direction:column;gap:24px}
+  .v7-row .v7-label{font-size:16px;font-weight:900;margin-bottom:12px}
+  .v7-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.15) transparent}
+  .v7-scroll::-webkit-scrollbar{height:4px}
+  .v7-scroll::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.15);border-radius:2px}
+  .v7-card{flex:0 0 180px;height:240px;border-radius:10px;color:#fff;position:relative;overflow:hidden;cursor:pointer;scroll-snap-align:start;transition:transform 0.3s}
+  .v7-card:hover{transform:scale(1.08);z-index:2}
+  .v7-inner{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.7))}
+  .v7-company{font-size:10px;color:rgba(255,255,255,0.7);margin-bottom:2px}
+  .v7-title{font-size:13px;font-weight:800;margin-bottom:4px}
+  .v7-salary{font-size:11px;color:#10a37f;font-weight:700}
+  .v7-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.85);padding:18px;opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;justify-content:center}
+  .v7-card:hover .v7-overlay{opacity:1}
+  .v7-overlay .v7-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+  .v7-overlay .v7-tags span{font-size:9px;background:rgba(16,163,127,0.3);color:#10a37f;padding:2px 6px;border-radius:3px;font-weight:700}
+  .v7-overlay .v7-desc{font-size:11px;color:#e5e7eb;line-height:1.5}
+
+  /* 案8: Tinder風 */
+  .v8-wrap{position:relative;height:360px;max-width:400px;margin:0 auto}
+  .v8-card{position:absolute;inset:0;border-radius:20px;color:#fff;display:flex;align-items:flex-end;cursor:pointer;transition:transform 0.5s,opacity 0.5s;background-size:cover}
+  .v8-body{padding:28px;width:100%}
+  .v8-salary{font-size:14px;font-weight:900;color:#10a37f;background:rgba(0,0,0,0.5);display:inline-block;padding:4px 12px;border-radius:6px;margin-bottom:8px}
+  .v8-title{font-size:18px;font-weight:900;line-height:1.4;margin-bottom:6px}
+  .v8-company{font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:10px}
+  .v8-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .v8-tags span{font-size:10px;background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:999px;font-weight:600;backdrop-filter:blur(4px)}
+  .v8-actions{display:flex;justify-content:center;gap:16px;margin-top:20px}
+  .v8-actions button{padding:12px 32px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer;border:none;transition:transform 0.2s}
+  .v8-skip{background:#f3f4f6;color:#6b7280}
+  .v8-like{background:#10a37f;color:#fff}
+  .v8-actions button:hover{transform:scale(1.05)}
+  .v8-counter{text-align:center;margin-top:12px;font-family:"SF Mono",monospace;font-size:12px;color:#6b7280}
+
+  /* 案9: ダークモード ネオン */
+  .v9{display:flex;flex-direction:column;gap:12px;background:#0a0a0a;padding:20px;border-radius:12px}
+  .v9-card{border:1px solid rgba(16,163,127,0.3);border-radius:10px;padding:18px 20px;transition:border-color 0.2s,box-shadow 0.2s;cursor:pointer}
+  .v9-card:hover{border-color:#10a37f;box-shadow:0 0 20px rgba(16,163,127,0.2),0 0 60px rgba(16,163,127,0.05)}
+  .v9-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .v9-badge{background:#10a37f;color:#0a0a0a;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:900;letter-spacing:0.1em}
+  .v9-company{font-size:11px;color:#9ca3af;font-family:"SF Mono",monospace;letter-spacing:0.05em}
+  .v9-date{font-size:10px;color:#4b5563;margin-left:auto;font-family:"SF Mono",monospace}
+  .v9-title{font-size:14px;font-weight:800;color:#e5e7eb;line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .v9-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+  .v9-tags span{font-size:9px;background:rgba(16,163,127,0.15);color:#10a37f;padding:3px 8px;border-radius:4px;font-weight:700}
+  .v9-bottom{display:flex;justify-content:space-between;align-items:center}
+  .v9-loc{font-size:10px;color:#6b7280}
+  .v9-salary{font-size:14px;font-weight:900;color:#10a37f;font-family:"SF Mono",monospace}
+
+  /* 案10: SNSフィード風 */
+  .v10{display:flex;flex-direction:column;gap:0;background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:10px;overflow:hidden}
+  .v10-post{padding:18px 22px;border-bottom:1px solid rgba(15,23,42,0.06)}
+  .v10-post:last-child{border-bottom:none}
+  .v10-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .v10-ava{width:44px;height:44px;border-radius:50%;background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+  .v10-name{font-size:13px;font-weight:800;color:#0a0a0a}
+  .v10-handle{display:block;font-size:11px;color:#6b7280}
+  .v10-body{font-size:13px;line-height:1.7;color:#374151;margin-bottom:12px}
+  .v10-salary-inline{color:#10a37f;font-weight:800}
+  .v10-actions{display:flex;gap:28px;font-size:12px;color:#6b7280;padding-top:8px;border-top:1px solid rgba(15,23,42,0.04)}
+  .v10-act{cursor:pointer;transition:color 0.15s}
+  .v10-act:hover{color:#10a37f}
+
+  /* 案11: アプリストア風 */
+  .v11{display:flex;flex-direction:column;gap:12px}
+  .v11-card{background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:60px 1fr 70px;gap:14px;align-items:center;transition:box-shadow 0.2s;cursor:pointer}
+  .v11-card:hover{box-shadow:0 4px 16px rgba(15,23,42,0.1)}
+  .v11-icon{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#0a0a0a,#374151);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;font-family:Georgia,serif}
+  .v11-name{font-size:14px;font-weight:800;color:#0a0a0a;margin-bottom:1px}
+  .v11-cat{font-size:11px;color:#6b7280;margin-bottom:3px}
+  .v11-rating{font-size:11px;color:#f59e0b}
+  .v11-rating span{color:#6b7280;font-size:10px}
+  .v11-btn{background:#f3f4f6;color:#0a66c2;font-size:13px;font-weight:800;padding:8px 0;text-align:center;border-radius:999px;transition:all 0.2s;cursor:pointer}
+  .v11-btn:hover{background:#0a66c2;color:#fff}
+
+  /* 案12: チケット風 */
+  .v12{display:flex;flex-direction:column;gap:14px}
+  .v12-ticket{display:grid;grid-template-columns:90px 1fr;background:#fff;border:1px solid rgba(15,23,42,0.1);border-radius:12px;overflow:hidden;cursor:pointer;transition:box-shadow 0.2s}
+  .v12-ticket:hover{box-shadow:0 6px 20px rgba(15,23,42,0.1)}
+  .v12-left{background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;position:relative}
+  .v12-left::after{content:"";position:absolute;right:-6px;top:0;bottom:0;width:12px;background:radial-gradient(circle at 6px 12px,#f5f3ed 5px,transparent 5.5px) repeat-y;background-size:12px 24px}
+  .v12-date{font-family:"SF Mono",monospace}
+  .v12-mon{display:block;font-size:10px;color:#10a37f;font-weight:800;letter-spacing:0.15em}
+  .v12-day{display:block;font-size:14px;font-weight:900;margin-top:2px}
+  .v12-right{padding:16px 20px 16px 24px}
+  .v12-company{font-size:10px;color:#6b7280;font-weight:600;margin-bottom:2px}
+  .v12-title{font-size:13px;font-weight:800;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .v12-info{font-size:10px;color:#6b7280;margin-bottom:6px}
+  .v12-tags .tag{background:#f3f4f6;color:#374151}
+</style>
+
+<script>
+// 案8: Tinder風
+let v8i = 0;
+const v8cards = document.querySelectorAll('#v8wrap .v8-card');
+function v8render() {
+  v8cards.forEach((c, i) => {
+    const diff = i - v8i;
+    if (diff < 0) { c.style.transform = 'translateX(-120%) rotate(-10deg)'; c.style.opacity = '0'; }
+    else if (diff === 0) { c.style.transform = 'scale(1)'; c.style.opacity = '1'; c.style.zIndex = '10'; }
+    else if (diff === 1) { c.style.transform = 'scale(0.95) translateY(10px)'; c.style.opacity = '0.6'; c.style.zIndex = '9'; }
+    else { c.style.transform = 'scale(0.9) translateY(20px)'; c.style.opacity = '0.3'; c.style.zIndex = '8'; }
+  });
+  document.getElementById('v8cur').textContent = String(v8i + 1).padStart(2, '0');
+}
+function v8next() { if (v8i < v8cards.length - 1) { v8i++; v8render(); } }
+v8render();
+</script>
+
+</body></html>

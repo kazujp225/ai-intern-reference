@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>体験者の声 UI案 6〜10</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; background: #f5f5f5; color: #1a1a1a; }
+
+  .variant-label {
+    max-width: 1100px; margin: 60px auto 20px; padding: 0 20px;
+    font-size: 1.4em; font-weight: 900; color: #10a37f;
+    border-left: 4px solid #10a37f; padding-left: 16px;
+  }
+  .variant-label span { display: block; font-size: 0.55em; font-weight: 500; color: #6b7280; margin-top: 4px; }
+  .section-title { font-size: 1.6em; font-weight: 900; color: #1a1a1a; margin-bottom: 24px; }
+
+  /* =========================================== */
+  /* 案6: フィルムストリップ                     */
+  /* =========================================== */
+  .v6 { max-width: 100%; margin: 0 auto; padding: 40px 0; overflow: hidden; }
+  .v6 .section-title { padding-left: 40px; }
+  .v6 .film-track-wrap {
+    position: relative; padding: 20px 0;
+    background: #1a1a1a;
+  }
+  .v6 .film-perf-top, .v6 .film-perf-bottom {
+    display: flex; gap: 0; height: 20px; background: #1a1a1a; overflow: hidden;
+  }
+  .v6 .film-hole {
+    width: 16px; height: 12px; background: #f5f5f5; border-radius: 3px;
+    margin: 4px 20px;
+    flex-shrink: 0;
+  }
+  .v6 .film-track {
+    display: flex; gap: 20px; padding: 16px 40px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; cursor: grab;
+  }
+  .v6 .film-track::-webkit-scrollbar { display: none; }
+  .v6 .film-card {
+    flex: 0 0 320px; scroll-snap-align: start;
+    background: #fff; border-radius: 12px; padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  }
+  .v6 .film-card:hover { transform: scale(1.03); }
+  .v6 .film-result { font-size: 0.85em; font-weight: 800; color: #10a37f; margin-bottom: 4px; }
+  .v6 .film-person { font-size: 0.75em; color: #6b7280; margin-bottom: 10px; }
+  .v6 .film-stars { color: #fbbf24; font-size: 0.8em; margin-bottom: 8px; }
+  .v6 .film-text { font-size: 0.85em; color: #374151; line-height: 1.7; }
+
+  /* =========================================== */
+  /* 案7: 付箋ボード                             */
+  /* =========================================== */
+  .v7 { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .v7 .board {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23d4a76a' opacity='0.15'/%3E%3Ccircle cx='2' cy='2' r='0.5' fill='%23b8956a' opacity='0.2'/%3E%3C/svg%3E");
+    background-color: #c9a96e;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .v7 .sticky {
+    padding: 20px 18px; border-radius: 2px; position: relative;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+    min-height: 160px;
+    transition: transform 0.2s;
+  }
+  .v7 .sticky:hover { transform: scale(1.04) rotate(0deg) !important; z-index: 2; }
+  .v7 .sticky::before {
+    content: ""; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 12px; background: rgba(0,0,0,0.08); border-radius: 2px;
+  }
+  .v7 .sticky:nth-child(1) { background: #fff9c4; transform: rotate(-2deg); }
+  .v7 .sticky:nth-child(2) { background: #c8e6c9; transform: rotate(1.5deg); }
+  .v7 .sticky:nth-child(3) { background: #bbdefb; transform: rotate(-1deg); }
+  .v7 .sticky:nth-child(4) { background: #f8bbd0; transform: rotate(2deg); }
+  .v7 .sticky:nth-child(5) { background: #e1bee7; transform: rotate(-1.5deg); }
+  .v7 .sticky:nth-child(6) { background: #ffe0b2; transform: rotate(1deg); }
+  .v7 .sticky-result { font-size: 0.8em; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+  .v7 .sticky-person { font-size: 0.7em; color: #555; margin-bottom: 8px; }
+  .v7 .sticky-text { font-size: 0.8em; color: #333; line-height: 1.6; font-family: "Klee One", "Zen Kurenaido", cursive, sans-serif; }
+  .v7 .sticky-stars { color: #f59e0b; font-size: 0.75em; margin-top: 8px; }
+
+  /* =========================================== */
+  /* 案8: ビフォーアフター                       */
+  /* =========================================== */
+  .v8 { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  .v8 .ba-list { display: flex; flex-direction: column; gap: 20px; }
+  .v8 .ba-card {
+    display: flex; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e5e7eb;
+  }
+  .v8 .ba-before, .v8 .ba-after { flex: 1; padding: 24px; }
+  .v8 .ba-before {
+    background: #fef2f2; border-right: 2px dashed #e5e7eb;
+  }
+  .v8 .ba-after { background: #f0fdf4; }
+  .v8 .ba-label {
+    font-size: 0.65em; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .v8 .ba-before .ba-label { color: #ef4444; }
+  .v8 .ba-after .ba-label { color: #10a37f; }
+  .v8 .ba-text { font-size: 0.88em; color: #374151; line-height: 1.6; font-weight: 600; }
+  .v8 .ba-person { font-size: 0.75em; color: #6b7280; margin-top: 10px; }
+  .v8 .ba-arrow {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5em; color: #10a37f; padding: 0 4px;
+    background: #fff; border-left: 2px dashed #e5e7eb; border-right: 2px dashed #e5e7eb;
+    writing-mode: horizontal-tb;
+  }
+
+  /* =========================================== */
+  /* 案9: Twitter/X風                            */
+  /* =========================================== */
+  .v9 { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+  .v9 .tweet-list { display: flex; flex-direction: column; gap: 0; }
+  .v9 .tweet {
+    padding: 16px 20px; border: 1px solid #e5e7eb; border-bottom: none;
+    background: #fff; transition: background 0.15s;
+  }
+  .v9 .tweet:first-child { border-radius: 16px 16px 0 0; }
+  .v9 .tweet:last-child { border-bottom: 1px solid #e5e7eb; border-radius: 0 0 16px 16px; }
+  .v9 .tweet:hover { background: #f9fafb; }
+  .v9 .tweet-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .v9 .tweet-avatar {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #10a37f, #06b6d4);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: 0.85em;
+  }
+  .v9 .tweet:nth-child(even) .tweet-avatar { background: linear-gradient(135deg, #7c3aed, #db2777); }
+  .v9 .tweet:nth-child(3n) .tweet-avatar { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .v9 .tweet-name { font-size: 0.88em; font-weight: 800; }
+  .v9 .tweet-handle { font-size: 0.8em; color: #9ca3af; }
+  .v9 .tweet-verified { color: #1d9bf0; font-size: 0.9em; }
+  .v9 .tweet-text { font-size: 0.9em; color: #1a1a1a; line-height: 1.6; margin-bottom: 10px; }
+  .v9 .tweet-tag { color: #1d9bf0; }
+  .v9 .tweet-actions { display: flex; gap: 40px; }
+  .v9 .tweet-action { font-size: 0.8em; color: #9ca3af; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .v9 .tweet-action:hover { color: #1d9bf0; }
+  .v9 .tweet-time { font-size: 0.75em; color: #9ca3af; margin-top: 6px; }
+
+  /* =========================================== */
+  /* 案10: スタック型カード                      */
+  /* =========================================== */
+  .v10 { max-width: 500px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+  .v10 .stack-container { position: relative; height: 340px; margin-bottom: 20px; }
+  .v10 .stack-card {
+    position: absolute; inset: 0;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding: 32px; display: flex; flex-direction: column; justify-content: center;
+    text-align: left;
+    transition: transform 0.4s, opacity 0.4s;
+    cursor: grab;
+  }
+  .v10 .stack-card.dismissed { transform: translateX(-120%) rotate(-20deg); opacity: 0; pointer-events: none; }
+  .v10 .stack-result { font-size: 0.9em; font-weight: 800; color: #10a37f; margin-bottom: 6px; }
+  .v10 .stack-person { font-size: 0.8em; color: #6b7280; margin-bottom: 14px; }
+  .v10 .stack-stars { color: #fbbf24; font-size: 0.85em; margin-bottom: 10px; }
+  .v10 .stack-text { font-size: 0.9em; color: #374151; line-height: 1.7; }
+  .v10 .stack-counter { font-size: 0.85em; color: #9ca3af; margin-bottom: 12px; }
+  .v10 .stack-btn {
+    display: inline-block; padding: 10px 28px; border-radius: 999px;
+    background: #10a37f; color: #fff; border: none; font-size: 0.9em;
+    font-weight: 700; cursor: pointer; transition: background 0.2s;
+  }
+  .v10 .stack-btn:hover { background: #0d8c6e; }
+</style>
+</head>
+<body>
+
+<!-- ===== 案6: フィルムストリップ ===== -->
+<h2 class="variant-label">案6: 横スクロールフィルムストリップ<span>映画フィルム風。横ドラッグで操作。パーフォレーション装飾付き。</span></h2>
+<div class="v6">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="film-track-wrap">
+    <div class="film-perf-top"><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span></div>
+    <div class="film-track" id="film-track">
+      <div class="film-card"><div class="film-result">某AIユニコーン企業にそのまま就職</div><div class="film-person">東京大学 工学部 3年生 Mさん</div><div class="film-stars">★★★★★</div><div class="film-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。</div></div>
+      <div class="film-card"><div class="film-result">AI SaaSスタートアップでPdM経験</div><div class="film-person">慶應義塾大学 SFC 2年生 Aさん</div><div class="film-stars">★★★★★</div><div class="film-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。</div></div>
+      <div class="film-card"><div class="film-result">Kaggle金メダル獲得、外資AIラボ内定</div><div class="film-person">東京工業大学 情報理工学院 M1 Sさん</div><div class="film-stars">★★★★★</div><div class="film-text">インターン先でH100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</div></div>
+      <div class="film-card"><div class="film-result">副業AIエンジニアとして月30万</div><div class="film-person">早稲田大学 商学部 3年生 Kさん</div><div class="film-stars">★★★★★</div><div class="film-text">完全文系、プログラミング経験ゼロからスタート。LLMアプリ開発のフリーランス案件を個人で受けられるように。</div></div>
+      <div class="film-card"><div class="film-result">論文がICML採択</div><div class="film-person">京都大学 情報学研究科 M1 Tさん</div><div class="film-stars">★★★★★</div><div class="film-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。CV最強伝説の始まり。</div></div>
+      <div class="film-card"><div class="film-result">AIスタートアップを在学中に共同創業</div><div class="film-person">東京大学 経済学部 4年生 Nさん</div><div class="film-stars">★★★★★</div><div class="film-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</div></div>
+    </div>
+    <div class="film-perf-bottom"><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span><span class="film-hole"></span></div>
+  </div>
+</div>
+
+<!-- ===== 案7: 付箋ボード ===== -->
+<h2 class="variant-label">案7: 付箋（ポストイット）ボード<span>コルクボードに色とりどりの付箋。カジュアルで親しみやすい。</span></h2>
+<div class="v7">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="board">
+    <div class="sticky"><div class="sticky-result">某AIユニコーン企業にそのまま就職</div><div class="sticky-person">東大 工学部 Mさん</div><div class="sticky-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後にはRAGパイプライン組んでた。成長速度バグってる。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky"><div class="sticky-result">AI SaaSでPdM経験</div><div class="sticky-person">慶應 SFC Aさん</div><div class="sticky-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ち。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky"><div class="sticky-result">Kaggle金メダル＆外資AI内定</div><div class="sticky-person">東工大 M1 Sさん</div><div class="sticky-text">H100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky"><div class="sticky-result">副業AIエンジニアで月30万</div><div class="sticky-person">早稲田 商学部 Kさん</div><div class="sticky-text">完全文系、経験ゼロからスタート。同期がESで悩んでる間に稼いでます。すみません。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky"><div class="sticky-result">論文ICML採択</div><div class="sticky-person">京大 情報学 Tさん</div><div class="sticky-text">インターン先の研究がICMLに採択。ダブルで論文書いてる。CV最強伝説の始まり。</div><div class="sticky-stars">★★★★★</div></div>
+    <div class="sticky"><div class="sticky-result">在学中にAIスタートアップ創業</div><div class="sticky-person">東大 経済 Nさん</div><div class="sticky-text">CEOに「起業しろ」と言われて本当にした。シードで3000万調達。マジだった。</div><div class="sticky-stars">★★★★★</div></div>
+  </div>
+</div>
+
+<!-- ===== 案8: ビフォーアフター ===== -->
+<h2 class="variant-label">案8: ビフォーアフター型<span>インターン前後の変化を対比表示。インパクトが一目で伝わる。</span></h2>
+<div class="v8">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="ba-list">
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">「このモデルのloss下げといて」と言われて泣きそう</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">3ヶ月後、自分でRAGパイプライン組んでた。某AIユニコーン企業にそのまま就職。</div><div class="ba-person">東京大学 工学部 3年生 Mさん</div></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">「文系だからAI無理」と思ってた</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">CTOと毎日壁打ち。AIスタートアップから3社オファー。選ぶ側です。</div><div class="ba-person">慶應義塾大学 SFC 2年生 Aさん</div></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">研究室のGPUが足りない...</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">H100を8枚自由に使い放題。Kaggle金メダル獲得、某外資AIラボ内定。</div><div class="ba-person">東京工業大学 情報理工学院 M1 Sさん</div></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">完全文系、プログラミング経験ゼロ</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">LLMアプリ開発のフリーランス案件を個人で受注。副業AIエンジニアとして月30万。</div><div class="ba-person">早稲田大学 商学部 3年生 Kさん</div></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">普通の大学院生</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">インターン先の研究がICML採択。大学とインターン先のダブルで論文。CV最強。</div><div class="ba-person">京都大学 情報学研究科 M1 Tさん</div></div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-before"><div class="ba-label">✕ Before</div><div class="ba-text">普通の経済学部生</div></div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after"><div class="ba-label">✓ After</div><div class="ba-text">CEOに「起業しろ」と言われて実行。シードで3000万調達。在学中にAIスタートアップ共同創業。</div><div class="ba-person">東京大学 経済学部 4年生 Nさん</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案9: Twitter/X風 ===== -->
+<h2 class="variant-label">案9: Twitter/X 埋め込み風<span>ツイート風カード。アイコン・ユーザー名・いいね数付き。SNS口コミの信頼感。</span></h2>
+<div class="v9">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="tweet-list">
+    <div class="tweet">
+      <div class="tweet-header"><div class="tweet-avatar">M</div><div><span class="tweet-name">Mさん <span class="tweet-verified">✓</span></span><br><span class="tweet-handle">@m_todai_ai · 東大工学部3年</span></div></div>
+      <div class="tweet-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。<br><span class="tweet-tag">#AI_INTERN</span> <span class="tweet-tag">#LLM</span></div>
+      <div class="tweet-actions"><span class="tweet-action">💬 24</span><span class="tweet-action">🔁 89</span><span class="tweet-action">♥ 342</span><span class="tweet-action">📊 12K</span></div>
+    </div>
+    <div class="tweet">
+      <div class="tweet-header"><div class="tweet-avatar">A</div><div><span class="tweet-name">Aさん <span class="tweet-verified">✓</span></span><br><span class="tweet-handle">@a_keio_sfc · 慶應SFC 2年</span></div></div>
+      <div class="tweet-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。<br><span class="tweet-tag">#文系AI</span> <span class="tweet-tag">#プロンプトエンジニア</span></div>
+      <div class="tweet-actions"><span class="tweet-action">💬 56</span><span class="tweet-action">🔁 203</span><span class="tweet-action">♥ 891</span><span class="tweet-action">📊 34K</span></div>
+    </div>
+    <div class="tweet">
+      <div class="tweet-header"><div class="tweet-avatar">S</div><div><span class="tweet-name">Sさん <span class="tweet-verified">✓</span></span><br><span class="tweet-handle">@s_titech_ml · 東工大M1</span></div></div>
+      <div class="tweet-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。<br><span class="tweet-tag">#Kaggle金メダル</span> <span class="tweet-tag">#H100</span></div>
+      <div class="tweet-actions"><span class="tweet-action">💬 42</span><span class="tweet-action">🔁 156</span><span class="tweet-action">♥ 723</span><span class="tweet-action">📊 28K</span></div>
+    </div>
+    <div class="tweet">
+      <div class="tweet-header"><div class="tweet-avatar">K</div><div><span class="tweet-name">Kさん <span class="tweet-verified">✓</span></span><br><span class="tweet-handle">@k_waseda_biz · 早稲田商学部3年</span></div></div>
+      <div class="tweet-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。<br><span class="tweet-tag">#副業エンジニア</span> <span class="tweet-tag">#月30万</span></div>
+      <div class="tweet-actions"><span class="tweet-action">💬 87</span><span class="tweet-action">🔁 412</span><span class="tweet-action">♥ 1.2K</span><span class="tweet-action">📊 56K</span></div>
+    </div>
+    <div class="tweet">
+      <div class="tweet-header"><div class="tweet-avatar">N</div><div><span class="tweet-name">Nさん <span class="tweet-verified">✓</span></span><br><span class="tweet-handle">@n_todai_startup · 東大経済4年</span></div></div>
+      <div class="tweet-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。<br><span class="tweet-tag">#AIスタートアップ</span> <span class="tweet-tag">#起業</span></div>
+      <div class="tweet-actions"><span class="tweet-action">💬 103</span><span class="tweet-action">🔁 567</span><span class="tweet-action">♥ 2.1K</span><span class="tweet-action">📊 89K</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 案10: スタック型カード ===== -->
+<h2 class="variant-label">案10: スタック型カード<span>カードが積み重なり、ボタンで上のカードを外すと次が現れる。めくる感覚。</span></h2>
+<div class="v10">
+  <h2 class="section-title">AIインターン経験者のヤバい声</h2>
+  <div class="stack-container" id="stack-container"></div>
+  <div class="stack-counter" id="stack-counter">1 / 6</div>
+  <button class="stack-btn" onclick="stackNext()">次の声を見る →</button>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+// フィルムストリップ: ドラッグスクロール
+(function() {
+  var track = document.getElementById('film-track');
+  if (!track) return;
+  var isDown = false, startX, scrollL;
+  track.addEventListener('mousedown', function(e) { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollL = track.scrollLeft; });
+  track.addEventListener('mouseleave', function() { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mouseup', function() { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mousemove', function(e) { if (!isDown) return; e.preventDefault(); var x = e.pageX - track.offsetLeft; track.scrollLeft = scrollL - (x - startX); });
+})();
+
+// スタック型
+var stackData = [
+  { result:"某AIユニコーン企業にそのまま就職", person:"東京大学 工学部 3年生 Mさん", text:"インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。" },
+  { result:"AI SaaSスタートアップでPdM経験", person:"慶應義塾大学 SFC 2年生 Aさん", text:"「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。" },
+  { result:"Kaggle金メダル獲得、某外資AIラボ内定", person:"東京工業大学 情報理工学院 M1 Sさん", text:"H100を8枚自由に使わせてもらった。GPUは正義、AI_INTERNは神。" },
+  { result:"副業AIエンジニアとして月30万", person:"早稲田大学 商学部 3年生 Kさん", text:"完全文系、経験ゼロからスタート。同期がESで悩んでる間に稼いでます。すみません。" },
+  { result:"インターン先の論文がICML採択", person:"京都大学 情報学研究科 M1 Tさん", text:"インターン先で取り組んだ研究がICMLに採択。CV最強伝説の始まり。" },
+  { result:"AIスタートアップを在学中に共同創業", person:"東京大学 経済学部 4年生 Nさん", text:"CEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。マジだった。" }
+];
+var stackIdx = 0;
+function renderStack() {
+  var c = document.getElementById('stack-container');
+  c.innerHTML = '';
+  for (var i = Math.min(stackIdx + 3, stackData.length) - 1; i >= stackIdx; i--) {
+    var d = stackData[i];
+    var card = document.createElement('div');
+    card.className = 'stack-card';
+    var offset = i - stackIdx;
+    card.style.zIndex = stackData.length - offset;
+    card.style.transform = 'scale(' + (1 - offset * 0.04) + ') translateY(' + (offset * 10) + 'px)';
+    card.style.opacity = offset > 2 ? '0' : '1';
+    card.innerHTML = '<div class="stack-result">' + d.result + '</div><div class="stack-person">' + d.person + '</div><div class="stack-stars">★★★★★</div><div class="stack-text">' + d.text + '</div>';
+    c.appendChild(card);
+  }
+  document.getElementById('stack-counter').textContent = (stackIdx + 1) + ' / ' + stackData.length;
+}
+function stackNext() {
+  var cards = document.querySelectorAll('#stack-container .stack-card');
+  if (cards.length === 0) return;
+  cards[cards.length - 1].classList.add('dismissed');
+  setTimeout(function() { stackIdx++; if (stackIdx >= stackData.length) stackIdx = 0; renderStack(); }, 400);
+}
+renderStack();
+</script>
+</body>
+</html>
