@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回転UI案 - AI職種 / 尖った特徴</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 36px; }
+  .section-label { font-size: 0.95em; font-weight: 800; color: #222; margin-bottom: 16px; padding-left: 12px; border-left: 4px solid #4caf50; }
+
+  /* ========================================= */
+  /*  案A: 横スクロールカルーセル（自動スクロール） */
+  /* ========================================= */
+  .ca-track-wrap { overflow: hidden; position: relative; margin-bottom: 28px; }
+  .ca-track {
+    display: flex; gap: 12px;
+    animation: ca-scroll 20s linear infinite;
+    width: max-content;
+  }
+  .ca-track:hover { animation-play-state: paused; }
+  .ca-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 12px; border: 1.5px solid #eee;
+    background: #fff; white-space: nowrap; text-decoration: none;
+    color: #333; font-size: 0.88em; font-weight: 700;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .ca-item:hover { border-color: #4caf50; background: #f0faf0; color: #2e7d32; transform: translateY(-2px); }
+  .ca-item .ca-icon { font-size: 1.3em; }
+  @keyframes ca-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ========================================= */
+  /*  案B: 3D回転カルーセル                      */
+  /* ========================================= */
+  .cb-scene { perspective: 800px; height: 140px; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; }
+  .cb-carousel {
+    width: 220px; height: 80px; position: relative;
+    transform-style: preserve-3d;
+    animation: cb-rotate 25s linear infinite;
+  }
+  .cb-carousel:hover { animation-play-state: paused; }
+  .cb-cell {
+    position: absolute; width: 200px; height: 70px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 12px; border: 1.5px solid #eee; background: rgba(255,255,255,0.95);
+    font-size: 0.85em; font-weight: 700; color: #333;
+    text-decoration: none; backface-visibility: hidden;
+    transition: border-color 0.2s;
+  }
+  .cb-cell:hover { border-color: #4caf50; color: #2e7d32; }
+  .cb-cell .cb-icon { font-size: 1.3em; }
+  @keyframes cb-rotate { from { transform: rotateY(0); } to { transform: rotateY(-360deg); } }
+
+  /* ========================================= */
+  /*  案C: マーキー型（上下にループ）             */
+  /* ========================================= */
+  .cc-wrap { display: flex; gap: 20px; margin-bottom: 28px; }
+  .cc-col { flex: 1; height: 200px; overflow: hidden; position: relative; }
+  .cc-col-title { font-size: 0.78em; font-weight: 800; color: #999; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .cc-track {
+    display: flex; flex-direction: column; gap: 8px;
+    animation: cc-up 15s linear infinite;
+  }
+  .cc-track-rev { animation: cc-down 18s linear infinite; }
+  .cc-track:hover, .cc-track-rev:hover { animation-play-state: paused; }
+  .cc-chip {
+    padding: 10px 16px; border-radius: 10px; background: #f8f8f8;
+    font-size: 0.85em; font-weight: 700; color: #444;
+    text-decoration: none; display: flex; align-items: center; gap: 8px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .cc-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .cc-chip .cc-icon { font-size: 1.2em; }
+  @keyframes cc-up { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+  @keyframes cc-down { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
+
+  /* ========================================= */
+  /*  案D: 回転ホイール（縦回転）                 */
+  /* ========================================= */
+  .cd-section { margin-bottom: 28px; }
+  .cd-wheel-wrap { perspective: 600px; height: 160px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .cd-wheel {
+    transform-style: preserve-3d;
+    animation: cd-spin 20s linear infinite;
+    position: relative; width: 280px; height: 60px;
+  }
+  .cd-wheel:hover { animation-play-state: paused; }
+  .cd-slot {
+    position: absolute; width: 280px; height: 50px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 10px; background: rgba(255,255,255,0.95);
+    border: 1.5px solid #eee; font-size: 0.88em; font-weight: 700;
+    color: #333; text-decoration: none; backface-visibility: hidden;
+  }
+  .cd-slot:hover { border-color: #4caf50; color: #2e7d32; }
+  .cd-slot .cd-icon { font-size: 1.2em; }
+  @keyframes cd-spin { from { transform: rotateX(0); } to { transform: rotateX(-360deg); } }
+</style>
+</head>
+<body>
+
+<h1>回転UI案 比較</h1>
+<p class="desc">AI職種 / 尖った特徴のクルクル回転デザイン</p>
+
+<!-- ============================================================ -->
+<!--  案A: 横スクロールカルーセル（自動スクロール）                    -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案A : 横スクロール自動カルーセル</div>
+  <div class="proposal-body">
+    <h3 class="section-label">AI職種からインターンを探す</h3>
+    <div class="ca-track-wrap">
+      <div class="ca-track">
+        <a class="ca-item" href="#"><span class="ca-icon">💬</span>プロンプトエンジニア</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🧠</span>MLエンジニア</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🔬</span>AIリサーチャー</a>
+        <a class="ca-item" href="#"><span class="ca-icon">💻</span>LLMアプリ開発</a>
+        <a class="ca-item" href="#"><span class="ca-icon">📊</span>データサイエンティスト</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🤖</span>AIエージェント開発</a>
+        <a class="ca-item" href="#"><span class="ca-icon">💬</span>プロンプトエンジニア</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🧠</span>MLエンジニア</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🔬</span>AIリサーチャー</a>
+        <a class="ca-item" href="#"><span class="ca-icon">💻</span>LLMアプリ開発</a>
+        <a class="ca-item" href="#"><span class="ca-icon">📊</span>データサイエンティスト</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🤖</span>AIエージェント開発</a>
+      </div>
+    </div>
+    <h3 class="section-label">尖った特徴からインターンを探す</h3>
+    <div class="ca-track-wrap">
+      <div class="ca-track" style="animation-direction: reverse; animation-duration: 25s;">
+        <a class="ca-item" href="#"><span class="ca-icon">🖥️</span>GPU使い放題</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🏠</span>フルリモート可</a>
+        <a class="ca-item" href="#"><span class="ca-icon">📖</span>論文読み会あり</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🌱</span>未経験OK</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🚀</span>自社LLM開発中</a>
+        <a class="ca-item" href="#"><span class="ca-icon">💰</span>時給2,000円以上</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🖥️</span>GPU使い放題</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🏠</span>フルリモート可</a>
+        <a class="ca-item" href="#"><span class="ca-icon">📖</span>論文読み会あり</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🌱</span>未経験OK</a>
+        <a class="ca-item" href="#"><span class="ca-icon">🚀</span>自社LLM開発中</a>
+        <a class="ca-item" href="#"><span class="ca-icon">💰</span>時給2,000円以上</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案B: 3D回転カルーセル（水平回転）                              -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案B : 3D水平回転カルーセル</div>
+  <div class="proposal-body">
+    <h3 class="section-label">AI職種からインターンを探す</h3>
+    <div class="cb-scene">
+      <div class="cb-carousel" id="cb1"></div>
+    </div>
+    <h3 class="section-label">尖った特徴からインターンを探す</h3>
+    <div class="cb-scene">
+      <div class="cb-carousel" id="cb2" style="animation-duration: 30s;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案C: マーキー型（上下にループ・2列）                           -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案C : 上下マーキー型（2列交差）</div>
+  <div class="proposal-body">
+    <div class="cc-wrap">
+      <div style="flex:1;">
+        <h3 class="section-label">AI職種からインターンを探す</h3>
+        <div class="cc-col">
+          <div class="cc-track">
+            <a class="cc-chip" href="#"><span class="cc-icon">💬</span>プロンプトエンジニア</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🧠</span>MLエンジニア</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🔬</span>AIリサーチャー</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">💻</span>LLMアプリ開発</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">📊</span>データサイエンティスト</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🤖</span>AIエージェント開発</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">💬</span>プロンプトエンジニア</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🧠</span>MLエンジニア</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🔬</span>AIリサーチャー</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">💻</span>LLMアプリ開発</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">📊</span>データサイエンティスト</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🤖</span>AIエージェント開発</a>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <h3 class="section-label">尖った特徴からインターンを探す</h3>
+        <div class="cc-col">
+          <div class="cc-track cc-track-rev">
+            <a class="cc-chip" href="#"><span class="cc-icon">🖥️</span>GPU使い放題</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🏠</span>フルリモート可</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">📖</span>論文読み会あり</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🌱</span>未経験OK</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🚀</span>自社LLM開発中</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">💰</span>時給2,000円以上</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🖥️</span>GPU使い放題</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🏠</span>フルリモート可</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">📖</span>論文読み会あり</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🌱</span>未経験OK</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">🚀</span>自社LLM開発中</a>
+            <a class="cc-chip" href="#"><span class="cc-icon">💰</span>時給2,000円以上</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案D: 縦回転ホイール（スロットマシン風）                        -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案D : 縦回転ホイール（スロットマシン風）</div>
+  <div class="proposal-body">
+    <div style="display: flex; gap: 30px;">
+      <div style="flex: 1;">
+        <h3 class="section-label">AI職種からインターンを探す</h3>
+        <div class="cd-wheel-wrap">
+          <div class="cd-wheel" id="cd1"></div>
+        </div>
+      </div>
+      <div style="flex: 1;">
+        <h3 class="section-label">尖った特徴からインターンを探す</h3>
+        <div class="cd-wheel-wrap">
+          <div class="cd-wheel" id="cd2" style="animation-duration: 24s; animation-direction: reverse;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 案B: 3D水平回転の配置
+var jobs = [
+  {icon:'💬',name:'プロンプトエンジニア'},{icon:'🧠',name:'MLエンジニア'},
+  {icon:'🔬',name:'AIリサーチャー'},{icon:'💻',name:'LLMアプリ開発'},
+  {icon:'📊',name:'データサイエンティスト'},{icon:'🤖',name:'AIエージェント開発'}
+];
+var features = [
+  {icon:'🖥️',name:'GPU使い放題'},{icon:'🏠',name:'フルリモート可'},
+  {icon:'📖',name:'論文読み会あり'},{icon:'🌱',name:'未経験OK'},
+  {icon:'🚀',name:'自社LLM開発中'},{icon:'💰',name:'時給2,000円以上'}
+];
+function setup3D(id, items) {
+  var el = document.getElementById(id);
+  var n = items.length;
+  var angle = 360 / n;
+  var r = Math.round(110 / Math.tan(Math.PI / n));
+  items.forEach(function(item, i) {
+    var cell = document.createElement('a');
+    cell.className = 'cb-cell'; cell.href = '#';
+    cell.innerHTML = '<span class="cb-icon">' + item.icon + '</span>' + item.name;
+    cell.style.transform = 'rotateY(' + (angle * i) + 'deg) translateZ(' + r + 'px)';
+    el.appendChild(cell);
+  });
+}
+setup3D('cb1', jobs);
+setup3D('cb2', features);
+
+// 案D: 縦回転ホイールの配置
+function setupWheel(id, items) {
+  var el = document.getElementById(id);
+  var n = items.length;
+  var angle = 360 / n;
+  var r = Math.round(50 / Math.tan(Math.PI / n));
+  items.forEach(function(item, i) {
+    var slot = document.createElement('a');
+    slot.className = 'cd-slot'; slot.href = '#';
+    slot.innerHTML = '<span class="cd-icon">' + item.icon + '</span>' + item.name;
+    slot.style.transform = 'rotateX(' + (angle * i) + 'deg) translateZ(' + r + 'px)';
+    el.appendChild(slot);
+  });
+}
+setupWheel('cd1', jobs);
+setupWheel('cd2', features);
+</script>
+
+</body>
+</html>

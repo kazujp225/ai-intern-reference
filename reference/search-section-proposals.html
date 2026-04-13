@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>検索セクション UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 36px; }
+
+  /* ========================================= */
+  /*  案A: チップ横並び（アイコンなし・ミニマル）  */
+  /* ========================================= */
+  .sa-section { margin-bottom: 28px; }
+  .sa-section:last-child { margin-bottom: 0; }
+  .sa-label { font-size: 0.95em; font-weight: 800; color: #222; margin-bottom: 12px; padding-left: 12px; border-left: 4px solid #4caf50; }
+  .sa-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sa-chip {
+    padding: 10px 20px; border-radius: 24px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.15s;
+  }
+  .sa-chip:hover { background: #e8f5e9; color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案B: グリッドカード（アイコン大きめ）        */
+  /* ========================================= */
+  .sb-section { margin-bottom: 28px; }
+  .sb-section:last-child { margin-bottom: 0; }
+  .sb-label { font-size: 0.95em; font-weight: 800; color: #222; margin-bottom: 14px; }
+  .sb-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .sb-card {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 18px 12px; border-radius: 12px; border: 1.5px solid #eee;
+    text-decoration: none; color: #333; transition: all 0.15s; text-align: center;
+  }
+  .sb-card:hover { border-color: #4caf50; background: #fafffe; transform: translateY(-2px); }
+  .sb-icon { font-size: 2em; }
+  .sb-name { font-size: 0.82em; font-weight: 700; }
+
+  /* ========================================= */
+  /*  案C: 横一列リスト + 左アイコン              */
+  /* ========================================= */
+  .sc-section { margin-bottom: 24px; }
+  .sc-section:last-child { margin-bottom: 0; }
+  .sc-label { font-size: 0.85em; font-weight: 800; color: #999; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .sc-list { display: flex; flex-direction: column; gap: 0; }
+  .sc-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    border-bottom: 1px solid #f5f5f5; text-decoration: none; color: #333;
+    font-size: 0.9em; font-weight: 600; transition: all 0.12s; border-radius: 8px;
+  }
+  .sc-item:last-child { border-bottom: none; }
+  .sc-item:hover { background: #f0faf0; color: #2e7d32; }
+  .sc-item-icon {
+    width: 36px; height: 36px; border-radius: 8px; background: #f5f5f5;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2em;
+    flex-shrink: 0;
+  }
+  .sc-item:hover .sc-item-icon { background: #e8f5e9; }
+  .sc-item-arrow { margin-left: auto; color: #ccc; font-size: 0.8em; }
+  .sc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+
+  /* ========================================= */
+  /*  案D: タブ切り替え + 中身グリッド            */
+  /* ========================================= */
+  .sd-tabs { display: flex; gap: 0; border-bottom: 2px solid #eee; margin-bottom: 20px; }
+  .sd-tab {
+    padding: 10px 20px; font-size: 0.88em; font-weight: 700; color: #888;
+    cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s;
+    margin-bottom: -2px;
+  }
+  .sd-tab:hover { color: #333; }
+  .sd-tab.active { color: #2e7d32; border-bottom-color: #4caf50; }
+  .sd-content {}
+  .sd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .sd-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-radius: 10px; background: #f8f8f8;
+    text-decoration: none; color: #333; transition: all 0.12s;
+  }
+  .sd-card:hover { background: #e8f5e9; color: #2e7d32; }
+  .sd-card-icon { font-size: 1.4em; flex-shrink: 0; }
+  .sd-card-name { font-size: 0.85em; font-weight: 700; }
+
+  /* ========================================= */
+  /*  案E: 2カラム + カテゴリカード               */
+  /* ========================================= */
+  .se-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .se-card {
+    border: 1.5px solid #eee; border-radius: 14px; padding: 22px; transition: all 0.2s;
+  }
+  .se-card:hover { border-color: #c8e6c9; }
+  .se-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; }
+  .se-card-icon { width: 36px; height: 36px; border-radius: 10px; background: #e8f5e9; display: flex; align-items: center; justify-content: center; font-size: 1.1em; }
+  .se-card-title { font-size: 0.95em; font-weight: 800; color: #222; }
+  .se-card-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .se-chip {
+    padding: 6px 14px; border-radius: 8px; font-size: 0.82em; font-weight: 600;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.12s;
+  }
+  .se-chip:hover { background: #e8f5e9; color: #2e7d32; }
+</style>
+</head>
+<body>
+
+<h1>検索セクション UI案 比較</h1>
+<p class="desc">AI職種 / 尖った特徴 / エリアの検索ブロック</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : チップ横並び（アイコンなし・ミニマル）</div>
+  <div class="proposal-body">
+    <div class="sa-section">
+      <h3 class="sa-label">AI職種からインターンを探す</h3>
+      <div class="sa-chips">
+        <a class="sa-chip" href="#">プロンプトエンジニア</a><a class="sa-chip" href="#">MLエンジニア</a><a class="sa-chip" href="#">AIリサーチャー</a><a class="sa-chip" href="#">LLMアプリ開発</a><a class="sa-chip" href="#">データサイエンティスト</a><a class="sa-chip" href="#">AIエージェント開発</a>
+      </div>
+    </div>
+    <div class="sa-section">
+      <h3 class="sa-label">尖った特徴からインターンを探す</h3>
+      <div class="sa-chips">
+        <a class="sa-chip" href="#">GPU使い放題</a><a class="sa-chip" href="#">フルリモート可</a><a class="sa-chip" href="#">論文読み会あり</a><a class="sa-chip" href="#">未経験OK</a><a class="sa-chip" href="#">自社LLM開発中</a><a class="sa-chip" href="#">時給2,000円以上</a>
+      </div>
+    </div>
+    <div class="sa-section">
+      <h3 class="sa-label">エリアからインターンを探す</h3>
+      <div class="sa-chips">
+        <a class="sa-chip" href="#">関東</a><a class="sa-chip" href="#">関西</a><a class="sa-chip" href="#">中部</a><a class="sa-chip" href="#">九州・沖縄</a><a class="sa-chip" href="#">東北</a><a class="sa-chip" href="#">北海道</a><a class="sa-chip" href="#">フルリモート</a><a class="sa-chip" href="#">海外リモート</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : グリッドカード（絵文字アイコン大きめ）</div>
+  <div class="proposal-body">
+    <div class="sb-section">
+      <h3 class="sb-label">AI職種からインターンを探す</h3>
+      <div class="sb-grid">
+        <a class="sb-card" href="#"><span class="sb-icon">💬</span><span class="sb-name">プロンプトエンジニア</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🧠</span><span class="sb-name">MLエンジニア</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🔬</span><span class="sb-name">AIリサーチャー</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">💻</span><span class="sb-name">LLMアプリ開発</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">📊</span><span class="sb-name">データサイエンティスト</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🤖</span><span class="sb-name">AIエージェント開発</span></a>
+      </div>
+    </div>
+    <div class="sb-section">
+      <h3 class="sb-label">尖った特徴からインターンを探す</h3>
+      <div class="sb-grid">
+        <a class="sb-card" href="#"><span class="sb-icon">🖥️</span><span class="sb-name">GPU使い放題</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🏠</span><span class="sb-name">フルリモート可</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">📖</span><span class="sb-name">論文読み会あり</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🌱</span><span class="sb-name">未経験OK</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🚀</span><span class="sb-name">自社LLM開発中</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">💰</span><span class="sb-name">時給2,000円以上</span></a>
+      </div>
+    </div>
+    <div class="sb-section">
+      <h3 class="sb-label">エリアからインターンを探す</h3>
+      <div class="sb-grid">
+        <a class="sb-card" href="#"><span class="sb-icon">🗼</span><span class="sb-name">関東</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🏯</span><span class="sb-name">関西</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🏭</span><span class="sb-name">中部</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🌴</span><span class="sb-name">九州・沖縄</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🌊</span><span class="sb-name">東北</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">💠</span><span class="sb-name">北海道</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">💤</span><span class="sb-name">フルリモート</span></a>
+        <a class="sb-card" href="#"><span class="sb-icon">🌍</span><span class="sb-name">海外リモート</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 2カラムリスト + 左アイコン</div>
+  <div class="proposal-body">
+    <div class="sc-section">
+      <div class="sc-label">AI職種からインターンを探す</div>
+      <div class="sc-cols">
+        <a class="sc-item" href="#"><div class="sc-item-icon">💬</div>プロンプトエンジニア<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🧠</div>MLエンジニア<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🔬</div>AIリサーチャー<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">💻</div>LLMアプリ開発<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">📊</div>データサイエンティスト<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🤖</div>AIエージェント開発<span class="sc-item-arrow">&rarr;</span></a>
+      </div>
+    </div>
+    <div class="sc-section">
+      <div class="sc-label">尖った特徴からインターンを探す</div>
+      <div class="sc-cols">
+        <a class="sc-item" href="#"><div class="sc-item-icon">🖥️</div>GPU使い放題<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🏠</div>フルリモート可<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">📖</div>論文読み会あり<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🌱</div>未経験OK<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🚀</div>自社LLM開発中<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">💰</div>時給2,000円以上<span class="sc-item-arrow">&rarr;</span></a>
+      </div>
+    </div>
+    <div class="sc-section">
+      <div class="sc-label">エリアからインターンを探す</div>
+      <div class="sc-cols">
+        <a class="sc-item" href="#"><div class="sc-item-icon">🗼</div>関東<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🏯</div>関西<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🏭</div>中部<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🌴</div>九州・沖縄<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">💤</div>フルリモート<span class="sc-item-arrow">&rarr;</span></a>
+        <a class="sc-item" href="#"><div class="sc-item-icon">🌍</div>海外リモート<span class="sc-item-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : タブ切り替え + グリッド</div>
+  <div class="proposal-body">
+    <div class="sd-tabs">
+      <div class="sd-tab active">AI職種</div>
+      <div class="sd-tab">尖った特徴</div>
+      <div class="sd-tab">エリア</div>
+    </div>
+    <div class="sd-content">
+      <div class="sd-grid">
+        <a class="sd-card" href="#"><span class="sd-card-icon">💬</span><span class="sd-card-name">プロンプトエンジニア</span></a>
+        <a class="sd-card" href="#"><span class="sd-card-icon">🧠</span><span class="sd-card-name">MLエンジニア</span></a>
+        <a class="sd-card" href="#"><span class="sd-card-icon">🔬</span><span class="sd-card-name">AIリサーチャー</span></a>
+        <a class="sd-card" href="#"><span class="sd-card-icon">💻</span><span class="sd-card-name">LLMアプリ開発</span></a>
+        <a class="sd-card" href="#"><span class="sd-card-icon">📊</span><span class="sd-card-name">データサイエンティスト</span></a>
+        <a class="sd-card" href="#"><span class="sd-card-icon">🤖</span><span class="sd-card-name">AIエージェント開発</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案E -->
+<div class="proposal">
+  <div class="proposal-label">案E : 2カラムカテゴリカード</div>
+  <div class="proposal-body">
+    <div class="se-grid">
+      <div class="se-card">
+        <div class="se-card-header"><div class="se-card-icon">💼</div><div class="se-card-title">AI職種からインターンを探す</div></div>
+        <div class="se-card-chips">
+          <a class="se-chip" href="#">💬 プロンプトエンジニア</a><a class="se-chip" href="#">🧠 MLエンジニア</a><a class="se-chip" href="#">🔬 AIリサーチャー</a><a class="se-chip" href="#">💻 LLMアプリ開発</a><a class="se-chip" href="#">📊 データサイエンティスト</a><a class="se-chip" href="#">🤖 AIエージェント開発</a>
+        </div>
+      </div>
+      <div class="se-card">
+        <div class="se-card-header"><div class="se-card-icon">⚡</div><div class="se-card-title">尖った特徴からインターンを探す</div></div>
+        <div class="se-card-chips">
+          <a class="se-chip" href="#">🖥️ GPU使い放題</a><a class="se-chip" href="#">🏠 フルリモート可</a><a class="se-chip" href="#">📖 論文読み会あり</a><a class="se-chip" href="#">🌱 未経験OK</a><a class="se-chip" href="#">🚀 自社LLM開発中</a><a class="se-chip" href="#">💰 時給2,000円以上</a>
+        </div>
+      </div>
+      <div class="se-card" style="grid-column: span 2;">
+        <div class="se-card-header"><div class="se-card-icon">📍</div><div class="se-card-title">エリアからインターンを探す</div></div>
+        <div class="se-card-chips">
+          <a class="se-chip" href="#">🗼 関東</a><a class="se-chip" href="#">🏯 関西</a><a class="se-chip" href="#">🏭 中部</a><a class="se-chip" href="#">🌴 九州・沖縄</a><a class="se-chip" href="#">🌊 東北</a><a class="se-chip" href="#">💠 北海道</a><a class="se-chip" href="#">💤 フルリモート</a><a class="se-chip" href="#">🌍 海外リモート</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

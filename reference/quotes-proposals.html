@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI名言集 UI案 A / B / C / D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; letter-spacing: 0.05em; }
+  .proposal-body { padding: 40px; }
+  .section-title { font-size: 1.7em; font-weight: 900; color: #222; margin-bottom: 6px; }
+  .section-sub { font-size: 0.82em; color: #999; margin-bottom: 30px; }
+
+  /* ========================================= */
+  /*  案A: 横スクロールカルーセル風               */
+  /* ========================================= */
+  .qa-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; -webkit-overflow-scrolling: touch; }
+  .qa-scroll::-webkit-scrollbar { height: 4px; }
+  .qa-scroll::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 2px; }
+  .qa-scroll::-webkit-scrollbar-thumb { background: #c8e6c9; border-radius: 2px; }
+  .qa-card {
+    min-width: 280px; max-width: 280px; background: #fff; border: 1.5px solid #eee;
+    border-radius: 14px; padding: 24px; flex-shrink: 0; transition: all 0.2s;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .qa-card:hover { border-color: #4caf50; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(76,175,80,0.1); }
+  .qa-icon { font-size: 1.8em; margin-bottom: 12px; }
+  .qa-text { font-size: 0.9em; color: #333; line-height: 1.7; font-style: italic; margin-bottom: 16px; flex: 1; }
+  .qa-author { font-size: 0.75em; color: #888; font-weight: 600; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+
+  /* ========================================= */
+  /*  案B: 大きな引用 + 2カラム                   */
+  /* ========================================= */
+  .qb-hero {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    border-radius: 14px; padding: 36px; color: #fff; margin-bottom: 20px;
+  }
+  .qb-hero-quote { font-size: 1.4em; font-weight: 700; line-height: 1.6; font-style: italic; margin-bottom: 12px; }
+  .qb-hero-quote::before { content: '"'; font-size: 2em; color: rgba(255,255,255,0.3); line-height: 0; vertical-align: -0.3em; margin-right: 4px; }
+  .qb-hero-author { font-size: 0.85em; color: rgba(255,255,255,0.7); font-weight: 600; }
+  .qb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .qb-item {
+    display: flex; gap: 14px; padding: 18px; border-radius: 10px; border: 1px solid #eee;
+    transition: all 0.15s; align-items: flex-start;
+  }
+  .qb-item:hover { border-color: #c8e6c9; background: #fafffe; }
+  .qb-item-num { color: #c8e6c9; font-size: 1.6em; font-weight: 900; line-height: 1; flex-shrink: 0; width: 30px; }
+  .qb-item-text { font-size: 0.85em; color: #444; line-height: 1.6; font-style: italic; }
+  .qb-item-author { font-size: 0.72em; color: #aaa; font-weight: 600; margin-top: 6px; }
+
+  /* ========================================= */
+  /*  案C: タイムライン風                         */
+  /* ========================================= */
+  .qc-timeline { position: relative; padding-left: 30px; }
+  .qc-timeline::before {
+    content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(180deg, #4caf50, #c8e6c9, transparent);
+  }
+  .qc-item { position: relative; margin-bottom: 24px; padding-left: 24px; }
+  .qc-item::before {
+    content: ''; position: absolute; left: -26px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #fff; border: 3px solid #4caf50;
+  }
+  .qc-item:hover::before { background: #4caf50; }
+  .qc-text { font-size: 0.95em; color: #333; line-height: 1.7; font-style: italic; margin-bottom: 4px; }
+  .qc-author { font-size: 0.75em; color: #999; font-weight: 600; }
+
+  /* ========================================= */
+  /*  案D: マソンリー風カードウォール              */
+  /* ========================================= */
+  .qd-masonry { columns: 3; column-gap: 14px; }
+  .qd-card {
+    break-inside: avoid; margin-bottom: 14px;
+    border-radius: 12px; padding: 22px; transition: all 0.2s;
+    border: 1.5px solid #eee; background: #fff;
+  }
+  .qd-card:hover { border-color: #4caf50; box-shadow: 0 4px 16px rgba(76,175,80,0.1); }
+  .qd-card.qd-accent {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border-color: #c8e6c9;
+  }
+  .qd-open { font-size: 2em; color: #c8e6c9; line-height: 1; margin-bottom: 8px; font-family: Georgia, serif; }
+  .qd-card.qd-accent .qd-open { color: #4caf50; }
+  .qd-text { font-size: 0.88em; color: #333; line-height: 1.7; font-style: italic; margin-bottom: 12px; }
+  .qd-author { font-size: 0.73em; color: #999; font-weight: 600; }
+  .qd-card.qd-accent .qd-author { color: #66bb6a; }
+</style>
+</head>
+<body>
+
+<h1>AI名言集 UI案 比較</h1>
+<p class="desc">同じ名言データを4パターンで表示</p>
+
+<!-- ============================================================ -->
+<!--  案A: 横スクロールカルーセル風                                  -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案A : 横スクロールカルーセル風</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qa-scroll">
+      <div class="qa-card"><div class="qa-icon">&#x1F4A1;</div><p class="qa-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p><div class="qa-author">- I.J. Good（数学者）</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x1F525;</div><p class="qa-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p><div class="qa-author">- サム・アルトマン（OpenAI CEO）</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x26A1;</div><p class="qa-text">"AIは電気と同じくらい、すべての産業を変革する。"</p><div class="qa-author">- アンドリュー・ン（AI研究者）</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x1F680;</div><p class="qa-text">"未来を予測する最良の方法は、それを発明することだ。"</p><div class="qa-author">- アラン・ケイ（計算機科学者）</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x1F4BB;</div><p class="qa-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p><div class="qa-author">- アンドレイ・カルパシー</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x1F3AF;</div><p class="qa-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p><div class="qa-author">- カイフ・リー（AI投資家）</div></div>
+      <div class="qa-card"><div class="qa-icon">&#x1F30D;</div><p class="qa-text">"100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。"</p><div class="qa-author">- デミス・ハサビス（DeepMind CEO）</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案B: 大きな引用 + 2カラム                                     -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案B : ヒーロー引用 + 2カラムリスト</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qb-hero">
+      <p class="qb-hero-quote">AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
+      <div class="qb-hero-author">- I.J. Good（数学者）</div>
+    </div>
+    <div class="qb-grid">
+      <div class="qb-item"><span class="qb-item-num">02</span><div><p class="qb-item-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p><div class="qb-item-author">- サム・アルトマン</div></div></div>
+      <div class="qb-item"><span class="qb-item-num">03</span><div><p class="qb-item-text">"AIは電気と同じくらい、すべての産業を変革する。"</p><div class="qb-item-author">- アンドリュー・ン</div></div></div>
+      <div class="qb-item"><span class="qb-item-num">04</span><div><p class="qb-item-text">"未来を予測する最良の方法は、それを発明することだ。"</p><div class="qb-item-author">- アラン・ケイ</div></div></div>
+      <div class="qb-item"><span class="qb-item-num">05</span><div><p class="qb-item-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p><div class="qb-item-author">- カイフ・リー</div></div></div>
+      <div class="qb-item"><span class="qb-item-num">06</span><div><p class="qb-item-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p><div class="qb-item-author">- アンドレイ・カルパシー</div></div></div>
+      <div class="qb-item"><span class="qb-item-num">07</span><div><p class="qb-item-text">"100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。"</p><div class="qb-item-author">- デミス・ハサビス</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案C: タイムライン風                                           -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案C : タイムライン風</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qc-timeline">
+      <div class="qc-item"><p class="qc-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p><div class="qc-author">- I.J. Good（数学者）</div></div>
+      <div class="qc-item"><p class="qc-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p><div class="qc-author">- サム・アルトマン（OpenAI CEO）</div></div>
+      <div class="qc-item"><p class="qc-text">"AIは電気と同じくらい、すべての産業を変革する。"</p><div class="qc-author">- アンドリュー・ン（AI研究者）</div></div>
+      <div class="qc-item"><p class="qc-text">"未来を予測する最良の方法は、それを発明することだ。"</p><div class="qc-author">- アラン・ケイ（計算機科学者）</div></div>
+      <div class="qc-item"><p class="qc-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p><div class="qc-author">- カイフ・リー（AI投資家）</div></div>
+      <div class="qc-item"><p class="qc-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p><div class="qc-author">- アンドレイ・カルパシー</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案D: マソンリー風カードウォール                                -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案D : マソンリー風カードウォール</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qd-masonry">
+      <div class="qd-card qd-accent"><div class="qd-open">"</div><p class="qd-text">AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。</p><div class="qd-author">- I.J. Good（数学者）</div></div>
+      <div class="qd-card"><div class="qd-open">"</div><p class="qd-text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p><div class="qd-author">- サム・アルトマン</div></div>
+      <div class="qd-card"><div class="qd-open">"</div><p class="qd-text">機械が考えることができるかどうかを問うのは、潜水艦が泳げるかどうかを問うようなものだ。</p><div class="qd-author">- エドガー・ダイクストラ</div></div>
+      <div class="qd-card qd-accent"><div class="qd-open">"</div><p class="qd-text">AIは電気と同じくらい、すべての産業を変革する。</p><div class="qd-author">- アンドリュー・ン</div></div>
+      <div class="qd-card"><div class="qd-open">"</div><p class="qd-text">未来を予測する最良の方法は、それを発明することだ。</p><div class="qd-author">- アラン・ケイ</div></div>
+      <div class="qd-card qd-accent"><div class="qd-open">"</div><p class="qd-text">AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。</p><div class="qd-author">- カイフ・リー</div></div>
+      <div class="qd-card"><div class="qd-open">"</div><p class="qd-text">十分に発達したAIは、魔法と見分けがつかない。</p><div class="qd-author">- アーサー・C・クラーク 改変</div></div>
+      <div class="qd-card"><div class="qd-open">"</div><p class="qd-text">プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。</p><div class="qd-author">- アンドレイ・カルパシー</div></div>
+      <div class="qd-card qd-accent"><div class="qd-open">"</div><p class="qd-text">100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。</p><div class="qd-author">- デミス・ハサビス</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案E: 1枚ずつフォーカス（スライダー風）                         -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案E : 1枚フォーカス（スライダー風）</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qe-slider">
+      <div class="qe-card qe-active" data-idx="0">
+        <div class="qe-quote-mark">"</div>
+        <p class="qe-text">AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。</p>
+        <div class="qe-bottom">
+          <div class="qe-author">I.J. Good</div>
+          <div class="qe-role">数学者</div>
+        </div>
+      </div>
+      <div class="qe-card" data-idx="1">
+        <div class="qe-quote-mark">"</div>
+        <p class="qe-text">AIを恐れるな。AIを使いこなせない自分を恐れろ。</p>
+        <div class="qe-bottom">
+          <div class="qe-author">サム・アルトマン</div>
+          <div class="qe-role">OpenAI CEO</div>
+        </div>
+      </div>
+      <div class="qe-card" data-idx="2">
+        <div class="qe-quote-mark">"</div>
+        <p class="qe-text">AIは電気と同じくらい、すべての産業を変革する。</p>
+        <div class="qe-bottom">
+          <div class="qe-author">アンドリュー・ン</div>
+          <div class="qe-role">AI研究者</div>
+        </div>
+      </div>
+    </div>
+    <div class="qe-dots">
+      <span class="qe-dot active"></span><span class="qe-dot"></span><span class="qe-dot"></span><span class="qe-dot"></span><span class="qe-dot"></span><span class="qe-dot"></span><span class="qe-dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案F: 左右2ペイン（名言 + 解説）                               -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案F : 左右2ペイン（名言 + 著者情報）</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qf-list">
+      <div class="qf-item">
+        <div class="qf-left">
+          <p class="qf-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
+        </div>
+        <div class="qf-right">
+          <div class="qf-name">I.J. Good</div>
+          <div class="qf-role">数学者</div>
+          <div class="qf-tag">AI哲学</div>
+        </div>
+      </div>
+      <div class="qf-item">
+        <div class="qf-left">
+          <p class="qf-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p>
+        </div>
+        <div class="qf-right">
+          <div class="qf-name">サム・アルトマン</div>
+          <div class="qf-role">OpenAI CEO</div>
+          <div class="qf-tag">マインドセット</div>
+        </div>
+      </div>
+      <div class="qf-item">
+        <div class="qf-left">
+          <p class="qf-text">"AIは電気と同じくらい、すべての産業を変革する。"</p>
+        </div>
+        <div class="qf-right">
+          <div class="qf-name">アンドリュー・ン</div>
+          <div class="qf-role">AI研究者</div>
+          <div class="qf-tag">産業革命</div>
+        </div>
+      </div>
+      <div class="qf-item">
+        <div class="qf-left">
+          <p class="qf-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p>
+        </div>
+        <div class="qf-right">
+          <div class="qf-name">カイフ・リー</div>
+          <div class="qf-role">AI投資家</div>
+          <div class="qf-tag">キャリア</div>
+        </div>
+      </div>
+      <div class="qf-item">
+        <div class="qf-left">
+          <p class="qf-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p>
+        </div>
+        <div class="qf-right">
+          <div class="qf-name">アンドレイ・カルパシー</div>
+          <div class="qf-role">Tesla元AI責任者</div>
+          <div class="qf-tag">プロンプト</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案G: ミニマルリスト（余白重視）                                -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案G : ミニマルリスト（余白重視）</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qg-list">
+      <div class="qg-item">
+        <div class="qg-num">01</div>
+        <div class="qg-content">
+          <p class="qg-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
+          <span class="qg-author">I.J. Good ー 数学者</span>
+        </div>
+      </div>
+      <div class="qg-item">
+        <div class="qg-num">02</div>
+        <div class="qg-content">
+          <p class="qg-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p>
+          <span class="qg-author">サム・アルトマン ー OpenAI CEO</span>
+        </div>
+      </div>
+      <div class="qg-item">
+        <div class="qg-num">03</div>
+        <div class="qg-content">
+          <p class="qg-text">"AIは電気と同じくらい、すべての産業を変革する。"</p>
+          <span class="qg-author">アンドリュー・ン ー AI研究者</span>
+        </div>
+      </div>
+      <div class="qg-item">
+        <div class="qg-num">04</div>
+        <div class="qg-content">
+          <p class="qg-text">"未来を予測する最良の方法は、それを発明することだ。"</p>
+          <span class="qg-author">アラン・ケイ ー 計算機科学者</span>
+        </div>
+      </div>
+      <div class="qg-item">
+        <div class="qg-num">05</div>
+        <div class="qg-content">
+          <p class="qg-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p>
+          <span class="qg-author">カイフ・リー ー AI投資家</span>
+        </div>
+      </div>
+      <div class="qg-item">
+        <div class="qg-num">06</div>
+        <div class="qg-content">
+          <p class="qg-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p>
+          <span class="qg-author">アンドレイ・カルパシー ー Tesla元AI責任者</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案H: グリッドタイル + ホバーで浮き出し                         -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案H : グリッドタイル + ホバー浮き出し</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qh-grid">
+      <div class="qh-tile qh-large">
+        <p class="qh-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
+        <div class="qh-author">I.J. Good<span>数学者</span></div>
+      </div>
+      <div class="qh-tile">
+        <p class="qh-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p>
+        <div class="qh-author">サム・アルトマン<span>OpenAI CEO</span></div>
+      </div>
+      <div class="qh-tile">
+        <p class="qh-text">"AIは電気と同じくらい、すべての産業を変革する。"</p>
+        <div class="qh-author">アンドリュー・ン<span>AI研究者</span></div>
+      </div>
+      <div class="qh-tile">
+        <p class="qh-text">"未来を予測する最良の方法は、それを発明することだ。"</p>
+        <div class="qh-author">アラン・ケイ<span>計算機科学者</span></div>
+      </div>
+      <div class="qh-tile qh-large">
+        <p class="qh-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p>
+        <div class="qh-author">カイフ・リー<span>AI投資家</span></div>
+      </div>
+      <div class="qh-tile">
+        <p class="qh-text">"プロンプトは新しいプログラミング言語だ。"</p>
+        <div class="qh-author">アンドレイ・カルパシー<span>Tesla元AI</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================= */
+  /*  案E: 1枚フォーカス（スライダー風）          */
+  /* ========================================= */
+  .qe-slider { display: flex; gap: 16px; justify-content: center; align-items: stretch; }
+  .qe-card {
+    flex: 0 0 200px; background: #f8f8f8; border-radius: 14px; padding: 24px;
+    transition: all 0.4s; opacity: 0.5; transform: scale(0.92);
+    display: flex; flex-direction: column;
+  }
+  .qe-card.qe-active {
+    flex: 0 0 420px; opacity: 1; transform: scale(1);
+    background: #fff; border: 2px solid #4caf50; box-shadow: 0 8px 30px rgba(76,175,80,0.12);
+  }
+  .qe-quote-mark { font-size: 3em; color: #c8e6c9; font-family: Georgia, serif; line-height: 0.8; margin-bottom: 8px; }
+  .qe-card.qe-active .qe-quote-mark { color: #4caf50; }
+  .qe-text { font-size: 0.9em; color: #555; line-height: 1.7; font-style: italic; flex: 1; }
+  .qe-card.qe-active .qe-text { font-size: 1.05em; color: #222; }
+  .qe-bottom { margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; }
+  .qe-author { font-size: 0.88em; font-weight: 800; color: #333; }
+  .qe-role { font-size: 0.72em; color: #999; margin-top: 2px; }
+  .qe-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+  .qe-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; cursor: pointer; transition: all 0.2s; }
+  .qe-dot.active { background: #4caf50; width: 24px; border-radius: 4px; }
+
+  /* ========================================= */
+  /*  案F: 左右2ペイン                           */
+  /* ========================================= */
+  .qf-list { display: flex; flex-direction: column; gap: 0; }
+  .qf-item {
+    display: flex; align-items: center; padding: 22px 0;
+    border-bottom: 1px solid #f0f0f0; transition: background 0.15s;
+  }
+  .qf-item:last-child { border-bottom: none; }
+  .qf-item:hover { background: #fafffe; }
+  .qf-left { flex: 1; padding-right: 30px; }
+  .qf-text { font-size: 1em; color: #333; line-height: 1.7; font-style: italic; margin: 0; }
+  .qf-right { flex-shrink: 0; width: 160px; text-align: right; }
+  .qf-name { font-size: 0.9em; font-weight: 800; color: #222; }
+  .qf-role { font-size: 0.75em; color: #999; margin-top: 2px; }
+  .qf-tag {
+    display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 10px;
+    background: #e8f5e9; color: #2e7d32; font-size: 0.68em; font-weight: 700;
+  }
+
+  /* ========================================= */
+  /*  案G: ミニマルリスト（余白重視）             */
+  /* ========================================= */
+  .qg-list { display: flex; flex-direction: column; gap: 0; }
+  .qg-item {
+    display: flex; align-items: flex-start; gap: 20px; padding: 28px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .qg-item:last-child { border-bottom: none; }
+  .qg-num {
+    font-size: 1.8em; font-weight: 900; color: #e0e0e0; line-height: 1;
+    flex-shrink: 0; width: 48px; text-align: right;
+    font-family: 'Arial Black', sans-serif;
+  }
+  .qg-item:hover .qg-num { color: #4caf50; }
+  .qg-content { flex: 1; }
+  .qg-text { font-size: 1.05em; color: #222; line-height: 1.8; font-style: italic; margin: 0 0 8px; }
+  .qg-author { font-size: 0.78em; color: #aaa; font-weight: 600; }
+
+  /* ========================================= */
+  /*  案H: グリッドタイル + ホバー浮き出し        */
+  /* ========================================= */
+  .qh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .qh-tile {
+    background: #f8f8f8; border-radius: 12px; padding: 24px;
+    transition: all 0.25s; cursor: default;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .qh-tile:hover {
+    background: #fff; box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+  }
+  .qh-tile.qh-large { grid-column: span 2; }
+  .qh-text { font-size: 0.92em; color: #444; line-height: 1.7; font-style: italic; margin: 0 0 16px; }
+  .qh-tile.qh-large .qh-text { font-size: 1.1em; }
+  .qh-author {
+    font-size: 0.82em; font-weight: 800; color: #333;
+    padding-top: 12px; border-top: 1px solid #eee;
+  }
+  .qh-author span { display: block; font-size: 0.8em; font-weight: 500; color: #999; margin-top: 2px; }
+</style>
+
+<!-- ============================================================ -->
+<!--  案I: アコーディオン展開型                                     -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案I : アコーディオン展開型</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qi-list">
+      <div class="qi-item qi-open">
+        <div class="qi-header"><span class="qi-name">I.J. Good</span><span class="qi-role">数学者</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p></div>
+      </div>
+      <div class="qi-item">
+        <div class="qi-header"><span class="qi-name">サム・アルトマン</span><span class="qi-role">OpenAI CEO</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p></div>
+      </div>
+      <div class="qi-item">
+        <div class="qi-header"><span class="qi-name">アンドリュー・ン</span><span class="qi-role">AI研究者</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"AIは電気と同じくらい、すべての産業を変革する。"</p></div>
+      </div>
+      <div class="qi-item">
+        <div class="qi-header"><span class="qi-name">アラン・ケイ</span><span class="qi-role">計算機科学者</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"未来を予測する最良の方法は、それを発明することだ。"</p></div>
+      </div>
+      <div class="qi-item">
+        <div class="qi-header"><span class="qi-name">カイフ・リー</span><span class="qi-role">AI投資家</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p></div>
+      </div>
+      <div class="qi-item">
+        <div class="qi-header"><span class="qi-name">アンドレイ・カルパシー</span><span class="qi-role">Tesla元AI責任者</span><span class="qi-arrow">&#9660;</span></div>
+        <div class="qi-body"><p>"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案J: 左イニシャル + フラットリスト                             -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案J : イニシャルアイコン + フラットリスト</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qj-list">
+      <div class="qj-item">
+        <div class="qj-avatar">IG</div>
+        <div class="qj-content">
+          <p class="qj-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
+          <div class="qj-meta"><span class="qj-name">I.J. Good</span><span class="qj-dot"></span><span class="qj-role">数学者</span></div>
+        </div>
+      </div>
+      <div class="qj-item">
+        <div class="qj-avatar" style="background:#1565c0">SA</div>
+        <div class="qj-content">
+          <p class="qj-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p>
+          <div class="qj-meta"><span class="qj-name">サム・アルトマン</span><span class="qj-dot"></span><span class="qj-role">OpenAI CEO</span></div>
+        </div>
+      </div>
+      <div class="qj-item">
+        <div class="qj-avatar" style="background:#6a1b9a">AN</div>
+        <div class="qj-content">
+          <p class="qj-text">"AIは電気と同じくらい、すべての産業を変革する。"</p>
+          <div class="qj-meta"><span class="qj-name">アンドリュー・ン</span><span class="qj-dot"></span><span class="qj-role">AI研究者</span></div>
+        </div>
+      </div>
+      <div class="qj-item">
+        <div class="qj-avatar" style="background:#e65100">AK</div>
+        <div class="qj-content">
+          <p class="qj-text">"未来を予測する最良の方法は、それを発明することだ。"</p>
+          <div class="qj-meta"><span class="qj-name">アラン・ケイ</span><span class="qj-dot"></span><span class="qj-role">計算機科学者</span></div>
+        </div>
+      </div>
+      <div class="qj-item">
+        <div class="qj-avatar" style="background:#00838f">KL</div>
+        <div class="qj-content">
+          <p class="qj-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p>
+          <div class="qj-meta"><span class="qj-name">カイフ・リー</span><span class="qj-dot"></span><span class="qj-role">AI投資家</span></div>
+        </div>
+      </div>
+      <div class="qj-item">
+        <div class="qj-avatar" style="background:#ad1457">AK</div>
+        <div class="qj-content">
+          <p class="qj-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p>
+          <div class="qj-meta"><span class="qj-name">アンドレイ・カルパシー</span><span class="qj-dot"></span><span class="qj-role">Tesla元AI責任者</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案K: 交互カラーストライプ型                                    -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案K : 交互カラーストライプ型</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="qk-list">
+      <div class="qk-item qk-white">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p></div>
+        <div class="qk-right">I.J. Good<br><small>数学者</small></div>
+      </div>
+      <div class="qk-item qk-green">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p></div>
+        <div class="qk-right">サム・アルトマン<br><small>OpenAI CEO</small></div>
+      </div>
+      <div class="qk-item qk-white">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"AIは電気と同じくらい、すべての産業を変革する。"</p></div>
+        <div class="qk-right">アンドリュー・ン<br><small>AI研究者</small></div>
+      </div>
+      <div class="qk-item qk-green">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"未来を予測する最良の方法は、それを発明することだ。"</p></div>
+        <div class="qk-right">アラン・ケイ<br><small>計算機科学者</small></div>
+      </div>
+      <div class="qk-item qk-white">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p></div>
+        <div class="qk-right">カイフ・リー<br><small>AI投資家</small></div>
+      </div>
+      <div class="qk-item qk-green">
+        <div class="qk-left"><div class="qk-mark">"</div></div>
+        <div class="qk-center"><p>"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p></div>
+        <div class="qk-right">アンドレイ・カルパシー<br><small>Tesla元AI責任者</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案L: 2カラム引用カード + サイドバー                            -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案L : 2カラム引用カード + サイドハイライト</div>
+  <div class="proposal-body">
+    <h2 class="section-title">AI名言集</h2>
+    <p class="section-sub">AIの未来を切り開く先駆者たちの言葉</p>
+    <div class="ql-layout">
+      <div class="ql-highlight">
+        <div class="ql-h-mark">"</div>
+        <p class="ql-h-text">AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。</p>
+        <div class="ql-h-author">I.J. Good</div>
+        <div class="ql-h-role">数学者</div>
+      </div>
+      <div class="ql-grid">
+        <div class="ql-card"><p>"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p><div class="ql-author">サム・アルトマン <span>OpenAI CEO</span></div></div>
+        <div class="ql-card"><p>"AIは電気と同じくらい、すべての産業を変革する。"</p><div class="ql-author">アンドリュー・ン <span>AI研究者</span></div></div>
+        <div class="ql-card"><p>"未来を予測する最良の方法は、それを発明することだ。"</p><div class="ql-author">アラン・ケイ <span>計算機科学者</span></div></div>
+        <div class="ql-card"><p>"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p><div class="ql-author">カイフ・リー <span>AI投資家</span></div></div>
+        <div class="ql-card"><p>"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p><div class="ql-author">アンドレイ・カルパシー <span>Tesla元AI</span></div></div>
+        <div class="ql-card"><p>"100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。"</p><div class="ql-author">デミス・ハサビス <span>DeepMind CEO</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================= */
+  /*  案I: アコーディオン展開型                   */
+  /* ========================================= */
+  .qi-list { border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
+  .qi-item { border-bottom: 1px solid #f0f0f0; }
+  .qi-item:last-child { border-bottom: none; }
+  .qi-header {
+    display: flex; align-items: center; padding: 16px 20px; cursor: pointer;
+    transition: background 0.15s; gap: 12px;
+  }
+  .qi-header:hover { background: #fafffe; }
+  .qi-name { font-size: 0.95em; font-weight: 800; color: #222; }
+  .qi-role { font-size: 0.75em; color: #999; flex: 1; }
+  .qi-arrow { font-size: 0.7em; color: #ccc; transition: transform 0.3s; }
+  .qi-open .qi-arrow { transform: rotate(180deg); color: #4caf50; }
+  .qi-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+    padding: 0 20px;
+  }
+  .qi-open .qi-body { max-height: 200px; padding: 0 20px 18px; }
+  .qi-body p {
+    font-size: 1em; color: #333; line-height: 1.8; font-style: italic;
+    padding-left: 16px; border-left: 3px solid #4caf50;
+  }
+
+  /* ========================================= */
+  /*  案J: イニシャルアイコン + フラットリスト     */
+  /* ========================================= */
+  .qj-list { display: flex; flex-direction: column; gap: 0; }
+  .qj-item {
+    display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid #f0f0f0;
+    align-items: flex-start;
+  }
+  .qj-item:last-child { border-bottom: none; }
+  .qj-avatar {
+    width: 44px; height: 44px; border-radius: 12px; background: #2e7d32;
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 0.8em; font-weight: 900; flex-shrink: 0;
+  }
+  .qj-content { flex: 1; }
+  .qj-text { font-size: 0.95em; color: #333; line-height: 1.7; font-style: italic; margin: 0 0 8px; }
+  .qj-meta { display: flex; align-items: center; gap: 8px; font-size: 0.78em; }
+  .qj-name { font-weight: 800; color: #222; }
+  .qj-dot { width: 4px; height: 4px; border-radius: 50%; background: #ccc; }
+  .qj-role { color: #999; }
+
+  /* ========================================= */
+  /*  案K: 交互カラーストライプ型                 */
+  /* ========================================= */
+  .qk-list { border-radius: 12px; overflow: hidden; }
+  .qk-item {
+    display: flex; align-items: center; padding: 20px 24px; gap: 16px;
+    transition: all 0.15s;
+  }
+  .qk-item:hover { transform: translateX(4px); }
+  .qk-white { background: #fff; }
+  .qk-green { background: #f0faf0; }
+  .qk-left { flex-shrink: 0; }
+  .qk-mark { font-size: 2.5em; color: #c8e6c9; font-family: Georgia, serif; line-height: 1; }
+  .qk-green .qk-mark { color: #4caf50; }
+  .qk-center { flex: 1; }
+  .qk-center p { font-size: 0.95em; color: #333; line-height: 1.7; font-style: italic; margin: 0; }
+  .qk-right {
+    flex-shrink: 0; text-align: right; font-size: 0.85em; font-weight: 800;
+    color: #333; width: 140px;
+  }
+  .qk-right small { font-weight: 500; color: #999; font-size: 0.85em; }
+
+  /* ========================================= */
+  /*  案L: 2カラム引用カード + サイドハイライト    */
+  /* ========================================= */
+  .ql-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+  .ql-highlight {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    border-radius: 14px; padding: 30px; color: #fff;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .ql-h-mark { font-size: 3.5em; color: rgba(255,255,255,0.2); font-family: Georgia, serif; line-height: 0.8; margin-bottom: 12px; }
+  .ql-h-text { font-size: 1.1em; line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+  .ql-h-author { font-size: 1em; font-weight: 800; }
+  .ql-h-role { font-size: 0.8em; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .ql-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ql-card {
+    background: #fff; border: 1.5px solid #eee; border-radius: 10px;
+    padding: 18px; transition: all 0.2s;
+  }
+  .ql-card:hover { border-color: #4caf50; box-shadow: 0 4px 14px rgba(76,175,80,0.08); }
+  .ql-card p { font-size: 0.85em; color: #444; line-height: 1.6; font-style: italic; margin: 0 0 12px; }
+  .ql-author { font-size: 0.78em; font-weight: 800; color: #333; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+  .ql-author span { font-weight: 500; color: #999; }
+</style>
+
+<script>
+  document.querySelectorAll('.qi-header').forEach(function(h) {
+    h.addEventListener('click', function() {
+      this.parentElement.classList.toggle('qi-open');
+    });
+  });
+</script>
+
+</body>
+</html>

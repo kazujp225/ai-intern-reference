@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヘッダー UI案 A / B / C / D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 50px; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; border-radius: 12px 12px 0 0; letter-spacing: 0.05em; }
+
+  /* ========================================= */
+  /*  案A: グリーングラデ + モダンフラット         */
+  /* ========================================= */
+  .ha {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    display: flex; align-items: center; padding: 0 40px; height: 70px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .ha-logo { font-size: 1.5em; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: 2px; margin-right: auto; }
+  .ha-logo span { color: #a5d6a7; }
+  .ha-nav { display: flex; align-items: center; gap: 24px; }
+  .ha-nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.88em; font-weight: 600; transition: all 0.2s; padding: 4px 0; border-bottom: 2px solid transparent; }
+  .ha-nav a:hover, .ha-nav a.current { color: #fff; border-bottom-color: #a5d6a7; }
+  .ha-nav .ha-corp { color: rgba(255,255,255,0.5); font-size: 0.75em; }
+  .ha-nav .ha-login { color: rgba(255,255,255,0.9); }
+  .ha-nav .ha-register { background: #fff; color: #2e7d32; padding: 7px 22px; border-radius: 6px; font-weight: 800; font-size: 0.85em; border-bottom: none !important; }
+  .ha-nav .ha-register:hover { background: #e8f5e9; }
+
+  /* ========================================= */
+  /*  案B: ホワイト + グリーンアクセント           */
+  /* ========================================= */
+  .hb {
+    background: #fff;
+    display: flex; align-items: center; padding: 0 40px; height: 70px;
+    border-bottom: 3px solid #4caf50;
+  }
+  .hb-logo { font-size: 1.4em; font-weight: 900; color: #1b5e20; text-decoration: none; letter-spacing: 2px; margin-right: auto; display: flex; align-items: center; gap: 8px; }
+  .hb-logo-icon { background: #4caf50; color: #fff; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7em; font-weight: 900; }
+  .hb-nav { display: flex; align-items: center; gap: 6px; }
+  .hb-nav a { color: #555; text-decoration: none; font-size: 0.85em; font-weight: 600; padding: 6px 14px; border-radius: 6px; transition: all 0.15s; }
+  .hb-nav a:hover, .hb-nav a.current { background: #e8f5e9; color: #2e7d32; }
+  .hb-nav .hb-divider { width: 1px; height: 20px; background: #e0e0e0; margin: 0 6px; }
+  .hb-nav .hb-corp { color: #aaa; font-size: 0.75em; }
+  .hb-nav .hb-login { color: #4caf50; font-weight: 700; }
+  .hb-nav .hb-register { background: #4caf50; color: #fff; padding: 7px 22px; border-radius: 8px; font-weight: 800; font-size: 0.85em; }
+  .hb-nav .hb-register:hover { background: #388e3c; }
+
+  /* ========================================= */
+  /*  案C: ダーク + ネオン風                     */
+  /* ========================================= */
+  .hc {
+    background: #111;
+    display: flex; align-items: center; padding: 0 40px; height: 70px;
+  }
+  .hc-logo { font-size: 1.5em; font-weight: 900; font-family: 'Courier New', monospace; color: #4caf50; text-decoration: none; letter-spacing: 3px; margin-right: auto; text-shadow: 0 0 10px rgba(76,175,80,0.3); }
+  .hc-logo .hc-bracket { color: #666; }
+  .hc-nav { display: flex; align-items: center; gap: 20px; }
+  .hc-nav a { color: #888; text-decoration: none; font-size: 0.85em; font-weight: 600; font-family: 'Courier New', monospace; transition: all 0.2s; }
+  .hc-nav a:hover, .hc-nav a.current { color: #4caf50; text-shadow: 0 0 8px rgba(76,175,80,0.3); }
+  .hc-nav .hc-corp { color: #555; font-size: 0.72em; }
+  .hc-nav .hc-login { color: #aaa; }
+  .hc-nav .hc-register { border: 1.5px solid #4caf50; color: #4caf50; padding: 6px 20px; border-radius: 4px; font-weight: 800; font-size: 0.82em; font-family: 'Courier New', monospace; }
+  .hc-nav .hc-register:hover { background: #4caf50; color: #111; }
+
+  /* ========================================= */
+  /*  案D: グラスモーフィズム + 丸みデザイン       */
+  /* ========================================= */
+  .hd-outer { background: linear-gradient(135deg, #e8f5e9, #f1f8e9); padding: 12px 40px; }
+  .hd {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex; align-items: center; padding: 0 28px; height: 56px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .hd-logo { font-size: 1.2em; font-weight: 900; color: #2e7d32; text-decoration: none; letter-spacing: 1px; margin-right: auto; display: flex; align-items: center; gap: 8px; }
+  .hd-logo-dot { width: 10px; height: 10px; background: #4caf50; border-radius: 50%; display: inline-block; }
+  .hd-nav { display: flex; align-items: center; gap: 4px; }
+  .hd-nav a { color: #555; text-decoration: none; font-size: 0.82em; font-weight: 600; padding: 6px 14px; border-radius: 20px; transition: all 0.15s; }
+  .hd-nav a:hover, .hd-nav a.current { background: rgba(76,175,80,0.12); color: #2e7d32; }
+  .hd-nav .hd-corp { color: #aaa; font-size: 0.72em; }
+  .hd-nav .hd-login { color: #2e7d32; font-weight: 700; }
+  .hd-nav .hd-register { background: linear-gradient(135deg, #4caf50, #66bb6a); color: #fff; padding: 7px 22px; border-radius: 20px; font-weight: 800; font-size: 0.82em; box-shadow: 0 2px 8px rgba(76,175,80,0.3); }
+  .hd-nav .hd-register:hover { box-shadow: 0 4px 16px rgba(76,175,80,0.4); transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<h1>ヘッダー UI案 比較</h1>
+<p class="desc">同じナビ要素を4パターンで表示</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : グリーングラデ + モダンフラット</div>
+  <div class="ha">
+    <a href="#" class="ha-logo">AI<span>_</span>INTERN</a>
+    <nav class="ha-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="ha-corp">採用担当者様</a>
+      <a href="#" class="ha-login">login</a>
+      <a href="#" class="ha-register">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : ホワイト + グリーンアクセント</div>
+  <div class="hb">
+    <a href="#" class="hb-logo"><span class="hb-logo-icon">AI</span>AI_INTERN</a>
+    <nav class="hb-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <span class="hb-divider"></span>
+      <a href="#" class="hb-corp">採用担当者様</a>
+      <a href="#" class="hb-login">login</a>
+      <a href="#" class="hb-register">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : ダーク + ネオン風</div>
+  <div class="hc">
+    <a href="#" class="hc-logo"><span class="hc-bracket">[</span>AI_INTERN<span class="hc-bracket">]</span></a>
+    <nav class="hc-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="hc-corp">採用担当者様</a>
+      <a href="#" class="hc-login">login</a>
+      <a href="#" class="hc-register">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : グラスモーフィズム + 丸みデザイン</div>
+  <div class="hd-outer">
+    <div class="hd">
+      <a href="#" class="hd-logo"><span class="hd-logo-dot"></span>AI_INTERN</a>
+      <nav class="hd-nav">
+        <a href="#" class="current">AIインターン</a>
+        <a href="#">AI勉強会</a>
+        <a href="#" class="hd-corp">採用担当者様</a>
+        <a href="#" class="hd-login">login</a>
+        <a href="#" class="hd-register">REGISTER</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案E: ミニマルライン                                          -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案E : ミニマルライン</div>
+  <div class="he">
+    <a href="#" class="he-logo">AI_INTERN</a>
+    <nav class="he-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+    </nav>
+    <div class="he-actions">
+      <a href="#" class="he-corp">採用担当者様</a>
+      <a href="#" class="he-login">login</a>
+      <a href="#" class="he-register">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案F: セパレート3ブロック                                      -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案F : セパレート3ブロック</div>
+  <div class="hf">
+    <a href="#" class="hf-logo">AI_INTERN</a>
+    <nav class="hf-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#">採用担当者様</a>
+    </nav>
+    <div class="hf-actions">
+      <a href="#" class="hf-login">login</a>
+      <a href="#" class="hf-register">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案G: フラットピル                                            -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案G : フラットピル</div>
+  <div class="hg">
+    <a href="#" class="hg-logo"><span class="hg-mark"></span>AI_INTERN</a>
+    <nav class="hg-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#">採用担当者様</a>
+    </nav>
+    <div class="hg-actions">
+      <a href="#" class="hg-login">login</a>
+      <a href="#" class="hg-register">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案H: ボーダーレスワイド                                       -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案H : ボーダーレスワイド</div>
+  <div class="hh">
+    <a href="#" class="hh-logo">AI<span>_</span>INTERN</a>
+    <div class="hh-spacer"></div>
+    <nav class="hh-nav">
+      <a href="#" class="current">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="hh-corp">採用担当者様</a>
+    </nav>
+    <div class="hh-divider"></div>
+    <div class="hh-actions">
+      <a href="#" class="hh-login">login</a>
+      <a href="#" class="hh-register">REGISTER</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================= */
+  /*  案E: ミニマルライン                        */
+  /* ========================================= */
+  .he {
+    background: #fff;
+    display: flex; align-items: center; padding: 0 48px; height: 64px;
+    border-bottom: 1px solid #eee;
+  }
+  .he-logo {
+    font-size: 1.2em; font-weight: 900; color: #222; text-decoration: none;
+    letter-spacing: 2px; margin-right: 48px;
+  }
+  .he-nav { display: flex; gap: 32px; margin-right: auto; }
+  .he-nav a {
+    color: #999; text-decoration: none; font-size: 0.88em; font-weight: 600;
+    padding: 20px 0; border-bottom: 2px solid transparent; transition: all 0.15s;
+  }
+  .he-nav a:hover, .he-nav a.current { color: #222; border-bottom-color: #222; }
+  .he-actions { display: flex; align-items: center; gap: 20px; }
+  .he-actions .he-corp { color: #bbb; text-decoration: none; font-size: 0.75em; font-weight: 500; }
+  .he-actions .he-corp:hover { color: #888; }
+  .he-actions .he-login { color: #666; text-decoration: none; font-size: 0.85em; font-weight: 600; }
+  .he-actions .he-login:hover { color: #222; }
+  .he-actions .he-register {
+    color: #fff; text-decoration: none; font-size: 0.82em; font-weight: 700;
+    background: #222; padding: 7px 24px; border-radius: 4px; transition: background 0.15s;
+  }
+  .he-actions .he-register:hover { background: #444; }
+
+  /* ========================================= */
+  /*  案F: セパレート3ブロック                    */
+  /* ========================================= */
+  .hf {
+    background: #fafafa;
+    display: flex; align-items: center; padding: 0 48px; height: 64px;
+  }
+  .hf-logo {
+    font-size: 1.15em; font-weight: 900; color: #222; text-decoration: none;
+    letter-spacing: 2px; margin-right: 40px;
+  }
+  .hf-nav { display: flex; gap: 8px; margin-right: auto; }
+  .hf-nav a {
+    color: #666; text-decoration: none; font-size: 0.84em; font-weight: 600;
+    padding: 6px 16px; border-radius: 6px; transition: all 0.12s;
+  }
+  .hf-nav a:hover { background: #f0f0f0; color: #333; }
+  .hf-nav a.current { background: #222; color: #fff; }
+  .hf-actions { display: flex; align-items: center; gap: 16px; }
+  .hf-actions .hf-login { color: #888; text-decoration: none; font-size: 0.84em; font-weight: 600; }
+  .hf-actions .hf-login:hover { color: #222; }
+  .hf-actions .hf-register {
+    color: #222; text-decoration: none; font-size: 0.82em; font-weight: 700;
+    border: 1.5px solid #222; padding: 6px 22px; border-radius: 6px; transition: all 0.15s;
+  }
+  .hf-actions .hf-register:hover { background: #222; color: #fff; }
+
+  /* ========================================= */
+  /*  案G: フラットピル                          */
+  /* ========================================= */
+  .hg {
+    background: #fff;
+    display: flex; align-items: center; padding: 0 48px; height: 64px;
+    box-shadow: 0 1px 0 #eee;
+  }
+  .hg-logo {
+    font-size: 1.15em; font-weight: 900; color: #1b5e20; text-decoration: none;
+    letter-spacing: 1px; margin-right: 40px; display: flex; align-items: center; gap: 8px;
+  }
+  .hg-mark { width: 8px; height: 8px; background: #4caf50; border-radius: 2px; display: inline-block; }
+  .hg-nav { display: flex; gap: 6px; margin-right: auto; background: #f5f5f5; border-radius: 8px; padding: 3px; }
+  .hg-nav a {
+    color: #777; text-decoration: none; font-size: 0.82em; font-weight: 600;
+    padding: 6px 18px; border-radius: 6px; transition: all 0.12s;
+  }
+  .hg-nav a:hover { color: #333; }
+  .hg-nav a.current { background: #fff; color: #222; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .hg-actions { display: flex; align-items: center; gap: 16px; }
+  .hg-actions .hg-login { color: #888; text-decoration: none; font-size: 0.84em; font-weight: 600; }
+  .hg-actions .hg-login:hover { color: #222; }
+  .hg-actions .hg-register {
+    color: #fff; text-decoration: none; font-size: 0.82em; font-weight: 700;
+    background: #1b5e20; padding: 7px 22px; border-radius: 6px; transition: all 0.15s;
+  }
+  .hg-actions .hg-register:hover { background: #2e7d32; }
+
+  /* ========================================= */
+  /*  案H: ボーダーレスワイド                     */
+  /* ========================================= */
+  .hh {
+    background: #fff;
+    display: flex; align-items: center; padding: 0 48px; height: 60px;
+  }
+  .hh-logo {
+    font-size: 1.1em; font-weight: 900; color: #222; text-decoration: none;
+    letter-spacing: 3px; font-family: 'Courier New', monospace;
+  }
+  .hh-logo span { color: #4caf50; }
+  .hh-spacer { flex: 1; }
+  .hh-nav { display: flex; gap: 28px; }
+  .hh-nav a {
+    color: #aaa; text-decoration: none; font-size: 0.82em; font-weight: 600;
+    transition: color 0.12s; letter-spacing: 0.03em;
+  }
+  .hh-nav a:hover, .hh-nav a.current { color: #222; }
+  .hh-nav .hh-corp { color: #ccc; font-size: 0.72em; }
+  .hh-nav .hh-corp:hover { color: #999; }
+  .hh-divider { width: 1px; height: 18px; background: #e0e0e0; margin: 0 24px; }
+  .hh-actions { display: flex; align-items: center; gap: 18px; }
+  .hh-actions .hh-login { color: #999; text-decoration: none; font-size: 0.82em; font-weight: 600; letter-spacing: 0.05em; }
+  .hh-actions .hh-login:hover { color: #222; }
+  .hh-actions .hh-register {
+    color: #222; text-decoration: none; font-size: 0.78em; font-weight: 800;
+    letter-spacing: 0.1em; padding: 6px 20px; border: 1px solid #ddd;
+    border-radius: 3px; transition: all 0.15s;
+  }
+  .hh-actions .hh-register:hover { border-color: #222; background: #222; color: #fff; }
+</style>
+
+</body>
+</html>

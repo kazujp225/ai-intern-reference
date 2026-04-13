@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3Dカルーセル セルデザイン案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 36px; }
+  .scene { perspective: 800px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .carousel {
+    width: 240px; height: 90px; position: relative;
+    transform-style: preserve-3d;
+    animation: spin 25s linear infinite;
+  }
+  .carousel:hover { animation-play-state: paused; }
+  @keyframes spin { from { transform: rotateY(0); } to { transform: rotateY(-360deg); } }
+
+  /* ========================================= */
+  /*  案A: グラデーション背景 + 大アイコン        */
+  /* ========================================= */
+  .cell-a {
+    position: absolute; width: 220px; height: 85px;
+    display: flex; align-items: center; gap: 12px; padding: 0 18px;
+    border-radius: 16px; backface-visibility: hidden;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border: none; text-decoration: none; color: #1b5e20;
+    font-size: 0.9em; font-weight: 800; transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .cell-a:hover { background: linear-gradient(135deg, #4caf50, #66bb6a); color: #fff; }
+  .cell-a .icon { font-size: 2em; }
+
+  /* ========================================= */
+  /*  案B: ダーク背景 + ネオンアクセント          */
+  /* ========================================= */
+  .cell-b {
+    position: absolute; width: 220px; height: 85px;
+    display: flex; align-items: center; gap: 12px; padding: 0 18px;
+    border-radius: 14px; backface-visibility: hidden;
+    background: #1a1a2e; border: 1.5px solid #333;
+    text-decoration: none; color: #a5d6a7;
+    font-size: 0.88em; font-weight: 700; transition: all 0.2s;
+  }
+  .cell-b:hover { border-color: #4caf50; color: #fff; box-shadow: 0 0 20px rgba(76,175,80,0.3); }
+  .cell-b .icon { font-size: 1.8em; }
+
+  /* ========================================= */
+  /*  案C: 白 + 左カラーバー + シャドウ           */
+  /* ========================================= */
+  .cell-c {
+    position: absolute; width: 220px; height: 85px;
+    display: flex; align-items: center; gap: 12px; padding: 0 18px 0 22px;
+    border-radius: 14px; backface-visibility: hidden;
+    background: #fff; border: 1px solid #eee;
+    text-decoration: none; color: #333;
+    font-size: 0.88em; font-weight: 700; transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 4px solid #4caf50;
+  }
+  .cell-c:hover { box-shadow: 0 6px 20px rgba(76,175,80,0.15); border-left-color: #2e7d32; color: #2e7d32; }
+  .cell-c .icon { font-size: 1.6em; }
+
+  /* ========================================= */
+  /*  案D: ピル型 + アイコン丸背景               */
+  /* ========================================= */
+  .cell-d {
+    position: absolute; width: 230px; height: 80px;
+    display: flex; align-items: center; gap: 12px; padding: 0 20px;
+    border-radius: 40px; backface-visibility: hidden;
+    background: #fff; border: 1.5px solid #e0e0e0;
+    text-decoration: none; color: #333;
+    font-size: 0.88em; font-weight: 700; transition: all 0.2s;
+  }
+  .cell-d:hover { border-color: #4caf50; background: #f0faf0; color: #2e7d32; }
+  .cell-d .icon-wrap {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #e8f5e9; display: flex; align-items: center; justify-content: center;
+    font-size: 1.4em; flex-shrink: 0;
+  }
+  .cell-d:hover .icon-wrap { background: #4caf50; }
+
+  /* ========================================= */
+  /*  案E: カード + サブテキスト                  */
+  /* ========================================= */
+  .cell-e {
+    position: absolute; width: 220px; height: 90px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; padding: 12px;
+    border-radius: 14px; backface-visibility: hidden;
+    background: #fff; border: 1.5px solid #eee;
+    text-decoration: none; color: #333; transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .cell-e:hover { border-color: #4caf50; transform: scale(1.02); box-shadow: 0 6px 20px rgba(76,175,80,0.12); }
+  .cell-e .icon { font-size: 1.8em; }
+  .cell-e .name { font-size: 0.88em; font-weight: 800; }
+  .cell-e .sub { font-size: 0.65em; color: #999; font-weight: 500; }
+  .cell-e:hover .name { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案F: グラスモーフィズム                     */
+  /* ========================================= */
+  .scene-f { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius: 12px; }
+  .cell-f {
+    position: absolute; width: 220px; height: 85px;
+    display: flex; align-items: center; gap: 12px; padding: 0 18px;
+    border-radius: 16px; backface-visibility: hidden;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.5);
+    text-decoration: none; color: #1b5e20;
+    font-size: 0.88em; font-weight: 700; transition: all 0.2s;
+  }
+  .cell-f:hover { background: rgba(255,255,255,0.9); color: #2e7d32; }
+  .cell-f .icon { font-size: 1.8em; }
+</style>
+</head>
+<body>
+
+<h1>3Dカルーセル セルデザイン案</h1>
+<p class="desc">回転するカード1枚1枚のデザイン6パターン</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : グラデーション背景 + 大アイコン</div>
+  <div class="proposal-body">
+    <div class="scene"><div class="carousel" id="ca"></div></div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : ダーク背景 + ネオンアクセント</div>
+  <div class="proposal-body">
+    <div class="scene"><div class="carousel" id="cb" style="animation-duration:28s"></div></div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 白 + 左カラーバー + シャドウ</div>
+  <div class="proposal-body">
+    <div class="scene"><div class="carousel" id="cc" style="animation-duration:22s"></div></div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : ピル型 + アイコン丸背景</div>
+  <div class="proposal-body">
+    <div class="scene"><div class="carousel" id="cd" style="animation-duration:26s"></div></div>
+  </div>
+</div>
+
+<!-- 案E -->
+<div class="proposal">
+  <div class="proposal-label">案E : カード + サブテキスト（縦配置）</div>
+  <div class="proposal-body">
+    <div class="scene"><div class="carousel" id="ce" style="animation-duration:24s"></div></div>
+  </div>
+</div>
+
+<!-- 案F -->
+<div class="proposal">
+  <div class="proposal-label">案F : グラスモーフィズム</div>
+  <div class="proposal-body">
+    <div class="scene scene-f"><div class="carousel" id="cf" style="animation-duration:27s"></div></div>
+  </div>
+</div>
+
+<script>
+var items = [
+  {icon:'💬',name:'プロンプトエンジニア',sub:'42件'},
+  {icon:'🧠',name:'MLエンジニア',sub:'38件'},
+  {icon:'🔬',name:'AIリサーチャー',sub:'24件'},
+  {icon:'💻',name:'LLMアプリ開発',sub:'56件'},
+  {icon:'📊',name:'データサイエンティスト',sub:'31件'},
+  {icon:'🤖',name:'AIエージェント開発',sub:'19件'}
+];
+
+function setup(id, cls, template) {
+  var el = document.getElementById(id);
+  var n = items.length, angle = 360/n;
+  var r = Math.round(115 / Math.tan(Math.PI / n));
+  items.forEach(function(item, i) {
+    var cell = document.createElement('a');
+    cell.className = cls; cell.href = '#';
+    cell.innerHTML = template(item);
+    cell.style.transform = 'rotateY(' + (angle*i) + 'deg) translateZ(' + r + 'px)';
+    el.appendChild(cell);
+  });
+}
+
+// 案A
+setup('ca', 'cell-a', function(d) { return '<span class="icon">'+d.icon+'</span>'+d.name; });
+// 案B
+setup('cb', 'cell-b', function(d) { return '<span class="icon">'+d.icon+'</span>'+d.name; });
+// 案C
+setup('cc', 'cell-c', function(d) { return '<span class="icon">'+d.icon+'</span>'+d.name; });
+// 案D
+setup('cd', 'cell-d', function(d) { return '<div class="icon-wrap">'+d.icon+'</div>'+d.name; });
+// 案E
+setup('ce', 'cell-e', function(d) { return '<span class="icon">'+d.icon+'</span><span class="name">'+d.name+'</span><span class="sub">'+d.sub+'</span>'; });
+// 案F
+setup('cf', 'cell-f', function(d) { return '<span class="icon">'+d.icon+'</span>'+d.name; });
+</script>
+
+</body>
+</html>

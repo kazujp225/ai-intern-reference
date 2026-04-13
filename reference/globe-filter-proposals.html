@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地球型回転フィルター UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #fff; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 40px; display: flex; flex-direction: column; align-items: center; }
+
+  /* ========================================= */
+  /*  案A: 3D球体回転（ワードクラウド地球）       */
+  /* ========================================= */
+  .ga-globe {
+    width: 500px; height: 500px; position: relative;
+    perspective: 800px;
+  }
+  .ga-sphere {
+    width: 100%; height: 100%; position: relative;
+    transform-style: preserve-3d;
+    animation: ga-spin 40s linear infinite;
+  }
+  .ga-sphere:hover { animation-play-state: paused; }
+  .ga-tag {
+    position: absolute; left: 50%; top: 50%;
+    padding: 8px 18px; border-radius: 10px;
+    background: rgba(255,255,255,0.9); border: 1.5px solid #e0e0e0;
+    font-size: 0.85em; font-weight: 700; color: #333;
+    text-decoration: none; white-space: nowrap;
+    backface-visibility: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .ga-tag:hover { background: #4caf50; color: #fff; border-color: #4caf50; transform: scale(1.15) !important; z-index: 100; }
+  .ga-tag .ga-n { font-size: 0.75em; color: #bbb; margin-left: 4px; }
+  .ga-tag:hover .ga-n { color: rgba(255,255,255,0.7); }
+  .ga-tag .ga-icon { margin-right: 4px; }
+  @keyframes ga-spin { from { transform: rotateY(0) rotateX(-15deg); } to { transform: rotateY(360deg) rotateX(-15deg); } }
+
+  /* ========================================= */
+  /*  案B: 多重リング地球型                      */
+  /* ========================================= */
+  .gb-scene {
+    width: 550px; height: 550px; position: relative;
+    perspective: 1000px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gb-center {
+    position: absolute; z-index: 10;
+    font-size: 1.2em; font-weight: 900; color: #1b5e20;
+    text-align: center; pointer-events: none;
+  }
+  .gb-center span { display: block; font-size: 0.6em; color: #999; font-weight: 500; }
+  .gb-ring {
+    position: absolute; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+  }
+  .gb-ring-1 { animation: gb-r1 35s linear infinite; }
+  .gb-ring-2 { animation: gb-r2 28s linear infinite; }
+  .gb-ring-3 { animation: gb-r3 32s linear infinite; }
+  .gb-ring-4 { animation: gb-r4 38s linear infinite; }
+  .gb-ring:hover { animation-play-state: paused; }
+  .gb-chip {
+    position: absolute; left: 50%; top: 50%;
+    padding: 7px 16px; border-radius: 10px;
+    font-size: 0.82em; font-weight: 700; white-space: nowrap;
+    text-decoration: none; backface-visibility: hidden;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .gb-chip:hover { transform: scale(1.15) !important; z-index: 100; }
+  .gb-c1 { background: rgba(232,245,233,0.9); color: #1b5e20; border: 1.5px solid #a5d6a7; }
+  .gb-c2 { background: rgba(227,242,253,0.9); color: #0d47a1; border: 1.5px solid #90caf9; }
+  .gb-c3 { background: rgba(243,229,245,0.9); color: #4a148c; border: 1.5px solid #ce93d8; }
+  .gb-c4 { background: rgba(255,243,224,0.9); color: #e65100; border: 1.5px solid #ffcc80; }
+  .gb-chip:hover { background: #4caf50 !important; color: #fff !important; border-color: #4caf50 !important; }
+  .gb-chip .gb-n { font-size: 0.75em; opacity: 0.6; margin-left: 3px; }
+  @keyframes gb-r1 { from { transform: rotateY(0) rotateX(70deg); } to { transform: rotateY(360deg) rotateX(70deg); } }
+  @keyframes gb-r2 { from { transform: rotateY(0) rotateX(20deg) rotateZ(30deg); } to { transform: rotateY(360deg) rotateX(20deg) rotateZ(30deg); } }
+  @keyframes gb-r3 { from { transform: rotateY(0) rotateX(-40deg) rotateZ(-20deg); } to { transform: rotateY(360deg) rotateX(-40deg) rotateZ(-20deg); } }
+  @keyframes gb-r4 { from { transform: rotateY(0) rotateZ(60deg); } to { transform: rotateY(360deg) rotateZ(60deg); } }
+
+  /* ========================================= */
+  /*  案C: 半球ドーム + 地平線                    */
+  /* ========================================= */
+  .gc-scene {
+    width: 600px; height: 350px; position: relative;
+    perspective: 800px; overflow: hidden;
+  }
+  .gc-dome {
+    position: absolute; bottom: -200px; left: 50%; transform: translateX(-50%);
+    width: 550px; height: 550px;
+    transform-style: preserve-3d;
+    animation: gc-spin 35s linear infinite;
+    transform-origin: center center;
+  }
+  .gc-dome:hover { animation-play-state: paused; }
+  .gc-item {
+    position: absolute; left: 50%; top: 50%;
+    padding: 8px 18px; border-radius: 10px;
+    background: rgba(255,255,255,0.95); border: 1.5px solid #e0e0e0;
+    font-size: 0.85em; font-weight: 700; color: #333;
+    text-decoration: none; white-space: nowrap;
+    backface-visibility: hidden; transition: all 0.2s;
+  }
+  .gc-item:hover { background: #4caf50; color: #fff; border-color: #4caf50; z-index: 100; }
+  .gc-item .gc-n { font-size: 0.75em; color: #bbb; margin-left: 3px; }
+  .gc-item:hover .gc-n { color: rgba(255,255,255,0.7); }
+  .gc-horizon {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.95));
+    z-index: 5;
+  }
+  @keyframes gc-spin {
+    from { transform: translateX(-50%) rotateY(0) rotateX(-30deg); }
+    to { transform: translateX(-50%) rotateY(360deg) rotateX(-30deg); }
+  }
+
+  /* ========================================= */
+  /*  案D: フラット地球（2D回転ディスク）          */
+  /* ========================================= */
+  .gd-scene {
+    width: 520px; height: 520px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gd-disk {
+    width: 480px; height: 480px; border-radius: 50%;
+    background: radial-gradient(circle, #f0faf0 0%, #e8f5e9 50%, #c8e6c9 100%);
+    position: relative;
+    animation: gd-rotate 45s linear infinite;
+    box-shadow: inset 0 0 60px rgba(76,175,80,0.1), 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .gd-disk:hover { animation-play-state: paused; }
+  .gd-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 10; text-align: center; pointer-events: none;
+    font-size: 1.1em; font-weight: 900; color: #1b5e20;
+  }
+  .gd-center span { display: block; font-size: 0.6em; color: #999; }
+  .gd-tag {
+    position: absolute;
+    padding: 7px 16px; border-radius: 20px;
+    background: #fff; border: 1.5px solid #e0e0e0;
+    font-size: 0.8em; font-weight: 700; color: #333;
+    text-decoration: none; white-space: nowrap;
+    transition: all 0.2s;
+    /* counter-rotate */
+    animation: gd-counter 45s linear infinite;
+  }
+  .gd-tag:hover { background: #2e7d32; color: #fff; border-color: #2e7d32; transform: scale(1.1); z-index: 20; }
+  .gd-tag .gd-n { font-size: 0.75em; color: #bbb; margin-left: 3px; }
+  .gd-tag:hover .gd-n { color: rgba(255,255,255,0.6); }
+  @keyframes gd-rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  @keyframes gd-counter { from { transform: rotate(0); } to { transform: rotate(-360deg); } }
+</style>
+</head>
+<body>
+
+<h1>地球型回転フィルター UI案</h1>
+<p class="desc">地球のようにクルクル回るフィルターUI</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : 3D球体回転（ワードクラウド地球）</div>
+  <div class="proposal-body">
+    <div class="ga-globe"><div class="ga-sphere" id="gaSphere"></div></div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : 多重リング地球型（カテゴリ別リング）</div>
+  <div class="proposal-body">
+    <div class="gb-scene">
+      <div class="gb-center">AIme<span>フィルター</span></div>
+      <div class="gb-ring gb-ring-1" id="gbRing1"></div>
+      <div class="gb-ring gb-ring-2" id="gbRing2"></div>
+      <div class="gb-ring gb-ring-3" id="gbRing3"></div>
+      <div class="gb-ring gb-ring-4" id="gbRing4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 半球ドーム + 地平線（地球を上から見る）</div>
+  <div class="proposal-body">
+    <div class="gc-scene">
+      <div class="gc-dome" id="gcDome"></div>
+      <div class="gc-horizon"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : フラット地球ディスク（2D回転 + カウンター回転テキスト）</div>
+  <div class="proposal-body">
+    <div class="gd-scene">
+      <div class="gd-disk" id="gdDisk">
+        <div class="gd-center">AIme<span>を探す</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var all = [
+  {icon:'💬',name:'LLMアプリ開発',n:'56',cat:1},
+  {icon:'🧠',name:'プロンプトエンジニア',n:'42',cat:1},
+  {icon:'🔬',name:'MLエンジニア',n:'38',cat:1},
+  {icon:'📊',name:'データサイエンティスト',n:'31',cat:1},
+  {icon:'🤖',name:'AIエージェント開発',n:'19',cat:1},
+  {icon:'🎨',name:'AI x クリエイティブ',n:'15',cat:1},
+  {icon:'🏠',name:'フルリモート可',n:'89',cat:2},
+  {icon:'🌱',name:'未経験OK',n:'67',cat:2},
+  {icon:'💰',name:'時給2,000円以上',n:'52',cat:2},
+  {icon:'📝',name:'文系歓迎',n:'45',cat:2},
+  {icon:'👔',name:'CEO直下',n:'38',cat:2},
+  {icon:'🖥️',name:'GPU使い放題',n:'23',cat:2},
+  {icon:'🧠',name:'LLM',n:'78',cat:3},
+  {icon:'☁️',name:'AI SaaS',n:'56',cat:3},
+  {icon:'🤖',name:'AIエージェント',n:'34',cat:3},
+  {icon:'🎨',name:'画像生成',n:'23',cat:3},
+  {icon:'🏥',name:'ヘルスケアAI',n:'18',cat:3},
+  {icon:'',name:'RAG',n:'',cat:4},
+  {icon:'',name:'Claude',n:'',cat:4},
+  {icon:'',name:'LangChain',n:'',cat:4},
+  {icon:'',name:'Kaggle',n:'',cat:4},
+  {icon:'',name:'Transformer',n:'',cat:4},
+  {icon:'',name:'強化学習',n:'',cat:4},
+];
+
+// 案A: 3D球体
+(function(){
+  var sphere = document.getElementById('gaSphere');
+  var n = all.length;
+  all.forEach(function(d, i) {
+    var phi = Math.acos(-1 + (2 * i + 1) / n);
+    var theta = Math.sqrt(n * Math.PI) * phi;
+    var x = 220 * Math.cos(theta) * Math.sin(phi);
+    var y = 220 * Math.sin(theta) * Math.sin(phi);
+    var z = 220 * Math.cos(phi);
+    var tag = document.createElement('a');
+    tag.className = 'ga-tag'; tag.href = '#';
+    var iconH = d.icon ? '<span class="ga-icon">'+d.icon+'</span>' : '';
+    var nH = d.n ? '<span class="ga-n">'+d.n+'</span>' : '';
+    tag.innerHTML = iconH + d.name + nH;
+    tag.style.transform = 'translate3d('+x+'px,'+y+'px,'+z+'px)';
+    sphere.appendChild(tag);
+  });
+})();
+
+// 案B: 多重リング
+(function(){
+  var cats = {1:'gbRing1',2:'gbRing2',3:'gbRing3',4:'gbRing4'};
+  var colors = {1:'gb-c1',2:'gb-c2',3:'gb-c3',4:'gb-c4'};
+  var groups = {};
+  all.forEach(function(d){ if(!groups[d.cat]) groups[d.cat]=[]; groups[d.cat].push(d); });
+  Object.keys(groups).forEach(function(cat) {
+    var ring = document.getElementById(cats[cat]);
+    var items = groups[cat];
+    var n = items.length, angle = 360/n;
+    var r = 240;
+    items.forEach(function(d, i) {
+      var chip = document.createElement('a');
+      chip.className = 'gb-chip ' + colors[cat]; chip.href = '#';
+      var nH = d.n ? '<span class="gb-n">'+d.n+'</span>' : '';
+      chip.innerHTML = (d.icon||'') + ' ' + d.name + nH;
+      var rad = (angle * i) * Math.PI / 180;
+      var x = r * Math.cos(rad) - 50;
+      var y = r * Math.sin(rad) - 15;
+      chip.style.marginLeft = x + 'px';
+      chip.style.marginTop = y + 'px';
+      ring.appendChild(chip);
+    });
+  });
+})();
+
+// 案C: 半球ドーム
+(function(){
+  var dome = document.getElementById('gcDome');
+  var n = all.length;
+  all.forEach(function(d, i) {
+    var phi = Math.acos(-1 + (2 * i + 1) / n);
+    var theta = Math.sqrt(n * Math.PI) * phi;
+    var r = 240;
+    var x = r * Math.cos(theta) * Math.sin(phi);
+    var y = r * Math.sin(theta) * Math.sin(phi);
+    var z = r * Math.cos(phi);
+    if (z < -50) return;
+    var item = document.createElement('a');
+    item.className = 'gc-item'; item.href = '#';
+    var iconH = d.icon ? d.icon+' ' : '';
+    var nH = d.n ? '<span class="gc-n">'+d.n+'</span>' : '';
+    item.innerHTML = iconH + d.name + nH;
+    item.style.transform = 'translate3d('+x+'px,'+y+'px,'+z+'px)';
+    dome.appendChild(item);
+  });
+})();
+
+// 案D: フラットディスク
+(function(){
+  var disk = document.getElementById('gdDisk');
+  var n = all.length;
+  var rings = [140, 200]; // 2重の円
+  all.forEach(function(d, i) {
+    var ring = (i < 12) ? rings[0] : rings[1];
+    var idx = (i < 12) ? i : i - 12;
+    var total = (i < 12) ? 12 : n - 12;
+    var angle = (360 / total) * idx;
+    var rad = angle * Math.PI / 180;
+    var x = 240 + ring * Math.cos(rad) - 50;
+    var y = 240 + ring * Math.sin(rad) - 15;
+    var tag = document.createElement('a');
+    tag.className = 'gd-tag'; tag.href = '#';
+    var nH = d.n ? '<span class="gd-n">'+d.n+'</span>' : '';
+    tag.innerHTML = (d.icon||'') + d.name + nH;
+    tag.style.left = x + 'px';
+    tag.style.top = y + 'px';
+    disk.appendChild(tag);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -2,15 +2,15 @@
 
 <head>
   <meta charset="utf-8">
-  <title>AIインターン | 人類最後の就活、始めませんか？</title>
+  <title>AIme | 人類最後の就活、始めませんか？</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0">
-  <meta name="description" content="【AI特化インターン掲載数 日本一（自称）】ChatGPTに仕事を奪われる前に、奪う側に回れ。プロンプトエンジニア、MLエンジニア、AIリサーチャーなど尖りまくったAIインターンだけを厳選掲載。">
-  <meta property="og:title" content="AIインターン | 人類最後の就活、始めませんか？">
+  <meta name="description" content="【AI特化インターン掲載数 日本一（自称）】ChatGPTに仕事を奪われる前に、奪う側に回れ。プロンプトエンジニア、MLエンジニア、AIリサーチャーなど尖りまくったAImeだけを厳選掲載。">
+  <meta property="og:title" content="AIme | 人類最後の就活、始めませんか？">
   <meta property="og:type" content="website">
   <meta property="og:description" content="AIに仕事を奪われるのが怖い？なら奪う側に回れ。AI特化型インターンだけを集めた、日本で一番尖ったインターンサイト。">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AIインターン | 人類最後の就活">
+  <meta name="twitter:title" content="AIme | 人類最後の就活">
   <link href="css/vendor.css" rel="stylesheet">
   <link href="css/top.css" rel="stylesheet">
   <style>
@@ -21,26 +21,49 @@
     .edgy-tag { display: inline-block; background: #1a1a2e; color: #00ff88; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; margin: 2px; font-family: monospace; }
     .skull-divider { text-align: center; padding: 10px 0; font-size: 1.2em; letter-spacing: 8px; color: #764ba2; }
 
-    /* ヘッダー */
-    .header { background: #fff !important; position: relative; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    /* ページ全体の背景を白に統一（ヒーローセクション除く） */
+    body, .content-wrapper, .main-container, .main-inner {
+      background: #fff !important;
+    }
+
+    /* ヘッダー: ホワイト + グリーンテキスト */
+    .header {
+      background: #fff !important;
+      position: relative; overflow: hidden;
+      box-shadow: 0 1px 0 #e0e0e0 !important;
+    }
     .header-inner { background: transparent !important; }
     .header-logo { display: none !important; }
-    .neo-logo { font-size: 1.4em; font-weight: 900; font-family: monospace; color: #222; text-decoration: none; letter-spacing: 3px; }
-    .neo-logo .bracket { color: #4caf50; font-weight: 400; }
-    .header-category { background: transparent !important; }
-    .header-category-item { color: #222 !important; font-family: monospace !important; font-size: 0.8em !important; transition: all 0.2s !important; }
-    .header-category-item:hover { border-bottom: 2px solid #222; }
-    .header-category-item.current { border-bottom: 2px solid #222; }
-    .neo-nav { display: flex; align-items: center; gap: 20px; font-family: monospace; }
-    .neo-nav a { color: #222; text-decoration: none; font-size: 0.8em; transition: all 0.2s; }
-    .neo-nav a:hover { border-bottom: 2px solid #222; }
-    .neo-nav .neo-corp { color: #999; font-size: 0.65em; }
-    .neo-nav .neo-login { color: #222; }
-    .neo-nav .neo-register {
-      border: none; background: #222; color: #fff; padding: 6px 18px;
-      border-radius: 4px; font-weight: 700; transition: all 0.2s;
+    .neo-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 1.5em; font-weight: 900; color: #1b5e20;
+      text-decoration: none; letter-spacing: 2px;
     }
-    .neo-nav .neo-register:hover { background: #444; }
+    .neo-logo span { color: #4caf50; }
+    .header-category { background: transparent !important; }
+    .header-category-item {
+      color: #888 !important; font-size: 0.88em !important;
+      font-weight: 600 !important; padding: 4px 0 !important;
+      border-bottom: 2px solid transparent !important; transition: all 0.2s !important;
+    }
+    .header-category-item:hover { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
+    .header-category-item.current { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
+    .neo-nav { display: flex; align-items: center; gap: 24px; }
+    .neo-nav a {
+      color: #888; text-decoration: none; font-size: 0.88em;
+      font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .neo-nav a:hover { color: #2e7d32; border-bottom-color: #4caf50; }
+    .neo-nav .neo-corp { color: #bbb; font-size: 0.75em; }
+    .neo-nav .neo-login { color: #2e7d32; }
+    .neo-nav .neo-register {
+      background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+      padding: 7px 22px; border-radius: 6px; font-weight: 800;
+      font-size: 0.85em; border: none; border-bottom: none !important;
+      transition: all 0.2s;
+    }
+    .neo-nav .neo-register:hover { opacity: 0.9; }
 
     /* Hero background image - right side, fading to left */
     .cover-area { position: relative; overflow: hidden; }
@@ -141,11 +164,11 @@
 
     /* 特集トップ企業紹介 */
     .featured-companies {
-      background: #f9f9f9;
+      background: #fff;
       padding: 50px 40px;
       text-align: center;
-      border: 2px solid #4caf50;
-      border-radius: 16px;
+      border: none;
+      border-radius: 0;
       max-width: 1000px;
       margin: 30px auto;
     }
@@ -213,23 +236,203 @@
     /* 案2: アイコン付きグリッドカード */
     .search-interns-new {
       background: #fff;
-      border-radius: 12px;
+      border-radius: 0;
       padding: 40px;
       margin-bottom: 30px;
+      border: none !important;
+      box-shadow: none !important;
     }
+    /* セクション題名: ナンバリング + タイトル */
+    .section-title-e {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .section-title-e .e-num {
+      font-size: 3em;
+      font-weight: 900;
+      color: #e8f5e9;
+      line-height: 1;
+      -webkit-text-stroke: 1.5px #4caf50;
+      font-family: 'Arial Black', sans-serif;
+    }
+    .section-title-e .e-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .section-title-e h2 {
+      font-size: 1.7em;
+      font-weight: 900;
+      color: #222;
+      margin: 0;
+    }
+    .section-title-e .e-sub {
+      font-size: 0.82em;
+      color: #999;
+      font-weight: 500;
+      margin: 0;
+    }
+    /* アメリカ地図 + 企業ピン */
+    .usa-map-wrap {
+      position: relative; max-width: 700px; margin: 30px auto 0;
+    }
+    .usa-map-img {
+      width: 100%; display: block; border-radius: 12px;
+    }
+    .usa-pin {
+      position: absolute; cursor: pointer; z-index: 5;
+      transform: translate(-50%, -50%);
+    }
+    .usa-pin-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      transition: all 0.2s;
+      animation: usa-pulse 2s ease-in-out infinite;
+    }
+    .usa-pin:hover .usa-pin-dot { transform: scale(1.4); }
+    .usa-pin-label {
+      position: absolute; top: -110px; left: 50%; transform: translateX(-50%);
+      font-size: 0.82em; font-weight: 800; color: #333;
+      background: #fff; padding: 14px 18px; border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18); white-space: nowrap;
+      opacity: 0; transition: all 0.25s; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      border: 1px solid #eee; z-index: 50;
+    }
+    .usa-pin-label img { width: 70px; height: 70px; object-fit: contain; display: block; }
+    .usa-pin-label svg { width: 70px; height: 70px; display: block; }
+    .usa-pin:hover .usa-pin-label { opacity: 1; transform: translateX(-50%) translateY(-8px); }
+    .usa-pin-tooltip { display: none !important; }
+    @keyframes usa-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(76,175,80,0); }
+    }
+
     .search-new-title {
-      font-size: 1.6em;
-      font-weight: 800;
+      font-size: 2.2em;
+      font-weight: 900;
       color: #222;
       margin-bottom: 30px;
     }
+    /* サイドバー: アコーディオン型 */
+    .sidebar-accordion { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; }
+    .sb-acc-item { border-bottom: 1px solid #e8e8e8; }
+    .sb-acc-item:last-child { border-bottom: none; }
+    .sb-acc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; cursor: pointer; transition: background 0.2s;
+      user-select: none;
+    }
+    .sb-acc-header:hover { background: #f5f5f5; }
+    .sb-acc-title { font-size: 1.1em; font-weight: 800; color: #222; display: flex; align-items: center; gap: 8px; }
+    .sb-acc-count { background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 10px; font-size: 0.8em; font-weight: 700; }
+    .sb-acc-arrow { font-size: 0.8em; color: #999; transition: transform 0.3s; }
+    .sb-acc-item.open .sb-acc-arrow { transform: rotate(180deg); }
+    .sb-acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .sb-acc-item.open .sb-acc-body { max-height: 600px; }
+    .sb-acc-list { list-style: none !important; padding: 0 18px 14px !important; margin: 0 !important; }
+    .sb-acc-list li { border-bottom: 1px solid #f0f0f0; }
+    .sb-acc-list li:last-child { border-bottom: none; }
+    .sb-acc-list li a {
+      display: flex !important; justify-content: space-between !important; align-items: center !important;
+      padding: 11px 8px !important; text-decoration: none !important; color: #333 !important;
+      font-size: 1em !important; font-weight: 600 !important; transition: all 0.15s !important;
+      border-radius: 6px !important;
+    }
+    .sb-acc-list li a:hover { background: #f0faf0 !important; color: #2e7d32 !important; padding-left: 14px !important; }
+    .sb-acc-list li a span {
+      background: #f5f5f5 !important; color: #666 !important; padding: 2px 8px !important; border-radius: 6px !important;
+      font-size: 0.8em !important; font-weight: 700 !important; min-width: 30px; text-align: center;
+    }
+    .sb-acc-list li a:hover span { background: #e8f5e9 !important; color: #2e7d32 !important; }
+    /* フィルター: 横並びチップグループ型 */
+    .fc-filter { margin: 30px 0 40px; display: flex; flex-direction: column; gap: 24px; }
+
+    .fc-label {
+      font-size: 0.82em; font-weight: 800; color: #999; letter-spacing: 0.05em;
+      margin-bottom: 10px; padding-left: 2px;
+    }
+    .fc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fc-chip {
+      padding: 8px 18px; border-radius: 8px; font-size: 0.85em; font-weight: 700;
+      background: #f5f5f5; color: #444; cursor: pointer; transition: all 0.15s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .fc-chip:hover { background: #e8f5e9; color: #2e7d32; }
+    .fc-chip .fc-n { font-size: 0.75em; color: #bbb; font-weight: 600; }
+    .fc-chip.fc-hot { background: #2e7d32; color: #fff; }
+    .fc-chip.fc-hot .fc-n { color: rgba(255,255,255,0.6); }
+
+    /* スマホスクロール風フィルター */
+    .phone-filter-row { display: flex; justify-content: center; gap: 24px; flex-wrap: nowrap; }
+    .pf-phone {
+      width: 310px; flex-shrink: 0;
+      background: #111; border-radius: 38px; padding: 11px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 0 0 2px #333;
+    }
+    .pf-notch {
+      width: 100px; height: 24px; background: #111; border-radius: 0 0 14px 14px;
+      margin: 0 auto; position: relative; z-index: 10; margin-top: -12px;
+    }
+    .pf-screen { background: #fff; border-radius: 30px; overflow: hidden; height: 580px; position: relative; }
+    .pf-statusbar { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 0.65em; color: #333; font-weight: 700; }
+    .pf-header { padding: 14px 20px; color: #fff; font-size: 0.95em; font-weight: 800; text-align: center; }
+    .pf-h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+    .pf-h2 { background: linear-gradient(135deg, #0d47a1, #1565c0); }
+    .pf-h3 { background: linear-gradient(135deg, #4a148c, #6a1b9a); }
+    .pf-content { height: 480px; overflow: hidden; position: relative; }
+    .pf-scroll { padding: 14px; }
+    .pf-s1 { animation: pf-up 18s linear infinite; }
+    .pf-s2 { animation: pf-down 20s linear infinite; }
+    .pf-s3 { animation: pf-up 22s linear infinite; }
+    .pf-scroll:hover { animation-play-state: paused; }
+    .pf-card {
+      padding: 14px 16px; margin-bottom: 8px; border-radius: 10px;
+      border: 1px solid #f0f0f0; text-decoration: none; display: block;
+      color: #333; transition: all 0.12s;
+    }
+    .pf-card:hover { border-color: #4caf50; background: #fafffe; }
+    .pf-card-name { font-size: 0.9em; font-weight: 800; }
+    .pf-card-num { font-size: 0.75em; color: #4caf50; font-weight: 700; }
+    .pf-fade-top, .pf-fade-bottom { position: absolute; left: 0; right: 0; height: 30px; z-index: 3; pointer-events: none; }
+    .pf-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+    .pf-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+    .pf-home { height: 18px; display: flex; align-items: center; justify-content: center; }
+    .pf-home-bar { width: 80px; height: 3px; background: #ddd; border-radius: 2px; }
+    @keyframes pf-up { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+    @keyframes pf-down { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
+    /* 案D: アプリ風タブ */
+    .pd-tabs { display: flex; border-bottom: 1px solid #eee; }
+    .pd-tab {
+      flex: 1; padding: 8px 0; font-size: 0.62em; font-weight: 700;
+      color: #aaa; text-align: center; cursor: pointer; transition: all 0.15s;
+      border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .pd-tab:hover { color: #333; }
+    .pd-tab.active { color: #2e7d32; border-bottom-color: #4caf50; }
+    .pd-content { height: 370px; overflow: hidden; position: relative; }
+    .pd-scroll { padding: 12px; animation: pf-up 22s linear infinite; }
+    .pd-scroll:hover { animation-play-state: paused; }
+    .pd-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border-bottom: 1px solid #f5f5f5;
+      text-decoration: none; color: #333; transition: all 0.12s;
+    }
+    .pd-row:hover { background: #f0faf0; }
+    .pd-row-name { font-size: 0.78em; font-weight: 700; }
+    .pd-row-num {
+      font-size: 0.7em; color: #4caf50; font-weight: 800;
+      background: #e8f5e9; padding: 2px 8px; border-radius: 8px;
+    }
     .search-category-label {
-      font-size: 1.1em;
-      font-weight: 700;
+      font-size: 1.4em;
+      font-weight: 900;
       color: #4caf50;
-      margin: 24px 0 14px;
-      padding-left: 12px;
-      border-left: 4px solid #4caf50;
+      margin: 28px 0 16px;
+      padding-left: 14px;
+      border-left: 5px solid #4caf50;
     }
     .search-icon-grid {
       display: flex;
@@ -240,14 +443,14 @@
       background: #fff;
       border: 1px solid #e0e0e0;
       border-radius: 10px;
-      padding: 14px 18px;
+      padding: 16px 22px;
       text-decoration: none;
-      color: #333;
-      font-size: 0.9em;
-      font-weight: 500;
+      color: #222;
+      font-size: 1.1em;
+      font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       transition: all 0.2s;
       box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
@@ -258,104 +461,315 @@
       box-shadow: 0 4px 12px rgba(76,175,80,0.15);
     }
     .search-icon-img {
-      width: 28px;
-      height: 28px;
+      width: 34px;
+      height: 34px;
       object-fit: contain;
     }
+    /* 3D回転カルーセル */
+    .carousel-3d-scene {
+      perspective: 800px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .carousel-3d {
+      width: 220px; height: 80px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: carousel3d-rotate 25s linear infinite;
+    }
+    .carousel-3d:hover { animation-play-state: paused; }
+    .carousel-3d-cell {
+      position: absolute; width: 200px; height: 70px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 12px; border: 1.5px solid #eee; background: rgba(255,255,255,0.95);
+      font-size: 0.88em; font-weight: 700; color: #333;
+      text-decoration: none; backface-visibility: hidden;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .carousel-3d-cell:hover { border-color: #4caf50; color: #2e7d32; }
+    .carousel-3d-cell .c3d-icon { font-size: 1.3em; }
+    @keyframes carousel3d-rotate { from { transform: rotateY(0); } to { transform: rotateY(-360deg); } }
+    /* 関東地方マップ */
+    .kanto-map-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .kanto-map-wrap img {
+      border-radius: 12px;
+    }
+    .kanto-pref {
+      fill: transparent;
+      stroke: transparent;
+      cursor: pointer;
+      transition: fill 0.2s ease;
+    }
+    .kanto-pref:hover {
+      fill: rgba(76, 175, 80, 0.35);
+    }
+    .kanto-tooltip {
+      display: none;
+      position: absolute;
+      background: #1b5e20;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85em;
+      font-weight: 700;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transform: translate(-50%, -100%);
+      margin-top: -10px;
+    }
+    .kanto-tooltip .kt-count {
+      display: block;
+      font-size: 0.85em;
+      color: #a5d6a7;
+      font-weight: 600;
+    }
 
-    /* インターン一覧カード スタイル - 案2: グリッド2列 */
-    .search-interns-list {
+    /* コンパクトカードグリッド型 (Wantedly風) */
+    .compact-header { margin-bottom: 20px; }
+    .compact-title { font-size: 2em; font-weight: 900; color: #1b5e20; margin: 0; }
+    .compact-subtitle { color: #888; font-size: 1em; margin-top: 4px; }
+    .compact-tabs { display: flex; gap: 8px; margin: 20px 0 16px; flex-wrap: wrap; }
+    .compact-tab {
+      padding: 7px 16px; border-radius: 20px; border: 1.5px solid #ddd;
+      background: #fff; font-size: 0.85em; font-weight: 700; color: #555;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .compact-tab:hover, .compact-tab.active { background: #4caf50; color: #fff; border-color: #4caf50; }
+    .compact-tab .tab-num { font-size: 0.75em; opacity: 0.7; margin-left: 3px; }
+    .compact-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .compact-toolbar .ccount { font-size: 0.9em; color: #666; }
+    .compact-toolbar .ccount strong { color: #2e7d32; font-size: 1.1em; }
+    .compact-toolbar select { padding: 5px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.8em; }
+    .compact-grid {
       display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 16px !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 14px !important;
     }
-    .card-wrapper.image {
-      margin-bottom: 0 !important;
+    /* カード: ボーダーレス + タイトル重視（ミニマル） */
+    .compact-card {
+      display: block; text-decoration: none; color: #222; padding: 20px;
+      border-radius: 12px; transition: all 0.2s; background: #fff;
+      border: none !important; border-bottom: 1px solid #f0f0f0 !important;
     }
-    .card-wrapper .card {
-      border-radius: 12px !important;
-      border: 1px solid #e8e8e8 !important;
+    .compact-card:hover { background: #fafffe; box-shadow: none !important; transform: none; }
+    .compact-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .compact-card-tag {
+      background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 4px;
+      font-size: 0.7em; font-weight: 800;
+    }
+    .compact-card-tag-urgent { background: #fbe9e7; color: #e65100; }
+    .compact-card-tag-new { background: #fff3e0; color: #ff9800; }
+    .compact-card-date { font-size: 0.7em; color: #bbb; }
+    .compact-card-title {
+      font-size: 1em; font-weight: 800; line-height: 1.6; margin-bottom: 6px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .compact-card-company { font-size: 0.8em; color: #999; margin-bottom: 8px; }
+    .compact-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .compact-card-tags span {
+      background: #f5f5f5; color: #555; border-radius: 10px;
+      padding: 3px 10px; font-size: 0.7em; font-weight: 600;
+    }
+    .compact-card-meta { font-size: 0.8em; color: #888; display: flex; justify-content: space-between; }
+    .compact-card-meta strong { color: #2e7d32; }
+    .compact-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 24px; padding-bottom: 60px; background: #fff !important; position: relative; z-index: 1; }
+    section.intern-list {
+      border: none !important;
       box-shadow: none !important;
-      transition: all 0.25s !important;
-      overflow: hidden;
-      height: 100%;
+      outline: none !important;
     }
-    .card-wrapper .card:hover {
-      border-color: #4caf50 !important;
-      box-shadow: 0 6px 20px rgba(76,175,80,0.12) !important;
-      transform: translateY(-2px);
+    .compact-pagination a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid #ddd;
+      background: #fff; color: #444; font-size: 0.85em; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
     }
-    .card-wrapper .card-content {
-      padding: 16px !important;
+    .compact-pagination a:hover { border-color: #4caf50; color: #2e7d32; background: #f0faf0; }
+    .compact-pagination a.active { background: #4caf50; color: #fff; border-color: #4caf50; }
+    .compact-pagination a.disabled { color: #ccc; cursor: default; pointer-events: none; }
+    .compact-pagination .page-dots { color: #aaa; font-size: 0.9em; padding: 0 4px; }
+    .compact-card.hidden { display: none !important; }
+    .compact-card { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* メインコンテンツをフル幅・中央寄せ */
+    .main-inner {
+      display: flex !important;
+      flex-direction: column !important;
+      max-width: 1100px !important;
+      margin: 0 auto !important;
+      padding: 0 20px !important;
     }
-    .card-wrapper .intern-title a {
-      color: #222 !important;
-      font-size: 0.9em !important;
-      font-weight: 700 !important;
-      line-height: 1.5 !important;
-      text-decoration: none;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .cs-contents.pull-left {
+      width: 100% !important;
+      float: none !important;
+      max-width: 100% !important;
     }
-    .card-wrapper .intern-title a:hover {
-      color: #4caf50 !important;
+    .pull-left-inner {
+      max-width: 100% !important;
     }
-    .card-wrapper .edgy-tag {
-      background: #f0faf0 !important;
-      color: #388e3c !important;
-      border: 1px solid #c8e6c9 !important;
-      border-radius: 20px !important;
-      padding: 2px 10px !important;
-      font-family: sans-serif !important;
-      font-size: 0.7em !important;
+    /* ネオ・ブルータリズム V5 ピュアホワイト */
+    .cta-brutal-microcopy { font-family: monospace; font-size: 0.95em; font-weight: 900; background: #111; color: #fff; display: inline-block; padding: 6px 16px; margin-bottom: 0; transform: rotate(-2deg); position: relative; top: 12px; left: -20px; z-index: 2; }
+    .cta-brutal-btn { display: inline-block; background: #ffffff; border: 4px solid #111; padding: 20px 40px; border-radius: 8px; font-weight: 900; font-size: 1.3em; text-decoration: none; color: #111; box-shadow: 8px 8px 0px #111; transition: all 0.1s ease-out; position: relative; }
+    .cta-brutal-btn:active { transform: translate(5px, 5px); box-shadow: 3px 3px 0px #111; }
+    .cta-brutal-tag { border: 3px solid #111; font-size: 0.7em; padding: 2px 8px; margin-right: 15px; vertical-align: middle; background: #111; font-weight: 900; color: #fff; }
+    
+    /* SNS風 ボイスカード */
+    .sns-voice-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e1e8ed;
+      position: relative;
+      transition: background 0.2s;
+      margin: 10px; /* slick carousel用余白 */
+      text-align: left;
     }
-    .card-wrapper .pickup-tag span,
-    .card-wrapper .new-tag span {
-      background: #4caf50 !important;
-      color: #fff !important;
-      padding: 2px 8px !important;
-      border-radius: 4px !important;
-      font-size: 0.7em !important;
-      font-weight: 700 !important;
-    }
-    .card-wrapper .job-detail {
-      font-size: 0.85em !important;
-    }
-    .card-wrapper .job-detail dt {
-      color: #4caf50 !important;
-      font-weight: 700 !important;
-    }
-    .card-wrapper .view-detail-btn {
+    .sns-voice-card:hover { background: #fcfdfe; cursor: pointer; }
+    .sns-vc-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; line-height: 1.2; }
+    .sns-vc-avatar { width: 44px; height: 44px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; flex-shrink: 0;}
+    .sns-vc-info { display: flex; flex-direction: column; }
+    .sns-vc-name-wrapper { display: flex; align-items: center; gap: 6px; }
+    .sns-vc-name { font-size: 0.95em; color: #14171a; font-weight: 800; }
+    .sns-vc-verify { color: #1da1f2; font-size: 14px; }
+    .sns-vc-role { font-size: 0.75em; color: #657786; margin-top: 4px; }
+    .sns-vc-text { font-size: 0.95em; line-height: 1.5; color: #14171a; margin-top: 8px;}
+    .sns-vc-footer { margin-top: 16px; font-size: 0.8em; color: #657786; display: flex; align-items: center; gap: 15px; }
+
+    .student-voice-area {
+      max-width: 1000px !important;
+      margin: 0 auto 40px !important;
       background: #fff !important;
-      color: #4caf50 !important;
-      border: 1px solid #4caf50 !important;
-      border-radius: 8px !important;
-      padding: 8px 20px !important;
-      font-weight: 700 !important;
-      text-transform: none !important;
-      box-shadow: none !important;
-      font-size: 0.85em !important;
+    }
+    .student-voice-container,
+    .student-voice-carousel,
+    .student-voice {
+      background: #fff !important;
+    }
+    .student-voice-container {
+      overflow: visible !important;
+      padding: 0 40px 20px !important;
+    }
+    .student-voice-carousel .slick-list {
+      overflow: hidden !important;
+      padding-bottom: 10px !important;
+    }
+    .student-voice-carousel .slick-track {
+      display: flex !important;
+      gap: 16px;
+    }
+    .student-voice-carousel .slick-slide {
+      margin: 0 8px;
+    }
+    /* カルーセル矢印: ピル型縦長ボタン */
+    .student-voice-carousel .slick-prev,
+    .student-voice-carousel .slick-next {
+      width: 36px !important;
+      height: 60px !important;
+      border-radius: 18px !important;
+      background: rgba(0,0,0,0.06) !important;
+      z-index: 10 !important;
       transition: all 0.2s !important;
     }
-    .card-wrapper .view-detail-btn:hover {
-      background: #4caf50 !important;
-      color: #fff !important;
+    .student-voice-carousel .slick-prev:hover,
+    .student-voice-carousel .slick-next:hover {
+      background: rgba(76,175,80,0.15) !important;
     }
-    .card-wrapper .company-name {
-      color: #666 !important;
-      font-size: 0.8em !important;
+    .student-voice-carousel .slick-prev { left: -36px !important; }
+    .student-voice-carousel .slick-next { right: -36px !important; }
+    .student-voice-carousel .slick-prev:before,
+    .student-voice-carousel .slick-next:before {
+      font-size: 20px !important;
+      color: #888 !important;
+      opacity: 1 !important;
     }
-    .hiring-positive-part-band {
-      background: linear-gradient(90deg, #4caf50, #81c784) !important;
+    .student-voice-carousel .slick-prev:hover:before,
+    .student-voice-carousel .slick-next:hover:before {
+      color: #2e7d32 !important;
+    }
+    .student-voice-carousel .slick-prev:before { content: '\2039' !important; }
+    .student-voice-carousel .slick-next:before { content: '\203A' !important; }
+    .student-voice-title {
+      text-align: center !important;
+    }
+    .intern-list {
+      max-width: 1000px !important;
+      margin: 0 auto !important;
+      padding-bottom: 40px !important;
+      background: #fff !important;
+    }
+    .pull-left-inner, .cs-contents.pull-left, .cs-contents {
+      background: #fff !important;
+    }
+    /* 全セクションの枠線・装飾線を完全除去 */
+    .pull-left-inner,
+    .cs-contents,
+    .cs-contents.pull-left,
+    .search-interns,
+    .search-interns-list,
+    section,
+    .main-inner,
+    .main-container,
+    .card,
+    .card-panel,
+    .collapsible,
+    nav,
+    .z-depth-1,
+    .z-depth-2,
+    .z-depth-3 {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+    /* コンパクトカード: ボーダーレス */
+    .compact-card {
+      border: none !important;
+      border-bottom: 1px solid #f0f0f0 !important;
+      box-shadow: none !important;
+    }
+    .page-footer {
+      margin-top: 0 !important;
+    }
+    /* フッター前のピンク背景を除去 */
+    .content-wrapper,
+    #app,
+    .top-page,
+    body.top-page,
+    .page-footer::before,
+    .footer-container-wrapper::before {
+      background: #fff !important;
+    }
+    footer.page-footer {
+      background-color: #222 !important;
+      margin-top: 0 !important;
+      padding-top: 40px !important;
+    }
+    /* ピンク背景を完全に消す: bodyからfooterまで全要素 */
+    html, body, body.top-page, .top-page {
+      background-color: #fff !important;
+    }
+    .compact-header {
+      text-align: center;
     }
 
     /* AI名言集 */
     .ai-quotes-section {
-      background: #f5f5f5;
+      background: #fff;
       padding: 50px 40px;
       text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .ai-quotes-section .section-title-e {
+      justify-content: flex-start;
     }
     .ai-quotes-title {
       font-size: 1.8em;
@@ -421,14 +835,14 @@
   <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
     <div class="header-content" style="display: flex; align-items: center; width: 100%;">
       <div class="header-left" style="margin-right: auto;">
-        <a href="#" class="neo-logo"><span class="bracket">[</span>AI_INTERN<span class="bracket">]</span></a>
+        <a href="#" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="logo icon" style="height: 38px; width: auto;">AIme</a>
       </div>
       <div class="neo-nav">
-        <a href="#" class="header-category-item current">AIインターン</a>
+        <a href="#" class="header-category-item current">AIme</a>
         <a href="#" class="header-category-item">AI勉強会</a>
         <a href="#" class="neo-corp">採用担当者様</a>
-        <a href="#" class="neo-login">login</a>
-        <a href="#" class="neo-register">REGISTER</a>
+        <a href="#" class="neo-login">ログイン</a>
+        <a href="#" class="neo-register">新規登録</a>
       </div>
     </div>
   </div>
@@ -443,12 +857,15 @@
     <div class="top-catch">
       <img class="top-catch-tag" src="images/top/crown.svg" alt="crown.svg">
       <h2 class="top-catch-title" style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AIと共創し、未来を切り開く。</h2>
-      <h1 class="top-catch-sub-title" style="font-size: 3em; margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AI_INTERN</h1>
+      <h1 class="top-catch-sub-title" style="font-size: 3em; margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AIme</h1>
       <p style="font-size: 1.5em; font-weight: 600; margin-top: 0; text-shadow: 0 0 15px #fff, 0 0 30px #fff;">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
               <div class="top-catch-action" style="margin-top: 40px;">
-          <div class="top-catch-action-item waves-effect">
-            <p class="top-catch-action-text">＼ GPTより先に動け。登録30秒。／</p>
-            <a class="top-catch-action-btn register" href="#"><span class="top-catch-action-btn-icon">無料</span><span class="top-catch-action-btn-text">新規登録する</span></a>
+          <div class="top-catch-action-wrapper" style="text-align: left; margin-bottom: 20px;">
+            <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
+            <br>
+            <a href="#" class="cta-brutal-btn">
+              <span class="cta-brutal-tag">無料</span>新規登録する
+            </a>
           </div>
         </div>
         <img src="images/top/seika-text.png" alt="真の成果を、その手に" class="seika-text-img">
@@ -517,63 +934,95 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         <span class="company-desc">Gemini</span>
       </a>
       <a href="#" class="company-card">
-        <div class="company-logo" style="font-size: 2em; font-weight: 900; color: #d97706;">☰</div>
+        <div class="company-logo"><img src="images/logo/anthropic_logo.png" alt="Anthropic" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <span class="company-name">Anthropic</span>
         <span class="company-desc">Claude</span>
       </a>
       <a href="#" class="company-card">
-        <div class="company-logo"><svg width="50" height="50" viewBox="0 0 50 50"><defs><linearGradient id="metaGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0668E1"/><stop offset="50%" style="stop-color:#0081FB"/><stop offset="100%" style="stop-color:#00C2FF"/></linearGradient></defs><circle cx="25" cy="25" r="24" fill="url(#metaGrad)"/><text x="25" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="900" font-family="sans-serif">META AI</text></svg></div>
+        <div class="company-logo"><img src="images/logo/meta_logo.png" alt="Meta AI" style="width: 50px; height: 50px; object-fit: contain;"></div>
         <span class="company-name">Meta AI</span>
         <span class="company-desc">LLaMA</span>
       </a>
     </div>
+    <!-- アメリカ地図 + 本社ピン -->
+    <div class="usa-map-wrap">
+      <img src="images/usa-map.png" alt="アメリカ地図" class="usa-map-img">
+
+      <!-- === カリフォルニア・ベイエリア === -->
+      <div class="usa-pin" style="left: 10%; top: 36%;" data-company="OpenAI" data-location="San Francisco, CA" data-desc="ChatGPT / GPT-4">
+        <div class="usa-pin-dot" style="background: #74aa9c;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 2406 2406"><path d="M1 578.4C1 259.5 259.5 1 578.4 1h1249.1c319 0 577.5 258.5 577.5 577.4V2406H578.4C259.5 2406 1 2147.5 1 1828.6V578.4z" fill="#74aa9c"/><path d="M1107.3 299.1c-198 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.5V833.3h.1v-27.9L1372.7 604c33.7-19.5 70.4-32.9 108.5-39.8L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1z" fill="#fff"/></svg>OpenAI</div>
+      </div>
+      <div class="usa-pin" style="left: 8%; top: 41%;" data-company="Google / DeepMind" data-location="Mountain View, CA" data-desc="Gemini / Transformer">
+        <div class="usa-pin-dot" style="background: #4285f4;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#4285F4" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Google</div>
+      </div>
+      <div class="usa-pin" style="left: 12%; top: 33%;" data-company="Anthropic" data-location="San Francisco, CA" data-desc="Claude">
+        <div class="usa-pin-dot" style="background: #d97706;"></div>
+        <div class="usa-pin-label"><img src="images/logo/anthropic_logo.png" alt="Anthropic">Anthropic</div>
+      </div>
+      <div class="usa-pin" style="left: 6.5%; top: 44%;" data-company="Meta AI" data-location="Menlo Park, CA" data-desc="LLaMA / PyTorch">
+        <div class="usa-pin-dot" style="background: #0668E1;"></div>
+        <div class="usa-pin-label"><img src="images/logo/meta_logo.png" alt="Meta">Meta AI</div>
+      </div>
+      <div class="usa-pin" style="left: 9%; top: 47%;" data-company="Apple" data-location="Cupertino, CA" data-desc="Apple Intelligence / Siri">
+        <div class="usa-pin-dot" style="background: #333;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#000000" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>Apple</div>
+      </div>
+      <div class="usa-pin" style="left: 11%; top: 40%;" data-company="Salesforce" data-location="San Francisco, CA" data-desc="Einstein AI / Slack">
+        <div class="usa-pin-dot" style="background: #00a1e0;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#00A1E0" d="M10.006 5.415a4.195 4.195 0 013.045-1.306c1.56 0 2.954.9 3.69 2.205.63-.3 1.35-.45 2.1-.45 2.85 0 5.159 2.34 5.159 5.22s-2.31 5.22-5.176 5.22c-.345 0-.69-.044-1.02-.104a3.75 3.75 0 01-3.3 1.95c-.6 0-1.155-.15-1.65-.375A4.314 4.314 0 018.88 20.4a4.302 4.302 0 01-4.05-2.82c-.27.062-.54.076-.825.076-2.204 0-4.005-1.8-4.005-4.05 0-1.5.811-2.805 2.01-3.51-.255-.57-.39-1.2-.39-1.846 0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.705 3.72 1.8"/></svg>Salesforce</div>
+      </div>
+      <div class="usa-pin" style="left: 7.5%; top: 37%;" data-company="Tesla AI" data-location="Palo Alto, CA" data-desc="Autopilot / Optimus">
+        <div class="usa-pin-dot" style="background: #cc0000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#E82127" d="M12 5.362l2.475-3.026s4.245.09 8.471 2.054c-1.082 1.636-3.231 2.438-3.231 2.438-.146-1.439-1.154-1.79-4.354-1.79L12 24 8.619 5.034c-3.18 0-4.188.354-4.335 1.792 0 0-2.146-.795-3.229-2.43C5.28 2.431 9.525 2.34 9.525 2.34L12 5.362l-.004.002H12v-.002zm0-3.899c3.415-.03 7.326.528 11.328 2.28.535-.968.672-1.395.672-1.395C19.625.612 15.528.015 12 0 8.472.015 4.375.61 0 2.349c0 0 .195.525.672 1.396C4.674 1.989 8.585 1.435 12 1.46v.003z"/></svg>Tesla</div>
+      </div>
+
+      <!-- === シアトル === -->
+      <div class="usa-pin" style="left: 11%; top: 14%;" data-company="Microsoft" data-location="Redmond, WA" data-desc="Azure AI / Copilot">
+        <div class="usa-pin-dot" style="background: #00a4ef;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 48 48"><rect width="22" height="22" x="1" y="1" fill="#f25022"/><rect width="22" height="22" x="25" y="1" fill="#7fba00"/><rect width="22" height="22" x="1" y="25" fill="#00a4ef"/><rect width="22" height="22" x="25" y="25" fill="#ffb900"/></svg>Microsoft</div>
+      </div>
+      <div class="usa-pin" style="left: 13%; top: 18%;" data-company="Amazon" data-location="Seattle, WA" data-desc="AWS / Alexa / Bedrock">
+        <div class="usa-pin-dot" style="background: #ff9900;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#FF9900" d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a17.617 17.617 0 01-10.951-.577 17.88 17.88 0 01-5.43-3.35c-.1-.074-.151-.15-.151-.22 0-.047.021-.09.051-.13zm6.565-6.218c0-1.005.247-1.863.743-2.577.495-.71 1.17-1.25 2.04-1.615.796-.335 1.756-.575 2.912-.72.39-.046 1.033-.103 1.92-.174v-.37c0-.93-.105-1.558-.3-1.875-.302-.43-.78-.65-1.44-.65h-.182c-.48.046-.896.196-1.246.46-.35.27-.575.63-.675 1.096-.06.3-.206.465-.435.51l-2.52-.315c-.248-.06-.372-.18-.372-.39 0-.046.007-.09.022-.15.247-1.29.855-2.25 1.82-2.88.976-.616 2.1-.975 3.39-1.05h.54c1.65 0 2.957.434 3.888 1.29.135.15.27.3.405.48.12.165.224.314.283.45.075.134.15.33.195.57.06.254.105.42.135.51.03.104.062.3.076.615.01.313.02.493.02.553v5.28c0 .376.06.72.165 1.036.105.313.21.54.315.674l.51.674c.09.136.136.256.136.36 0 .12-.06.226-.18.314-1.2 1.05-1.86 1.62-1.963 1.71-.165.135-.375.15-.63.045a6.062 6.062 0 01-.526-.496l-.31-.347a9.391 9.391 0 01-.317-.42l-.3-.435c-.81.886-1.603 1.44-2.4 1.665-.494.15-1.093.227-1.83.227-1.11 0-2.04-.343-2.76-1.034-.72-.69-1.08-1.665-1.08-2.94l-.05-.076zm3.753-.438c0 .566.14 1.02.425 1.364.285.34.675.512 1.155.512.045 0 .106-.007.195-.02.09-.016.134-.023.166-.023.614-.16 1.08-.553 1.424-1.178.165-.28.285-.58.36-.91.09-.32.12-.59.135-.8.015-.195.015-.54.015-1.005v-.54c-.84 0-1.484.06-1.92.18-1.275.36-1.92 1.17-1.92 2.43l-.035-.02zm9.162 7.027c.03-.06.075-.11.132-.17.362-.243.714-.41 1.05-.5a8.094 8.094 0 011.612-.24c.14-.012.28 0 .41.03.65.06 1.05.168 1.172.33.063.09.099.228.099.39v.15c0 .51-.149 1.11-.424 1.8-.278.69-.664 1.248-1.156 1.68-.073.06-.14.09-.197.09-.03 0-.06 0-.09-.012-.09-.044-.107-.12-.064-.24.54-1.26.806-2.143.806-2.64 0-.15-.03-.27-.087-.344-.145-.166-.55-.257-1.224-.257-.243 0-.533.016-.87.046-.363.045-.7.09-1 .135-.09 0-.148-.014-.18-.044-.03-.03-.036-.047-.02-.077 0-.017.006-.03.02-.063v-.06z"/></svg>Amazon</div>
+      </div>
+      <div class="usa-pin" style="left: 9.5%; top: 11%;" data-company="NVIDIA" data-location="Santa Clara, CA" data-desc="GPU / CUDA / AI半導体">
+        <div class="usa-pin-dot" style="background: #76b900;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#76B900" d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.493 3.374 6.493 3.374s-2.774 3.851-5.75 3.851c-.398 0-.787-.062-1.158-.185v-4.346c1.528.185 1.837.857 2.747 2.385l2.04-1.714s-1.492-1.952-4-1.952a6.016 6.016 0 0 0-.796.035m0-4.735v2.138l.424-.027c5.45-.185 9.01 4.47 9.01 4.47s-4.08 4.964-8.33 4.964c-.37 0-.733-.035-1.095-.097v1.325c.3.035.61.062.91.062 3.957 0 6.82-2.023 9.593-4.408.459.371 2.34 1.263 2.73 1.652-2.633 2.208-8.772 3.984-12.253 3.984-.335 0-.653-.018-.971-.053v1.864H24V4.063zm0 10.326v1.131c-3.657-.654-4.673-4.46-4.673-4.46s1.758-1.944 4.673-2.262v1.237H8.94c-1.528-.186-2.73 1.245-2.73 1.245s.68 2.412 2.739 3.11M2.456 10.9s2.164-3.197 6.5-3.533V6.201C4.153 6.59 0 10.653 0 10.653s2.35 6.802 8.948 7.42v-1.237c-4.84-.6-6.492-5.936-6.492-5.936z"/></svg>NVIDIA</div>
+      </div>
+
+      <!-- === ニューヨーク === -->
+      <div class="usa-pin" style="left: 84%; top: 28%;" data-company="IBM" data-location="Armonk, NY" data-desc="Watson / AI研究">
+        <div class="usa-pin-dot" style="background: #0530ad;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#0530AD" d="M23.544 15.993c.038 0 .06-.017.06-.053v-.036c0-.035-.022-.052-.06-.052h-.09v.14zm-.09.262h-.121v-.498h.225c.112 0 .169.066.169.157 0 .079-.036.129-.09.15l.111.19h-.133l-.092-.17h-.07zm.434-.222v-.062c0-.2-.157-.357-.363-.357a.355.355 0 00-.363.357v.062c0 .2.156.358.363.358a.355.355 0 00.363-.358zm-.838-.03c0-.28.212-.492.475-.492.264 0 .475.213.475.491 0 .279-.211.491-.475.491a.477.477 0 01-.475-.49zM16.21 8.13l-.216-.624h-3.56v.624zm.413 1.19l-.216-.623h-3.973v.624zm2.65 7.147h3.107v-.624h-3.108zm0-1.192h3.107v-.623h-3.108zm0-1.19h1.864v-.624h-1.865zm0-1.191h1.864v-.624h-1.865zm0-1.191h1.864v-.624h-3.555l-.175.504-.175-.504h-3.555v.624h1.865v-.574l.2.574h3.33l.2-.574zm1.864-1.815h-3.142l-.217.624h3.359zm-7.46 3.006h1.865v-.624h-1.865zm0 1.19h1.865v-.623h-1.865zm-1.243 1.191h3.108v-.623h-3.108zm0 1.192h3.108v-.624h-3.108zm6.386-8.961l-.216.624h3.776v-.624zm-.629 1.815h4.19v-.624h-3.974zm-4.514 1.19h3.359l-.216-.623h-3.143zm2.482 2.383h2.496l.218-.624h-2.932zm.417 1.19h1.662l.218-.623h-2.098zm.416 1.191h.83l.218-.623h-1.266zm.414 1.192l.217-.624h-.432zm-12.433-.006l4.578.006c.622 0 1.18-.237 1.602-.624h-6.18zm4.86-3v.624h2.092c0-.216-.03-.425-.083-.624zm-3.616.624h1.865v-.624H6.217zm3.617-3.573h2.008c.053-.199.083-.408.083-.624H9.834zm-3.617 0h1.865v-.624H6.217zM9.55 7.507H4.973v.624h6.18a2.36 2.36 0 00-1.602-.624zm2.056 1.191H4.973v.624h6.884a2.382 2.382 0 00-.25-.624zm-5.39 2.382v.624h4.87c.207-.176.382-.387.519-.624zm4.87 1.191h-4.87v.624h5.389a2.39 2.39 0 00-.519-.624zm-6.114 3.006h6.634c.11-.193.196-.402.25-.624H4.973zM0 8.13h4.352v-.624H0zm0 1.191h4.352v-.624H0zm1.243 1.191h1.865v-.624H1.243zm0 1.191h1.865v-.624H1.243zm0 1.19h1.865v-.623H1.243zm0 1.192h1.865v-.624H1.243zM0 15.276h4.352v-.623H0zm0 1.192h4.352v-.624H0Z"/></svg>IBM</div>
+      </div>
+
+      <!-- === テキサス === -->
+      <div class="usa-pin" style="left: 48%; top: 72%;" data-company="Oracle" data-location="Austin, TX" data-desc="OCI AI / クラウド">
+        <div class="usa-pin-dot" style="background: #f80000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#F80000" d="M16.412 4.412h-8.82a7.588 7.588 0 0 0-.008 15.176h8.828a7.588 7.588 0 0 0 0-15.176zm-.193 12.502H7.786a4.915 4.915 0 0 1 0-9.828h8.433a4.914 4.914 0 1 1 0 9.828z"/></svg>Oracle</div>
+      </div>
+      <div class="usa-pin" style="left: 44%; top: 68%;" data-company="xAI (Elon Musk)" data-location="Austin, TX" data-desc="Grok">
+        <div class="usa-pin-dot" style="background: #111;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#000000" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>xAI</div>
+      </div>
+
+      <!-- === その他 === -->
+      <div class="usa-pin" style="left: 72%; top: 35%;" data-company="Adobe" data-location="San Jose, CA" data-desc="Firefly / Sensei AI">
+        <div class="usa-pin-dot" style="background: #ff0000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#FF0000" d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624Z"/></svg>Adobe</div>
+      </div>
+      <div class="usa-pin" style="left: 60%; top: 45%;" data-company="Intel" data-location="Santa Clara, CA" data-desc="AI半導体 / Gaudi">
+        <div class="usa-pin-dot" style="background: #0071c5;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#0071C5" d="M20.42 7.345v9.18h1.651v-9.18zM0 7.475v1.737h1.737V7.474zm9.78.352v6.053c0 .513.044.945.13 1.292.087.34.235.618.44.828.203.21.475.359.803.451.334.093.754.136 1.255.136h.216v-1.533c-.24 0-.445-.012-.593-.037a.672.672 0 0 1-.39-.173.693.693 0 0 1-.173-.377 4.002 4.002 0 0 1-.037-.606v-2.182h1.193v-1.416h-1.193V7.827zm-3.505 2.312c-.396 0-.76.08-1.082.241-.327.161-.6.384-.822.668l-.087.117v-.902H2.658v6.256h1.639v-3.214c.018-.588.16-1.02.433-1.299.29-.297.642-.445 1.044-.445.476 0 .841.149 1.082.433.235.284.359.686.359 1.2v3.324h1.663V12.97c.006-.89-.229-1.595-.686-2.09-.458-.495-1.1-.742-1.917-.742zm10.065.006a3.252 3.252 0 0 0-2.306.946c-.29.29-.525.637-.692 1.033a3.145 3.145 0 0 0-.254 1.273c0 .452.08.878.241 1.274.161.395.39.742.674 1.032.284.29.637.526 1.045.693.408.173.86.26 1.342.26 1.397 0 2.262-.637 2.782-1.23l-1.187-.904c-.248.297-.841.699-1.583.699-.464 0-.847-.105-1.138-.321a1.588 1.588 0 0 1-.593-.872l-.019-.056h4.915v-.587c0-.451-.08-.872-.235-1.267a3.393 3.393 0 0 0-.661-1.033 3.013 3.013 0 0 0-1.02-.692 3.345 3.345 0 0 0-1.311-.248zm-16.297.118v6.256h1.651v-6.256zm16.278 1.286c1.132 0 1.664.797 1.664 1.255l-3.32.006c0-.458.525-1.255 1.656-1.261zm7.073 3.814a.606.606 0 0 0-.606.606.606.606 0 0 0 .606.606.606.606 0 0 0 .606-.606.606.606 0 0 0-.606-.606zm-.008.105a.5.5 0 0 1 .002 0 .5.5 0 0 1 .5.501.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .498-.5zm-.233.155v.699h.13v-.285h.093l.173.285h.136l-.18-.297a.191.191 0 0 0 .118-.056c.03-.03.05-.074.05-.136 0-.068-.02-.117-.063-.154-.037-.038-.105-.056-.185-.056zm.13.099h.154c.019 0 .037.006.056.012a.064.064 0 0 1 .037.031c.013.013.012.031.012.056a.124.124 0 0 1-.012.055.164.164 0 0 1-.037.031c-.019.006-.037.013-.056.013h-.154Z"/></svg>Intel</div>
+      </div>
+
+      <div class="usa-pin-tooltip" id="usaPinTooltip"></div>
+    </div>
   </div>
 
-  <div class="banner-container">
-  <div class="banners-carousel">
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_1.png" class="special-feature-banner-image" alt="フルリモートAIインターン特集">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_3.png" class="special-feature-banner-image" alt="時給2000円超えAIインターン">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_5.png" class="special-feature-banner-image" alt="GPU使い放題企業特集">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_4.png" class="special-feature-banner-image" alt="AIスタートアップ急募">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_6.png" class="special-feature-banner-image" alt="未経験からAIエンジニアへ">
-      </a>
-    </div>
-    <!-- duplicate for carousel -->
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_1.png" class="special-feature-banner-image" alt="フルリモートAIインターン特集">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_3.png" class="special-feature-banner-image" alt="時給2000円超えAIインターン">
-      </a>
-    </div>
-    <div class="banner">
-      <a href="#" class="special-feature-banner-link">
-        <img src="images/banners/banner_pc_5.png" class="special-feature-banner-image" alt="GPU使い放題企業特集">
-      </a>
-    </div>
-  </div>
-</div>
+  <!-- バナーカルーセル削除済み -->
 
   <div class="main-container">
     <div class="main-inner">
@@ -582,830 +1031,260 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
 
         <!-- ====== AI職種カテゴリ ====== -->
         <section class="search-interns-new">
-          <h2 class="search-new-title">AIインターンシップを探す</h2>
+          <div class="section-title-e"><img src="images/sections/sect_01.png" style="height:80px;width:auto;margin-right:-5px;" alt="01 pictogram"><span class="e-num">01</span><div class="e-text"><h2>AImeシップを探す</h2><p class="e-sub">職種・特徴・エリアから検索</p></div></div>
 
           <h3 class="search-category-label">AI職種からインターンを探す</h3>
-          <div class="search-icon-grid">
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/prompt_engineer.png" class="search-icon-img" alt="💬"><span>プロンプトエンジニア</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/ml_engineer.png" class="search-icon-img" alt="🧠"><span>MLエンジニア</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/ai_researcher.png" class="search-icon-img" alt="🔬"><span>AIリサーチャー</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/llm_app.png" class="search-icon-img" alt="💻"><span>LLMアプリ開発</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/data_scientist.png" class="search-icon-img" alt="📊"><span>データサイエンティスト</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/ai_agent.png" class="search-icon-img" alt="🤖"><span>AIエージェント開発</span></a>
+          <div class="carousel-3d-scene">
+            <div class="carousel-3d" id="carousel3d-jobs"></div>
           </div>
 
           <h3 class="search-category-label">尖った特徴からインターンを探す</h3>
-          <div class="search-icon-grid">
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/gpu_monitor.png" class="search-icon-img" alt="🖥️"><span>GPU使い放題</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/remote_house.png" class="search-icon-img" alt="🏠"><span>フルリモート可</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/thesis_book.png" class="search-icon-img" alt="📖"><span>論文読み会あり</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/beginner_sprout.png" class="search-icon-img" alt="🌱"><span>未経験OK</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/llm_rocket.png" class="search-icon-img" alt="🚀"><span>自社LLM開発中</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/high_wage_money.png" class="search-icon-img" alt="💰"><span>時給2,000円以上</span></a>
+          <div class="carousel-3d-scene">
+            <div class="carousel-3d" id="carousel3d-features" style="animation-duration: 30s;"></div>
           </div>
 
           <h3 class="search-category-label">エリアからインターンを探す</h3>
-          <div class="search-icon-grid">
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/tokyo_tower.png" class="search-icon-img" alt="🗼"><span>東京</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/remote_sleep.png" class="search-icon-img" alt="💤"><span>フルリモート</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/shibuya_wave.png" class="search-icon-img" alt="🌊"><span>渋谷</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/roppongi_crystal.png" class="search-icon-img" alt="💠"><span>六本木</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/osaka_castle.png" class="search-icon-img" alt="🏯"><span>大阪</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/nagoya_factory.png" class="search-icon-img" alt="🏭"><span>名古屋</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/fukuoka_palm.png" class="search-icon-img" alt="🌴"><span>福岡</span></a>
-            <a href="#" class="search-icon-card"><img src="images/icons_3d/global_earth.png" class="search-icon-img" alt="🌍"><span>海外リモート</span></a>
+          <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+            <!-- 関東地方マップ -->
+            <div class="kanto-map-wrap" style="width: 420px; height: 420px;">
+              <img src="images/kanto-map.png" alt="関東地方" width="420" height="420" style="display: block; position: absolute; top: 0; left: 0;">
+              <svg viewBox="0 0 960 960" width="420" height="420" style="position: absolute; top: 0; left: 0;">
+                <!-- 群馬県 - 左上 -->
+                <polygon class="kanto-pref" data-pref="群馬県" data-count="12"
+                  points="68,300 58,260 72,220 90,185 115,165 140,140 165,118 195,95 225,78 260,65 290,58 310,60 330,72 350,90 375,110 395,130 395,239 429,244 424,272 411,311 396,336 415,366 387,216 385,225 375,237 340,290 310,310 280,330 250,345 215,350 180,340 150,320 120,305 90,298"/>
+                <!-- 栃木県 -->
+                <polygon class="kanto-pref" data-pref="栃木県" data-count="8"
+                  points="387,216 394,183 409,153 399,129 424,105 454,90 485,72 518,58 545,50 571,25 605,29 639,41 662,66 678,87 680,120 684,153 682,186 673,206 675,240 679,273 666,302 651,322 619,328 595,336 568,356 546,367 530,397 496,407 480,379 447,374 415,366 396,336 411,311 424,272 429,244 395,239"/>
+                <!-- 茨城県 -->
+                <polygon class="kanto-pref" data-pref="茨城県" data-count="10"
+                  points="693,150 684,153 682,186 673,206 675,240 679,273 666,302 651,322 619,328 595,336 568,356 552,385 539,458 504,422 584,509 622,538 644,545 665,552 688,546 714,490 724,464 744,509 760,523 778,513 796,517 774,467 800,487 802,468 816,500 869,592 857,586 884,610 863,612 804,628 851,595 817,561 781,529 752,536 710,556 666,562 625,552 583,528 548,500 570,572 576,611 572,632 552,385 587,357 640,336 676,304 688,247 697,208 718,134 761,172 800,121 838,140 842,184 823,244 800,306 792,365 788,424"/>
+                <!-- 埼玉県 -->
+                <polygon class="kanto-pref" data-pref="埼玉県" data-count="18"
+                  points="75,293 87,251 118,220 152,201 194,191 221,165 251,151 266,115 293,85 319,83 343,111 387,121 393,153 387,192 375,237 416,251 405,287 389,329 465,389 445,384 476,412 451,410 422,412 363,388 318,376 288,412 265,440 228,458 191,476 156,483 154,439 152,413 144,383 158,330 131,318 78,314"/>
+                <!-- 東京都 -->
+                <polygon class="kanto-pref" data-pref="東京都" data-count="89"
+                  points="186,499 209,486 232,467 259,457 282,448 296,428 307,400 329,389 356,400 384,400 407,413 435,421 463,416 487,419 499,438 513,464 535,482 541,510 558,537 561,565 548,572 519,569 499,573 472,583 456,580 433,581 405,586 383,575 365,557 337,555 310,547 248,551 267,539 273,534 206,541 189,524 185,500"/>
+                <!-- 千葉県 -->
+                <polygon class="kanto-pref" data-pref="千葉県" data-count="15"
+                  points="548,500 570,572 576,611 572,632 606,631 628,688 625,691 605,716 576,741 571,756 562,802 550,842 550,884 558,897 563,937 585,918 625,872 660,849 699,838 729,810 728,768 730,723 752,679 884,610 863,612 804,628 851,595 817,561 781,529 752,536 710,556 666,562 625,552 583,528 646,672 643,664"/>
+                <!-- 神奈川県 -->
+                <polygon class="kanto-pref" data-pref="神奈川県" data-count="22"
+                  points="72,480 100,460 130,445 156,440 156,483 191,476 228,458 265,440 288,412 318,376 363,388 422,412 451,410 476,412 465,389 445,384 389,329 405,287 416,251 375,237 387,192 393,153 387,121 343,111 319,83 293,85 266,115 251,151 221,165 194,191 152,201 118,220 87,251 75,293 78,314 131,318 158,330 144,383 152,413 154,439 156,483 186,499 185,500 189,524 206,541 273,534 267,539 248,551 310,547 337,555 365,557 383,575 405,586 433,581 456,580 472,583 499,573 519,569 548,572 561,565 558,537 541,510 535,482 513,464 499,438 487,419 463,416 435,421 407,413 384,400 356,400 329,389 307,400 296,428 282,448 259,457 232,467 209,486 186,499 156,483 130,445"/>
+              </svg>
+              <div class="kanto-tooltip" id="kantoTooltip"></div>
+            </div>
+            <!-- 関東の県チップ -->
+            <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; padding-top: 10px;">
+              <a href="#" class="search-icon-card"><span>東京都</span></a>
+              <a href="#" class="search-icon-card"><span>神奈川県</span></a>
+              <a href="#" class="search-icon-card"><span>埼玉県</span></a>
+              <a href="#" class="search-icon-card"><span>千葉県</span></a>
+              <a href="#" class="search-icon-card"><span>茨城県</span></a>
+              <a href="#" class="search-icon-card"><span>栃木県</span></a>
+              <a href="#" class="search-icon-card"><span>群馬県</span></a>
+            </div>
           </div>
         </section>
 
-        <!-- ====== 体験者の声 ====== -->
+<!-- ====== 体験者の声 ====== -->
         <div class="student-voice-area">
-    <h2 class="student-voice-title">AIインターン経験者のヤバい声</h2>
+    <div class="section-title-e"><img src="images/sections/sect_02.png" style="height:80px;width:auto;margin-right:-5px;" alt="02 pictogram"><span class="e-num">02</span><div class="e-text"><h2>AIme経験者のヤバい声</h2><p class="e-sub">先輩インターン生のリアルな体験談</p></div></div>
     <div class="student-voice-container">
       <div class="student-voice-carousel">
-          <div class="student-voice">
-            <div class="student-voice-header">
-              某AIユニコーン企業にそのまま就職
-              <br />
-              東京大学 工学部 3年生 Mさん
-            </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
-              </div>
-              <div class="student-voice-content">
-                インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #1da1f2, #0d8bd9);">M</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Mさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京大学 工学部 3年 / 某AIユニコーン企業へ</div>
               </div>
             </div>
-          </div>
-          <div class="student-voice">
-            <div class="student-voice-header">
-              AI SaaSスタートアップでPdM経験
-              <br />
-              慶應義塾大学 SFC 2年生 Aさん
-            </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
-              </div>
-              <div class="student-voice-content">
-                「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。
-              </div>
+            <div class="sns-vc-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
             </div>
           </div>
-          <div class="student-voice">
-            <div class="student-voice-header">
-              Kaggle金メダル獲得、某外資AIラボ内定
-              <br />
-              東京工業大学 情報理工学院 M1 Sさん
-            </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
-              </div>
-              <div class="student-voice-content">
-                インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AI_INTERNは神。
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #f5a623, #f76b1c);">A</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Aさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">慶應義塾大学 SFC 2年 / AI SaaSスタートアップ</div>
               </div>
             </div>
-          </div>
-          <div class="student-voice">
-            <div class="student-voice-header">
-              副業AIエンジニアとして月30万稼ぐように
-              <br />
-              早稲田大学 商学部 3年生 Kさん
-            </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
-              </div>
-              <div class="student-voice-content">
-                完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。
-              </div>
+            <div class="sns-vc-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
             </div>
           </div>
-          <div class="student-voice">
-            <div class="student-voice-header">
-              インターン先の論文がICML採択
-              <br />
-              京都大学 情報学研究科 M1 Tさん
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">S</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Sさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京工業大学 情報理工学院 M1 / Kaggle金メダル</div>
+              </div>
             </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
-              </div>
-              <div class="student-voice-content">
-                インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。
-              </div>
+            <div class="sns-vc-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AImeは神。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
             </div>
           </div>
-          <div class="student-voice">
-            <div class="student-voice-header">
-              AIスタートアップを在学中に共同創業
-              <br />
-              東京大学 経済学部 4年生 Nさん
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #ab47bc, #7b1fa2);">K</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Kさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">早稲田大学 商学部 3年 / 副業AIエンジニア</div>
+              </div>
             </div>
-            <div class="student-voice-content-area">
-              <div class="student-voice-satisfaction-level">
-                満足度<span class="star-rating" data-rate="5"></span>
+            <div class="sns-vc-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #00bcd4, #0097a7);">T</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Tさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">京都大学 情報学研究科 M1 / ICML論文採択</div>
               </div>
-              <div class="student-voice-content">
-                インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。
+            </div>
+            <div class="sns-vc-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #ef5350, #c62828);">N</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Nさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京大学 経済学部 4年 / AIスタートアップ起業</div>
               </div>
+            </div>
+            <div class="sns-vc-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
             </div>
           </div>
       </div>
     </div>
   </div>
 
-        <!-- ====== インターン一覧 ====== -->
+        <!-- ====== インターン一覧 (コンパクトカードグリッド型) ====== -->
         <section class="intern-list">
-          <h2 class="section-main-title">AIインターンシップ一覧 ー 全部AI。例外なし。</h2>
-          <div class="section-sub-title-wrap">
-            <h3 class="section-sub-title">厳選AIインターン</h3>
+          <div class="compact-header">
+            <div class="section-title-e"><img src="images/sections/sect_03.png" style="height:80px;width:auto;margin-right:-5px;" alt="03 pictogram"><span class="e-num">03</span><div class="e-text"><h2>AImeシップ一覧</h2><p class="e-sub">全部AI。例外なし。厳選156件</p></div></div>
+          </div>
+          <div class="compact-tabs">
+            <a class="compact-tab active" href="#" data-category="all">すべて<span class="tab-num">156</span></a>
+            <a class="compact-tab" href="#" data-category="llm">LLM / 言語AI<span class="tab-num">42</span></a>
+            <a class="compact-tab" href="#" data-category="image">画像生成<span class="tab-num">23</span></a>
+            <a class="compact-tab" href="#" data-category="agent">エージェント<span class="tab-num">19</span></a>
+            <a class="compact-tab" href="#" data-category="medical">医療AI<span class="tab-num">15</span></a>
+            <a class="compact-tab" href="#" data-category="robotics">ロボティクス<span class="tab-num">12</span></a>
+            <a class="compact-tab" href="#" data-category="data">データ分析<span class="tab-num">31</span></a>
+            <a class="compact-tab" href="#" data-category="business">ビジネス<span class="tab-num">27</span></a>
+            <a class="compact-tab" href="#" data-category="prompt">プロンプト<span class="tab-num">18</span></a>
+          </div>
+          <div class="compact-toolbar">
+            <span class="ccount"><strong>156</strong> 件のAImeシップ</span>
+            <select><option>新着順</option><option>給与が高い順</option><option>人気順</option><option>締切が近い順</option></select>
           </div>
 
-<div class="search-interns-list">
-<!-- ===== カード1: LLMアプリ開発 ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <div class="pickup-tag"><span>Pickup</span></div>
-              <span class="company-name">株式会社ニューロンクラフト</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">2日前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。「ChatGPT使えます」はもう古い。作る側に来い。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">LLMアプリケーションエンジニア / RAGパイプライン構築</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">GPU使い放題</span><span class="edgy-tag">自社LLM開発</span><span class="edgy-tag">フルリモート可</span><span class="edgy-tag">論文読み会あり</span><span class="edgy-tag">未経験OK</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">渋谷駅 徒歩5分 / フルリモート可</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">AI SaaS / LLM</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低3ヶ月から／週3日から／1日5時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給2,000〜4,000円（スキルに応じて青天井）（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】Pythonが書ける / 新しい技術にワクワクする心<br>
-          【歓迎】LangChainやLlamaIndexを触ったことがある / 「ファインチューニング」を正しく説明できる / Hugging Faceにモデルを上げたことがある
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">LLMアプリケーション開発の実務スキル / RAG・ベクトルDB設計力 / 「AIエンジニアです」と胸を張って言える自信</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+          <div class="compact-grid" id="compact-grid"></div>
 
-<!-- ===== カード2: プロンプトエンジニア ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-title hiring-positive-part-band">
-      <div class="title white-text">
-        <img src="images/icons/campaign.svg">
-        <span>激レア枠 - 急募</span>
-      </div>
-    </div>
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <span class="company-name">合同会社プロンプト・ラボ</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">3日前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。言語を操る力は、AIを操る力だ。プログラミング不要、必要なのは「言葉のセンス」だけ。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">プロンプトエンジニア / AI業務設計</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">文系歓迎</span><span class="edgy-tag">プログラミング不要</span><span class="edgy-tag">CEO直下</span><span class="edgy-tag">フルリモート</span><span class="edgy-tag">副業OK</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">完全フルリモート（日本国内どこでも）</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">AIコンサルティング / 業務自動化</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低2ヶ月から／週2日から／1日4時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給1,800〜3,000円（交通費：リモートなので不要）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】ChatGPTを日常的に使っている / 日本語の読み書きが得意<br>
-          【歓迎】ブログやSNSで長文を書くのが好き / 「なぜこのプロンプトで上手くいくのか」を考えたことがある人
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">プロンプトエンジニアリングの体系的スキル / AI業務設計力 / 「コード書けないけどAIエンジニアです」という最強の肩書き</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード3: AI画像生成 ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <div class="new-tag"><span>new</span></div>
-              <span class="company-name">株式会社ディフュージョン・ワークス</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">1日前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。美大生のセンス × エンジニアの技術 = 無敵。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">画像生成AIエンジニア / クリエイティブAI研究</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">A100使い放題</span><span class="edgy-tag">美大生歓迎</span><span class="edgy-tag">一部リモート可</span><span class="edgy-tag">論文共著チャンス</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">六本木一丁目駅 徒歩3分</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">クリエイティブAI / 画像生成</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低3ヶ月から／週3日から／1日6時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給2,500〜5,000円（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】PyTorchで推論コードを書ける / 画像生成AIに対する強い興味<br>
-          【歓迎】Diffusionモデルの仕組みを説明できる / ComfyUIのカスタムノードを作ったことがある / 美的センスに自信がある人
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">画像生成モデルの学習・推論パイプライン構築力 / ControlNet等の最新技術の実装力 / 「AIアーティスト」としてのブランディング力</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード4: AIエージェント開発 ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-title hiring-positive-part-band">
-      <div class="title white-text">
-        <img src="images/icons/campaign.svg">
-        <span>注目度MAX - 話題の領域</span>
-      </div>
-    </div>
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <div class="pickup-tag"><span>Pickup</span></div>
-              <span class="company-name">株式会社オートノミー</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">5日前</span>
-              </div>
-              <div class="scholarship-wrap">
-                <i class="material-icons">card_giftcard</i><span class="scholarship">GPU支給</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】Devin? Claude Code? まだ序章。自律型AIエージェントの開発で、未来のSiriやAlexaを超えるものを作らないか？
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">AIエージェント開発エンジニア / マルチモーダルAI研究</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">自律型AI開発</span><span class="edgy-tag">H100クラスタ</span><span class="edgy-tag">シリーズB</span><span class="edgy-tag">論文実績あり</span><span class="edgy-tag">CTO直下</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">渋谷駅 徒歩8分 / リモート併用可</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">AIエージェント / 自律型AI</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低6ヶ月から／週4日から／1日6時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給3,000〜6,000円 + ストックオプション相談可（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】Python / TypeScript / AIエージェントへの強い関心<br>
-          【歓迎】LangGraph / CrewAI / AutoGen などのフレームワーク経験 / マルチモーダルAIの知見 / 「AGIまだ？」が口癖の人
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">AIエージェント設計・実装力 / Tool Use・Function Callingの実践スキル / 人類がAIに支配される未来を目撃する特等席</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード5: AI x 医療 ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <span class="company-name">MedAI株式会社</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">1週間前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【AIで命を救う。マジで。】医療画像診断AIの開発。「いいね」を増やすAIより、命を救うAIを作りたい人だけ来てほしい。東大医学部との共同研究プロジェクト。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">医療AI研究エンジニア / 画像認識モデル開発</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">社会貢献ガチ勢</span><span class="edgy-tag">東大共同研究</span><span class="edgy-tag">論文共著</span><span class="edgy-tag">理系推奨</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">本郷三丁目駅 徒歩5分</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">ヘルスケアAI / 医療画像</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低6ヶ月から／週3日から／1日5時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給2,000〜3,500円（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】PyTorch / 画像認識の基礎知識 / 世界を良くしたい気持ち（ガチで）<br>
-          【歓迎】医学・生物学の知識がある / 医療系AIの論文を読んだことがある / 「社会実装」という言葉に血が滾る
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">医療AI開発のドメイン知識 / 画像認識モデルの実践的チューニング力 / 「お前のAI、人の命救ってるの？」という最強の自己紹介</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード6: データサイエンティスト ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-title hiring-positive-part-band">
-      <div class="title white-text">
-        <img src="images/icons/campaign.svg">
-        <span>未経験から最速でAI人材へ</span>
-      </div>
-    </div>
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <span class="company-name">データドリブン株式会社</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">4日前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【Excelで消耗するのはもうやめろ】pandas, SQL, 機械学習。「データ分析できます」を本物にする3ヶ月。研修充実、メンター付き。唯一の条件：向上心がバグってること。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">データサイエンティスト / 機械学習エンジニア見習い</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">未経験OK</span><span class="edgy-tag">研修3週間</span><span class="edgy-tag">メンター制度</span><span class="edgy-tag">1・2年生歓迎</span><span class="edgy-tag">Kaggle推奨</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">新宿駅 徒歩7分 / 週2リモート可</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">AI SaaS / データ分析</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低3ヶ月から／週3日から／1日5時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給1,500〜2,500円（研修期間も同額）（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】プログラミング経験（言語不問）/ 統計学の基礎（大学1年レベルでOK）<br>
-          【歓迎】Kaggleに登録している / Python触ったことある / 「回帰分析」がギリ説明できる
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">実務データ分析の一通りのスキル / 機械学習モデル構築の基礎 / 就活面接で「データドリブンな意思決定を...」と言える権利</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード7: AI x ロボティクス ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <div class="new-tag"><span>new</span></div>
-              <span class="company-name">RoboMind株式会社</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">3日前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。画面の中のAIじゃ物足りないなら、現実世界を動かすAIを作ろう。物理を裏切るAI、作りませんか？
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">ロボティクスAIエンジニア / シミュレーション開発</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">ロボットあり</span><span class="edgy-tag">シミュレーション環境</span><span class="edgy-tag">理系推奨</span><span class="edgy-tag">出社メイン</span><span class="edgy-tag">国際学会発表チャンス</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">大崎駅 徒歩10分（ラボ見学歓迎）</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">ロボティクス / 具身化AI</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低6ヶ月から／週3日から／1日6時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給2,200〜4,000円（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】Python or C++ / 制御工学 or 機械学習の基礎知識<br>
-          【歓迎】ROS2経験 / 強化学習の知見 / 「ターミネーターを作りたい」と一度でも思ったことがある人
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">ロボット制御 x AI の実践スキル / Sim2Real転移の知識 / 「僕のAI、物理世界で動くんですよ」という圧倒的ドヤ顔力</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ===== カード8: AI PMM / ビジネスサイド ===== -->
-<div>
-<div class="card-wrapper image">
-  <div class="card white card-radius">
-    <div class="card-content black-text interns-pc-card-content">
-      <div class="title-area-wrap">
-        <div class="title-area">
-          <div class="info-area clearfix">
-            <div class="line-left">
-              <div class="pickup-tag"><span>Pickup</span></div>
-              <span class="company-name">AIストラテジー株式会社</span>
-            </div>
-            <div class="line-right">
-              <div class="publish-date-wrap">
-                <i class="material-icons">update</i>
-                <span class="publish-date">1週間前</span>
-              </div>
-            </div>
-          </div>
-          <h3 class="intern-title">
-            <a href="#">
-              【コードが書けなくてもAI業界で天下取れる】AI製品のPMM / BizDev。技術を理解して、売る。「AIわかります」×「ビジネスできます」= 市場価値バグり散らかし人材。
-            </a>
-          </h3>
-        </div>
-      </div>
-      <dl class="job-detail clearfix">
-        <dt class="job-type">職種</dt>
-        <dd class="job-type-detail">AI製品PMM / ビジネス開発 / カスタマーサクセス</dd>
-        <dt class="feature">特徴</dt>
-        <dd class="feature-detail">
-          <span class="edgy-tag">文系大歓迎</span><span class="edgy-tag">コード不要</span><span class="edgy-tag">シリーズA</span><span class="edgy-tag">CEO直下</span><span class="edgy-tag">インセンティブあり</span>
-        </dd>
-        <dt class="access">アクセス</dt>
-        <dd class="access-detail"><span class="each-access">表参道駅 徒歩3分</span></dd>
-        <dt class="industry">業界</dt>
-        <dd class="industry-detail">AI SaaS / エンタープライズ</dd>
-        <dt class="industry">勤務条件</dt>
-        <dd class="industry-detail">【応相談】最低3ヶ月から／週3日から／1日5時間から</dd>
-        <dt class="industry">給与</dt>
-        <dd class="industry-detail"><span>時給1,800〜3,500円 + 成果報酬（交通費：全額支給）</span></dd>
-        <dt class="requirement">必須・歓迎</dt>
-        <dd class="requirement-detail">
-          【必須】AI業界への強い関心 / 「説明力」に自信がある / 人と話すのが好き<br>
-          【歓迎】AIツールを日常的に使いこなしている / 「これAIでできるんじゃない？」が口癖 / 営業経験があると尚良し
-        </dd>
-        <dt class="skill">身につくスキル</dt>
-        <dd class="skill-detail">AI製品のGo-To-Market戦略 / エンタープライズセールスのイロハ / 文系なのにAI企業で一目置かれる存在になる力</dd>
-      </dl>
-      <div class="button-area clearfix">
-        <a class="btn view-detail-btn" href="#" target="_blank">このインターンを詳しく見る</a>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-</div>
-          <div class="btn-wrapper" style="text-align: center; margin: 30px 0;">
-            <a href="#" class="btn waves-effect waves-light" style="font-size: 1.1em; padding: 0 40px;">もっとAIインターンを見る（人間のインターンはない）</a>
-          </div>
+          <!-- ページネーション -->
+          <nav class="compact-pagination">
+            <a href="#" class="disabled">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <span class="page-dots">...</span>
+            <a href="#">20</a>
+            <a href="#">&raquo;</a>
+          </nav>
         </section>
 
         </div> <!-- pull-left-inner -->
       </div> <!-- cs-contents pull-left -->
 
-      <!-- ====== サイドバー ====== -->
-      <div class="sidebar cs-contents pull-right col s12 m12 l4">
-        <div class="title-area">
-          <h4 class="side-h4-title">AI職種から探す</h4>
-        </div>
-        <div class="side-content-wrap-white search-interns job_types card">
-          <ul class="job-types">
-            <li><a href="#">プロンプトエンジニア<span>42</span></a></li>
-            <li><a href="#">MLエンジニア<span>38</span></a></li>
-            <li><a href="#">LLMアプリ開発<span>56</span></a></li>
-            <li><a href="#">データサイエンティスト<span>31</span></a></li>
-            <li><a href="#">AIリサーチャー<span>24</span></a></li>
-            <li><a href="#">AIエージェント開発<span>19</span></a></li>
-            <li><a href="#">AI PMM / BizDev<span>27</span></a></li>
-            <li><a href="#">AI x クリエイティブ<span>15</span></a></li>
-          </ul>
-        </div>
-
-        <div class="title-area">
-          <h4 class="side-h4-title">尖った特徴から探す</h4>
-        </div>
-        <div class="side-content-wrap-white search-interns features card">
-          <ul class="features">
-            <li><a href="#">GPU使い放題<span class="num">23</span></a></li>
-            <li><a href="#">フルリモート可<span class="num">89</span></a></li>
-            <li><a href="#">論文読み会あり<span class="num">34</span></a></li>
-            <li><a href="#">自社LLM開発中<span class="num">12</span></a></li>
-            <li><a href="#">未経験OK<span class="num">67</span></a></li>
-            <li><a href="#">文系歓迎<span class="num">45</span></a></li>
-            <li><a href="#">CEO / CTO直下<span class="num">38</span></a></li>
-            <li><a href="#">時給2,000円以上<span class="num">52</span></a></li>
-            <li><a href="#">ストックオプションあり<span class="num">8</span></a></li>
-            <li><a href="#">論文共著チャンス<span class="num">15</span></a></li>
-            <li><a href="#">Kaggle推奨<span class="num">21</span></a></li>
-            <li><a href="#">国際学会発表<span class="num">11</span></a></li>
-          </ul>
-        </div>
-
-        <div class="title-area">
-          <h4 class="side-h4-title">AI領域から探す</h4>
-        </div>
-        <div class="side-content-wrap-white search-interns features card">
-          <ul class="features">
-            <li><a href="#">LLM / 大規模言語モデル<span class="num">78</span></a></li>
-            <li><a href="#">画像生成 / Diffusion<span class="num">23</span></a></li>
-            <li><a href="#">音声AI / TTS<span class="num">12</span></a></li>
-            <li><a href="#">AIエージェント<span class="num">34</span></a></li>
-            <li><a href="#">ロボティクス / 具身化AI<span class="num">9</span></a></li>
-            <li><a href="#">AI SaaS<span class="num">56</span></a></li>
-            <li><a href="#">ヘルスケアAI<span class="num">18</span></a></li>
-            <li><a href="#">AI x 金融<span class="num">14</span></a></li>
-            <li><a href="#">AI x 教育<span class="num">21</span></a></li>
-            <li><a href="#">AI x ゲーム<span class="num">8</span></a></li>
-          </ul>
-        </div>
-
-        <div class="title-area">
-          <h4 class="side-h4-title">人気のAIキーワード</h4>
-        </div>
-        <div class="side-content-wrap-white search-interns features card">
-          <ul class="features">
-            <li><a href="#">RAG</a></li>
-            <li><a href="#">ファインチューニング</a></li>
-            <li><a href="#">Claude</a></li>
-            <li><a href="#">LangChain</a></li>
-            <li><a href="#">Stable Diffusion</a></li>
-            <li><a href="#">Kaggle</a></li>
-            <li><a href="#">Transformer</a></li>
-            <li><a href="#">強化学習</a></li>
-          </ul>
-        </div>
-      </div> <!-- sidebar -->
+      <!-- サイドバー削除 → 検索セクション直下に移動済み -->
     </div> <!-- main-inner -->
   </div> <!-- main-container -->
 
-  <!-- AI名言集 -->
-  <div class="ai-quotes-section">
-    <h2 class="ai-quotes-title">AI名言集</h2>
-    <p class="ai-quotes-sub">AIの未来を切り開く先駆者たちの言葉</p>
-    <div class="ai-quotes-grid">
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIは最後の発明になるだろう。なぜなら、その後の発明はすべてAIがやるからだ。"</p>
-        <span class="ai-quote-author">- I.J. Good（数学者）</span>
+  <!-- ====== フィルター (3台スマホスクロール型) ====== -->
+  <div style="max-width: 1100px; margin: 0 auto; padding: 40px 20px 60px; background: #fff;">
+    <div class="phone-filter-row">
+      <!-- スマホ1: AI職種 -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h1">AI職種から探す</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s1" id="pfScroll1"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
       </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIを恐れるな。AIを使いこなせない自分を恐れろ。"</p>
-        <span class="ai-quote-author">- サム・アルトマン（OpenAI CEO）</span>
+      <!-- スマホ2: 尖った特徴 -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h2">尖った特徴から探す</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s2" id="pfScroll2"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
       </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"機械が考えることができるかどうかを問うのは、潜水艦が泳げるかどうかを問うようなものだ。"</p>
-        <span class="ai-quote-author">- エドガー・ダイクストラ（計算機科学者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIは電気と同じくらい、すべての産業を変革する。"</p>
-        <span class="ai-quote-author">- アンドリュー・ン（AI研究者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"未来を予測する最良の方法は、それを発明することだ。"</p>
-        <span class="ai-quote-author">- アラン・ケイ（計算機科学者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIに仕事を奪われるのではない。AIを使いこなす人に仕事を奪われるのだ。"</p>
-        <span class="ai-quote-author">- カイフ・リー（AI投資家）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"十分に発達したAIは、魔法と見分けがつかない。"</p>
-        <span class="ai-quote-author">- アーサー・C・クラーク（SF作家）を改変</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"データは新しい石油だ。しかし、精製しなければただの泥だ。"</p>
-        <span class="ai-quote-author">- クライブ・ハンビー（データサイエンティスト）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIの目標は知性を理解することであり、それを作ることではない。作ることは理解の副産物だ。"</p>
-        <span class="ai-quote-author">- ヤン・ルカン（Meta AI主任）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"最も危険なのはAIそのものではなく、AIを理解せずに使う人間だ。"</p>
-        <span class="ai-quote-author">- スチュアート・ラッセル（AI研究者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"プロンプトは新しいプログラミング言語だ。誰でも書ける、最も民主的なコードだ。"</p>
-        <span class="ai-quote-author">- アンドレイ・カルパシー（Tesla元AI責任者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIと共に働くことは、最も賢いインターンを永遠に雇うようなものだ。"</p>
-        <span class="ai-quote-author">- エティエンヌ・ジャクソン（AI起業家）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"学ぶことをやめた者は、AIに置き換えられる最初の人間だ。"</p>
-        <span class="ai-quote-author">- 不明</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"100年後、人類がAIをどう使ったかで歴史は我々を裁くだろう。"</p>
-        <span class="ai-quote-author">- デミス・ハサビス（DeepMind CEO）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIは人間の知能を拡張するツールであり、置き換えるものではない。"</p>
-        <span class="ai-quote-author">- ティム・クック（Apple CEO）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"完璧なモデルなど存在しない。しかし、有用なモデルは存在する。"</p>
-        <span class="ai-quote-author">- ジョージ・ボックス（統計学者）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIの本当の力は、人間が問うことすらしなかった問いに答えることだ。"</p>
-        <span class="ai-quote-author">- フェイフェイ・リー（スタンフォード大学教授）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"GPUは21世紀の印刷機だ。知識の民主化を加速させる。"</p>
-        <span class="ai-quote-author">- ジェンスン・フアン（NVIDIA CEO）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIを学ばないことは、1990年代にインターネットを無視するのと同じだ。"</p>
-        <span class="ai-quote-author">- マーク・キューバン（実業家）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"人間とAIの最大の違いは、AIは疲れないことだ。最大の共通点は、どちらもデータがないと何もできないことだ。"</p>
-        <span class="ai-quote-author">- 不明</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"コードを書けなくても、AIに正しい指示を出せる人間が次の時代を制する。"</p>
-        <span class="ai-quote-author">- 不明</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"Lossが下がった瞬間の快感を知ったら、もう普通のバイトには戻れない。"</p>
-        <span class="ai-quote-author">- あるAIインターン生</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"世界を変えるのに許可はいらない。GPUとWi-Fiがあればいい。"</p>
-        <span class="ai-quote-author">- 不明</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIが仕事を奪う？違う、退屈な仕事を解放してくれるんだ。"</p>
-        <span class="ai-quote-author">- サティア・ナデラ（Microsoft CEO）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"一番のリスクはAIを使うことではなく、使わないことだ。"</p>
-        <span class="ai-quote-author">- ポール・ドーアティ（Accenture CTO）</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"Transformerの論文を読んだ日が、私の人生の転換点だった。"</p>
-        <span class="ai-quote-author">- あるMLエンジニア</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"AIインターンの3ヶ月は、普通の職場の3年分に匹敵する。"</p>
-        <span class="ai-quote-author">- あるAIスタートアップCEO</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"ニューラルネットワークは生物の脳を模倣する。しかし、鳥を模倣しなくても飛行機は空を飛ぶ。"</p>
-        <span class="ai-quote-author">- 不明</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"今日のインターン生が、明日のAI時代のリーダーになる。"</p>
-        <span class="ai-quote-author">- AI_INTERN</span>
-      </div>
-      <div class="ai-quote-card">
-        <p class="ai-quote-text">"人工知能の時代に最も価値があるのは、人間にしかない好奇心だ。"</p>
-        <span class="ai-quote-author">- 孫正義（ソフトバンクグループ会長）</span>
+      <!-- スマホ3: AI領域 + キーワード -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h3">AI領域 + キーワード</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s3" id="pfScroll3"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1414,7 +1293,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
   <div class="footer-container-wrapper">
     <div class="footer-container-upper">
       <div class="footer-container-upper-content">
-        <h3 class="footer-container-upper-content-title">AIインターンを探す</h3>
+        <h3 class="footer-container-upper-content-title">AImeを探す</h3>
         <div class="footer-container-upper-content-inner">
           <ul class="footer-container-upper-content-items is-first">
             <li class="footer-container-upper-content-item"><a href="#">プロンプトエンジニア</a></li>
@@ -1426,7 +1305,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
             <li class="footer-container-upper-content-item"><a href="#">AI PMM / BizDev</a></li>
           </ul>
           <ul class="footer-container-upper-content-items">
-            <li class="footer-container-upper-content-item"><a href="#">AIインターン募集一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="#">AIme募集一覧</a></li>
             <li class="footer-container-upper-content-item"><a href="#">AIキーワード一覧</a></li>
             <li class="footer-container-upper-content-item"><a href="#">AI企業一覧</a></li>
           </ul>
@@ -1444,7 +1323,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       <div class="footer-container-upper-content">
         <h3 class="footer-container-upper-content-title">サービス</h3>
         <ul class="footer-container-upper-content-items">
-          <li class="footer-container-upper-content-item"><a href="#">AIインターン</a></li>
+          <li class="footer-container-upper-content-item"><a href="#">AIme</a></li>
           <li class="footer-container-upper-content-item"><a href="#">AI勉強会・ハッカソン</a></li>
         </ul>
       </div>
@@ -1452,7 +1331,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       <div class="footer-container-upper-content is-last-pc">
         <h3 class="footer-container-upper-content-title">AI企業の採用担当者様へ</h3>
         <ul class="footer-container-upper-content-items">
-          <li class="footer-container-upper-content-item"><a href="#">AIインターン採用について</a></li>
+          <li class="footer-container-upper-content-item"><a href="#">AIme採用について</a></li>
         </ul>
       </div>
     </div>
@@ -1463,11 +1342,12 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         <li class="footer-bottom-link-item"><a href="#">お問い合わせ</a></li>
         <li class="footer-bottom-link-item"><a href="#">運営会社</a></li>
       </ul>
-      <p class="footer-bottom-copyright">&copy; 2026 AI_INTERN - Built by humans (for now). Powered by coffee and GPU.</p>
+      <p class="footer-bottom-copyright">&copy; 2026 AIme - Built by humans (for now). Powered by coffee and GPU.</p>
     </div>
   </div>
 </footer>
 </div>
+
 
   <script>window.Laravel = { csrfToken: 'dummy' };</script>
   <script src="js/top.js"></script>
@@ -1512,8 +1392,290 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         ...commonOptions,
         ...{
           slidesToShow: 2,
-          centerPadding: "4%",
+          centerPadding: "0",
+          centerMode: false,
       }});
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // アメリカ地図ピンのツールチップ
+      (function(){
+        var tooltip = document.getElementById('usaPinTooltip');
+        var wrap = document.querySelector('.usa-map-wrap');
+        if (!wrap || !tooltip) return;
+        wrap.querySelectorAll('.usa-pin').forEach(function(pin) {
+          pin.addEventListener('mouseenter', function() {
+            var company = pin.getAttribute('data-company');
+            var location = pin.getAttribute('data-location');
+            var desc = pin.getAttribute('data-desc') || '';
+            tooltip.innerHTML = company + '<span class="upt-loc">' + location + '</span>' + (desc ? '<span class="upt-loc" style="color:#c8e6c9;">' + desc + '</span>' : '');
+            tooltip.style.display = 'block';
+          });
+          pin.addEventListener('mousemove', function(e) {
+            var rect = wrap.getBoundingClientRect();
+            tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+            tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+          });
+          pin.addEventListener('mouseleave', function() {
+            tooltip.style.display = 'none';
+          });
+        });
+      })();
+
+      // 3D回転カルーセル構築
+      function setup3DCarousel(id, items) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var n = items.length;
+        var angle = 360 / n;
+        var r = Math.round(110 / Math.tan(Math.PI / n));
+        items.forEach(function(item, i) {
+          var cell = document.createElement('a');
+          cell.className = 'carousel-3d-cell';
+          cell.href = '#';
+          cell.innerHTML = '<span class="c3d-icon">' + item.icon + '</span>' + item.name;
+          cell.style.transform = 'rotateY(' + (angle * i) + 'deg) translateZ(' + r + 'px)';
+          el.appendChild(cell);
+        });
+      }
+      setup3DCarousel('carousel3d-jobs', [
+        {icon:'💬',name:'プロンプトエンジニア'},{icon:'🧠',name:'MLエンジニア'},
+        {icon:'🔬',name:'AIリサーチャー'},{icon:'💻',name:'LLMアプリ開発'},
+        {icon:'📊',name:'データサイエンティスト'},{icon:'🤖',name:'AIエージェント開発'}
+      ]);
+      setup3DCarousel('carousel3d-features', [
+        {icon:'🖥️',name:'GPU使い放題'},{icon:'🏠',name:'フルリモート可'},
+        {icon:'📖',name:'論文読み会あり'},{icon:'🌱',name:'未経験OK'},
+        {icon:'🚀',name:'自社LLM開発中'},{icon:'💰',name:'時給2,000円以上'}
+      ]);
+
+      // 3台スマホスクロール風フィルター生成
+      (function(){
+        var jobs=[{n:'LLMアプリ開発',c:'56'},{n:'プロンプトエンジニア',c:'42'},{n:'MLエンジニア',c:'38'},{n:'データサイエンティスト',c:'31'},{n:'AI PMM / BizDev',c:'27'},{n:'AIリサーチャー',c:'24'},{n:'AIエージェント開発',c:'19'},{n:'AI x クリエイティブ',c:'15'}];
+        var feat=[{n:'フルリモート可',c:'89'},{n:'未経験OK',c:'67'},{n:'時給2,000円以上',c:'52'},{n:'文系歓迎',c:'45'},{n:'CEO / CTO直下',c:'38'},{n:'論文読み会あり',c:'34'},{n:'GPU使い放題',c:'23'},{n:'Kaggle推奨',c:'21'},{n:'論文共著チャンス',c:'15'},{n:'自社LLM開発中',c:'12'},{n:'国際学会発表',c:'11'},{n:'ストックオプション',c:'8'}];
+        var areas=[{n:'LLM / 大規模言語モデル',c:'78'},{n:'AI SaaS',c:'56'},{n:'AIエージェント',c:'34'},{n:'画像生成 / Diffusion',c:'23'},{n:'AI x 教育',c:'21'},{n:'ヘルスケアAI',c:'18'},{n:'AI x 金融',c:'14'},{n:'音声AI / TTS',c:'12'},{n:'ロボティクス',c:'9'},{n:'AI x ゲーム',c:'8'}];
+        var kw=[{n:'RAG',c:''},{n:'ファインチューニング',c:''},{n:'Claude',c:''},{n:'LangChain',c:''},{n:'Stable Diffusion',c:''},{n:'Kaggle',c:''},{n:'Transformer',c:''},{n:'強化学習',c:''}];
+        function makeCards(items){
+          var h='';
+          items.forEach(function(d){
+            h+='<a class="pf-card" href="#"><div class="pf-card-name">'+d.n+'</div>'+(d.c?'<div class="pf-card-num">'+d.c+'件</div>':'')+'</a>';
+          });
+          return h;
+        }
+        var s1=document.getElementById('pfScroll1');
+        if(s1){var h1=makeCards(jobs);s1.innerHTML=h1+h1;}
+        var s2=document.getElementById('pfScroll2');
+        if(s2){var h2=makeCards(feat);s2.innerHTML=h2+h2;}
+        var s3=document.getElementById('pfScroll3');
+        if(s3){var h3=makeCards(areas.concat(kw));s3.innerHTML=h3+h3;}
+      })();
+
+      // 関東地方マップ ツールチップ（SVGオーバーレイ版）
+      var kantoTooltip = document.getElementById('kantoTooltip');
+      var kantoWrap = document.querySelector('.kanto-map-wrap');
+      if (kantoWrap) {
+        var prefs = kantoWrap.querySelectorAll('.kanto-pref');
+        prefs.forEach(function(pref) {
+          pref.addEventListener('mouseenter', function(e) {
+            var name = pref.getAttribute('data-pref');
+            var count = pref.getAttribute('data-count');
+            kantoTooltip.innerHTML = name + '<span class="kt-count">' + count + '件のインターン</span>';
+            kantoTooltip.style.display = 'block';
+          });
+          pref.addEventListener('mousemove', function(e) {
+            var rect = kantoWrap.getBoundingClientRect();
+            kantoTooltip.style.left = (e.clientX - rect.left) + 'px';
+            kantoTooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+          });
+          pref.addEventListener('mouseleave', function() {
+            kantoTooltip.style.display = 'none';
+          });
+        });
+      }
+
+      // カードデータ（各カテゴリのテンプレート）
+      var cardTemplates = {
+        llm: [
+          {band:'Pickup',company:'株式会社ニューロンクラフト',badge:'Pickup',title:'【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。',tags:['GPU使い放題','自社LLM開発','フルリモート可','未経験OK'],salary:'2,000〜4,000円',location:'渋谷駅 徒歩5分'},
+          {company:'LLMラボ株式会社',title:'【LangChainマスターになれ】RAGパイプライン構築で、検索精度を極限まで高めるエンジニア募集。',tags:['RAG特化','LangChain','ベクトルDB','週3〜'],salary:'2,200〜3,800円',location:'目黒駅 徒歩7分'},
+          {band:'急募',company:'合同会社トークンAI',title:'【ファインチューニングの鬼になれ】自社LLMのチューニングで、GPT-4超えを本気で目指す。',tags:['ファインチューニング','Hugging Face','論文読み会','フルリモート'],salary:'2,500〜5,000円',location:'フルリモート'},
+          {company:'株式会社ベクトルサーチ',badge:'new',badgeNew:true,title:'【埋め込みベクトルの世界へ】セマンティック検索エンジンを開発。情報検索の未来を作るLLMエンジニア。',tags:['検索AI','Embedding','Pinecone','週4〜'],salary:'2,000〜3,500円',location:'五反田駅 徒歩3分'},
+          {company:'AIネイティブ株式会社',title:'【GPTsの次を作れ】カスタムLLMエージェントのプラットフォーム開発。API設計からUI/UXまで。',tags:['LLMプラットフォーム','API設計','TypeScript','シリーズA'],salary:'2,300〜4,500円',location:'恵比寿駅 徒歩5分'},
+          {company:'株式会社マルチモーダルAI',title:'【テキストだけじゃない】画像+テキストのマルチモーダルLLM開発。最先端の研究をプロダクトに。',tags:['マルチモーダル','Vision API','研究開発','論文共著'],salary:'2,800〜5,500円',location:'本郷三丁目駅 徒歩8分'},
+        ],
+        prompt: [
+          {band:'激レア枠 - 急募',company:'合同会社プロンプト・ラボ',title:'【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。',tags:['文系歓迎','プログラミング不要','CEO直下','フルリモート'],salary:'1,800〜3,000円',location:'完全フルリモート'},
+          {company:'株式会社プロンプトデザイン',title:'【言葉でAIを操る職人】企業向けプロンプト設計・最適化コンサルタント。',tags:['コンサル','プロンプト設計','業務効率化','副業OK'],salary:'2,000〜3,500円',location:'品川駅 徒歩4分'},
+          {company:'AIライティング株式会社',badge:'new',badgeNew:true,title:'【AIコンテンツの品質を極めろ】プロンプトエンジニアリングで記事・広告の質を最大化。',tags:['コンテンツ','ライティング','文系歓迎','週2〜'],salary:'1,500〜2,800円',location:'渋谷駅 徒歩6分'},
+          {company:'合同会社チャットUX',title:'【会話設計のプロになれ】AIチャットボットの対話フロー設計。ユーザー体験を言葉で作る。',tags:['UX設計','チャットボット','フルリモート','未経験OK'],salary:'1,800〜3,200円',location:'フルリモート'},
+          {band:'文系最強ポジション',company:'プロンプトファクトリー株式会社',title:'【プロンプトのプロを育成】体系的な研修あり。AI時代の新職種を最前線で学ぶ。',tags:['研修充実','メンター制度','文系歓迎','1年生OK'],salary:'1,500〜2,500円',location:'新宿駅 徒歩5分'},
+        ],
+        image: [
+          {company:'株式会社ディフュージョン・ワークス',badge:'new',badgeNew:true,title:'【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。',tags:['A100使い放題','美大生歓迎','一部リモート可','論文共著チャンス'],salary:'2,500〜5,000円',location:'六本木一丁目駅 徒歩3分'},
+          {company:'株式会社ジェネレイト',title:'【ComfyUIの魔術師求む】ワークフロー構築で画像生成パイプラインを自動化するエンジニア。',tags:['ComfyUI','自動化','クリエイティブ','週3〜'],salary:'2,000〜4,000円',location:'中目黒駅 徒歩5分'},
+          {band:'アート×テック',company:'AIアートスタジオ株式会社',title:'【AIで新しいアートを創れ】ControlNet/LoRA活用で企業向けクリエイティブを量産。',tags:['ControlNet','LoRA','美大生歓迎','ポートフォリオ'],salary:'2,200〜4,500円',location:'表参道駅 徒歩7分'},
+          {company:'動画AI株式会社',badge:'new',badgeNew:true,title:'【動画生成AIの最前線】Sora/Runway世代の動画生成技術を商用プロダクトに実装。',tags:['動画生成','Sora','GPU環境','研究開発'],salary:'2,800〜5,000円',location:'渋谷駅 徒歩10分'},
+          {company:'株式会社テクスチャAI',title:'【3Dテクスチャ×AI】ゲーム・建築向けのAIテクスチャ生成ツールを開発するスタートアップ。',tags:['3D','ゲーム開発','Unity','リモート可'],salary:'2,000〜3,800円',location:'秋葉原駅 徒歩3分'},
+        ],
+        agent: [
+          {band:'注目度MAX - 話題の領域',company:'株式会社オートノミー',badge:'Pickup',title:'【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】自律型AIエージェントの開発。',tags:['自律型AI開発','H100クラスタ','シリーズB','CTO直下'],salary:'3,000〜6,000円',location:'渋谷駅 徒歩8分'},
+          {company:'エージェントラボ株式会社',title:'【マルチエージェントの世界】複数AIが協調して問題を解く、次世代システムの開発。',tags:['マルチエージェント','CrewAI','LangGraph','研究開発'],salary:'2,500〜5,000円',location:'目黒駅 徒歩6分'},
+          {company:'株式会社ツールユースAI',badge:'new',badgeNew:true,title:'【Tool UseでAIを進化させろ】外部ツール連携でAIの能力を100倍にする基盤開発。',tags:['Tool Use','Function Calling','API開発','フルリモート'],salary:'2,800〜5,500円',location:'フルリモート'},
+          {band:'シード期・裁量MAX',company:'合同会社AGIラボ',title:'【AGIへの第一歩】自己改善型AIエージェントの研究開発。世界を変えるチームへ。',tags:['AGI研究','自己改善AI','論文実績','少数精鋭'],salary:'3,000〜7,000円',location:'本郷三丁目駅 徒歩5分'},
+        ],
+        medical: [
+          {company:'MedAI株式会社',title:'【AIで命を救う。マジで。】医療画像診断AIの開発。東大医学部との共同研究プロジェクト。',tags:['社会貢献ガチ勢','東大共同研究','論文共著','理系推奨'],salary:'2,000〜3,500円',location:'本郷三丁目駅 徒歩5分'},
+          {company:'ヘルスケアAI株式会社',badge:'new',badgeNew:true,title:'【創薬×AI】新薬開発を加速するAIモデルの構築。バイオ×機械学習の最前線。',tags:['創薬AI','バイオインフォ','Python','週3〜'],salary:'2,200〜4,000円',location:'日本橋駅 徒歩3分'},
+          {band:'社会貢献',company:'メディカルビジョン株式会社',title:'【内視鏡AI】リアルタイム画像解析で医師の診断を支援するAIシステム開発。',tags:['画像認識','リアルタイム','医療機器','出社メイン'],salary:'2,500〜4,500円',location:'御茶ノ水駅 徒歩7分'},
+        ],
+        robotics: [
+          {company:'RoboMind株式会社',badge:'new',badgeNew:true,title:'【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。現実世界を動かすAIを作ろう。',tags:['ロボットあり','理系推奨','出社メイン','国際学会発表チャンス'],salary:'2,200〜4,000円',location:'大崎駅 徒歩10分'},
+          {company:'自動運転AI株式会社',title:'【公道を走るAI】自動運転レベル4を目指すスタートアップで、認識・判断モデル開発。',tags:['自動運転','LIDAR','シミュレーション','C++'],salary:'2,500〜5,000円',location:'お台場 徒歩8分'},
+          {band:'ハード×ソフト融合',company:'ドローンAI株式会社',title:'【空飛ぶAI】ドローン自律飛行のためのビジョンAI開発。農業・物流の未来を作る。',tags:['ドローン','ビジョンAI','ROS2','屋外実験'],salary:'2,000〜3,800円',location:'つくば 車通勤可'},
+        ],
+        data: [
+          {band:'未経験から最速でAI人材へ',company:'データドリブン株式会社',title:'【Excelで消耗するのはもうやめろ】pandas, SQL, 機械学習。「データ分析できます」を本物にする3ヶ月。',tags:['未経験OK','研修3週間','メンター制度','Kaggle推奨'],salary:'1,500〜2,500円',location:'新宿駅 徒歩7分'},
+          {company:'アナリティクスAI株式会社',title:'【データの海から宝を掘れ】BIダッシュボード構築 × 機械学習予測モデル開発。',tags:['BI','Tableau','SQL','週3〜'],salary:'1,800〜3,000円',location:'品川駅 徒歩5分'},
+          {company:'株式会社MLパイプライン',badge:'new',badgeNew:true,title:'【MLOpsの実務を学べ】モデルの学習・デプロイ・監視まで一気通貫で経験できる。',tags:['MLOps','Docker','AWS','GCP'],salary:'2,000〜3,500円',location:'渋谷駅 徒歩8分'},
+          {company:'需要予測AI株式会社',title:'【AIで在庫ロスをゼロに】小売・物流向け需要予測モデルの開発・改善。',tags:['需要予測','時系列分析','Python','リモート可'],salary:'1,800〜3,200円',location:'東京駅 徒歩3分'},
+          {band:'Kaggler歓迎',company:'コンペドリブン株式会社',title:'【Kaggleの実力を仕事に活かせ】コンペ上位経験者優遇。実データで腕試し。',tags:['Kaggle','XGBoost','特徴量設計','成果報酬'],salary:'2,000〜4,000円',location:'フルリモート'},
+          {company:'株式会社データクレンジング',title:'【汚いデータと戦え】前処理・クレンジングのスペシャリスト育成。地味だが超重要。',tags:['データ前処理','ETL','SQL','未経験OK'],salary:'1,500〜2,500円',location:'池袋駅 徒歩6分'},
+        ],
+        business: [
+          {company:'AIストラテジー株式会社',badge:'Pickup',title:'【コードが書けなくてもAI業界で天下取れる】AI製品のPMM / BizDev。市場価値バグり散らかし人材。',tags:['文系大歓迎','コード不要','CEO直下','インセンティブあり'],salary:'1,800〜3,500円',location:'表参道駅 徒歩3分'},
+          {company:'AIセールス株式会社',title:'【AI商材を売れる人材は最強】エンタープライズ向けAI SaaSの営業・CS。',tags:['営業','カスタマーサクセス','AI SaaS','インセンティブ'],salary:'1,500〜3,000円',location:'六本木駅 徒歩5分'},
+          {band:'経営直下',company:'株式会社AIコンサル',title:'【AIで業務改革を提案せよ】大手企業のAI導入コンサルティング。戦略から実行まで。',tags:['コンサル','業務改革','プレゼン力','週3〜'],salary:'2,000〜4,000円',location:'丸の内 徒歩2分'},
+          {company:'AI PR株式会社',badge:'new',badgeNew:true,title:'【AI企業のブランドを作れ】PR・マーケティングでAIスタートアップの認知を爆上げ。',tags:['PR','マーケティング','SNS運用','文系歓迎'],salary:'1,500〜2,800円',location:'渋谷駅 徒歩4分'},
+          {company:'株式会社AIリクルート',title:'【AIエンジニアを採れ】AI人材特化のリクルーター。技術を理解して最適マッチング。',tags:['採用','人事','AI業界理解','コミュ力'],salary:'1,500〜3,000円',location:'恵比寿駅 徒歩3分'},
+        ]
+      };
+      // カードHTML生成（案F: ボーダーレス + タイトル重視）
+      function createCardHTML(d) {
+        var tagHTML = '';
+        if (d.band) {
+          var cls = 'compact-card-tag';
+          if (d.band.indexOf('急募') >= 0) cls += ' compact-card-tag-urgent';
+          else if (d.band.indexOf('new') >= 0 || (d.badge && d.badgeNew)) cls += ' compact-card-tag-new';
+          tagHTML = '<span class="' + cls + '">' + d.band + '</span>';
+        } else if (d.badge) {
+          var cls2 = d.badgeNew ? 'compact-card-tag compact-card-tag-new' : 'compact-card-tag';
+          tagHTML = '<span class="' + cls2 + '">' + d.badge + '</span>';
+        }
+        var tagsHTML = d.tags.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+        return '<a class="compact-card" href="#">' +
+            '<div class="compact-card-top">' + tagHTML + '</div>' +
+            '<div class="compact-card-title">' + d.title + '</div>' +
+            '<div class="compact-card-company">' + d.company + '</div>' +
+            '<div class="compact-card-tags">' + tagsHTML + '</div>' +
+            '<div class="compact-card-meta"><span>時給 <strong>' + d.salary + '</strong></span><span>' + d.location + '</span></div>' +
+          '</a>';
+      }
+      // 指定カテゴリのカードを必要数生成
+      function generateCards(cat, count) {
+        var templates = cardTemplates[cat];
+        var html = '';
+        for (var i = 0; i < count; i++) {
+          html += createCardHTML(templates[i % templates.length]);
+        }
+        return html;
+      }
+      var PER_PAGE = 9;
+      var grid = document.getElementById('compact-grid');
+      var countEl = document.querySelector('.compact-toolbar .ccount strong');
+      var pagContainer = document.querySelector('.compact-pagination');
+      var catCounts = {llm:42,prompt:18,image:23,agent:19,medical:15,robotics:12,data:31,business:27};
+      var currentCategory = 'all';
+      var currentPage = 1;
+
+      // 全カードデータを配列で生成
+      function getAllCards() {
+        var arr = [];
+        Object.keys(catCounts).forEach(function(cat) {
+          var templates = cardTemplates[cat];
+          for (var i = 0; i < catCounts[cat]; i++) {
+            arr.push(Object.assign({}, templates[i % templates.length], {_cat: cat}));
+          }
+        });
+        return arr;
+      }
+      function getCategoryCards(cat) {
+        var templates = cardTemplates[cat];
+        var arr = [];
+        for (var i = 0; i < catCounts[cat]; i++) {
+          arr.push(Object.assign({}, templates[i % templates.length], {_cat: cat}));
+        }
+        return arr;
+      }
+      function getCurrentCards() {
+        return currentCategory === 'all' ? getAllCards() : getCategoryCards(currentCategory);
+      }
+
+      // ページネーションHTML生成
+      function renderPagination(totalCards) {
+        var totalPages = Math.ceil(totalCards / PER_PAGE);
+        if (totalPages <= 1) { pagContainer.innerHTML = ''; return; }
+        var html = '';
+        html += '<a href="#" class="' + (currentPage <= 1 ? 'disabled' : '') + '">&laquo;</a>';
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(totalPages, start + 4);
+        if (end - start < 4) start = Math.max(1, end - 4);
+        if (start > 1) { html += '<a href="#" data-page="1">1</a>'; if (start > 2) html += '<span class="page-dots">...</span>'; }
+        for (var i = start; i <= end; i++) {
+          html += '<a href="#" data-page="' + i + '" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</a>';
+        }
+        if (end < totalPages) { if (end < totalPages - 1) html += '<span class="page-dots">...</span>'; html += '<a href="#" data-page="' + totalPages + '">' + totalPages + '</a>'; }
+        html += '<a href="#" class="' + (currentPage >= totalPages ? 'disabled' : '') + '" data-page="' + (currentPage + 1) + '">&raquo;</a>';
+        pagContainer.innerHTML = html;
+      }
+
+      // カード描画
+      function render() {
+        var cards = getCurrentCards();
+        var totalCards = cards.length;
+        var totalPages = Math.ceil(totalCards / PER_PAGE);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        var startIdx = (currentPage - 1) * PER_PAGE;
+        var pageCards = cards.slice(startIdx, startIdx + PER_PAGE);
+        var html = '';
+        pageCards.forEach(function(d) { html += createCardHTML(d); });
+        grid.innerHTML = html;
+        if (countEl) countEl.textContent = totalCards;
+        renderPagination(totalCards);
+      }
+      render();
+
+      // タブ切り替え
+      var tabsContainer = document.querySelector('.compact-tabs');
+      if (tabsContainer) {
+        tabsContainer.addEventListener('click', function(e) {
+          var tab = e.target.closest('.compact-tab');
+          if (!tab) return;
+          e.preventDefault();
+          tabsContainer.querySelectorAll('.compact-tab').forEach(function(t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          currentCategory = tab.getAttribute('data-category');
+          currentPage = 1;
+          render();
+        });
+      }
+      // ページネーション
+      if (pagContainer) {
+        pagContainer.addEventListener('click', function(e) {
+          var btn = e.target.closest('a:not(.disabled)');
+          if (!btn) return;
+          e.preventDefault();
+          var pageNum = btn.getAttribute('data-page');
+          if (btn.textContent === '\u00AB') { currentPage--; }
+          else if (btn.textContent === '\u00BB') { currentPage++; }
+          else if (pageNum) { currentPage = parseInt(pageNum); }
+          render();
+          document.querySelector('.compact-header').scrollIntoView({behavior:'smooth'});
+        });
+      }
     });
   </script>
 

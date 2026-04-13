@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セクション題名 UI案 A / B / C</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 900px; margin: 0 auto 50px; overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 16px; font-size: 1.3em; font-weight: 900; letter-spacing: 0.05em; }
+  .proposal-body { padding: 40px 40px; display: flex; flex-direction: column; gap: 50px; }
+  .sample-section { background: #fafafa; border-radius: 12px; padding: 30px; }
+
+  /* ========================================= */
+  /*  案A: グラデーション下線 + サブテキスト      */
+  /* ========================================= */
+  .a-title {
+    font-size: 2em;
+    font-weight: 900;
+    color: #1b5e20;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+  .a-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4caf50, #81c784, transparent);
+    border-radius: 2px;
+  }
+  .a-sub {
+    font-size: 0.85em;
+    color: #999;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* ========================================= */
+  /*  案B: 左ボーダー + 英字ラベル               */
+  /* ========================================= */
+  .b-title-wrap {
+    border-left: 5px solid #4caf50;
+    padding-left: 18px;
+  }
+  .b-label {
+    font-size: 0.7em;
+    font-weight: 800;
+    color: #4caf50;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .b-title {
+    font-size: 1.8em;
+    font-weight: 900;
+    color: #222;
+    line-height: 1.3;
+  }
+
+  /* ========================================= */
+  /*  案C: バッジ + 背景グラデーション帯          */
+  /* ========================================= */
+  .c-title-wrap {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    border-radius: 12px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .c-badge {
+    background: linear-gradient(135deg, #2e7d32, #4caf50);
+    color: #fff;
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3em;
+    flex-shrink: 0;
+  }
+  .c-title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .c-title {
+    font-size: 1.6em;
+    font-weight: 900;
+    color: #1b5e20;
+  }
+  .c-title-desc {
+    font-size: 0.78em;
+    color: #888;
+    font-weight: 500;
+  }
+
+  /* サンプルコンテンツ（ダミー） */
+  .dummy-content {
+    margin-top: 16px;
+    height: 40px;
+    background: #eee;
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<h1>セクション題名 UI案 比較</h1>
+<p class="desc">4つのセクション題名を3パターンで表示</p>
+
+<!-- ============================================================ -->
+<!--  案A: グラデーション下線 + サブテキスト                          -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案A : グラデーション下線 + サブテキスト</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <h2 class="a-title">AIインターンシップを探す</h2>
+      <p class="a-sub">Search AI Internships</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <h2 class="a-title">AIインターン経験者のヤバい声</h2>
+      <p class="a-sub">Voices from AI Interns</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <h2 class="a-title">AIインターンシップ一覧</h2>
+      <p class="a-sub">All AI Internships</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <h2 class="a-title">AI名言集</h2>
+      <p class="a-sub">AI Quotes</p>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案B: 左ボーダー + 英字ラベル                                  -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案B : 左ボーダー + 英字ラベル</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <div class="b-title-wrap">
+        <div class="b-label">SEARCH</div>
+        <h2 class="b-title">AIインターンシップを探す</h2>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="b-title-wrap">
+        <div class="b-label">VOICES</div>
+        <h2 class="b-title">AIインターン経験者のヤバい声</h2>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="b-title-wrap">
+        <div class="b-label">INTERNSHIPS</div>
+        <h2 class="b-title">AIインターンシップ一覧</h2>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="b-title-wrap">
+        <div class="b-label">QUOTES</div>
+        <h2 class="b-title">AI名言集</h2>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案C: バッジ + 背景グラデーション帯                             -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案C : アイコンバッジ + 背景帯</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <div class="c-title-wrap">
+        <div class="c-badge">&#x1F50D;</div>
+        <div class="c-title-text">
+          <h2 class="c-title">AIインターンシップを探す</h2>
+          <span class="c-title-desc">職種・特徴・エリアからAIインターンを検索</span>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="c-title-wrap">
+        <div class="c-badge">&#x1F4AC;</div>
+        <div class="c-title-text">
+          <h2 class="c-title">AIインターン経験者のヤバい声</h2>
+          <span class="c-title-desc">先輩インターン生のリアルな体験談</span>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="c-title-wrap">
+        <div class="c-badge">&#x1F4CB;</div>
+        <div class="c-title-text">
+          <h2 class="c-title">AIインターンシップ一覧</h2>
+          <span class="c-title-desc">全部AI。例外なし。厳選156件</span>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="c-title-wrap">
+        <div class="c-badge">&#x1F4A1;</div>
+        <div class="c-title-text">
+          <h2 class="c-title">AI名言集</h2>
+          <span class="c-title-desc">AIの未来を切り開く先駆者たちの言葉</span>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案D: センター配置 + 装飾ライン                                -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案D : センター配置 + 装飾ライン</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <div class="d-title-wrap">
+        <span class="d-line"></span>
+        <h2 class="d-title">AIインターンシップを探す</h2>
+        <span class="d-line"></span>
+      </div>
+      <p class="d-sub">Search AI Internships</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="d-title-wrap">
+        <span class="d-line"></span>
+        <h2 class="d-title">AIインターン経験者のヤバい声</h2>
+        <span class="d-line"></span>
+      </div>
+      <p class="d-sub">Voices from AI Interns</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="d-title-wrap">
+        <span class="d-line"></span>
+        <h2 class="d-title">AIインターンシップ一覧</h2>
+        <span class="d-line"></span>
+      </div>
+      <p class="d-sub">All AI Internships</p>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="d-title-wrap">
+        <span class="d-line"></span>
+        <h2 class="d-title">AI名言集</h2>
+        <span class="d-line"></span>
+      </div>
+      <p class="d-sub">AI Quotes</p>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案E: 大きな番号 + タイトル                                    -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案E : ナンバリング + タイトル</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <div class="e-title-wrap">
+        <span class="e-num">01</span>
+        <div class="e-text">
+          <h2 class="e-title">AIインターンシップを探す</h2>
+          <p class="e-sub">職種・特徴・エリアから検索</p>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="e-title-wrap">
+        <span class="e-num">02</span>
+        <div class="e-text">
+          <h2 class="e-title">AIインターン経験者のヤバい声</h2>
+          <p class="e-sub">先輩インターン生のリアルな体験談</p>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="e-title-wrap">
+        <span class="e-num">03</span>
+        <div class="e-text">
+          <h2 class="e-title">AIインターンシップ一覧</h2>
+          <p class="e-sub">全部AI。例外なし。厳選156件</p>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="e-title-wrap">
+        <span class="e-num">04</span>
+        <div class="e-text">
+          <h2 class="e-title">AI名言集</h2>
+          <p class="e-sub">AIの未来を切り開く先駆者たちの言葉</p>
+        </div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案F: タグ風ラベル + 太字タイトル                               -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案F : タグ風ラベル + ドット装飾</div>
+  <div class="proposal-body">
+    <div class="sample-section">
+      <div class="f-title-wrap">
+        <span class="f-tag">SEARCH</span>
+        <h2 class="f-title">AIインターンシップを探す</h2>
+        <div class="f-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="f-title-wrap">
+        <span class="f-tag">VOICES</span>
+        <h2 class="f-title">AIインターン経験者のヤバい声</h2>
+        <div class="f-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="f-title-wrap">
+        <span class="f-tag">INTERNSHIPS</span>
+        <h2 class="f-title">AIインターンシップ一覧</h2>
+        <div class="f-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+    <div class="sample-section">
+      <div class="f-title-wrap">
+        <span class="f-tag">QUOTES</span>
+        <h2 class="f-title">AI名言集</h2>
+        <div class="f-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="dummy-content"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================= */
+  /*  案D: センター配置 + 装飾ライン             */
+  /* ========================================= */
+  .d-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+  }
+  .d-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c8e6c9, #4caf50);
+    max-width: 120px;
+  }
+  .d-title-wrap .d-line:last-child {
+    background: linear-gradient(90deg, #4caf50, #c8e6c9, transparent);
+  }
+  .d-title {
+    font-size: 1.8em;
+    font-weight: 900;
+    color: #222;
+    white-space: nowrap;
+  }
+  .d-sub {
+    text-align: center;
+    font-size: 0.8em;
+    color: #aaa;
+    letter-spacing: 0.12em;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* ========================================= */
+  /*  案E: 大きな番号 + タイトル                 */
+  /* ========================================= */
+  .e-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .e-num {
+    font-size: 3em;
+    font-weight: 900;
+    color: #e8f5e9;
+    line-height: 1;
+    -webkit-text-stroke: 1.5px #4caf50;
+    font-family: 'Arial Black', sans-serif;
+  }
+  .e-text { display: flex; flex-direction: column; gap: 2px; }
+  .e-title {
+    font-size: 1.7em;
+    font-weight: 900;
+    color: #222;
+  }
+  .e-sub {
+    font-size: 0.82em;
+    color: #999;
+    font-weight: 500;
+  }
+
+  /* ========================================= */
+  /*  案F: タグ風ラベル + ドット装飾             */
+  /* ========================================= */
+  .f-title-wrap {
+    text-align: center;
+  }
+  .f-tag {
+    display: inline-block;
+    background: #4caf50;
+    color: #fff;
+    padding: 3px 14px;
+    border-radius: 4px;
+    font-size: 0.65em;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+  }
+  .f-title {
+    font-size: 2em;
+    font-weight: 900;
+    color: #222;
+    margin-bottom: 10px;
+  }
+  .f-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .f-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4caf50;
+  }
+  .f-dots span:nth-child(2) { opacity: 0.5; }
+  .f-dots span:nth-child(3) { opacity: 0.25; }
+</style>
+
+</body>
+</html>

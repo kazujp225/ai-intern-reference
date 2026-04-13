@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フィルターセクション UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 30px; }
+
+  /* ========================================= */
+  /*  案A: カラーカード + タグピル型               */
+  /* ========================================= */
+  .fa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .fa-card { border-radius: 12px; overflow: hidden; }
+  .fa-header {
+    padding: 14px 18px; color: #fff; font-weight: 800; font-size: 0.95em;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .fa-header span { background: rgba(255,255,255,0.25); padding: 2px 10px; border-radius: 8px; font-size: 0.8em; }
+  .fa-c1 .fa-header { background: #2e7d32; }
+  .fa-c2 .fa-header { background: #1565c0; }
+  .fa-c3 .fa-header { background: #6a1b9a; }
+  .fa-c4 .fa-header { background: #e65100; }
+  .fa-body { padding: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .fa-pill {
+    padding: 6px 14px; border-radius: 20px; font-size: 0.78em; font-weight: 600;
+    border: 1.5px solid #e0e0e0; color: #444; background: #fff;
+    cursor: pointer; transition: all 0.15s; text-decoration: none;
+  }
+  .fa-pill:hover { border-color: #4caf50; color: #2e7d32; background: #f0faf0; }
+  .fa-pill .fa-n { color: #aaa; font-size: 0.85em; margin-left: 3px; }
+
+  /* ========================================= */
+  /*  案B: タブ切り替え型（1列表示）              */
+  /* ========================================= */
+  .fb-wrap { border: 1px solid #eee; border-radius: 12px; overflow: hidden; }
+  .fb-tabs { display: flex; border-bottom: 1px solid #eee; }
+  .fb-tab {
+    flex: 1; padding: 14px; text-align: center; font-size: 0.82em; font-weight: 700;
+    color: #888; cursor: pointer; transition: all 0.15s; border-bottom: 2px solid transparent;
+  }
+  .fb-tab:hover { color: #222; }
+  .fb-tab.active { color: #2e7d32; border-bottom-color: #4caf50; background: #fafffe; }
+  .fb-tab .fb-count { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 1px 8px; border-radius: 8px; font-size: 0.8em; margin-left: 4px; }
+  .fb-content { padding: 20px; }
+  .fb-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; list-style: none; }
+  .fb-list a {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; border-radius: 8px; text-decoration: none;
+    color: #333; font-size: 0.88em; font-weight: 600; transition: all 0.12s;
+  }
+  .fb-list a:hover { background: #f0faf0; color: #2e7d32; }
+  .fb-list a span { color: #aaa; font-size: 0.8em; font-weight: 700; }
+
+  /* ========================================= */
+  /*  案C: 横並びチップグループ型                 */
+  /* ========================================= */
+  .fc-section { margin-bottom: 24px; }
+  .fc-section:last-child { margin-bottom: 0; }
+  .fc-label {
+    font-size: 0.8em; font-weight: 800; color: #999; letter-spacing: 0.05em;
+    margin-bottom: 10px; padding-left: 2px;
+  }
+  .fc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fc-chip {
+    padding: 8px 18px; border-radius: 8px; font-size: 0.85em; font-weight: 700;
+    background: #f5f5f5; color: #444; cursor: pointer; transition: all 0.15s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .fc-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .fc-chip .fc-n { font-size: 0.75em; color: #bbb; font-weight: 600; }
+  .fc-chip.fc-hot { background: #2e7d32; color: #fff; }
+  .fc-chip.fc-hot .fc-n { color: rgba(255,255,255,0.6); }
+
+  /* ========================================= */
+  /*  案D: コンパクト2行グリッド + プログレスバー   */
+  /* ========================================= */
+  .fd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .fd-block {}
+  .fd-title {
+    font-size: 0.9em; font-weight: 800; color: #222; margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 2px solid #e8f5e9;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .fd-title span { font-size: 0.75em; color: #999; font-weight: 600; }
+  .fd-items { display: flex; flex-direction: column; gap: 8px; }
+  .fd-row {
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    padding: 4px 0; transition: all 0.12s;
+  }
+  .fd-row:hover .fd-name { color: #2e7d32; }
+  .fd-name { font-size: 0.82em; font-weight: 600; color: #444; width: 140px; flex-shrink: 0; }
+  .fd-bar { flex: 1; height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; }
+  .fd-bar-fill { height: 100%; background: linear-gradient(90deg, #4caf50, #a5d6a7); border-radius: 3px; }
+  .fd-num { font-size: 0.75em; font-weight: 700; color: #999; width: 28px; text-align: right; }
+  /* キーワードはチップ */
+  .fd-keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .fd-kw {
+    padding: 5px 14px; border-radius: 16px; font-size: 0.8em; font-weight: 700;
+    background: #f5f5f5; color: #444; cursor: pointer; transition: all 0.12s;
+    text-decoration: none;
+  }
+  .fd-kw:hover { background: #e8f5e9; color: #2e7d32; }
+</style>
+</head>
+<body>
+
+<h1>フィルターセクション UI案 比較</h1>
+<p class="desc">AI職種 / 尖った特徴 / AI領域 / 人気キーワードの4ブロック</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : カラーカード + タグピル型</div>
+  <div class="proposal-body">
+    <div class="fa-grid">
+      <div class="fa-card fa-c1">
+        <div class="fa-header">AI職種から探す <span>8</span></div>
+        <div class="fa-body">
+          <a class="fa-pill" href="#">LLMアプリ開発<span class="fa-n">56</span></a>
+          <a class="fa-pill" href="#">プロンプトエンジニア<span class="fa-n">42</span></a>
+          <a class="fa-pill" href="#">MLエンジニア<span class="fa-n">38</span></a>
+          <a class="fa-pill" href="#">データサイエンティスト<span class="fa-n">31</span></a>
+          <a class="fa-pill" href="#">AI PMM / BizDev<span class="fa-n">27</span></a>
+          <a class="fa-pill" href="#">AIリサーチャー<span class="fa-n">24</span></a>
+          <a class="fa-pill" href="#">AIエージェント開発<span class="fa-n">19</span></a>
+          <a class="fa-pill" href="#">AI x クリエイティブ<span class="fa-n">15</span></a>
+        </div>
+      </div>
+      <div class="fa-card fa-c2">
+        <div class="fa-header">尖った特徴から探す <span>12</span></div>
+        <div class="fa-body">
+          <a class="fa-pill" href="#">フルリモート可<span class="fa-n">89</span></a>
+          <a class="fa-pill" href="#">未経験OK<span class="fa-n">67</span></a>
+          <a class="fa-pill" href="#">時給2,000円以上<span class="fa-n">52</span></a>
+          <a class="fa-pill" href="#">文系歓迎<span class="fa-n">45</span></a>
+          <a class="fa-pill" href="#">CEO / CTO直下<span class="fa-n">38</span></a>
+          <a class="fa-pill" href="#">論文読み会あり<span class="fa-n">34</span></a>
+          <a class="fa-pill" href="#">GPU使い放題<span class="fa-n">23</span></a>
+          <a class="fa-pill" href="#">Kaggle推奨<span class="fa-n">21</span></a>
+        </div>
+      </div>
+      <div class="fa-card fa-c3">
+        <div class="fa-header">AI領域から探す <span>10</span></div>
+        <div class="fa-body">
+          <a class="fa-pill" href="#">LLM / 大規模言語モデル<span class="fa-n">78</span></a>
+          <a class="fa-pill" href="#">AI SaaS<span class="fa-n">56</span></a>
+          <a class="fa-pill" href="#">AIエージェント<span class="fa-n">34</span></a>
+          <a class="fa-pill" href="#">画像生成<span class="fa-n">23</span></a>
+          <a class="fa-pill" href="#">AI x 教育<span class="fa-n">21</span></a>
+          <a class="fa-pill" href="#">ヘルスケアAI<span class="fa-n">18</span></a>
+          <a class="fa-pill" href="#">AI x 金融<span class="fa-n">14</span></a>
+        </div>
+      </div>
+      <div class="fa-card fa-c4">
+        <div class="fa-header">人気のAIキーワード <span>8</span></div>
+        <div class="fa-body">
+          <a class="fa-pill" href="#">RAG</a>
+          <a class="fa-pill" href="#">ファインチューニング</a>
+          <a class="fa-pill" href="#">Claude</a>
+          <a class="fa-pill" href="#">LangChain</a>
+          <a class="fa-pill" href="#">Stable Diffusion</a>
+          <a class="fa-pill" href="#">Kaggle</a>
+          <a class="fa-pill" href="#">Transformer</a>
+          <a class="fa-pill" href="#">強化学習</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : タブ切り替え型（1エリア表示）</div>
+  <div class="proposal-body">
+    <div class="fb-wrap">
+      <div class="fb-tabs">
+        <div class="fb-tab active">AI職種<span class="fb-count">8</span></div>
+        <div class="fb-tab">尖った特徴<span class="fb-count">12</span></div>
+        <div class="fb-tab">AI領域<span class="fb-count">10</span></div>
+        <div class="fb-tab">キーワード<span class="fb-count">8</span></div>
+      </div>
+      <div class="fb-content">
+        <div class="fb-list">
+          <a href="#">LLMアプリ開発 <span>56</span></a>
+          <a href="#">プロンプトエンジニア <span>42</span></a>
+          <a href="#">MLエンジニア <span>38</span></a>
+          <a href="#">データサイエンティスト <span>31</span></a>
+          <a href="#">AI PMM / BizDev <span>27</span></a>
+          <a href="#">AIリサーチャー <span>24</span></a>
+          <a href="#">AIエージェント開発 <span>19</span></a>
+          <a href="#">AI x クリエイティブ <span>15</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 横並びチップグループ型</div>
+  <div class="proposal-body">
+    <div class="fc-section">
+      <div class="fc-label">AI職種から探す</div>
+      <div class="fc-chips">
+        <a class="fc-chip fc-hot" href="#">LLMアプリ開発 <span class="fc-n">56</span></a>
+        <a class="fc-chip" href="#">プロンプトエンジニア <span class="fc-n">42</span></a>
+        <a class="fc-chip" href="#">MLエンジニア <span class="fc-n">38</span></a>
+        <a class="fc-chip" href="#">データサイエンティスト <span class="fc-n">31</span></a>
+        <a class="fc-chip" href="#">AI PMM / BizDev <span class="fc-n">27</span></a>
+        <a class="fc-chip" href="#">AIリサーチャー <span class="fc-n">24</span></a>
+        <a class="fc-chip" href="#">AIエージェント開発 <span class="fc-n">19</span></a>
+        <a class="fc-chip" href="#">AI x クリエイティブ <span class="fc-n">15</span></a>
+      </div>
+    </div>
+    <div class="fc-section">
+      <div class="fc-label">尖った特徴から探す</div>
+      <div class="fc-chips">
+        <a class="fc-chip fc-hot" href="#">フルリモート可 <span class="fc-n">89</span></a>
+        <a class="fc-chip fc-hot" href="#">未経験OK <span class="fc-n">67</span></a>
+        <a class="fc-chip" href="#">時給2,000円以上 <span class="fc-n">52</span></a>
+        <a class="fc-chip" href="#">文系歓迎 <span class="fc-n">45</span></a>
+        <a class="fc-chip" href="#">CEO / CTO直下 <span class="fc-n">38</span></a>
+        <a class="fc-chip" href="#">論文読み会あり <span class="fc-n">34</span></a>
+        <a class="fc-chip" href="#">GPU使い放題 <span class="fc-n">23</span></a>
+        <a class="fc-chip" href="#">Kaggle推奨 <span class="fc-n">21</span></a>
+      </div>
+    </div>
+    <div class="fc-section">
+      <div class="fc-label">AI領域から探す</div>
+      <div class="fc-chips">
+        <a class="fc-chip fc-hot" href="#">LLM <span class="fc-n">78</span></a>
+        <a class="fc-chip" href="#">AI SaaS <span class="fc-n">56</span></a>
+        <a class="fc-chip" href="#">AIエージェント <span class="fc-n">34</span></a>
+        <a class="fc-chip" href="#">画像生成 <span class="fc-n">23</span></a>
+        <a class="fc-chip" href="#">AI x 教育 <span class="fc-n">21</span></a>
+        <a class="fc-chip" href="#">ヘルスケアAI <span class="fc-n">18</span></a>
+      </div>
+    </div>
+    <div class="fc-section">
+      <div class="fc-label">人気のAIキーワード</div>
+      <div class="fc-chips">
+        <a class="fc-chip" href="#">RAG</a>
+        <a class="fc-chip" href="#">ファインチューニング</a>
+        <a class="fc-chip" href="#">Claude</a>
+        <a class="fc-chip" href="#">LangChain</a>
+        <a class="fc-chip" href="#">Stable Diffusion</a>
+        <a class="fc-chip" href="#">Kaggle</a>
+        <a class="fc-chip" href="#">Transformer</a>
+        <a class="fc-chip" href="#">強化学習</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : 2カラム + プログレスバー</div>
+  <div class="proposal-body">
+    <div class="fd-grid">
+      <div class="fd-block">
+        <div class="fd-title">AI職種から探す <span>8件</span></div>
+        <div class="fd-items">
+          <div class="fd-row"><span class="fd-name">LLMアプリ開発</span><div class="fd-bar"><div class="fd-bar-fill" style="width:100%"></div></div><span class="fd-num">56</span></div>
+          <div class="fd-row"><span class="fd-name">プロンプトエンジニア</span><div class="fd-bar"><div class="fd-bar-fill" style="width:75%"></div></div><span class="fd-num">42</span></div>
+          <div class="fd-row"><span class="fd-name">MLエンジニア</span><div class="fd-bar"><div class="fd-bar-fill" style="width:68%"></div></div><span class="fd-num">38</span></div>
+          <div class="fd-row"><span class="fd-name">データサイエンティスト</span><div class="fd-bar"><div class="fd-bar-fill" style="width:55%"></div></div><span class="fd-num">31</span></div>
+          <div class="fd-row"><span class="fd-name">AI PMM / BizDev</span><div class="fd-bar"><div class="fd-bar-fill" style="width:48%"></div></div><span class="fd-num">27</span></div>
+          <div class="fd-row"><span class="fd-name">AIリサーチャー</span><div class="fd-bar"><div class="fd-bar-fill" style="width:43%"></div></div><span class="fd-num">24</span></div>
+          <div class="fd-row"><span class="fd-name">AIエージェント開発</span><div class="fd-bar"><div class="fd-bar-fill" style="width:34%"></div></div><span class="fd-num">19</span></div>
+          <div class="fd-row"><span class="fd-name">AI x クリエイティブ</span><div class="fd-bar"><div class="fd-bar-fill" style="width:27%"></div></div><span class="fd-num">15</span></div>
+        </div>
+      </div>
+      <div class="fd-block">
+        <div class="fd-title">尖った特徴から探す <span>12件</span></div>
+        <div class="fd-items">
+          <div class="fd-row"><span class="fd-name">フルリモート可</span><div class="fd-bar"><div class="fd-bar-fill" style="width:100%"></div></div><span class="fd-num">89</span></div>
+          <div class="fd-row"><span class="fd-name">未経験OK</span><div class="fd-bar"><div class="fd-bar-fill" style="width:75%"></div></div><span class="fd-num">67</span></div>
+          <div class="fd-row"><span class="fd-name">時給2,000円以上</span><div class="fd-bar"><div class="fd-bar-fill" style="width:58%"></div></div><span class="fd-num">52</span></div>
+          <div class="fd-row"><span class="fd-name">文系歓迎</span><div class="fd-bar"><div class="fd-bar-fill" style="width:51%"></div></div><span class="fd-num">45</span></div>
+          <div class="fd-row"><span class="fd-name">CEO / CTO直下</span><div class="fd-bar"><div class="fd-bar-fill" style="width:43%"></div></div><span class="fd-num">38</span></div>
+          <div class="fd-row"><span class="fd-name">論文読み会あり</span><div class="fd-bar"><div class="fd-bar-fill" style="width:38%"></div></div><span class="fd-num">34</span></div>
+          <div class="fd-row"><span class="fd-name">GPU使い放題</span><div class="fd-bar"><div class="fd-bar-fill" style="width:26%"></div></div><span class="fd-num">23</span></div>
+          <div class="fd-row"><span class="fd-name">Kaggle推奨</span><div class="fd-bar"><div class="fd-bar-fill" style="width:24%"></div></div><span class="fd-num">21</span></div>
+        </div>
+      </div>
+      <div class="fd-block">
+        <div class="fd-title">AI領域から探す <span>10件</span></div>
+        <div class="fd-items">
+          <div class="fd-row"><span class="fd-name">LLM / 大規模言語モデル</span><div class="fd-bar"><div class="fd-bar-fill" style="width:100%"></div></div><span class="fd-num">78</span></div>
+          <div class="fd-row"><span class="fd-name">AI SaaS</span><div class="fd-bar"><div class="fd-bar-fill" style="width:72%"></div></div><span class="fd-num">56</span></div>
+          <div class="fd-row"><span class="fd-name">AIエージェント</span><div class="fd-bar"><div class="fd-bar-fill" style="width:44%"></div></div><span class="fd-num">34</span></div>
+          <div class="fd-row"><span class="fd-name">画像生成</span><div class="fd-bar"><div class="fd-bar-fill" style="width:29%"></div></div><span class="fd-num">23</span></div>
+          <div class="fd-row"><span class="fd-name">AI x 教育</span><div class="fd-bar"><div class="fd-bar-fill" style="width:27%"></div></div><span class="fd-num">21</span></div>
+          <div class="fd-row"><span class="fd-name">ヘルスケアAI</span><div class="fd-bar"><div class="fd-bar-fill" style="width:23%"></div></div><span class="fd-num">18</span></div>
+        </div>
+      </div>
+      <div class="fd-block">
+        <div class="fd-title">人気のAIキーワード <span>8件</span></div>
+        <div class="fd-keywords">
+          <a class="fd-kw" href="#">RAG</a>
+          <a class="fd-kw" href="#">ファインチューニング</a>
+          <a class="fd-kw" href="#">Claude</a>
+          <a class="fd-kw" href="#">LangChain</a>
+          <a class="fd-kw" href="#">Stable Diffusion</a>
+          <a class="fd-kw" href="#">Kaggle</a>
+          <a class="fd-kw" href="#">Transformer</a>
+          <a class="fd-kw" href="#">強化学習</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

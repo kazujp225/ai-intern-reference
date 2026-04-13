@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トップAI企業紹介 UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 40px; }
+  .section-title { font-size: 1.7em; font-weight: 900; color: #222; margin-bottom: 6px; }
+  .section-sub { font-size: 0.82em; color: #999; margin-bottom: 30px; }
+  /* 共通ロゴ代替 */
+  .logo-oai { width:50px;height:50px;background:#74aa9c;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.2em; }
+  .logo-goo { width:50px;height:50px;background:linear-gradient(135deg,#4285f4,#34a853);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:0.8em; }
+  .logo-ant { width:50px;height:50px;background:#d97706;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.5em; }
+  .logo-met { width:50px;height:50px;background:linear-gradient(135deg,#0668E1,#00C2FF);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:0.7em; }
+
+  /* ========================================= */
+  /*  案A: 横並びフラットカード                   */
+  /* ========================================= */
+  .ca-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ca-card {
+    background: #fff; border: 1.5px solid #eee; border-radius: 14px; padding: 28px 20px;
+    text-align: center; text-decoration: none; color: #222; transition: all 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .ca-card:hover { border-color: #4caf50; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(76,175,80,0.1); }
+  .ca-name { font-size: 1.05em; font-weight: 800; }
+  .ca-product { font-size: 0.78em; color: #999; }
+  .ca-desc { font-size: 0.8em; color: #666; line-height: 1.5; margin-top: 4px; }
+  .ca-link { font-size: 0.75em; color: #4caf50; font-weight: 700; margin-top: 8px; }
+
+  /* ========================================= */
+  /*  案B: 横長リスト型                          */
+  /* ========================================= */
+  .cb-list { display: flex; flex-direction: column; gap: 0; }
+  .cb-item {
+    display: flex; align-items: center; gap: 20px; padding: 20px;
+    border-bottom: 1px solid #f0f0f0; transition: background 0.12s;
+    text-decoration: none; color: #222;
+  }
+  .cb-item:last-child { border-bottom: none; }
+  .cb-item:hover { background: #fafffe; }
+  .cb-info { flex: 1; }
+  .cb-name { font-size: 1em; font-weight: 800; margin-bottom: 2px; }
+  .cb-product { font-size: 0.8em; color: #4caf50; font-weight: 600; }
+  .cb-desc { font-size: 0.82em; color: #888; margin-top: 4px; line-height: 1.5; }
+  .cb-arrow { color: #ccc; font-size: 1.2em; }
+
+  /* ========================================= */
+  /*  案C: ダークヒーロー + ロゴグリッド           */
+  /* ========================================= */
+  .cc-hero {
+    background: linear-gradient(135deg, #111 0%, #1a1a2e 100%);
+    border-radius: 16px; padding: 40px; color: #fff; text-align: center;
+  }
+  .cc-title { font-size: 1.4em; font-weight: 900; margin-bottom: 4px; }
+  .cc-sub { font-size: 0.82em; color: rgba(255,255,255,0.5); margin-bottom: 30px; }
+  .cc-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+  .cc-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 24px 28px; text-align: center; text-decoration: none;
+    color: #fff; transition: all 0.2s; width: 180px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .cc-card:hover { background: rgba(255,255,255,0.12); border-color: #4caf50; transform: translateY(-3px); }
+  .cc-card .logo-oai,.cc-card .logo-goo,.cc-card .logo-ant,.cc-card .logo-met { border-radius: 14px; }
+  .cc-name { font-size: 0.95em; font-weight: 800; }
+  .cc-product { font-size: 0.75em; color: rgba(255,255,255,0.5); }
+
+  /* ========================================= */
+  /*  案D: カード + 説明 + CTAボタン              */
+  /* ========================================= */
+  .cd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .cd-card {
+    display: flex; gap: 18px; padding: 24px; border: 1.5px solid #eee;
+    border-radius: 14px; text-decoration: none; color: #222; transition: all 0.2s;
+    align-items: flex-start;
+  }
+  .cd-card:hover { border-color: #4caf50; box-shadow: 0 4px 16px rgba(76,175,80,0.08); }
+  .cd-content { flex: 1; }
+  .cd-name { font-size: 1em; font-weight: 800; margin-bottom: 2px; }
+  .cd-product { font-size: 0.78em; color: #4caf50; font-weight: 600; margin-bottom: 6px; }
+  .cd-desc { font-size: 0.82em; color: #888; line-height: 1.5; margin-bottom: 12px; }
+  .cd-btn {
+    display: inline-block; padding: 5px 16px; border: 1.5px solid #4caf50;
+    border-radius: 6px; font-size: 0.75em; font-weight: 700; color: #4caf50;
+    transition: all 0.15s;
+  }
+  .cd-card:hover .cd-btn { background: #4caf50; color: #fff; }
+
+  /* ========================================= */
+  /*  案E: ロゴスライダー（ミニマル）              */
+  /* ========================================= */
+  .ce-wrap { text-align: center; }
+  .ce-logos {
+    display: flex; justify-content: center; align-items: center; gap: 48px;
+    padding: 30px 0; flex-wrap: wrap;
+  }
+  .ce-logo-item {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    text-decoration: none; color: #222; opacity: 0.6; transition: all 0.2s;
+    cursor: pointer;
+  }
+  .ce-logo-item:hover { opacity: 1; transform: scale(1.08); }
+  .ce-logo-item .ce-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; font-weight: 900; color: #fff; }
+  .ce-logo-name { font-size: 0.82em; font-weight: 700; color: #444; }
+  .ce-logo-product { font-size: 0.7em; color: #aaa; }
+  .ce-divider { width: 1px; height: 40px; background: #e0e0e0; }
+</style>
+</head>
+<body>
+
+<h1>トップAI企業紹介 UI案 比較</h1>
+<p class="desc">同じ企業データを5パターンで表示</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : 横並びフラットカード（説明付き）</div>
+  <div class="proposal-body">
+    <h2 class="section-title">特集：トップAI企業紹介</h2>
+    <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+    <div class="ca-grid">
+      <a class="ca-card" href="#">
+        <div class="logo-oai">GP</div>
+        <div class="ca-name">OpenAI</div>
+        <div class="ca-product">ChatGPT</div>
+        <div class="ca-desc">GPT-4を開発。世界最先端のLLM研究</div>
+        <div class="ca-link">企業を見る &rarr;</div>
+      </a>
+      <a class="ca-card" href="#">
+        <div class="logo-goo">G</div>
+        <div class="ca-name">Google</div>
+        <div class="ca-product">Gemini</div>
+        <div class="ca-desc">マルチモーダルAI Geminiを開発</div>
+        <div class="ca-link">企業を見る &rarr;</div>
+      </a>
+      <a class="ca-card" href="#">
+        <div class="logo-ant">A</div>
+        <div class="ca-name">Anthropic</div>
+        <div class="ca-product">Claude</div>
+        <div class="ca-desc">安全性重視のAI研究企業</div>
+        <div class="ca-link">企業を見る &rarr;</div>
+      </a>
+      <a class="ca-card" href="#">
+        <div class="logo-met">M</div>
+        <div class="ca-name">Meta AI</div>
+        <div class="ca-product">LLaMA</div>
+        <div class="ca-desc">オープンソースLLMの先駆者</div>
+        <div class="ca-link">企業を見る &rarr;</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : 横長リスト型</div>
+  <div class="proposal-body">
+    <h2 class="section-title">特集：トップAI企業紹介</h2>
+    <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+    <div class="cb-list">
+      <a class="cb-item" href="#">
+        <div class="logo-oai">GP</div>
+        <div class="cb-info"><div class="cb-name">OpenAI</div><div class="cb-product">ChatGPT / GPT-4</div><div class="cb-desc">世界最先端のLLM研究。GPT-4、DALL-E、Whisperなど革新的AIを次々と開発。</div></div>
+        <span class="cb-arrow">&rarr;</span>
+      </a>
+      <a class="cb-item" href="#">
+        <div class="logo-goo">G</div>
+        <div class="cb-info"><div class="cb-name">Google</div><div class="cb-product">Gemini / DeepMind</div><div class="cb-desc">マルチモーダルAI Geminiを開発。Transformer論文の生みの親。</div></div>
+        <span class="cb-arrow">&rarr;</span>
+      </a>
+      <a class="cb-item" href="#">
+        <div class="logo-ant">A</div>
+        <div class="cb-info"><div class="cb-name">Anthropic</div><div class="cb-product">Claude</div><div class="cb-desc">安全で誠実なAIを目指す研究企業。Constitutional AIの開発。</div></div>
+        <span class="cb-arrow">&rarr;</span>
+      </a>
+      <a class="cb-item" href="#">
+        <div class="logo-met">M</div>
+        <div class="cb-info"><div class="cb-name">Meta AI</div><div class="cb-product">LLaMA</div><div class="cb-desc">オープンソースLLMの先駆者。研究コミュニティへの貢献。</div></div>
+        <span class="cb-arrow">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : ダークヒーロー + ロゴグリッド</div>
+  <div class="proposal-body" style="padding:0;">
+    <div class="cc-hero">
+      <h2 class="cc-title">特集：トップAI企業紹介</h2>
+      <p class="cc-sub">インターン先として注目のAI企業をピックアップ</p>
+      <div class="cc-grid">
+        <a class="cc-card" href="#">
+          <div class="logo-oai">GP</div>
+          <div class="cc-name">OpenAI</div>
+          <div class="cc-product">ChatGPT</div>
+        </a>
+        <a class="cc-card" href="#">
+          <div class="logo-goo">G</div>
+          <div class="cc-name">Google</div>
+          <div class="cc-product">Gemini</div>
+        </a>
+        <a class="cc-card" href="#">
+          <div class="logo-ant">A</div>
+          <div class="cc-name">Anthropic</div>
+          <div class="cc-product">Claude</div>
+        </a>
+        <a class="cc-card" href="#">
+          <div class="logo-met">M</div>
+          <div class="cc-name">Meta AI</div>
+          <div class="cc-product">LLaMA</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : 2カラム + 説明 + CTAボタン</div>
+  <div class="proposal-body">
+    <h2 class="section-title">特集：トップAI企業紹介</h2>
+    <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+    <div class="cd-grid">
+      <a class="cd-card" href="#">
+        <div class="logo-oai">GP</div>
+        <div class="cd-content"><div class="cd-name">OpenAI</div><div class="cd-product">ChatGPT / GPT-4</div><div class="cd-desc">世界最先端のLLM研究。GPT-4、DALL-E、Whisperなど革新的AIを次々と開発。</div><span class="cd-btn">インターンを見る</span></div>
+      </a>
+      <a class="cd-card" href="#">
+        <div class="logo-goo">G</div>
+        <div class="cd-content"><div class="cd-name">Google</div><div class="cd-product">Gemini / DeepMind</div><div class="cd-desc">マルチモーダルAI Geminiを開発。Transformer論文の生みの親。</div><span class="cd-btn">インターンを見る</span></div>
+      </a>
+      <a class="cd-card" href="#">
+        <div class="logo-ant">A</div>
+        <div class="cd-content"><div class="cd-name">Anthropic</div><div class="cd-product">Claude</div><div class="cd-desc">安全で誠実なAIを目指す研究企業。Constitutional AIの開発。</div><span class="cd-btn">インターンを見る</span></div>
+      </a>
+      <a class="cd-card" href="#">
+        <div class="logo-met">M</div>
+        <div class="cd-content"><div class="cd-name">Meta AI</div><div class="cd-product">LLaMA</div><div class="cd-desc">オープンソースLLMの先駆者。研究コミュニティへの貢献。</div><span class="cd-btn">インターンを見る</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案E -->
+<div class="proposal">
+  <div class="proposal-label">案E : ロゴスライダー（超ミニマル）</div>
+  <div class="proposal-body">
+    <div class="ce-wrap">
+      <h2 class="section-title">特集：トップAI企業紹介</h2>
+      <p class="section-sub">インターン先として注目のAI企業をピックアップ</p>
+      <div class="ce-logos">
+        <a class="ce-logo-item" href="#">
+          <div class="ce-icon" style="background:#74aa9c;">GP</div>
+          <div class="ce-logo-name">OpenAI</div>
+          <div class="ce-logo-product">ChatGPT</div>
+        </a>
+        <div class="ce-divider"></div>
+        <a class="ce-logo-item" href="#">
+          <div class="ce-icon" style="background:linear-gradient(135deg,#4285f4,#34a853);">G</div>
+          <div class="ce-logo-name">Google</div>
+          <div class="ce-logo-product">Gemini</div>
+        </a>
+        <div class="ce-divider"></div>
+        <a class="ce-logo-item" href="#">
+          <div class="ce-icon" style="background:#d97706;">A</div>
+          <div class="ce-logo-name">Anthropic</div>
+          <div class="ce-logo-product">Claude</div>
+        </a>
+        <div class="ce-divider"></div>
+        <a class="ce-logo-item" href="#">
+          <div class="ce-icon" style="background:linear-gradient(135deg,#0668E1,#00C2FF);">M</div>
+          <div class="ce-logo-name">Meta AI</div>
+          <div class="ce-logo-product">LLaMA</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
