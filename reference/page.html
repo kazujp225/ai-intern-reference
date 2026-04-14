@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>AIme</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #fafbfa; color: #222; }
+  header { background: #fff; border-bottom: 1px solid #e8ecea; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+  header .brand { font-weight: 900; color: #1b5e20; font-size: 1.2em; letter-spacing: .05em; }
+  header .back { color: #2e7d32; font-weight: 700; font-size: .9em; text-decoration: none; }
+  header .back:hover { text-decoration: underline; }
+  main { max-width: 820px; margin: 50px auto; padding: 0 20px; }
+  main h1 { color: #1b5e20; font-size: 2em; margin-bottom: 8px; }
+  main .desc { color: #666; font-size: 1em; line-height: 1.8; margin-bottom: 30px; }
+  main .block { background: #fff; border: 1px solid #e8ecea; border-radius: 12px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+  main .block h2 { margin-top: 0; color: #333; font-size: 1.15em; }
+  main .block ul { padding-left: 20px; color: #444; line-height: 1.8; }
+  main .cta { display: inline-block; margin-top: 18px; background: #1b5e20; color: #fff; padding: 10px 22px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+  main .cta:hover { background: #2e7d32; }
+  footer { text-align: center; padding: 30px 20px; color: #999; font-size: .8em; border-top: 1px solid #eef0ee; background: #fff; margin-top: 60px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="original.html" class="back">← トップへ戻る</a>
+  <a href="original.html" class="brand">AIme</a>
+</header>
+
+<main>
+  <h1 id="title">ページ</h1>
+  <p class="desc" id="desc">このページは準備中です。</p>
+  <div class="block" id="block"></div>
+  <a href="original.html" class="cta">トップに戻る</a>
+</main>
+
+<footer>© AIme - AIインターンシップ情報サービス</footer>
+
+<script>
+const PAGES = {
+  'register': { title: '新規登録', desc: 'AImeに無料登録して、あなたにぴったりのAIインターンを見つけよう。', block: { h2: '登録すると', list: ['最新の求人情報をメール受信', 'スカウト機能を利用可能', '応募履歴の管理', '非公開求人の閲覧'] } },
+  'login': { title: 'ログイン', desc: '登録済みのメールアドレスでサインイン。', block: { h2: 'アカウントサービス', list: ['保存した求人の確認', 'スカウトの確認', 'プロフィールの編集', '応募履歴の確認'] } },
+  'study': { title: 'AI勉強会', desc: '学生向けのAI勉強会・ハンズオンイベントを毎週開催中。', block: { h2: '次回の予定', list: ['RAGハンズオン - 2026/04/18(土)', 'LLMファインチューニング入門 - 2026/04/25(土)', '論文輪読会: GPT-5のアーキテクチャ - 2026/05/01(木)'] } },
+  'recruiters': { title: '採用担当者様向け', desc: 'AIme掲載を検討中の企業様はこちら。', block: { h2: '掲載プラン', list: ['スタンダード: 月額5万円〜', 'プレミアム: 月額15万円〜 (スカウト機能付き)', 'エンタープライズ: 要相談'] } },
+  'search': { title: '求人検索', desc: '条件を指定してAIインターンを検索。', block: { h2: 'よく使われる条件', list: ['フルリモート可', '時給2,000円以上', '未経験OK', '学生歓迎'] } },
+  'about': { title: 'AImeについて', desc: 'AImeは国内最大級のAI特化インターンマッチングサービスです。', block: { h2: '特徴', list: ['AI求人に特化', '学生〜第二新卒まで対応', 'スカウト機能', '勉強会・イベント開催'] } },
+  'faq': { title: 'よくある質問', desc: 'AImeのご利用に関するよくある質問。', block: { h2: '質問カテゴリ', list: ['登録・ログイン', '応募・選考', '退会・解約', 'スカウト'] } },
+  'contact': { title: 'お問い合わせ', desc: 'ご質問・ご要望はこちらから。', block: { h2: '連絡方法', list: ['メール: support@aime.example', 'Twitter(X): @aime_official', '電話: 平日10:00-18:00'] } },
+  'terms': { title: '利用規約', desc: 'AImeのサービス利用規約。', block: { h2: '主な項目', list: ['利用者の義務', '禁止事項', '個人情報の取り扱い', '免責事項'] } },
+  'privacy': { title: 'プライバシーポリシー', desc: '個人情報の取り扱いについて。', block: { h2: '取得する情報', list: ['基本情報（氏名・メール）', '学歴・スキル', '応募履歴', 'Cookie情報'] } },
+  'company-list': { title: 'AIme 求人一覧', desc: '掲載中の求人をすべて確認できます。', block: { h2: 'おすすめの探し方', list: ['職種から探す', 'エリアから探す', '特徴から探す', '企業から探す'] } },
+  'default': { title: 'ページ', desc: 'このページは準備中です。', block: null },
+};
+const params = new URLSearchParams(location.search);
+const key = params.get('type') || 'default';
+const p = PAGES[key] || PAGES.default;
+document.getElementById('title').textContent = p.title;
+document.getElementById('desc').textContent = p.desc;
+document.title = p.title + ' | AIme';
+const blockEl = document.getElementById('block');
+if (p.block) {
+  blockEl.innerHTML = `<h2>${p.block.h2}</h2><ul>${p.block.list.map(x => `<li>${x}</li>`).join('')}</ul>`;
+} else {
+  blockEl.style.display = 'none';
+}
+</script>
+</body>
+</html>

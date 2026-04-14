@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>検索カテゴリカード 斬新案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .variant { max-width: 1080px; margin: 28px auto 60px; background: #fff; padding: 28px 24px 36px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.1em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 22px; max-width: 760px; }
+
+  /* 1: ASCII */
+  .v1 { background: #0f1411; color: #b3ffc6; font-family: "Menlo", "Consolas", monospace; padding: 22px; border-radius: 10px;
+        white-space: pre; font-size: .85em; line-height: 1.4; overflow-x: auto; }
+  .v1 a { color: #b3ffc6; text-decoration: none; cursor: pointer; }
+  .v1 a:hover { color: #fff; background: rgba(139,255,158,.15); }
+
+  /* 2: business cards */
+  .v2 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; perspective: 1000px; }
+  .v2 .card { background: #fdfcf7; border: 1px solid #d8d4c5; border-radius: 4px; padding: 22px 18px 18px;
+              box-shadow: 4px 6px 0 #1b5e20, 4px 6px 14px rgba(0,0,0,.15); cursor: pointer; transition: transform .25s; position: relative;
+              font-family: "Georgia", "Yu Mincho", serif; }
+  .v2 .card:hover { transform: translate(-2px,-3px) rotate(-1deg); }
+  .v2 .card::before { content: 'AIme INTERN'; position: absolute; top: 8px; right: 14px; font-size: .65em; letter-spacing: .15em; color: #2e7d32; font-family: sans-serif; }
+  .v2 .role { font-size: .75em; color: #888; letter-spacing: .15em; margin-bottom: 4px; }
+  .v2 .name { font-size: 1.3em; font-weight: 700; color: #222; }
+  .v2 .div { width: 30px; height: 2px; background: #2e7d32; margin: 10px 0; }
+  .v2 .meta { font-size: .8em; color: #555; }
+
+  /* 3: form fields */
+  .v3 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .v3 .field { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 10px 12px; cursor: pointer;
+               display: flex; align-items: center; justify-content: space-between; transition: all .15s;
+               font-family: "Menlo", "Consolas", monospace; }
+  .v3 .field:hover { border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(46,125,50,.15); }
+  .v3 .label { font-size: .68em; color: #888; letter-spacing: .1em; }
+  .v3 .val { font-weight: 700; font-size: .95em; color: #222; }
+  .v3 .check { width: 18px; height: 18px; border: 1.5px solid #ccc; border-radius: 4px; }
+  .v3 .field:hover .check { background: #2e7d32; border-color: #2e7d32; }
+
+  /* 4: whiteboard */
+  .v4 { background:
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(0,0,0,.04) 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,0,0,.04) 39px 40px),
+    #fafafa;
+    padding: 30px; border-radius: 10px; border: 4px solid #5a3825; }
+  .v4 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
+  .v4 .item { background: transparent; cursor: pointer; padding: 8px;
+              font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive;
+              border: 3px solid #222; border-radius: 16px; transform: rotate(-1deg);
+              box-shadow: inset 0 0 0 2px transparent; transition: transform .2s; }
+  .v4 .item:nth-child(even){ transform: rotate(1.2deg); border-color: #2e7d32; color: #1b5e20; }
+  .v4 .item:nth-child(3n){ transform: rotate(-2deg); border-color: #c2185b; color: #c2185b; }
+  .v4 .item:hover { transform: rotate(0) scale(1.05); }
+  .v4 .name { font-size: 1.3em; font-weight: 700; }
+  .v4 .meta { font-size: .85em; opacity: .7; }
+
+  /* 5: vinyl record */
+  .v5 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
+  .v5 .disc { position: relative; aspect-ratio: 1/1; cursor: pointer; }
+  .v5 .vinyl { position: absolute; inset: 0; border-radius: 50%;
+               background: radial-gradient(circle, #444 24%, #111 25%, #111 30%, #333 31%, #111 34%, #2a2a2a 100%);
+               transition: transform 6s linear; }
+  .v5 .disc:hover .vinyl { transform: rotate(720deg); }
+  .v5 .label { position: absolute; inset: 30%; border-radius: 50%; background: #2e7d32; color: #fff;
+               display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6px;
+               box-shadow: 0 0 0 2px #fff; }
+  .v5 .name { font-size: .72em; font-weight: 800; line-height: 1.1; }
+  .v5 .meta { font-size: .55em; opacity: .8; margin-top: 2px; }
+
+  /* 6: metro line */
+  .v6 { padding: 40px 20px 20px; }
+  .v6-line { position: relative; height: 6px; background: #2e7d32; border-radius: 3px; margin: 30px 30px; }
+  .v6-stations { display: flex; justify-content: space-between; position: absolute; top: -7px; left: 0; right: 0; }
+  .v6 .station { position: relative; cursor: pointer; }
+  .v6 .dot { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid #2e7d32; transition: transform .2s; }
+  .v6 .station:hover .dot { transform: scale(1.4); background: #2e7d32; }
+  .v6 .lab { position: absolute; left: 50%; transform: translateX(-50%) rotate(-30deg); transform-origin: top left;
+             top: 28px; white-space: nowrap; font-weight: 700; font-size: .82em; color: #222; }
+  .v6 .lab .ct { display: block; font-weight: 400; font-size: .8em; color: #888; transform: rotate(0deg); }
+
+  /* 7: RPG status */
+  .v7 { background: #0a1428; color: #d6e4ff; padding: 22px; border-radius: 10px;
+        font-family: "Press Start 2P", "Menlo", monospace; image-rendering: pixelated; }
+  .v7 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .v7 .row { background: #11264d; border: 2px solid #2e7d32; padding: 12px 14px; cursor: pointer; transition: all .2s; }
+  .v7 .row:hover { background: #1e3e7a; box-shadow: 0 0 0 2px #8bff9e; }
+  .v7 .lv { color: #ffe082; font-size: .75em; }
+  .v7 .name { font-weight: 700; font-size: .95em; margin: 4px 0 6px; }
+  .v7 .bar { display: flex; gap: 2px; align-items: center; font-size: .7em; }
+  .v7 .bar .full { color: #8bff9e; }
+  .v7 .bar .empty { color: #345; }
+
+  /* 8: stock ticker */
+  .v8 { background: #111; padding: 0; border-radius: 10px; overflow: hidden; }
+  .v8-strip { display: flex; gap: 28px; padding: 16px 0; width: max-content; animation: tick 35s linear infinite; }
+  .v8-strip:hover { animation-play-state: paused; }
+  @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .v8 .tk { color: #fff; font-family: "Menlo", monospace; font-size: .92em; cursor: pointer; }
+  .v8 .tk .arrow { color: #4caf50; margin-right: 6px; }
+  .v8 .tk .num { color: #ffd54f; margin-left: 6px; }
+  .v8 .tk:hover { color: #8bff9e; }
+
+  /* 9: chalkboard menu */
+  .v9 { background: #1a3a2c; padding: 30px; border-radius: 6px; border: 12px solid #5a3825; box-shadow: inset 0 0 30px rgba(0,0,0,.4); }
+  .v9-title { color: #fff; font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive; text-align: center;
+              font-size: 1.5em; margin-bottom: 12px; letter-spacing: .1em; text-shadow: 1px 1px 0 rgba(0,0,0,.3); }
+  .v9 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 24px; }
+  .v9 .item { color: #fff5e0; font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive; cursor: pointer;
+              display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted rgba(255,245,224,.4);
+              padding: 8px 4px; font-size: 1.15em; }
+  .v9 .item:hover { color: #fff; }
+  .v9 .item .price { font-size: .9em; color: #ffe082; }
+
+  /* 10: rare ore cards */
+  .v10 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .v10 .ore { position: relative; padding: 22px 14px; border-radius: 14px; cursor: pointer;
+              background: linear-gradient(135deg, rgba(255,255,255,.7), rgba(255,255,255,.95));
+              backdrop-filter: blur(6px); border: 2px solid #ddd; transition: transform .2s, box-shadow .2s;
+              text-align: center; overflow: hidden; }
+  .v10 .ore::before { content: ''; position: absolute; inset: -50%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%);
+                      transform: translateX(-100%); transition: transform .8s; }
+  .v10 .ore:hover::before { transform: translateX(100%); }
+  .v10 .ore:hover { transform: translateY(-4px); }
+  .v10 .ore.r-c { background: linear-gradient(135deg, #f5f5f5, #e0e0e0); border-color: #aaa; }
+  .v10 .ore.r-r { background: linear-gradient(135deg, #bbdefb, #64b5f6); border-color: #1976d2; box-shadow: 0 0 16px rgba(33,150,243,.4); }
+  .v10 .ore.r-sr { background: linear-gradient(135deg, #ce93d8, #8e24aa); border-color: #4a148c; color: #fff; box-shadow: 0 0 22px rgba(142,36,170,.6); }
+  .v10 .ore.r-ssr { background: linear-gradient(135deg, #fff176, #ff8f00); border-color: #ff6f00; color: #222; box-shadow: 0 0 28px rgba(255,143,0,.7); }
+  .v10 .rarity { font-size: .65em; letter-spacing: .2em; font-weight: 800; opacity: .7; }
+  .v10 .name { font-weight: 800; font-size: 1em; margin-top: 6px; }
+  .v10 .meta { font-size: .75em; opacity: .8; margin-top: 4px; }
+
+  /* 11: SNS post */
+  .v11 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .v11 .post { background: #fff; border: 1px solid #e1e8ed; border-radius: 14px; padding: 14px; cursor: pointer; transition: background .15s; }
+  .v11 .post:hover { background: #f7f9fa; }
+  .v11 .head { display: flex; align-items: center; gap: 10px; }
+  .v11 .ava { width: 40px; height: 40px; border-radius: 50%; background: #2e7d32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85em; }
+  .v11 .uname { font-weight: 700; font-size: .95em; }
+  .v11 .handle { color: #777; font-size: .8em; }
+  .v11 .body { margin-top: 8px; font-size: .9em; line-height: 1.5; }
+  .v11 .body strong { color: #1b5e20; }
+  .v11 .stats { display: flex; gap: 16px; margin-top: 10px; color: #777; font-size: .78em; }
+
+  /* 12: showa flyer */
+  .v12 { background: #fff; padding: 30px; }
+  .v12 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .v12 .ad { position: relative; background: #fff8e1; border: 3px double #c62828; padding: 22px 14px 16px; cursor: pointer;
+             text-align: center; transform: rotate(-1deg); transition: transform .2s;
+             font-family: "Yu Gothic", "Hiragino Sans", sans-serif; }
+  .v12 .ad:nth-child(even){ transform: rotate(1.5deg); background: #ffe0b2; }
+  .v12 .ad:hover { transform: rotate(0) scale(1.05); }
+  .v12 .stamp { position: absolute; top: -10px; right: -8px; background: #c62828; color: #fff; padding: 6px 10px; border-radius: 50%;
+                font-size: .7em; font-weight: 800; transform: rotate(15deg); box-shadow: 1px 2px 4px rgba(0,0,0,.3); }
+  .v12 .name { font-size: 1.05em; font-weight: 800; color: #c62828; }
+  .v12 .copy { font-size: .75em; color: #5d4037; margin-top: 6px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<h1>検索カテゴリカード 斬新案 12種</h1>
+<p class="sub">変化球の発想で並べました。</p>
+
+<script id="dataTpl" type="text/template">[
+  {"n":"プロンプトエンジニア","c":24,"copy":"文系最強","stat":[4,5]},
+  {"n":"MLエンジニア","c":42,"copy":"数学が武器","stat":[5,5]},
+  {"n":"AIリサーチャー","c":18,"copy":"論文書ける","stat":[3,5]},
+  {"n":"LLMアプリ開発","c":31,"copy":"作る楽しさ","stat":[4,5]},
+  {"n":"データサイエンティスト","c":27,"copy":"分析が天職","stat":[4,5]},
+  {"n":"AIエージェント開発","c":15,"copy":"次世代の主役","stat":[5,5]},
+  {"n":"GPU使い放題","c":12,"copy":"H100無限","stat":[5,5]},
+  {"n":"フルリモート可","c":38,"copy":"在宅で稼ぐ","stat":[3,5]},
+  {"n":"論文読み会あり","c":9,"copy":"研究者気分","stat":[2,5]},
+  {"n":"未経験OK","c":56,"copy":"今日から始める","stat":[2,5]}
+]</script>
+
+<div class="variant"><h2>案1: ASCIIアート看板</h2><div class="note">テキストだけで構造化、レトロ・テック。</div><div class="v1" id="ascii"></div></div>
+<div class="variant"><h2>案2: 名刺コレクション</h2><div class="note">職種を「肩書き」として印刷した名刺。</div><div class="v2"><div class="grid" data-render="v2"></div></div></div>
+<div class="variant"><h2>案3: 履歴書フォーム風</h2><div class="note">入力欄テンプレ風。求人サイトメタ。</div><div class="v3"><div class="grid" data-render="v3"></div></div></div>
+<div class="variant"><h2>案4: 手書きホワイトボード</h2><div class="note">ブレスト感のラフ書き枠。</div><div class="v4"><div class="grid" data-render="v4"></div></div></div>
+<div class="variant"><h2>案5: レコード盤</h2><div class="note">回るディスク。文化系トーン。</div><div class="v5"><div class="grid" data-render="v5"></div></div></div>
+<div class="variant"><h2>案6: メトロ路線図</h2><div class="note">職種を「駅」に。キャリアの線路。</div><div class="v6" id="metro"></div></div>
+<div class="variant"><h2>案7: RPGステータス</h2><div class="note">レベル＋HPバー。ゲーム好きに刺さる。</div><div class="v7"><div class="grid" data-render="v7"></div></div></div>
+<div class="variant"><h2>案8: 株価ティッカー</h2><div class="note">横スクロールで需要相場感。</div><div class="v8"><div class="v8-strip" id="ticker"></div></div></div>
+<div class="variant"><h2>案9: 黒板メニュー</h2><div class="note">食堂の本日のおすすめ風。</div><div class="v9"><div class="v9-title">~ 本日の AIインターン ~</div><div class="grid" data-render="v9"></div></div></div>
+<div class="variant"><h2>案10: 鉱石レアリティ</h2><div class="note">N/R/SR/SSRで職種の希少度。</div><div class="v10"><div class="grid" data-render="v10"></div></div></div>
+<div class="variant"><h2>案11: SNS投稿風</h2><div class="note">ツイート風カード。共有しやすい印象。</div><div class="v11"><div class="grid" data-render="v11"></div></div></div>
+<div class="variant"><h2>案12: 昭和チラシ</h2><div class="note">煽り文句＋赤丸スタンプ。視線誘導強い。</div><div class="v12"><div class="grid" data-render="v12"></div></div></div>
+
+<script>
+const data = JSON.parse(document.getElementById('dataTpl').textContent);
+
+// 1: ASCII
+(function(){
+  const lines = [];
+  data.forEach(d => {
+    const inner = ` ${d.n}  (${d.c}件) `;
+    const bar = '━'.repeat(Math.max(0, inner.length));
+    lines.push(`<a href="#">┏${bar}┓\n┃${inner}┃\n┗${bar}┛</a>`);
+  });
+  document.getElementById('ascii').innerHTML = lines.join('\n\n');
+})();
+
+const renderers = {
+  v2: d => `<div class="card"><div class="role">SPECIALTY</div><div class="name">${d.n}</div><div class="div"></div><div class="meta">${d.c} open positions</div></div>`,
+  v3: d => `<div class="field"><div><div class="label">ROLE</div><div class="val">${d.n}</div></div><div class="check"></div></div>`,
+  v4: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  v5: d => `<div class="disc"><div class="vinyl"></div><div class="label"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div></div>`,
+  v7: d => {
+    const filled = '◆'.repeat(d.stat[0]);
+    const empty = '◇'.repeat(d.stat[1]-d.stat[0]);
+    return `<div class="row"><div class="lv">[Lv.${d.c}]</div><div class="name">${d.n}</div><div class="bar">HP:<span class="full">${filled}</span><span class="empty">${empty}</span></div></div>`;
+  },
+  v9: d => `<div class="item"><span>${d.n}</span><span class="price">${d.c}件</span></div>`,
+  v10: d => {
+    const tier = d.c >= 40 ? 'ssr' : d.c >= 25 ? 'sr' : d.c >= 15 ? 'r' : 'c';
+    const labelMap = {c:'COMMON', r:'RARE', sr:'SUPER RARE', ssr:'SSR'};
+    return `<div class="ore r-${tier}"><div class="rarity">${labelMap[tier]}</div><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`;
+  },
+  v11: d => `<div class="post"><div class="head"><div class="ava">${d.n[0]}</div><div><div class="uname">${d.n}</div><div class="handle">@${d.n.replace(/[^A-Za-z]/g,'').toLowerCase() || 'aime'}intern · 24h</div></div></div><div class="body"><strong>${d.copy}</strong>な君に。${d.n}のインターンが今、<strong>${d.c}件</strong>募集中。</div><div class="stats"><span>♡ ${d.c*3}</span><span>↻ ${Math.floor(d.c/2)}</span><span>💬 ${Math.floor(d.c/4)}</span></div></div>`,
+  v12: d => `<div class="ad"><div class="stamp">急募!!</div><div class="name">${d.n}</div><div class="copy">${d.copy}！${d.c}件</div></div>`,
+};
+
+document.querySelectorAll('[data-render]').forEach(el => {
+  el.innerHTML = data.map(renderers[el.dataset.render]).join('');
+});
+
+// 6: metro
+(function(){
+  const m = document.getElementById('metro');
+  m.innerHTML = `<div class="v6-line"><div class="v6-stations">${
+    data.map(d => `<div class="station"><div class="dot"></div><div class="lab">${d.n}<span class="ct">${d.c}件</span></div></div>`).join('')
+  }</div></div>`;
+})();
+
+// 8: ticker (duplicate for loop)
+(function(){
+  const items = data.map(d => {
+    const sign = Math.random() > 0.3 ? '▲' : '▼';
+    const col = sign === '▲' ? '#4caf50' : '#f44336';
+    return `<span class="tk"><span class="arrow" style="color:${col}">${sign}</span>${d.n}<span class="num">${d.c}</span></span>`;
+  }).join('');
+  document.getElementById('ticker').innerHTML = items + items;
+})();
+</script>
+</body>
+</html>

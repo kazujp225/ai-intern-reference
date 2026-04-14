@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>カテゴリ検索セクション UI案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .toc { max-width: 1080px; margin: 12px auto 30px; padding: 14px 18px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.06); font-size: .85em; }
+  .toc a { color: #1b5e20; text-decoration: none; margin-right: 12px; padding: 3px 0; }
+  .toc a:hover { text-decoration: underline; }
+  .variant { max-width: 1080px; margin: 28px auto 60px; background: #fff; padding: 28px 24px 36px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.1em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 22px; max-width: 760px; }
+
+  /* ===== 1: tile grid ===== */
+  .v1 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .v1 .tile { background: #fff; border: 1px solid #e8ecea; border-radius: 14px; padding: 22px 14px; text-align: center; cursor: pointer; transition: all .2s;
+              display: flex; flex-direction: column; gap: 8px; align-items: center; position: relative; }
+  .v1 .tile:hover { border-color: #2e7d32; box-shadow: 0 6px 18px rgba(46,125,50,.15); transform: translateY(-3px); }
+  .v1 .tile .name { font-weight: 700; font-size: .95em; }
+  .v1 .tile .badge { background: #e8f5e9; color: #2e7d32; padding: 3px 10px; border-radius: 999px; font-size: .75em; font-weight: 700; }
+
+  /* ===== 2: filter chips ===== */
+  .v2 .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .v2 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border: 1.5px solid #d6e0d4; border-radius: 999px;
+              background: #fff; cursor: pointer; font-weight: 600; font-size: .9em; transition: all .15s; user-select: none; }
+  .v2 .chip:hover { border-color: #2e7d32; }
+  .v2 .chip.on { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  .v2 .chip .ct { font-size: .75em; opacity: .7; }
+  .v2 .chip.on .ct { opacity: 1; }
+
+  /* ===== 3: sidebar checklist ===== */
+  .v3 .panel { max-width: 480px; margin: 0 auto; background: #fafbfa; border: 1px solid #e8ecea; border-radius: 12px; padding: 18px 20px; }
+  .v3 .row { display: flex; align-items: center; gap: 12px; padding: 10px 0; cursor: pointer; border-bottom: 1px solid #eef0ee; }
+  .v3 .row:last-child { border-bottom: none; }
+  .v3 .row .box { width: 18px; height: 18px; border: 1.5px solid #b0b8b0; border-radius: 4px; flex-shrink: 0; transition: all .15s; }
+  .v3 .row.on .box { background: #2e7d32; border-color: #2e7d32; box-shadow: inset 0 0 0 2px #fff; }
+  .v3 .row .name { flex: 1; font-weight: 600; font-size: .92em; }
+  .v3 .row .ct { color: #888; font-size: .82em; }
+  .v3 .row:hover .name { color: #2e7d32; }
+
+  /* ===== 4: accordion ===== */
+  .v4 .acc { max-width: 760px; margin: 0 auto; }
+  .v4 .item { background: #fff; border: 1px solid #e8ecea; border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+  .v4 summary { padding: 14px 18px; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+  .v4 summary::-webkit-details-marker { display: none; }
+  .v4 summary::after { content: '+'; color: #2e7d32; font-size: 1.4em; transition: transform .2s; }
+  .v4 details[open] summary::after { transform: rotate(45deg); }
+  .v4 .body { padding: 0 18px 16px; color: #555; font-size: .9em; line-height: 1.6; border-top: 1px solid #f0f2f0; padding-top: 12px; }
+  .v4 .ct { color: #888; font-size: .82em; font-weight: 400; margin-left: 8px; }
+  .v4 .examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .v4 .examples span { background: #f1f8f1; color: #2e7d32; padding: 3px 10px; border-radius: 999px; font-size: .8em; }
+
+  /* ===== 5: tabs + cards ===== */
+  .v5 .tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid #e8ecea; gap: 4px; margin-bottom: 18px; }
+  .v5 .tab { padding: 10px 16px; cursor: pointer; font-weight: 700; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: .9em; }
+  .v5 .tab:hover { color: #2e7d32; }
+  .v5 .tab.on { color: #2e7d32; border-bottom-color: #2e7d32; }
+  .v5 .preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .v5 .card { background: #fff; border: 1px solid #e8ecea; border-radius: 10px; padding: 14px; }
+  .v5 .card .co { font-size: .8em; color: #888; }
+  .v5 .card .ttl { font-weight: 700; margin: 4px 0; font-size: .92em; }
+  .v5 .card .tag { display: inline-block; background: #f1f8f1; color: #2e7d32; padding: 1px 7px; border-radius: 4px; font-size: .7em; margin-right: 4px; }
+
+  /* ===== 6: 3D carousel ===== */
+  .v6-scene { perspective: 1200px; height: 240px; position: relative; }
+  .v6-ring { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; animation: spin6 30s linear infinite; }
+  .v6-scene:hover .v6-ring { animation-play-state: paused; }
+  @keyframes spin6 { from { transform: rotateY(0); } to { transform: rotateY(-360deg); } }
+  .v6 .item { position: absolute; top: -75px; left: -90px; width: 180px; padding: 22px 14px; border-radius: 14px;
+              background: #fff; border: 1px solid #e8ecea; box-shadow: 0 4px 14px rgba(0,0,0,.08); text-align: center; }
+  .v6 .item .name { font-weight: 700; font-size: .95em; }
+  .v6 .item .ct { font-size: .8em; color: #888; margin-top: 4px; }
+
+  /* ===== 7: mind map ===== */
+  .v7 { position: relative; height: 420px; max-width: 600px; margin: 0 auto; }
+  .v7 svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .v7 .center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border-radius: 50%;
+                background: linear-gradient(135deg, #1b5e20, #43a047); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+  .v7 .node { position: absolute; padding: 10px 14px; background: #fff; border: 1.5px solid #2e7d32; border-radius: 999px; cursor: pointer;
+              transform: translate(-50%, -50%); font-size: .82em; font-weight: 700; transition: all .2s; white-space: nowrap; }
+  .v7 .node:hover { background: #2e7d32; color: #fff; transform: translate(-50%, -50%) scale(1.1); }
+
+  /* ===== 8: bar graph ===== */
+  .v8 .row { display: grid; grid-template-columns: 200px 1fr 60px; gap: 10px; align-items: center; padding: 8px 12px; cursor: pointer; border-radius: 6px; transition: background .15s; }
+  .v8 .row:hover { background: #f5f9f5; }
+  .v8 .row .name { font-weight: 700; font-size: .9em; }
+  .v8 .row .bar { height: 22px; background: #e8ecea; border-radius: 999px; overflow: hidden; }
+  .v8 .row .fill { height: 100%; background: linear-gradient(90deg, #43a047, #1b5e20); border-radius: 999px; transition: width .8s; }
+  .v8 .row .ct { text-align: right; font-weight: 800; color: #2e7d32; font-size: .9em; }
+
+  /* ===== 9: split panel ===== */
+  .v9 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; min-height: 280px; }
+  .v9 .list { background: #fafbfa; border-radius: 12px; overflow: hidden; }
+  .v9 .opt { padding: 14px 18px; cursor: pointer; border-bottom: 1px solid #eef0ee; transition: background .15s; }
+  .v9 .opt:hover, .v9 .opt.on { background: #2e7d32; color: #fff; }
+  .v9 .opt .ct { font-size: .78em; opacity: .7; }
+  .v9 .detail { background: #fff; border: 1px solid #e8ecea; border-radius: 12px; padding: 22px; }
+  .v9 .detail h3 { margin: 0 0 8px; color: #1b5e20; }
+  .v9 .detail .sk { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+  .v9 .detail .sk span { background: #f1f8f1; color: #2e7d32; padding: 3px 10px; border-radius: 999px; font-size: .75em; }
+  .v9 .detail p { color: #555; font-size: .88em; line-height: 1.6; }
+  .v9 .detail .pay { color: #888; font-size: .82em; margin-top: 8px; }
+
+  /* ===== 10: Netflix-style hover expand ===== */
+  .v10 .row { display: flex; gap: 12px; overflow-x: auto; padding: 30px 10px; }
+  .v10 .card { flex: 0 0 160px; height: 110px; border-radius: 10px; background: linear-gradient(135deg, #2e7d32, #1b5e20); color: #fff;
+               display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
+               transition: all .3s; padding: 12px; text-align: center; }
+  .v10 .card:hover { transform: scale(1.4); z-index: 5; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+  .v10 .card .name { font-weight: 700; font-size: .9em; }
+  .v10 .card .ct { font-size: .75em; opacity: .85; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>カテゴリ検索セクション UI案 10種</h1>
+<p class="sub">「AI職種」「尖った特徴」セクションのリプレース案</p>
+
+<div class="toc">
+  <a href="#v1">1:タイルグリッド</a><a href="#v2">2:フィルタチップ</a><a href="#v3">3:チェックリスト</a><a href="#v4">4:アコーディオン</a><a href="#v5">5:タブ+カード</a><a href="#v6">6:3Dカルーセル</a><a href="#v7">7:マインドマップ</a><a href="#v8">8:棒グラフ</a><a href="#v9">9:スプリットパネル</a><a href="#v10">10:Netflix風</a>
+</div>
+
+<script id="dataTpl" type="text/template">[
+  {"n":"プロンプトエンジニア","c":24,"sk":["GPT","Claude","設計"],"pay":"時給1,800〜3,000円","desc":"AIに最適な指示を作る職人。文系から理系まで。"},
+  {"n":"MLエンジニア","c":42,"sk":["Python","PyTorch","数学"],"pay":"時給2,200〜4,500円","desc":"モデルの設計・学習・最適化を担う。"},
+  {"n":"AIリサーチャー","c":18,"sk":["論文","研究","数式"],"pay":"時給2,500〜5,000円","desc":"最先端AIの研究開発。論文執筆も。"},
+  {"n":"LLMアプリ開発","c":31,"sk":["LangChain","RAG","API"],"pay":"時給2,000〜4,000円","desc":"大規模言語モデルを使ったプロダクト開発。"},
+  {"n":"データサイエンティスト","c":27,"sk":["SQL","統計","BI"],"pay":"時給2,000〜3,800円","desc":"データから洞察を引き出す分析職。"},
+  {"n":"AIエージェント開発","c":15,"sk":["Tool Use","CrewAI","設計"],"pay":"時給2,500〜5,500円","desc":"自律型AIエージェントを構築する次世代職。"},
+  {"n":"GPU使い放題","c":12,"sk":["H100","A100","CUDA"],"pay":"環境","desc":"高性能GPUを自由に使える環境。"},
+  {"n":"フルリモート可","c":38,"sk":["在宅","柔軟"],"pay":"働き方","desc":"場所を選ばず働ける求人。"},
+  {"n":"論文読み会あり","c":9,"sk":["勉強会","arXiv"],"pay":"成長","desc":"最新論文を仲間と学ぶ文化のある現場。"},
+  {"n":"未経験OK","c":56,"sk":["研修","メンター"],"pay":"入門","desc":"プログラミング初心者でも歓迎。"}
+]</script>
+
+<div class="variant" id="v1"><h2>案1: タイルグリッド</h2><div class="note">王道。整然と並ぶクリック可能タイル。</div><div class="v1"><div class="grid" id="v1-out"></div></div></div>
+<div class="variant" id="v2"><h2>案2: フィルタチップ（複数選択）</h2><div class="note">ピル型を複数選択。条件絞り込みUI。</div><div class="v2"><div class="chips" id="v2-out"></div></div></div>
+<div class="variant" id="v3"><h2>案3: チェックリスト</h2><div class="note">求人サイト王道のフィルタパネル。</div><div class="v3"><div class="panel" id="v3-out"></div></div></div>
+<div class="variant" id="v4"><h2>案4: アコーディオン</h2><div class="note">展開で詳細表示。情報量と省スペース両立。</div><div class="v4"><div class="acc" id="v4-out"></div></div></div>
+<div class="variant" id="v5"><h2>案5: タブ + プレビューカード</h2><div class="note">タブ切替で該当求人が直接見える。</div><div class="v5"><div class="tabs" id="v5-tabs"></div><div class="preview" id="v5-out"></div></div></div>
+<div class="variant" id="v6"><h2>案6: 3D回転カルーセル</h2><div class="note">立体的に流れる。インパクト重視。</div><div class="v6"><div class="v6-scene"><div class="v6-ring" id="v6-out"></div></div></div></div>
+<div class="variant" id="v7"><h2>案7: マインドマップ</h2><div class="note">中央の「AI」から放射状にノード。</div><div class="v7" id="v7-out"></div></div>
+<div class="variant" id="v8"><h2>案8: 棒グラフ比較</h2><div class="note">人気度を可視化。直感的。</div><div class="v8" id="v8-out"></div></div>
+<div class="variant" id="v9"><h2>案9: スプリットパネル</h2><div class="note">左で選択→右に詳細プレビュー。</div><div class="v9"><div class="split"><div class="list" id="v9-list"></div><div class="detail" id="v9-detail"></div></div></div></div>
+<div class="variant" id="v10"><h2>案10: Netflix風ホバー拡大</h2><div class="note">ホバーで1枚だけ大きく前に。</div><div class="v10"><div class="row" id="v10-out"></div></div></div>
+
+<script>
+const data = JSON.parse(document.getElementById('dataTpl').textContent);
+
+// 1
+document.getElementById('v1-out').innerHTML = data.map(d =>
+  `<div class="tile"><div class="name">${d.n}</div><div class="badge">${d.c}件</div></div>`).join('');
+
+// 2
+const c2 = document.getElementById('v2-out');
+c2.innerHTML = data.map(d => `<div class="chip"><span>${d.n}</span><span class="ct">${d.c}</span></div>`).join('');
+c2.querySelectorAll('.chip').forEach(el => el.addEventListener('click', () => el.classList.toggle('on')));
+
+// 3
+const c3 = document.getElementById('v3-out');
+c3.innerHTML = data.map(d => `<div class="row"><div class="box"></div><div class="name">${d.n}</div><div class="ct">${d.c}件</div></div>`).join('');
+c3.querySelectorAll('.row').forEach(el => el.addEventListener('click', () => el.classList.toggle('on')));
+
+// 4
+document.getElementById('v4-out').innerHTML = data.map(d => `
+  <details class="item"><summary>${d.n}<span class="ct">${d.c}件のインターン</span></summary>
+    <div class="body">${d.desc}<div class="examples">${d.sk.map(s=>`<span>${s}</span>`).join('')}</div></div>
+  </details>`).join('');
+
+// 5
+const tabs = document.getElementById('v5-tabs');
+const out5 = document.getElementById('v5-out');
+const sample = [
+  {co:'株式会社ニューロンクラフト', ttl:'GPTの裏側を知りたくないか？', tags:['GPU使い放題','自社LLM']},
+  {co:'LLMラボ株式会社', ttl:'LangChainマスターになれ', tags:['RAG','LangChain']},
+  {co:'合同会社トークンAI', ttl:'ファインチューニングの鬼になれ', tags:['Hugging Face','論文']},
+];
+function renderTabs(active){
+  tabs.innerHTML = data.map((d,i) => `<div class="tab ${i===active?'on':''}" data-i="${i}">${d.n}</div>`).join('');
+  out5.innerHTML = sample.map(s => `<div class="card"><div class="co">${s.co}</div><div class="ttl">${s.ttl}</div>${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`).join('');
+  tabs.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => renderTabs(parseInt(t.dataset.i))));
+}
+renderTabs(0);
+
+// 6
+const r = 280;
+document.getElementById('v6-out').innerHTML = data.map((d,i) => {
+  const a = (360/data.length)*i;
+  return `<div class="item" style="transform: rotateY(${a}deg) translateZ(${r}px);"><div class="name">${d.n}</div><div class="ct">${d.c}件</div></div>`;
+}).join('');
+
+// 7 mindmap
+(function(){
+  const el = document.getElementById('v7-out');
+  const cx = 50, cy = 50, R = 38;
+  let nodes = '<div class="center">AI</div>';
+  let lines = '';
+  data.forEach((d,i) => {
+    const a = (Math.PI*2/data.length)*i - Math.PI/2;
+    const x = cx + R*Math.cos(a);
+    const y = cy + R*Math.sin(a);
+    nodes += `<div class="node" style="left:${x}%;top:${y}%;">${d.n}</div>`;
+    lines += `<line x1="50%" y1="50%" x2="${x}%" y2="${y}%" stroke="#c8e6c9" stroke-width="1.5"/>`;
+  });
+  el.innerHTML = `<svg>${lines}</svg>${nodes}`;
+})();
+
+// 8
+const max = Math.max(...data.map(d=>d.c));
+document.getElementById('v8-out').innerHTML = data.map(d =>
+  `<div class="row"><div class="name">${d.n}</div><div class="bar"><div class="fill" style="width:${(d.c/max*100).toFixed(0)}%"></div></div><div class="ct">${d.c}</div></div>`).join('');
+
+// 9
+const list9 = document.getElementById('v9-list');
+const det9 = document.getElementById('v9-detail');
+function renderDetail(i){
+  const d = data[i];
+  det9.innerHTML = `<h3>${d.n}</h3><p>${d.desc}</p><div class="sk">${d.sk.map(s=>`<span>${s}</span>`).join('')}</div><div class="pay">${d.pay}</div><div style="margin-top:14px;font-weight:700;color:#2e7d32;">${d.c}件のインターンを見る →</div>`;
+  list9.querySelectorAll('.opt').forEach((o,j) => o.classList.toggle('on', i===j));
+}
+list9.innerHTML = data.map((d,i) => `<div class="opt" data-i="${i}"><div>${d.n}</div><div class="ct">${d.c}件</div></div>`).join('');
+list9.querySelectorAll('.opt').forEach(o => o.addEventListener('mouseenter', () => renderDetail(parseInt(o.dataset.i))));
+renderDetail(0);
+
+// 10
+document.getElementById('v10-out').innerHTML = data.map(d =>
+  `<div class="card"><div class="name">${d.n}</div><div class="ct">${d.c}件</div></div>`).join('');
+</script>
+</body>
+</html>

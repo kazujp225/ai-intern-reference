@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>検索カテゴリカード 全案まとめ</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.6em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 8px; }
+  .toc { max-width: 1080px; margin: 12px auto 30px; padding: 14px 18px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.06); font-size: .85em; }
+  .toc a { color: #1b5e20; text-decoration: none; margin-right: 12px; display: inline-block; padding: 3px 0; }
+  .toc a:hover { text-decoration: underline; }
+  .toc h3 { margin: 8px 0 4px; font-size: .9em; color: #555; }
+  .group-title { max-width: 1080px; margin: 40px auto 8px; padding: 0 4px; font-size: 1.1em; color: #1b5e20; border-bottom: 2px solid #1b5e20; padding-bottom: 6px; }
+  .variant { max-width: 1080px; margin: 18px auto 30px; background: #fff; padding: 22px 22px 28px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { font-size: 1.05em; margin: 0 0 4px; color: #1b5e20; }
+  .variant .note { font-size: .8em; color: #777; margin: 0 0 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ===== Conventional (N1-N6) ===== */
+  .N1 .item { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 14px; cursor: pointer; transition: all .2s;
+              display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .N1 .item:hover { border-color: #2e7d32; box-shadow: 0 4px 12px rgba(46,125,50,.12); }
+  .N1 .corner { position: absolute; top: 10px; right: 12px; font-size: .7em; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 999px; }
+  .N1 .name { font-weight: 700; font-size: .95em; }
+  .N1 .meta { font-size: .75em; color: #888; }
+
+  .N2 .item { display: flex; align-items: stretch; cursor: pointer; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); transition: transform .2s; }
+  .N2 .item:hover { transform: translateY(-2px); }
+  .N2 .stripe { width: 8px; background: #2e7d32; }
+  .N2 .body { padding: 14px 16px; flex: 1; }
+  .N2 .name { font-weight: 700; font-size: .95em; }
+  .N2 .meta { font-size: .76em; color: #888; }
+
+  .N3 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .N3 .item { display: flex; align-items: center; gap: 12px; background: #fff; padding: 12px 16px; border-radius: 999px; cursor: pointer; transition: background .15s; border: 1px solid #eef0f2; }
+  .N3 .item:hover { background: #f1f8f1; border-color: #2e7d32; }
+  .N3 .ava { width: 36px; height: 36px; border-radius: 50%; background: #2e7d32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .N3 .name { flex: 1; font-weight: 700; font-size: .9em; }
+  .N3 .meta { font-size: .75em; color: #888; }
+
+  .N4 .item { background: #fff; border-radius: 12px; padding: 20px 16px; cursor: pointer; transition: all .25s;
+              box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05); }
+  .N4 .item:hover { box-shadow: 0 10px 25px rgba(0,0,0,.12), 0 4px 10px rgba(0,0,0,.08); transform: translateY(-3px); }
+  .N4 .name { font-weight: 700; }
+  .N4 .meta { font-size: .76em; color: #888; margin-top: 4px; }
+
+  .N5 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1.5px solid #e0e0e0; border-radius: 999px; cursor: pointer; transition: all .15s; background: #fff; }
+  .N5 .pill:hover { border-color: #2e7d32; background: #e8f5e9; }
+  .N5 .pill .check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #ccc; }
+  .N5 .pill:hover .check { background: #2e7d32; border-color: #2e7d32; }
+  .N5 .name { font-weight: 600; font-size: .88em; }
+
+  .N6 .row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: #fff; cursor: pointer; border-bottom: 1px solid #eee; transition: background .15s; }
+  .N6 .row:hover { background: #f7faf7; }
+  .N6 .row:last-child { border-bottom: none; }
+  .N6 .name { font-weight: 700; }
+  .N6 .meta { font-size: .8em; color: #888; }
+  .N6 .toggle { width: 36px; height: 20px; background: #ddd; border-radius: 999px; position: relative; transition: background .2s; }
+  .N6 .toggle::after { content: ''; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: left .2s; }
+  .N6 .row:hover .toggle { background: #2e7d32; }
+  .N6 .row:hover .toggle::after { left: 18px; }
+
+  /* ===== Emoji set (E1-E10) ===== */
+  .E1 .item { border-radius: 16px; padding: 22px 14px; color: #fff; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform .2s; box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+  .E1 .item:hover { transform: translateY(-3px); }
+  .E1 .ico { font-size: 2em; }
+  .E1 .item:nth-child(6n+1){ background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+  .E1 .item:nth-child(6n+2){ background: linear-gradient(135deg, #43cea2, #185a9d); }
+  .E1 .item:nth-child(6n+3){ background: linear-gradient(135deg, #f857a6, #ff5858); }
+  .E1 .item:nth-child(6n+4){ background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .E1 .item:nth-child(6n+5){ background: linear-gradient(135deg, #f6d365, #fda085); }
+  .E1 .item:nth-child(6n+6){ background: linear-gradient(135deg, #a8edea, #fed6e3); color: #222; }
+  .E1 .name { font-weight: 700; font-size: .92em; }
+
+  .E2-wrap { background: #e8ecf0; border-radius: 14px; padding: 30px; }
+  .E2 .item { background: #e8ecf0; border-radius: 18px; padding: 22px 14px; text-align: center; cursor: pointer; box-shadow: 8px 8px 18px #c4c8cc, -8px -8px 18px #ffffff; }
+  .E2 .item:hover { box-shadow: inset 5px 5px 12px #c4c8cc, inset -5px -5px 12px #ffffff; }
+  .E2 .ico { font-size: 1.8em; display: block; margin-bottom: 8px; }
+  .E2 .name { font-weight: 700; font-size: .9em; color: #444; }
+
+  .E3 .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .E3 .item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 12px; border: 1px solid #eef0f2; cursor: pointer; }
+  .E3 .item:hover { border-color: #2e7d32; }
+  .E3 .ico { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg,#e8f5e9,#c8e6c9); display:flex; align-items:center; justify-content:center; font-size: 1.5em; }
+  .E3 .name { font-weight: 700; }
+  .E3 .badge { font-size: .72em; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 999px; }
+
+  .E4-wrap { background: #fdfaf3; padding: 24px; border-radius: 12px; }
+  .E4 .item { background: #fff; border: 2px dashed #b8a87a; border-radius: 14px; padding: 20px 12px; text-align: center; cursor: pointer; font-family: "Comic Sans MS", "Hiragino Maru Gothic ProN", sans-serif; }
+  .E4 .item:hover { transform: rotate(-1deg) scale(1.03); border-color: #1b5e20; }
+  .E4 .ico { font-size: 2em; display: block; margin-bottom: 6px; }
+  .E4 .name { font-weight: 700; color: #5a4a1f; }
+
+  .E5-wrap { background: linear-gradient(135deg, #c8e6c9, #bbdefb, #f8bbd0); padding: 30px; border-radius: 14px; }
+  .E5 .item { background: rgba(255,255,255,.35); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.5); border-radius: 16px; padding: 22px 14px; text-align: center; cursor: pointer; }
+  .E5 .item:hover { background: rgba(255,255,255,.55); }
+  .E5 .ico { font-size: 2em; display: block; margin-bottom: 8px; }
+  .E5 .name { font-weight: 700; font-size: .92em; }
+
+  .E6 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: #f1f5f0; color: #2e3b2e; font-weight: 600; font-size: .9em; cursor: pointer; border: 1px solid #d8e2d4; }
+  .E6 .pill:hover { background: #2e7d32; color: #fff; }
+  .E6 .count { font-size: .75em; opacity: .7; background: rgba(0,0,0,.06); padding: 1px 7px; border-radius: 999px; }
+
+  .E7 .item { border-radius: 4px; padding: 22px 14px; text-align: center; cursor: pointer; box-shadow: 3px 6px 12px rgba(0,0,0,.15); }
+  .E7 .item:nth-child(odd) { transform: rotate(-2deg); background: #fff3e0; }
+  .E7 .item:nth-child(even) { transform: rotate(1.5deg); background: #f1f8e9; }
+  .E7 .item:hover { transform: rotate(0) scale(1.06) !important; }
+  .E7 .ico { font-size: 2em; display: block; margin-bottom: 6px; }
+  .E7 .name { font-weight: 700; font-size: .9em; }
+
+  .E8-wrap { background: #0d1410; padding: 30px; border-radius: 14px; }
+  .E8 .item { background: #131c14; border: 1.5px solid #2e7d32; border-radius: 12px; padding: 22px 14px; text-align: center; cursor: pointer; box-shadow: 0 0 12px rgba(46,175,80,.3); color: #cef0d4; }
+  .E8 .item:hover { box-shadow: 0 0 20px rgba(46,175,80,.7); color: #fff; }
+  .E8 .ico { font-size: 2em; display: block; margin-bottom: 6px; }
+  .E8 .name { font-weight: 700; font-size: .9em; }
+
+  .E9-wrap { background: #1e1e1e; padding: 22px; border-radius: 12px; font-family: "Menlo", monospace; }
+  .E9 .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px; }
+  .E9 .item { color: #8bff9e; padding: 10px 14px; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 10px; }
+  .E9 .item:hover { background: rgba(139,255,158,.1); }
+  .E9 .item::before { content: '>'; color: #888; }
+
+  .E10 .item { perspective: 800px; height: 110px; cursor: pointer; }
+  .E10 .inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; }
+  .E10 .item:hover .inner { transform: rotateY(180deg); }
+  .E10 .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+  .E10 .front { background: #fff; }
+  .E10 .back { background: #2e7d32; color: #fff; transform: rotateY(180deg); }
+  .E10 .ico { font-size: 1.8em; }
+  .E10 .name { font-weight: 700; font-size: .9em; }
+
+  /* ===== No-emoji (M1-M10) ===== */
+  .M1 .pill { padding: 10px 18px; background: #f0f3f0; color: #1b3a1c; border-radius: 999px; font-weight: 700; font-size: .9em; cursor: pointer; border: 1px solid #d6e0d4; }
+  .M1 .pill:hover { background: #2e7d32; color: #fff; }
+
+  .M2 .item { background: #fff; border: 1px solid #ececec; border-radius: 12px; padding: 18px 16px; cursor: pointer; }
+  .M2 .item:hover { border-color: #2e7d32; }
+  .M2 .num { font-family: "Georgia", serif; font-size: 2.4em; font-weight: 800; color: #2e7d32; line-height: 1; opacity: .25; }
+  .M2 .name { font-weight: 700; }
+  .M2 .meta { font-size: .75em; color: #888; }
+
+  .M3 .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .M3 .item { display: flex; align-items: center; padding: 12px 14px; background: #fff; cursor: pointer; border-left: 4px solid #2e7d32; }
+  .M3 .item:hover { background: #f1f8f1; }
+  .M3 .name { font-weight: 700; flex: 1; }
+  .M3 .count { color: #2e7d32; font-weight: 700; font-size: .8em; }
+
+  .M4 .item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 12px; background: #fff; border-radius: 12px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+  .M4 .item:hover { transform: translateY(-3px); }
+  .M4 .shape { width: 44px; height: 44px; }
+  .M4 .name { font-weight: 700; font-size: .88em; text-align: center; }
+
+  .M5 .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .M5 .item { padding: 14px 16px; background: #fff; cursor: pointer; border-radius: 8px; }
+  .M5 .name { font-weight: 700; background: linear-gradient(120deg, transparent 30%, #fff59d 30%); padding: 2px 6px; }
+  .M5 .item:nth-child(even) .name { background: linear-gradient(120deg, transparent 30%, #c8e6c9 30%); }
+  .M5 .meta { font-size: .76em; color: #888; margin-top: 6px; }
+
+  .M6 .item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 12px; background: #fff; border: 1px solid #eef0f2; border-radius: 12px; cursor: pointer; }
+  .M6 .item:hover { border-color: #2e7d32; transform: translateY(-3px); }
+  .M6 .ico { width: 36px; height: 36px; color: #2e7d32; }
+  .M6 .ico svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .M6 .name { font-weight: 700; font-size: .9em; text-align: center; }
+
+  .M7 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .M7 .item { padding: 22px 18px; background: #fff; border-radius: 14px; cursor: pointer; border-bottom: 3px solid transparent; }
+  .M7 .item:hover { border-bottom-color: #2e7d32; }
+  .M7 .name { font-size: 1.25em; font-weight: 800; line-height: 1.3; }
+  .M7 .meta { font-size: .75em; color: #888; margin-top: 6px; letter-spacing: .05em; }
+
+  .M8 .item { padding: 26px 14px; border-radius: 12px; color: #fff; cursor: pointer; }
+  .M8 .item:hover { transform: scale(1.03); }
+  .M8 .name { font-weight: 800; }
+  .M8 .meta { font-size: .78em; opacity: .85; }
+  .M8 .item:nth-child(8n+1){ background: #1b5e20; }
+  .M8 .item:nth-child(8n+2){ background: #283593; }
+  .M8 .item:nth-child(8n+3){ background: #b71c1c; }
+  .M8 .item:nth-child(8n+4){ background: #4527a0; }
+  .M8 .item:nth-child(8n+5){ background: #00695c; }
+  .M8 .item:nth-child(8n+6){ background: #ef6c00; }
+  .M8 .item:nth-child(8n+7){ background: #37474f; }
+  .M8 .item:nth-child(8n+8){ background: #c2185b; }
+
+  .M9 .item { padding: 22px 14px; border: 1.5px solid #222; border-radius: 4px; cursor: pointer; text-align: center; background: #fff; }
+  .M9 .item:hover { background: #222; color: #fff; }
+  .M9 .name { font-weight: 700; }
+  .M9 .meta { font-size: .72em; color: #888; margin-top: 4px; }
+  .M9 .item:hover .meta { color: #aaa; }
+
+  .M10 .tabs { display: flex; flex-wrap: wrap; border: 1px solid #d0d4d2; border-radius: 10px; overflow: hidden; }
+  .M10 .tab { flex: 1 1 auto; padding: 14px 18px; background: #fff; cursor: pointer; text-align: center; border-right: 1px solid #d0d4d2; min-width: 140px; }
+  .M10 .tab:last-child { border-right: none; }
+  .M10 .tab:hover, .M10 .tab.active { background: #2e7d32; color: #fff; }
+  .M10 .name { font-weight: 700; font-size: .88em; }
+  .M10 .count { font-size: .72em; opacity: .8; }
+
+  /* ===== Creative (C1-C12) — compact ===== */
+  .C1 { background: #0f1411; color: #b3ffc6; font-family: "Menlo", monospace; padding: 22px; border-radius: 10px; white-space: pre; font-size: .85em; line-height: 1.4; overflow-x: auto; }
+  .C1 a { color: #b3ffc6; text-decoration: none; }
+  .C1 a:hover { color: #fff; background: rgba(139,255,158,.15); }
+
+  .C2 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .C2 .card { background: #fdfcf7; border: 1px solid #d8d4c5; border-radius: 4px; padding: 22px 18px 18px; box-shadow: 4px 6px 0 #1b5e20; cursor: pointer; font-family: "Georgia", "Yu Mincho", serif; position: relative; }
+  .C2 .card::before { content: 'AIme INTERN'; position: absolute; top: 8px; right: 14px; font-size: .65em; letter-spacing: .15em; color: #2e7d32; font-family: sans-serif; }
+  .C2 .card:hover { transform: translate(-2px,-3px) rotate(-1deg); }
+  .C2 .role { font-size: .75em; color: #888; letter-spacing: .15em; }
+  .C2 .name { font-size: 1.3em; font-weight: 700; }
+  .C2 .div { width: 30px; height: 2px; background: #2e7d32; margin: 10px 0; }
+  .C2 .meta { font-size: .8em; color: #555; }
+
+  .C3 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .C3 .field { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 10px 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: "Menlo", monospace; }
+  .C3 .field:hover { border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(46,125,50,.15); }
+  .C3 .label { font-size: .68em; color: #888; letter-spacing: .1em; }
+  .C3 .val { font-weight: 700; }
+  .C3 .check { width: 18px; height: 18px; border: 1.5px solid #ccc; border-radius: 4px; }
+  .C3 .field:hover .check { background: #2e7d32; border-color: #2e7d32; }
+
+  .C4-wrap { background: repeating-linear-gradient(0deg, transparent 0 39px, rgba(0,0,0,.04) 39px 40px), repeating-linear-gradient(90deg, transparent 0 39px, rgba(0,0,0,.04) 39px 40px), #fafafa; padding: 30px; border-radius: 10px; border: 4px solid #5a3825; }
+  .C4 .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
+  .C4 .item { background: transparent; cursor: pointer; padding: 8px; font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive; border: 3px solid #222; border-radius: 16px; transform: rotate(-1deg); }
+  .C4 .item:nth-child(even){ transform: rotate(1.2deg); border-color: #2e7d32; color: #1b5e20; }
+  .C4 .item:nth-child(3n){ transform: rotate(-2deg); border-color: #c2185b; color: #c2185b; }
+  .C4 .item:hover { transform: rotate(0) scale(1.05); }
+  .C4 .name { font-size: 1.3em; font-weight: 700; }
+
+  .C5 .grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
+  .C5 .disc { position: relative; aspect-ratio: 1/1; cursor: pointer; }
+  .C5 .vinyl { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, #444 24%, #111 25%, #111 30%, #333 31%, #111 34%, #2a2a2a 100%); transition: transform 6s linear; }
+  .C5 .disc:hover .vinyl { transform: rotate(720deg); }
+  .C5 .label { position: absolute; inset: 30%; border-radius: 50%; background: #2e7d32; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; box-shadow: 0 0 0 2px #fff; }
+  .C5 .name { font-size: .72em; font-weight: 800; line-height: 1.1; text-align: center; }
+
+  .C6-wrap { padding: 40px 20px 60px; }
+  .C6-line { position: relative; height: 6px; background: #2e7d32; border-radius: 3px; margin: 30px 30px; }
+  .C6-stations { display: flex; justify-content: space-between; position: absolute; top: -7px; left: 0; right: 0; }
+  .C6 .station { position: relative; cursor: pointer; }
+  .C6 .dot { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid #2e7d32; }
+  .C6 .station:hover .dot { transform: scale(1.4); background: #2e7d32; }
+  .C6 .lab { position: absolute; left: 50%; transform: translateX(-50%) rotate(-30deg); transform-origin: top left; top: 28px; white-space: nowrap; font-weight: 700; font-size: .82em; }
+
+  .C7-wrap { background: #0a1428; color: #d6e4ff; padding: 22px; border-radius: 10px; font-family: "Menlo", monospace; }
+  .C7 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .C7 .row { background: #11264d; border: 2px solid #2e7d32; padding: 12px 14px; cursor: pointer; }
+  .C7 .row:hover { background: #1e3e7a; box-shadow: 0 0 0 2px #8bff9e; }
+  .C7 .lv { color: #ffe082; font-size: .75em; }
+  .C7 .name { font-weight: 700; margin: 4px 0 6px; }
+  .C7 .bar { font-size: .7em; }
+  .C7 .full { color: #8bff9e; }
+  .C7 .empty { color: #345; }
+
+  .C8-wrap { background: #111; padding: 0; border-radius: 10px; overflow: hidden; }
+  .C8-strip { display: flex; gap: 28px; padding: 16px 0; width: max-content; animation: tick 35s linear infinite; }
+  @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .C8 .tk { color: #fff; font-family: "Menlo", monospace; font-size: .92em; cursor: pointer; }
+  .C8 .tk .num { color: #ffd54f; margin-left: 6px; }
+
+  .C9-wrap { background: #1a3a2c; padding: 30px; border-radius: 6px; border: 12px solid #5a3825; }
+  .C9-title { color: #fff; font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive; text-align: center; font-size: 1.5em; margin-bottom: 12px; }
+  .C9 .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 24px; }
+  .C9 .item { color: #fff5e0; font-family: "Caveat", "Yuji Syuku", "Hiragino Maru Gothic ProN", cursive; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px dotted rgba(255,245,224,.4); padding: 8px 4px; font-size: 1.15em; }
+  .C9 .price { color: #ffe082; font-size: .9em; }
+
+  .C10 .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  .C10 .ore { padding: 22px 14px; border-radius: 14px; cursor: pointer; border: 2px solid #ddd; text-align: center; }
+  .C10 .ore:hover { transform: translateY(-4px); }
+  .C10 .ore.r-c { background: linear-gradient(135deg, #f5f5f5, #e0e0e0); border-color: #aaa; }
+  .C10 .ore.r-r { background: linear-gradient(135deg, #bbdefb, #64b5f6); border-color: #1976d2; box-shadow: 0 0 16px rgba(33,150,243,.4); }
+  .C10 .ore.r-sr { background: linear-gradient(135deg, #ce93d8, #8e24aa); border-color: #4a148c; color: #fff; box-shadow: 0 0 22px rgba(142,36,170,.6); }
+  .C10 .ore.r-ssr { background: linear-gradient(135deg, #fff176, #ff8f00); border-color: #ff6f00; box-shadow: 0 0 28px rgba(255,143,0,.7); }
+  .C10 .rarity { font-size: .65em; letter-spacing: .2em; font-weight: 800; opacity: .7; }
+  .C10 .name { font-weight: 800; margin-top: 6px; }
+  .C10 .meta { font-size: .75em; opacity: .8; margin-top: 4px; }
+
+  .C11 .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .C11 .post { background: #fff; border: 1px solid #e1e8ed; border-radius: 14px; padding: 14px; cursor: pointer; }
+  .C11 .post:hover { background: #f7f9fa; }
+  .C11 .head { display: flex; align-items: center; gap: 10px; }
+  .C11 .ava { width: 40px; height: 40px; border-radius: 50%; background: #2e7d32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .C11 .uname { font-weight: 700; font-size: .95em; }
+  .C11 .handle { color: #777; font-size: .8em; }
+  .C11 .body { margin-top: 8px; font-size: .9em; line-height: 1.5; }
+  .C11 .body strong { color: #1b5e20; }
+  .C11 .stats { display: flex; gap: 16px; margin-top: 10px; color: #777; font-size: .78em; }
+
+  .C12 .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .C12 .ad { position: relative; background: #fff8e1; border: 3px double #c62828; padding: 22px 14px 16px; cursor: pointer; text-align: center; transform: rotate(-1deg); }
+  .C12 .ad:nth-child(even){ transform: rotate(1.5deg); background: #ffe0b2; }
+  .C12 .ad:hover { transform: rotate(0) scale(1.05); }
+  .C12 .stamp { position: absolute; top: -10px; right: -8px; background: #c62828; color: #fff; padding: 6px 10px; border-radius: 50%; font-size: .7em; font-weight: 800; transform: rotate(15deg); }
+  .C12 .name { font-size: 1.05em; font-weight: 800; color: #c62828; }
+  .C12 .copy { font-size: .75em; color: #5d4037; margin-top: 6px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<h1>検索カテゴリカード — 全38案</h1>
+<p class="sub">普通6 + 絵文字あり10 + 絵文字なし10 + 斬新12</p>
+
+<div class="toc">
+  <h3>普通の案</h3>
+  <a href="#N1">N1:ボーダーカード</a><a href="#N2">N2:ストライプ</a><a href="#N3">N3:アバター丸</a><a href="#N4">N4:Material</a><a href="#N5">N5:チェックピル</a><a href="#N6">N6:トグルリスト</a>
+  <h3>絵文字あり</h3>
+  <a href="#E1">E1:グラデ</a><a href="#E2">E2:ニューモ</a><a href="#E3">E3:横長バッジ</a><a href="#E4">E4:手書き</a><a href="#E5">E5:ガラス</a><a href="#E6">E6:ピル</a><a href="#E7">E7:ステッカー</a><a href="#E8">E8:ネオン</a><a href="#E9">E9:ターミナル</a><a href="#E10">E10:フリップ</a>
+  <h3>絵文字なし</h3>
+  <a href="#M1">M1:ピル</a><a href="#M2">M2:番号</a><a href="#M3">M3:縦バー</a><a href="#M4">M4:幾何形状</a><a href="#M5">M5:マーカー</a><a href="#M6">M6:SVGライン</a><a href="#M7">M7:大型タイポ</a><a href="#M8">M8:色面</a><a href="#M9">M9:アウトライン</a><a href="#M10">M10:タブ</a>
+  <h3>斬新</h3>
+  <a href="#C1">C1:ASCII</a><a href="#C2">C2:名刺</a><a href="#C3">C3:フォーム</a><a href="#C4">C4:ホワイトボード</a><a href="#C5">C5:レコード</a><a href="#C6">C6:メトロ</a><a href="#C7">C7:RPG</a><a href="#C8">C8:株価</a><a href="#C9">C9:黒板</a><a href="#C10">C10:鉱石</a><a href="#C11">C11:SNS</a><a href="#C12">C12:昭和</a>
+</div>
+
+<div class="group-title">A. 普通の案</div>
+<div class="variant" id="N1"><h2>N1: ボーダーカード（コーナーバッジ）</h2><div class="note">王道。バッジで件数を端に。</div><div class="N1"><div class="grid" data-render="N1"></div></div></div>
+<div class="variant" id="N2"><h2>N2: ストライプアクセント</h2><div class="note">左に色帯。整然・読みやすい。</div><div class="N2"><div class="grid" data-render="N2"></div></div></div>
+<div class="variant" id="N3"><h2>N3: アバター丸＋ピル</h2><div class="note">頭文字をアバターに。フレンドリー。</div><div class="N3"><div class="grid" data-render="N3"></div></div></div>
+<div class="variant" id="N4"><h2>N4: Material風カード</h2><div class="note">浮き上がる影。標準的・無難。</div><div class="N4"><div class="grid" data-render="N4"></div></div></div>
+<div class="variant" id="N5"><h2>N5: チェック付きピル</h2><div class="note">フィルタ感覚。多選択UIっぽい。</div><div class="N5"><div class="pills" data-render="N5"></div></div></div>
+<div class="variant" id="N6"><h2>N6: トグルリスト</h2><div class="note">縦並びリスト＋スイッチ。設定画面風。</div><div class="N6" data-render="N6"></div></div>
+
+<div class="group-title">B. 絵文字あり</div>
+<div class="variant" id="E1"><h2>E1: グラデーションタイル</h2><div class="E1"><div class="grid" data-render="E1"></div></div></div>
+<div class="variant" id="E2"><h2>E2: ニューモーフィズム</h2><div class="E2-wrap"><div class="E2"><div class="grid" data-render="E2"></div></div></div></div>
+<div class="variant" id="E3"><h2>E3: 横長カード（バッジ）</h2><div class="E3"><div class="grid" data-render="E3"></div></div></div>
+<div class="variant" id="E4"><h2>E4: 手書きスケッチ</h2><div class="E4-wrap"><div class="E4"><div class="grid" data-render="E4"></div></div></div></div>
+<div class="variant" id="E5"><h2>E5: ガラスモーフィズム</h2><div class="E5-wrap"><div class="E5"><div class="grid" data-render="E5"></div></div></div></div>
+<div class="variant" id="E6"><h2>E6: ピル</h2><div class="E6"><div class="pills" data-render="E6"></div></div></div>
+<div class="variant" id="E7"><h2>E7: ステッカー</h2><div class="E7"><div class="grid" data-render="E7"></div></div></div>
+<div class="variant" id="E8"><h2>E8: ネオン</h2><div class="E8-wrap"><div class="E8"><div class="grid" data-render="E8"></div></div></div></div>
+<div class="variant" id="E9"><h2>E9: ターミナル</h2><div class="E9-wrap"><div class="E9"><div class="grid" data-render="E9"></div></div></div></div>
+<div class="variant" id="E10"><h2>E10: 3Dフリップ</h2><div class="E10"><div class="grid" data-render="E10"></div></div></div>
+
+<div class="group-title">C. 絵文字なし</div>
+<div class="variant" id="M1"><h2>M1: テキストピル</h2><div class="M1"><div class="pills" data-render="M1"></div></div></div>
+<div class="variant" id="M2"><h2>M2: ナンバリング</h2><div class="M2"><div class="grid" data-render="M2"></div></div></div>
+<div class="variant" id="M3"><h2>M3: 縦バー</h2><div class="M3"><div class="grid" data-render="M3"></div></div></div>
+<div class="variant" id="M4"><h2>M4: 幾何バッジ</h2><div class="M4"><div class="grid" data-render="M4"></div></div></div>
+<div class="variant" id="M5"><h2>M5: マーカー</h2><div class="M5"><div class="grid" data-render="M5"></div></div></div>
+<div class="variant" id="M6"><h2>M6: SVGライン</h2><div class="M6"><div class="grid" data-render="M6"></div></div></div>
+<div class="variant" id="M7"><h2>M7: 大型タイポ</h2><div class="M7"><div class="grid" data-render="M7"></div></div></div>
+<div class="variant" id="M8"><h2>M8: 色面ブロック</h2><div class="M8"><div class="grid" data-render="M8"></div></div></div>
+<div class="variant" id="M9"><h2>M9: アウトライン</h2><div class="M9"><div class="grid" data-render="M9"></div></div></div>
+<div class="variant" id="M10"><h2>M10: セグメントタブ</h2><div class="M10"><div class="tabs" data-render="M10"></div></div></div>
+
+<div class="group-title">D. 斬新</div>
+<div class="variant" id="C1"><h2>C1: ASCII看板</h2><div class="C1" id="ascii"></div></div>
+<div class="variant" id="C2"><h2>C2: 名刺</h2><div class="C2"><div class="grid" data-render="C2"></div></div></div>
+<div class="variant" id="C3"><h2>C3: フォーム</h2><div class="C3"><div class="grid" data-render="C3"></div></div></div>
+<div class="variant" id="C4"><h2>C4: ホワイトボード</h2><div class="C4-wrap"><div class="C4"><div class="grid" data-render="C4"></div></div></div></div>
+<div class="variant" id="C5"><h2>C5: レコード盤</h2><div class="C5"><div class="grid" data-render="C5"></div></div></div>
+<div class="variant" id="C6"><h2>C6: メトロ路線図</h2><div class="C6-wrap" id="metro"></div></div>
+<div class="variant" id="C7"><h2>C7: RPGステータス</h2><div class="C7-wrap"><div class="C7"><div class="grid" data-render="C7"></div></div></div></div>
+<div class="variant" id="C8"><h2>C8: 株価ティッカー</h2><div class="C8-wrap"><div class="C8"><div class="C8-strip" id="ticker"></div></div></div></div>
+<div class="variant" id="C9"><h2>C9: 黒板メニュー</h2><div class="C9-wrap"><div class="C9-title">~ 本日の AIインターン ~</div><div class="C9"><div class="grid" data-render="C9"></div></div></div></div>
+<div class="variant" id="C10"><h2>C10: 鉱石レアリティ</h2><div class="C10"><div class="grid" data-render="C10"></div></div></div>
+<div class="variant" id="C11"><h2>C11: SNS投稿</h2><div class="C11"><div class="grid" data-render="C11"></div></div></div>
+<div class="variant" id="C12"><h2>C12: 昭和チラシ</h2><div class="C12"><div class="grid" data-render="C12"></div></div></div>
+
+<script>
+const data = [
+  {n:"プロンプトエンジニア",c:24,i:"💬",copy:"文系最強",stat:[4,5],shape:"circle",color:"#1b5e20"},
+  {n:"MLエンジニア",c:42,i:"🧠",copy:"数学が武器",stat:[5,5],shape:"square",color:"#283593"},
+  {n:"AIリサーチャー",c:18,i:"🔬",copy:"論文書ける",stat:[3,5],shape:"triangle",color:"#b71c1c"},
+  {n:"LLMアプリ開発",c:31,i:"💻",copy:"作る楽しさ",stat:[4,5],shape:"hexagon",color:"#4527a0"},
+  {n:"データサイエンティスト",c:27,i:"📊",copy:"分析が天職",stat:[4,5],shape:"diamond",color:"#00695c"},
+  {n:"AIエージェント開発",c:15,i:"🤖",copy:"次世代の主役",stat:[5,5],shape:"circle",color:"#ef6c00"},
+  {n:"GPU使い放題",c:12,i:"🖥️",copy:"H100無限",stat:[5,5],shape:"square",color:"#37474f"},
+  {n:"フルリモート可",c:38,i:"🏠",copy:"在宅で稼ぐ",stat:[3,5],shape:"hexagon",color:"#c2185b"},
+  {n:"論文読み会あり",c:9,i:"📖",copy:"研究者気分",stat:[2,5],shape:"triangle",color:"#1b5e20"},
+  {n:"未経験OK",c:56,i:"🌱",copy:"今日から始める",stat:[2,5],shape:"diamond",color:"#283593"}
+];
+
+const svgIcons = [
+  '<svg viewBox="0 0 24 24"><path d="M4 6h12l4 4-4 4H4z"/><circle cx="9" cy="10" r="1"/></svg>',
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>',
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>',
+  '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M4 20V8M10 20V4M16 20v-7M22 20H2"/></svg>',
+  '<svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 12l6-6M9 12l6 6"/></svg>',
+  '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/><rect x="8" y="10" width="8" height="4"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-7H10v7H4a1 1 0 01-1-1z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M6 4h11a2 2 0 012 2v14a1 1 0 01-1.4.9L15 19l-3.6 1.9a1 1 0 01-1 0L7 19l-3.6 1.9A1 1 0 012 20V6a2 2 0 012-2z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M12 22V12M12 12c0-4 3-7 7-7M12 12c0-4-3-7-7-7"/></svg>'
+];
+const shapes = {
+  circle: c => `<svg class="shape" viewBox="0 0 44 44"><circle cx="22" cy="22" r="20" fill="${c}"/></svg>`,
+  square: c => `<svg class="shape" viewBox="0 0 44 44"><rect x="4" y="4" width="36" height="36" rx="6" fill="${c}"/></svg>`,
+  triangle: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,4 42,40 2,40" fill="${c}"/></svg>`,
+  hexagon: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,3 40,13 40,31 22,41 4,31 4,13" fill="${c}"/></svg>`,
+  diamond: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,3 41,22 22,41 3,22" fill="${c}"/></svg>`,
+};
+
+const R = {
+  // Conventional
+  N1: d => `<div class="item"><div class="corner">${d.c}件</div><div class="name">${d.n}</div><div class="meta">のインターン</div></div>`,
+  N2: d => `<div class="item"><div class="stripe"></div><div class="body"><div class="name">${d.n}</div><div class="meta">${d.c}件のインターン</div></div></div>`,
+  N3: d => `<div class="item"><div class="ava">${d.n[0]}</div><div class="name">${d.n}</div><div class="meta">${d.c}</div></div>`,
+  N4: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件のインターン</div></div>`,
+  N5: d => `<a class="pill"><span class="check"></span><span class="name">${d.n}</span></a>`,
+  N6: d => `<div class="row"><div><div class="name">${d.n}</div><div class="meta">${d.c}件のインターン</div></div><div class="toggle"></div></div>`,
+  // Emoji
+  E1: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E2: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E3: d => `<div class="item"><div class="ico">${d.i}</div><div><div class="name">${d.n}</div><span class="badge">${d.c}件</span></div></div>`,
+  E4: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E5: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E6: d => `<a class="pill"><span>${d.i}</span><span>${d.n}</span><span class="count">${d.c}</span></a>`,
+  E7: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E8: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  E9: d => `<div class="item">${d.n}</div>`,
+  E10: d => `<div class="item"><div class="inner"><div class="face front"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div><div class="face back"><span style="font-weight:800;font-size:1.2em">${d.c}件</span></div></div></div>`,
+  // No-emoji
+  M1: d => `<a class="pill">${d.n}</a>`,
+  M2: (d,i) => `<div class="item"><div class="num">${String(i+1).padStart(2,'0')}</div><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  M3: d => `<div class="item"><div class="name">${d.n}</div><div class="count">${d.c}件</div></div>`,
+  M4: d => `<div class="item">${shapes[d.shape](d.color)}<div class="name">${d.n}</div></div>`,
+  M5: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  M6: (d,i) => `<div class="item"><div class="ico">${svgIcons[i%svgIcons.length]}</div><div class="name">${d.n}</div></div>`,
+  M7: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${String(d.c).padStart(2,'0')} INTERNSHIPS</div></div>`,
+  M8: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  M9: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  M10: (d,i) => `<div class="tab ${i===0?'active':''}"><div class="name">${d.n}</div><div class="count">${d.c}件</div></div>`,
+  // Creative
+  C2: d => `<div class="card"><div class="role">SPECIALTY</div><div class="name">${d.n}</div><div class="div"></div><div class="meta">${d.c} open positions</div></div>`,
+  C3: d => `<div class="field"><div><div class="label">ROLE</div><div class="val">${d.n}</div></div><div class="check"></div></div>`,
+  C4: d => `<div class="item"><div class="name">${d.n}</div></div>`,
+  C5: d => `<div class="disc"><div class="vinyl"></div><div class="label"><div class="name">${d.n}</div></div></div>`,
+  C7: d => `<div class="row"><div class="lv">[Lv.${d.c}]</div><div class="name">${d.n}</div><div class="bar">HP:<span class="full">${'◆'.repeat(d.stat[0])}</span><span class="empty">${'◇'.repeat(d.stat[1]-d.stat[0])}</span></div></div>`,
+  C9: d => `<div class="item"><span>${d.n}</span><span class="price">${d.c}件</span></div>`,
+  C10: d => { const t=d.c>=40?'ssr':d.c>=25?'sr':d.c>=15?'r':'c'; const L={c:'COMMON',r:'RARE',sr:'SUPER RARE',ssr:'SSR'};
+              return `<div class="ore r-${t}"><div class="rarity">${L[t]}</div><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`; },
+  C11: d => `<div class="post"><div class="head"><div class="ava">${d.n[0]}</div><div><div class="uname">${d.n}</div><div class="handle">@aimeintern · 24h</div></div></div><div class="body"><strong>${d.copy}</strong>な君に。<strong>${d.c}件</strong>募集中。</div><div class="stats"><span>♡ ${d.c*3}</span><span>↻ ${Math.floor(d.c/2)}</span></div></div>`,
+  C12: d => `<div class="ad"><div class="stamp">急募!!</div><div class="name">${d.n}</div><div class="copy">${d.copy}！${d.c}件</div></div>`,
+};
+
+document.querySelectorAll('[data-render]').forEach(el => {
+  el.innerHTML = data.map(R[el.dataset.render]).join('');
+});
+
+// C1 ASCII
+(function(){
+  const lines = data.map(d => {
+    const inner = ` ${d.n}  (${d.c}件) `;
+    const bar = '━'.repeat(inner.length);
+    return `<a href="#">┏${bar}┓\n┃${inner}┃\n┗${bar}┛</a>`;
+  });
+  document.getElementById('ascii').innerHTML = lines.join('\n\n');
+})();
+
+// C6 metro
+(function(){
+  document.getElementById('metro').innerHTML =
+    `<div class="C6"><div class="C6-line"><div class="C6-stations">${
+      data.map(d => `<div class="station"><div class="dot"></div><div class="lab">${d.n}</div></div>`).join('')
+    }</div></div></div>`;
+})();
+
+// C8 ticker
+(function(){
+  const items = data.map(d => {
+    const sign = Math.random() > 0.3 ? '▲' : '▼';
+    const col = sign === '▲' ? '#4caf50' : '#f44336';
+    return `<span class="tk"><span style="color:${col}">${sign}</span> ${d.n}<span class="num">${d.c}</span></span>`;
+  }).join('');
+  document.getElementById('ticker').innerHTML = items + items;
+})();
+</script>
+</body>
+</html>

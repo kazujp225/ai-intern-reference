@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>求人詳細 | AIme</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #fafbfa; color: #222; }
+  header { background: #fff; border-bottom: 1px solid #e8ecea; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+  header .brand { font-weight: 900; color: #1b5e20; font-size: 1.2em; letter-spacing: .05em; }
+  header .back { color: #2e7d32; font-weight: 700; font-size: .9em; text-decoration: none; }
+  main { max-width: 900px; margin: 30px auto 60px; padding: 0 20px; }
+  .crumbs { font-size: .8em; color: #888; margin-bottom: 10px; }
+  .crumbs a { color: #2e7d32; text-decoration: none; }
+  .hero { background: #fff; border: 1px solid #e8ecea; border-radius: 16px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+  .band { display: inline-block; background: #1b5e20; color: #fff; font-size: .72em; padding: 3px 10px; border-radius: 4px; font-weight: 700; letter-spacing: .05em; margin-bottom: 8px; }
+  .co { color: #666; font-size: .92em; }
+  .hero h1 { margin: 6px 0 12px; font-size: 1.6em; line-height: 1.4; }
+  .meta { display: flex; flex-wrap: wrap; gap: 14px; color: #555; font-size: .9em; }
+  .meta .pay { color: #1b5e20; font-weight: 800; }
+  .tags { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { background: #f1f8f1; color: #2e7d32; padding: 3px 10px; border-radius: 999px; font-size: .78em; font-weight: 700; }
+  .section { background: #fff; border: 1px solid #e8ecea; border-radius: 12px; padding: 24px 28px; margin-top: 20px; }
+  .section h2 { margin: 0 0 12px; font-size: 1.1em; color: #1b5e20; }
+  .section p, .section li { line-height: 1.7; color: #333; }
+  .actions { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .actions a { padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+  .actions .primary { background: #1b5e20; color: #fff; }
+  .actions .primary:hover { background: #2e7d32; }
+  .actions .secondary { background: #fff; color: #1b5e20; border: 1.5px solid #1b5e20; }
+  .actions .secondary:hover { background: #f0f8f0; }
+  footer { text-align: center; padding: 30px 20px; color: #999; font-size: .8em; border-top: 1px solid #eef0ee; background: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="original.html" class="back">← トップへ戻る</a>
+  <a href="original.html" class="brand">AIme</a>
+</header>
+
+<main>
+  <div class="crumbs"><a href="original.html">ホーム</a> / 求人 / <span id="crumb">求人</span></div>
+  <div class="hero">
+    <span class="band" id="band" style="display:none;"></span>
+    <div class="co" id="co">企業名</div>
+    <h1 id="title">求人タイトル</h1>
+    <div class="meta">
+      <span class="pay" id="pay">時給 -</span>
+      <span id="loc">勤務地: -</span>
+      <span id="time">勤務時間: -</span>
+    </div>
+    <div class="tags" id="tags"></div>
+    <div class="actions">
+      <a href="page.html?type=register" class="primary">この求人に応募する</a>
+      <a href="page.html?type=login" class="secondary">気になる求人に保存</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>業務内容</h2>
+    <p id="desc">最先端のAI技術に触れながら、実務経験を積めるポジションです。詳細はオンライン面談でお伝えします。</p>
+  </div>
+
+  <div class="section">
+    <h2>求める人物像</h2>
+    <ul>
+      <li>AIに興味があり自走できる方</li>
+      <li>新しい技術を学び続けられる方</li>
+      <li>チームでの開発経験（規模問わず）</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>選考フロー</h2>
+    <ul>
+      <li>1. 書類選考</li>
+      <li>2. オンライン面談（30分）</li>
+      <li>3. 技術課題（任意）</li>
+      <li>4. 最終面談</li>
+    </ul>
+  </div>
+</main>
+
+<footer>© AIme - AIインターンシップ情報サービス</footer>
+
+<script>
+const params = new URLSearchParams(location.search);
+const t = params.get('t') || params.get('title') || 'AIインターン';
+const co = params.get('co') || '掲載企業';
+const band = params.get('band');
+const pay = params.get('pay') || '2,000〜4,000';
+const loc = params.get('loc') || 'リモート可';
+const time = params.get('time') || '週2〜';
+const tags = (params.get('tags') || 'AI,リモート,週2〜').split(',');
+
+document.getElementById('crumb').textContent = t.length > 24 ? t.slice(0,24)+'…' : t;
+document.getElementById('co').textContent = co;
+document.getElementById('title').textContent = t;
+document.getElementById('pay').textContent = '時給 ¥' + pay;
+document.getElementById('loc').textContent = '勤務地: ' + loc;
+document.getElementById('time').textContent = '勤務時間: ' + time;
+if (band) { const b = document.getElementById('band'); b.textContent = band; b.style.display = 'inline-block'; }
+document.getElementById('tags').innerHTML = tags.map(x => `<span class="tag">${x.trim()}</span>`).join('');
+document.title = t + ' | AIme';
+</script>
+</body>
+</html>

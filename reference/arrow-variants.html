@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>カルーセル矢印UI案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .variant { max-width: 1080px; margin: 28px auto 60px; background: #fff; padding: 24px 20px 36px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.1em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 20px; max-width: 760px; }
+
+  /* sample carousel */
+  .stage { position: relative; padding: 0 70px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 3px 14px rgba(0,0,0,.06); border: 1px solid rgba(0,0,0,.04); }
+  .card .row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+  .avatar.t { background: linear-gradient(135deg, #1da1f2, #0d8bd9); }
+  .avatar.n { background: linear-gradient(135deg, #e53935, #b71c1c); }
+  .meta .name { font-weight: 700; }
+  .meta .role { font-size: .78em; color: #777; }
+  .body { font-size: .9em; line-height: 1.6; color: #333; }
+  .foot { margin-top: 10px; font-size: .8em; color: #f59e0b; }
+
+  /* arrow base positioning */
+  .arr { position: absolute; top: 50%; transform: translateY(-50%); border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+  .arr.l { left: 8px; }
+  .arr.r { right: 8px; }
+  .arr svg { display: block; }
+
+  /* ---------- 1: minimal circle ---------- */
+  .v1 .arr { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1.5px solid #2e7d32; color: #2e7d32; transition: all .2s; }
+  .v1 .arr:hover { background: #2e7d32; color: #fff; transform: translateY(-50%) scale(1.08); }
+
+  /* ---------- 2: typographic line ---------- */
+  .v2 .arr { color: #444; font-size: 38px; line-height: 1; font-weight: 200; width: 40px; height: 40px; transition: color .2s, transform .2s; }
+  .v2 .arr:hover { color: #2e7d32; }
+  .v2 .arr.l:hover { transform: translateY(-50%) translateX(-4px); }
+  .v2 .arr.r:hover { transform: translateY(-50%) translateX(4px); }
+
+  /* ---------- 3: square gradient ---------- */
+  .v3 .arr { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg, #43a047, #1b5e20); color: #fff; box-shadow: 0 6px 14px rgba(27,94,32,.35); transition: all .2s; }
+  .v3 .arr:hover { transform: translateY(-50%) scale(1.05); box-shadow: 0 10px 22px rgba(27,94,32,.45); }
+
+  /* ---------- 4: pill with label ---------- */
+  .v4 .arr { width: auto; height: 40px; padding: 0 16px; border-radius: 999px; background: #fff; border: 1.5px solid #2e7d32; color: #2e7d32; font-weight: 700; font-size: .85em; gap: 6px; transition: all .2s; }
+  .v4 .arr:hover { background: #2e7d32; color: #fff; }
+
+  /* ---------- 5: floating ghost ---------- */
+  .v5 .arr { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.4); color: #2e7d32; opacity: .4; backdrop-filter: blur(3px); box-shadow: 0 4px 10px rgba(0,0,0,.1); transition: all .3s; }
+  .v5 .arr:hover { opacity: 1; background: #fff; transform: translateY(-50%) scale(1.08); }
+
+  /* ---------- 6: unified dual (one button, split) ---------- */
+  .v6-outer { padding: 0 90px; position: relative; }
+  .v6-dual { position: absolute; top: 50%; transform: translateY(-50%); width: 64px; height: 120px; border-radius: 999px; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.12); overflow: hidden; }
+  .v6-dual.l { left: 8px; } .v6-dual.r { right: 8px; }
+  .v6-dual button { position: absolute; left: 0; right: 0; height: 50%; border: none; background: none; cursor: pointer; color: #2e7d32; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  .v6-dual button.up { top: 0; }
+  .v6-dual button.down { bottom: 0; border-top: 1px solid rgba(0,0,0,.08); }
+  .v6-dual button:hover { background: rgba(46,125,50,.1); }
+
+  /* ---------- 7: counter ---------- */
+  .v7 .arr-group { position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 6px; background: #fff; border-radius: 999px; padding: 6px 10px; box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+  .v7 .arr-group.l { left: 8px; } .v7 .arr-group.r { right: 8px; }
+  .v7 .arr-group button { border: none; background: none; color: #2e7d32; cursor: pointer; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+  .v7 .arr-group button:hover { background: #e8f5e9; }
+  .v7 .arr-group .count { font-size: .8em; font-weight: 700; color: #444; min-width: 32px; text-align: center; }
+
+  /* ---------- 8: neon glow ---------- */
+  .v8 .arr { width: 48px; height: 48px; border-radius: 50%; background: #0d1b0f; color: #8bff9e; border: 1.5px solid #2e7d32;
+             box-shadow: 0 0 14px rgba(46,175,80,.5), inset 0 0 10px rgba(46,175,80,.25); transition: all .3s; }
+  .v8 .arr:hover { box-shadow: 0 0 22px rgba(46,175,80,.9), inset 0 0 16px rgba(46,175,80,.5); transform: translateY(-50%) scale(1.1); color: #fff; }
+
+  /* nav arrow icons (shared) */
+  .ico { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+
+<h1>カルーセル矢印UI案 8種</h1>
+<p class="sub">体験者の声セクションを想定したサンプルで並べました。</p>
+
+<script id="cardsTpl" type="text/template">
+  <div class="cards">
+    <div class="card">
+      <div class="row"><div class="avatar t">T</div><div class="meta"><div class="name">Tさん ✓</div><div class="role">京都大学 情報学研究科 M1 / ICML論文採択</div></div></div>
+      <div class="body">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+      <div class="foot">★★★★★ 5.0　満足度</div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="avatar n">N</div><div class="meta"><div class="name">Nさん ✓</div><div class="role">東京大学 経済学部 4年 / AIスタートアップ起業</div></div></div>
+      <div class="body">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div>
+      <div class="foot">★★★★★ 5.0　満足度</div>
+    </div>
+  </div>
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+const tpl = document.getElementById('cardsTpl').innerHTML;
+const ICO_L = '<svg class="ico" viewBox="0 0 24 24"><polyline points="15 6 9 12 15 18"/></svg>';
+const ICO_R = '<svg class="ico" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
+const ICO_U = '<svg class="ico" viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>';
+const ICO_D = '<svg class="ico" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+
+function wrap(id, cls, inner) {
+  document.getElementById(id).innerHTML = `<div class="stage ${cls}">${inner.replace('__CARDS__', tpl)}</div>`;
+}
+
+wrap('v1','v1', `
+  <button class="arr l">${ICO_L}</button>
+  __CARDS__
+  <button class="arr r">${ICO_R}</button>`);
+
+wrap('v2','v2', `
+  <button class="arr l">‹</button>
+  __CARDS__
+  <button class="arr r">›</button>`);
+
+wrap('v3','v3', `
+  <button class="arr l">${ICO_L}</button>
+  __CARDS__
+  <button class="arr r">${ICO_R}</button>`);
+
+wrap('v4','v4', `
+  <button class="arr l">${ICO_L}<span>前の声</span></button>
+  __CARDS__
+  <button class="arr r"><span>次の声</span>${ICO_R}</button>`);
+
+wrap('v5','v5', `
+  <button class="arr l">${ICO_L}</button>
+  __CARDS__
+  <button class="arr r">${ICO_R}</button>`);
+
+document.getElementById('v6').innerHTML = `<div class="v6-outer">
+    <div class="v6-dual l"><button class="up">${ICO_U}</button><button class="down">${ICO_D}</button></div>
+    ${tpl}
+    <div class="v6-dual r"><button class="up">${ICO_U}</button><button class="down">${ICO_D}</button></div>
+  </div>`;
+
+wrap('v7','v7', `
+  <div class="arr-group l"><button>${ICO_L}</button><span class="count">1/12</span></div>
+  __CARDS__
+  <div class="arr-group r"><span class="count">2/12</span><button>${ICO_R}</button></div>`);
+
+wrap('v8','v8', `
+  <button class="arr l">${ICO_L}</button>
+  __CARDS__
+  <button class="arr r">${ICO_R}</button>`);
+});
+</script>
+
+<div class="variant"><h2>案1: ミニマル円（白×緑アウトライン）</h2><div class="note">軽快で現代的。ホバーで反転。</div><div id="v1"></div></div>
+<div class="variant"><h2>案2: タイポグラフィ矢印</h2><div class="note">背景なし・細身ライン。コンテンツの邪魔をしない。</div><div id="v2"></div></div>
+<div class="variant"><h2>案3: スクエア×グラデ</h2><div class="note">ボタン感強め、CTA的な重厚さ。</div><div id="v3"></div></div>
+<div class="variant"><h2>案4: ピル型ラベル付き</h2><div class="note">「前の声 / 次の声」ラベル併記で機能が明示される。</div><div id="v4"></div></div>
+<div class="variant"><h2>案5: フローティング・ゴースト</h2><div class="note">普段は薄く、ホバーで浮き上がる。上品系。</div><div id="v5"></div></div>
+<div class="variant"><h2>案6: 上下分離ペア（縦1列）</h2><div class="note">1つのピルを上下分割。省スペースでユニーク。</div><div id="v6"></div></div>
+<div class="variant"><h2>案7: カウンター付き</h2><div class="note">現在位置（3/12）を併記。機能性重視。</div><div id="v7"></div></div>
+<div class="variant"><h2>案8: ネオングロー</h2><div class="note">グローで「ヤバい声」トーンと相性◎。</div><div id="v8"></div></div>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>カテゴリ別インターン一覧 | AIme</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #fafbfa; color: #222; }
+  a { color: inherit; text-decoration: none; }
+  header { background: #fff; border-bottom: 1px solid #e8ecea; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+  header .brand { font-weight: 900; color: #1b5e20; font-size: 1.2em; letter-spacing: .05em; }
+  header .back { color: #2e7d32; font-weight: 700; font-size: .9em; }
+  header .back:hover { text-decoration: underline; }
+
+  .hero { max-width: 1080px; margin: 30px auto 10px; padding: 0 20px; }
+  .crumbs { font-size: .8em; color: #888; margin-bottom: 8px; }
+  .crumbs a { color: #2e7d32; }
+  .hero h1 { margin: 0 0 6px; font-size: 1.8em; }
+  .hero h1 .cat-name { color: #1b5e20; }
+  .hero .sub { color: #666; font-size: .95em; }
+  .stat-chip { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 999px; font-weight: 700; font-size: .8em; margin-left: 8px; vertical-align: middle; }
+
+  .filter-bar { max-width: 1080px; margin: 20px auto; padding: 0 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .filter-bar .label { font-size: .85em; color: #666; margin-right: 6px; }
+  .filter-bar select, .filter-bar input[type=text] {
+    padding: 8px 12px; border: 1px solid #d0d4d2; border-radius: 8px; font-size: .9em; background: #fff;
+  }
+  .filter-bar .count { margin-left: auto; color: #888; font-size: .85em; }
+
+  main { max-width: 1080px; margin: 0 auto 60px; padding: 0 20px; }
+  .list { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .job { background: #fff; border: 1px solid #e8ecea; border-radius: 12px; padding: 20px 22px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; transition: box-shadow .2s, transform .2s; }
+  .job:hover { box-shadow: 0 6px 18px rgba(0,0,0,.08); transform: translateY(-1px); border-color: #2e7d32; }
+  .job .band { display: inline-block; background: #1b5e20; color: #fff; font-size: .7em; padding: 2px 9px; border-radius: 4px; font-weight: 700; margin-bottom: 8px; letter-spacing: .05em; }
+  .job .company { font-size: .82em; color: #666; }
+  .job h3 { margin: 4px 0 8px; font-size: 1.05em; line-height: 1.45; }
+  .job .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+  .job .tag { background: #f1f8f1; color: #2e7d32; padding: 2px 9px; border-radius: 999px; font-size: .72em; font-weight: 700; }
+  .job .meta { display: flex; gap: 14px; color: #666; font-size: .8em; margin-top: 4px; }
+  .job .meta span::before { content: "· "; color: #ccc; margin-right: 4px; }
+  .job .meta span:first-child::before { content: ""; margin: 0; }
+  .job .pay { font-weight: 800; color: #1b5e20; font-size: 1.1em; white-space: nowrap; }
+  .job .pay-unit { font-size: .7em; color: #888; font-weight: 400; display: block; }
+
+  .related { max-width: 1080px; margin: 30px auto 80px; padding: 0 20px; }
+  .related h2 { font-size: 1em; margin: 0 0 10px; color: #333; }
+  .related .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .related .chip { padding: 8px 16px; background: #fff; border: 1px solid #d8e0d6; border-radius: 999px; font-weight: 700; font-size: .85em; transition: all .15s; }
+  .related .chip:hover { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+
+  .empty { text-align: center; padding: 50px 20px; color: #888; }
+  footer { text-align: center; padding: 30px 20px; color: #999; font-size: .8em; border-top: 1px solid #eef0ee; background: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="original.html" class="back">← トップへ戻る</a>
+  <span class="brand">AIme</span>
+</header>
+
+<section class="hero">
+  <div class="crumbs"><a href="original.html">ホーム</a> / <a href="original.html#search">AIインターンシップを探す</a> / <span id="crumb-cat">カテゴリ</span></div>
+  <h1><span class="cat-name" id="cat-title">カテゴリ</span> のインターンシップ<span class="stat-chip" id="cat-count">0件</span></h1>
+  <div class="sub" id="cat-desc">該当する求人を一覧表示しています。</div>
+</section>
+
+<div class="filter-bar">
+  <span class="label">並び替え</span>
+  <select id="sort">
+    <option value="new">新着順</option>
+    <option value="payHigh">時給の高い順</option>
+    <option value="payLow">時給の低い順</option>
+  </select>
+  <span class="label">勤務地</span>
+  <select id="loc">
+    <option value="">すべて</option>
+    <option>東京</option>
+    <option>リモート</option>
+    <option>関西</option>
+  </select>
+  <input type="text" id="kw" placeholder="キーワードで絞り込み">
+  <span class="count" id="result-count"></span>
+</div>
+
+<main>
+  <div class="list" id="list"></div>
+</main>
+
+<section class="related">
+  <h2>他のカテゴリで探す</h2>
+  <div class="chips" id="related-chips"></div>
+</section>
+
+<footer>© AIme - AIインターンシップ情報サービス</footer>
+
+<script>
+// カテゴリ定義 + それぞれの代表求人 (mock)
+const CATEGORIES = {
+  'プロンプトエンジニア': {
+    count: 24, desc: 'AIへの指示設計で最大限の成果を引き出す、新時代の職人系ポジション。',
+    jobs: [
+      {band:'Pickup', co:'合同会社プロンプト・ラボ', title:'日本語力、最強の武器になる。英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。', tags:['文系歓迎','プログラミング不要','CEO直下','フルリモート'], pay:'1,800〜3,000', loc:'完全フルリモート', time:'週2〜'},
+      {co:'株式会社プロンプトデザイン', title:'企業向けプロンプト設計・最適化コンサルタント。言葉でAIを操る職人。', tags:['コンサル','プロンプト設計','業務効率化','副業OK'], pay:'2,000〜3,500', loc:'品川駅 徒歩4分', time:'週3〜'},
+      {co:'AIライティング株式会社', title:'プロンプトエンジニアリングで記事・広告の質を最大化。AIコンテンツの品質管理者。', tags:['コンテンツ','ライティング','文系歓迎','週2〜'], pay:'1,500〜2,800', loc:'渋谷駅 徒歩6分', time:'週2〜'},
+      {co:'合同会社チャットUX', title:'AIチャットボットの対話フロー設計。ユーザー体験を言葉で作る。', tags:['UX設計','チャットボット','フルリモート','未経験OK'], pay:'1,800〜3,200', loc:'フルリモート', time:'週2〜'},
+      {band:'文系最強', co:'プロンプトファクトリー株式会社', title:'体系的な研修あり。AI時代の新職種を最前線で学ぶ。', tags:['研修充実','メンター制度','文系歓迎','1年生OK'], pay:'1,500〜2,500', loc:'新宿駅 徒歩5分', time:'週2〜'},
+    ]
+  },
+  'MLエンジニア': {
+    count: 42, desc: 'モデル設計・学習・最適化を担うAI開発の中核。数学と実装力の両輪。',
+    jobs: [
+      {band:'Pickup', co:'株式会社ニューロンクラフト', title:'GPTの裏側を知りたくないか？自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。', tags:['GPU使い放題','自社LLM開発','フルリモート可','未経験OK'], pay:'2,000〜4,000', loc:'渋谷駅 徒歩5分', time:'週3〜'},
+      {co:'MLコア株式会社', title:'レコメンドエンジンの設計と改善を担当。億単位のユーザー行動ログを学習データに。', tags:['レコメンド','PyTorch','大規模データ','週3〜'], pay:'2,500〜4,500', loc:'目黒駅 徒歩8分', time:'週3〜'},
+      {co:'合同会社ディープテック', title:'画像認識モデルの精度改善コンペで勝ちに行く。Kaggle経験者歓迎。', tags:['画像認識','Kaggle','GPU環境','研究寄り'], pay:'2,200〜4,200', loc:'本郷三丁目駅 徒歩5分', time:'週2〜'},
+      {band:'急募', co:'株式会社エッジAI', title:'エッジデバイス向け軽量モデルの圧縮・量子化。ハードウェアとAIの橋渡し。', tags:['量子化','ONNX','組み込み','時給高め'], pay:'2,800〜5,000', loc:'大手町駅 徒歩3分', time:'週3〜'},
+      {co:'予測モデル株式会社', title:'小売業向けの需要予測モデルを構築。ビジネス課題を数式に翻訳する。', tags:['需要予測','時系列','BI連携','リモート可'], pay:'2,000〜3,800', loc:'ハイブリッド', time:'週2〜'},
+    ]
+  },
+  'AIリサーチャー': {
+    count: 18, desc: '最先端AI技術の研究開発。論文執筆・学会発表まで視野に。',
+    jobs: [
+      {band:'論文共著チャンス', co:'合同会社AGIラボ', title:'AGIへの第一歩。自己改善型AIエージェントの研究開発。世界を変えるチームへ。', tags:['AGI研究','自己改善AI','論文実績','少数精鋭'], pay:'3,000〜7,000', loc:'本郷三丁目駅 徒歩5分', time:'週3〜'},
+      {co:'株式会社マルチモーダルAI', title:'画像+テキストのマルチモーダルLLM開発。最先端の研究をプロダクトに。', tags:['マルチモーダル','Vision API','研究開発','論文共著'], pay:'2,800〜5,500', loc:'本郷三丁目駅 徒歩8分', time:'週3〜'},
+      {co:'東京AI研究所', title:'国内外の研究機関と共同研究。arXiv投稿・査読論文の執筆に携わる。', tags:['共同研究','arXiv','英語OK','大学院生歓迎'], pay:'2,500〜4,800', loc:'駒場東大前駅 徒歩10分', time:'週2〜'},
+      {co:'株式会社リサーチAI', title:'数理最適化と強化学習の応用研究。理論から実装まで。', tags:['強化学習','最適化','理論寄り','論文読み会'], pay:'2,600〜5,000', loc:'つくば / リモート', time:'週2〜'},
+    ]
+  },
+  'LLMアプリ開発': {
+    count: 31, desc: '大規模言語モデルを活用したプロダクトの設計・実装。',
+    jobs: [
+      {co:'LLMラボ株式会社', title:'LangChainマスターになれ。RAGパイプライン構築で、検索精度を極限まで高めるエンジニア募集。', tags:['RAG特化','LangChain','ベクトルDB','週3〜'], pay:'2,200〜3,800', loc:'目黒駅 徒歩7分', time:'週3〜'},
+      {co:'AIネイティブ株式会社', title:'カスタムLLMエージェントのプラットフォーム開発。API設計からUI/UXまで。', tags:['LLMプラットフォーム','API設計','TypeScript','シリーズA'], pay:'2,300〜4,500', loc:'恵比寿駅 徒歩5分', time:'週3〜'},
+      {co:'合同会社トークンAI', title:'自社LLMのチューニングで、GPT-4超えを本気で目指す。', tags:['ファインチューニング','Hugging Face','論文読み会','フルリモート'], pay:'2,500〜5,000', loc:'フルリモート', time:'週2〜'},
+      {co:'株式会社ベクトルサーチ', title:'セマンティック検索エンジンを開発。情報検索の未来を作るLLMエンジニア。', tags:['検索AI','Embedding','Pinecone','週4〜'], pay:'2,000〜3,500', loc:'五反田駅 徒歩3分', time:'週4〜'},
+    ]
+  },
+  'データサイエンティスト': {
+    count: 27, desc: 'データから洞察を引き出し、ビジネス課題の解決につなげる分析職。',
+    jobs: [
+      {co:'株式会社データ・インサイト', title:'大手小売の購買データから次のヒット商品を見つける。分析〜施策提案まで。', tags:['SQL','Python','BI','事業会社'], pay:'1,800〜3,500', loc:'東京駅 徒歩5分', time:'週3〜'},
+      {co:'AB-Test株式会社', title:'Webサービスのコンバージョン改善を因果推論で。A/Bテスト設計の実務経験が積める。', tags:['因果推論','A/Bテスト','統計','リモート可'], pay:'2,000〜3,800', loc:'ハイブリッド', time:'週2〜'},
+      {co:'合同会社ヘルスデータ', title:'医療ビッグデータの解析。疫学×機械学習の実務体験。', tags:['医療','疫学','Python','研究寄り'], pay:'2,200〜4,000', loc:'白金台駅 徒歩6分', time:'週2〜'},
+      {co:'株式会社FinDS', title:'金融市場データの時系列予測モデル開発。クオンツの見習いポジション。', tags:['時系列','金融','クオンツ','数学必須'], pay:'2,500〜5,000', loc:'大手町駅 徒歩3分', time:'週3〜'},
+    ]
+  },
+  'AIエージェント開発': {
+    count: 15, desc: '自律的に目標を達成するAIエージェントを設計・実装する次世代ポジション。',
+    jobs: [
+      {band:'注目度MAX', co:'株式会社オートノミー', title:'AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。自律型AIエージェントの開発。', tags:['自律型AI開発','H100クラスタ','シリーズB','CTO直下'], pay:'3,000〜6,000', loc:'渋谷駅 徒歩8分', time:'週3〜'},
+      {co:'エージェントラボ株式会社', title:'複数AIが協調して問題を解く、次世代マルチエージェントシステムの開発。', tags:['マルチエージェント','CrewAI','LangGraph','研究開発'], pay:'2,500〜5,000', loc:'目黒駅 徒歩6分', time:'週3〜'},
+      {co:'株式会社ツールユースAI', title:'Tool UseでAIを進化させろ。外部ツール連携でAIの能力を100倍にする基盤開発。', tags:['Tool Use','Function Calling','API開発','フルリモート'], pay:'2,800〜5,500', loc:'フルリモート', time:'週2〜'},
+    ]
+  },
+  'GPU使い放題': {
+    count: 12, desc: 'H100 / A100など高性能GPUを自由に使える開発環境。',
+    jobs: [
+      {band:'最強GPU環境', co:'株式会社GPUスタジオ', title:'H100を8枚自由に使える環境で、どでかいモデルを回し倒せ。', tags:['H100','A100','大規模学習','論文共著'], pay:'3,000〜6,500', loc:'渋谷駅 徒歩6分', time:'週3〜'},
+      {co:'ディフュージョン・ワークス', title:'Stable Diffusion / Midjourney 時代のクリエイティブAI開発。GPU潤沢。', tags:['A100使い放題','画像生成','美大生歓迎','論文共著'], pay:'2,500〜5,000', loc:'六本木一丁目駅 徒歩3分', time:'週3〜'},
+      {co:'動画AI株式会社', title:'Sora/Runway世代の動画生成技術を商用プロダクトに実装。', tags:['動画生成','GPU環境','研究開発','CTO直下'], pay:'2,800〜5,000', loc:'渋谷駅 徒歩10分', time:'週3〜'},
+    ]
+  },
+  'フルリモート可': {
+    count: 38, desc: '完全在宅・場所を選ばず働けるAIインターン。',
+    jobs: [
+      {co:'合同会社トークンAI', title:'自社LLMのチューニング。ミーティング以外は完全リモート。', tags:['フルリモート','自社LLM','Hugging Face','週2〜'], pay:'2,500〜5,000', loc:'フルリモート', time:'週2〜'},
+      {co:'株式会社ツールユースAI', title:'AIエージェントの基盤開発。Slackベースで世界中の開発者と協働。', tags:['フルリモート','Tool Use','英語OK','副業OK'], pay:'2,800〜5,500', loc:'フルリモート', time:'週3〜'},
+      {co:'AIフリーランス株式会社', title:'週10時間から始められるAIアプリ受託開発。学業優先OK。', tags:['フルリモート','フレックス','週1〜','学生歓迎'], pay:'2,000〜4,000', loc:'フルリモート', time:'週1〜'},
+      {co:'合同会社チャットUX', title:'AIチャットボットの対話フロー設計。オンラインのみで完結。', tags:['フルリモート','UX設計','未経験OK'], pay:'1,800〜3,200', loc:'フルリモート', time:'週2〜'},
+    ]
+  },
+  '論文読み会あり': {
+    count: 9, desc: '最新AI論文を仲間と読み込み、学びながら開発できる環境。',
+    jobs: [
+      {co:'東京AI研究所', title:'週1の論文読み会でarXivの最新動向をキャッチアップ。', tags:['論文読み会','arXiv','英語OK','研究寄り'], pay:'2,500〜4,800', loc:'駒場東大前駅 徒歩10分', time:'週2〜'},
+      {co:'合同会社AGIラボ', title:'少数精鋭。毎週の論文共有会で研究の最前線をキャッチ。', tags:['論文読み会','AGI研究','少数精鋭'], pay:'3,000〜7,000', loc:'本郷三丁目駅 徒歩5分', time:'週3〜'},
+      {co:'合同会社トークンAI', title:'社内勉強会でLLM論文を読み倒す文化。', tags:['論文読み会','自社LLM','フルリモート'], pay:'2,500〜5,000', loc:'フルリモート', time:'週2〜'},
+    ]
+  },
+  '未経験OK': {
+    count: 56, desc: 'プログラミング初心者・AI未経験でも挑戦できるポジション。',
+    jobs: [
+      {band:'未経験歓迎', co:'プロンプトファクトリー株式会社', title:'体系的な研修あり。AI時代の新職種を最前線で学ぶ。', tags:['未経験OK','研修充実','メンター','1年生OK'], pay:'1,500〜2,500', loc:'新宿駅 徒歩5分', time:'週2〜'},
+      {co:'合同会社チャットUX', title:'AIチャットボットの対話フロー設計。プログラミング不要。', tags:['未経験OK','文系歓迎','プログラミング不要'], pay:'1,800〜3,200', loc:'フルリモート', time:'週2〜'},
+      {co:'AIライティング株式会社', title:'プロンプト設計で記事の質を高める。文系・未経験OK。', tags:['未経験OK','コンテンツ','文系歓迎'], pay:'1,500〜2,800', loc:'渋谷駅 徒歩6分', time:'週2〜'},
+      {co:'株式会社エントリーAI', title:'ゼロから始めるAIエンジニア。ペアプログラミング中心の教育体制。', tags:['未経験OK','ペアプロ','研修','正社員登用あり'], pay:'1,500〜2,800', loc:'渋谷駅 徒歩4分', time:'週2〜'},
+    ]
+  },
+  '自社LLM開発中': {
+    count: 22, desc: '独自のLLM基盤モデルを開発しているスタートアップ求人。',
+    jobs: [
+      {band:'Pickup', co:'株式会社ニューロンクラフト', title:'自社LLM開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。', tags:['自社LLM','GPU使い放題','シリーズA','フルリモート可'], pay:'2,000〜4,000', loc:'渋谷駅 徒歩5分', time:'週3〜'},
+      {co:'合同会社トークンAI', title:'自社LLMのチューニングで、GPT-4超えを本気で目指す。', tags:['自社LLM','ファインチューニング','論文読み会','フルリモート'], pay:'2,500〜5,000', loc:'フルリモート', time:'週2〜'},
+      {co:'日本語LLM株式会社', title:'日本語特化LLMの事前学習。大規模コーパスの設計から。', tags:['自社LLM','日本語特化','大規模学習','H100'], pay:'2,800〜5,500', loc:'本郷三丁目駅 徒歩5分', time:'週3〜'},
+    ]
+  },
+  '時給2,000円以上': {
+    count: 41, desc: '高単価のAIインターン求人を厳選。',
+    jobs: [
+      {co:'株式会社オートノミー', title:'AIエージェントの開発。スキル次第で時給上限なし。', tags:['高単価','AIエージェント','CTO直下'], pay:'3,000〜6,000', loc:'渋谷駅 徒歩8分', time:'週3〜'},
+      {co:'株式会社エッジAI', title:'モデル軽量化・量子化の実装。即戦力歓迎で時給も高水準。', tags:['高単価','量子化','即戦力','週3〜'], pay:'2,800〜5,000', loc:'大手町駅 徒歩3分', time:'週3〜'},
+      {co:'株式会社GPUスタジオ', title:'大規模モデル学習の実装。GPU環境込みで高待遇。', tags:['高単価','H100','大規模学習','論文共著'], pay:'3,000〜6,500', loc:'渋谷駅 徒歩6分', time:'週3〜'},
+      {co:'合同会社AGIラボ', title:'AGI研究の最前線。少数精鋭で時給は上限を気にしない。', tags:['高単価','AGI研究','少数精鋭'], pay:'3,000〜7,000', loc:'本郷三丁目駅 徒歩5分', time:'週3〜'},
+    ]
+  },
+};
+
+// パラメータ取得
+const params = new URLSearchParams(location.search);
+const cat = params.get('cat') || 'プロンプトエンジニア';
+const genericJobs = [
+  {band:'Pickup', co:'株式会社ニューロンクラフト', title:'【'+cat+'】に関連するインターンで、実務経験をガッツリ積もう。', tags:[cat,'週3〜','リモート可'], pay:'2,000〜4,000', loc:'渋谷駅 徒歩5分', time:'週3〜'},
+  {co:'合同会社AIワークス', title:'【'+cat+'】領域の最前線で、若手のうちから裁量大きく動けるポジション。', tags:[cat,'裁量大','若手活躍'], pay:'2,200〜4,500', loc:'ハイブリッド', time:'週2〜'},
+  {co:'株式会社ネクストAI', title:'【'+cat+'】の企画〜実装まで、フルスタックに関われるスタートアップ。', tags:[cat,'フルスタック','シリーズA'], pay:'2,500〜5,000', loc:'フルリモート', time:'週2〜'},
+  {co:'AIパイオニアズ株式会社', title:'【'+cat+'】のプロジェクトに、エンジニア3名の少数精鋭で取り組む。', tags:[cat,'少数精鋭','CTO直下'], pay:'2,800〜5,500', loc:'本郷三丁目駅 徒歩5分', time:'週3〜'},
+];
+const catData = CATEGORIES[cat] || { count: Math.floor(Math.random()*50)+10, desc: cat + ' に関連するAIインターン求人を一覧表示しています。', jobs: genericJobs };
+
+document.getElementById('crumb-cat').textContent = cat;
+document.getElementById('cat-title').textContent = cat;
+document.getElementById('cat-desc').textContent = catData.desc;
+document.getElementById('cat-count').textContent = catData.count + '件';
+document.title = cat + ' のインターンシップ | AIme';
+
+function renderList(){
+  const sort = document.getElementById('sort').value;
+  const loc = document.getElementById('loc').value;
+  const kw = document.getElementById('kw').value.trim().toLowerCase();
+
+  let rows = catData.jobs.slice();
+  if (loc) rows = rows.filter(r => r.loc.includes(loc) || (loc==='リモート' && r.loc.includes('リモート')));
+  if (kw) rows = rows.filter(r => (r.title+r.co+r.tags.join('')).toLowerCase().includes(kw));
+  if (sort === 'payHigh' || sort === 'payLow') {
+    const dir = sort === 'payHigh' ? -1 : 1;
+    rows.sort((a,b) => {
+      const aMax = parseInt(a.pay.split('〜')[1] || a.pay);
+      const bMax = parseInt(b.pay.split('〜')[1] || b.pay);
+      return (aMax - bMax) * dir;
+    });
+  }
+
+  const listEl = document.getElementById('list');
+  document.getElementById('result-count').textContent = rows.length + '件表示中';
+  if (rows.length === 0) {
+    listEl.innerHTML = '<div class="empty">条件に合う求人が見つかりませんでした。</div>';
+    return;
+  }
+  listEl.innerHTML = rows.map(r => `
+    <a href="#" class="job">
+      <div>
+        ${r.band ? `<span class="band">${r.band}</span><br>` : ''}
+        <div class="company">${r.co}</div>
+        <h3>${r.title}</h3>
+        <div class="tags">${r.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="meta"><span>${r.loc}</span><span>${r.time}</span></div>
+      </div>
+      <div class="pay">¥${r.pay}<span class="pay-unit">時給</span></div>
+    </a>
+  `).join('');
+}
+
+document.getElementById('sort').addEventListener('change', renderList);
+document.getElementById('loc').addEventListener('change', renderList);
+document.getElementById('kw').addEventListener('input', renderList);
+renderList();
+
+// 関連カテゴリ
+const related = Object.keys(CATEGORIES).filter(k => k !== cat).slice(0, 8);
+document.getElementById('related-chips').innerHTML = related.map(k =>
+  `<a class="chip" href="category.html?cat=${encodeURIComponent(k)}">${k} (${CATEGORIES[k].count})</a>`
+).join('');
+</script>
+</body>
+</html>

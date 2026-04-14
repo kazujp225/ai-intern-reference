@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>3D回転カルーセル 洗練案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 30px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .variant { max-width: 1100px; margin: 30px auto 70px; background: #fff; padding: 30px 10px 50px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.15em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 24px; max-width: 760px; }
+
+  /* --- shared card --- */
+  .c-card { background: #fff; border-radius: 14px; padding: 22px 16px; width: 170px; box-sizing: border-box;
+            box-shadow: 0 4px 18px rgba(0,0,0,.08);
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            text-decoration: none; color: inherit; border: 1px solid rgba(0,0,0,.04); }
+  .c-card .logo { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
+  .c-card .logo svg, .c-card .logo img { width: 54px; height: 54px; object-fit: contain; }
+  .c-card .n { font-size: 1em; font-weight: 800; letter-spacing: .02em; }
+  .c-card .d { font-size: .76em; color: #888; }
+
+  /* =================================================== */
+  /* C1: Coverflow (円周+前面強調) */
+  /* =================================================== */
+  .cf-scene { perspective: 1600px; perspective-origin: 50% 50%; height: 320px; position: relative; overflow: hidden;
+              background: radial-gradient(ellipse at center, #f8fbf8 0%, #eef3ee 100%); border-radius: 10px; }
+  .cf-ring { position: absolute; top: 50%; left: 50%; width: 0; height: 0; transform-style: preserve-3d;
+             animation: cfspin 40s linear infinite; }
+  .cf-ring:hover { animation-play-state: paused; }
+  .cf-item { position: absolute; top: -110px; left: -85px; width: 170px; transform-style: preserve-3d;
+             transition: transform .3s; }
+  .cf-item:hover { z-index: 10; }
+  @keyframes cfspin { from { transform: translateZ(0) rotateY(0deg); } to { transform: translateZ(0) rotateY(-360deg); } }
+
+  /* =================================================== */
+  /* C2: Tilted coverflow (傾いたリング) */
+  /* =================================================== */
+  .tilt-scene { perspective: 1800px; perspective-origin: 50% 30%; height: 340px; position: relative; overflow: hidden;
+                background: linear-gradient(180deg, #ffffff 0%, #f0f4f8 100%); border-radius: 10px; }
+  .tilt-ring { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d;
+               animation: tiltspin 35s linear infinite; }
+  .tilt-ring:hover { animation-play-state: paused; }
+  @keyframes tiltspin {
+    from { transform: rotateX(-18deg) rotateY(0deg); }
+    to   { transform: rotateX(-18deg) rotateY(-360deg); }
+  }
+  .tilt-item { position: absolute; top: -110px; left: -85px; width: 170px; }
+
+  /* =================================================== */
+  /* C3: Marquee-arc (下半円だけを前に出す) */
+  /* =================================================== */
+  .arc-scene { perspective: 1400px; height: 300px; position: relative; overflow: hidden; border-radius: 10px;
+               background: radial-gradient(circle at 50% 120%, rgba(46,125,50,.06), transparent 60%), #fafcfa; }
+  .arc-ring { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d;
+              animation: arcspin 30s linear infinite; }
+  .arc-ring:hover { animation-play-state: paused; }
+  @keyframes arcspin {
+    from { transform: rotateX(55deg) rotateY(0deg); }
+    to   { transform: rotateX(55deg) rotateY(-360deg); }
+  }
+  .arc-item { position: absolute; top: -110px; left: -85px; width: 170px; }
+
+  /* =================================================== */
+  /* C4: Wheel with reflection (シャドウ付き) */
+  /* =================================================== */
+  .wheel-scene { perspective: 1500px; height: 380px; position: relative; overflow: hidden; border-radius: 10px;
+                 background: linear-gradient(180deg, #fafbfc 0%, #fff 50%, #e8ecef 100%); }
+  .wheel-ring { position: absolute; top: 45%; left: 50%; transform-style: preserve-3d;
+                animation: wheelspin 38s linear infinite; }
+  .wheel-ring:hover { animation-play-state: paused; }
+  @keyframes wheelspin {
+    from { transform: rotateY(0deg); }
+    to   { transform: rotateY(-360deg); }
+  }
+  .wheel-item { position: absolute; top: -110px; left: -85px; width: 170px; }
+  .wheel-item::after {
+    content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 60px;
+    background: linear-gradient(to bottom, rgba(0,0,0,.18), transparent);
+    transform: scaleY(-1); opacity: .3; filter: blur(6px); border-radius: 14px;
+    pointer-events: none;
+  }
+
+  /* =================================================== */
+  /* C5: Interactive drag (ドラッグで回す) */
+  /* =================================================== */
+  .drag-scene { perspective: 1600px; height: 340px; position: relative; overflow: hidden; border-radius: 10px;
+                background: radial-gradient(ellipse at center, #fff, #eef2f1);
+                cursor: grab; user-select: none; }
+  .drag-scene:active { cursor: grabbing; }
+  .drag-ring { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d;
+               transition: transform .1s linear; }
+  .drag-item { position: absolute; top: -110px; left: -85px; width: 170px; }
+  .drag-hint { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center;
+               font-size: .75em; color: #888; pointer-events: none; }
+
+  /* =================================================== */
+  /* C6: Depth fade + focus (中央1枚大、奥は霞む) */
+  /* =================================================== */
+  .focus-scene { perspective: 1200px; height: 340px; position: relative; overflow: hidden; border-radius: 10px;
+                 background: linear-gradient(180deg, #fff, #f5f8f7); }
+  .focus-ring { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d;
+                animation: focusspin 28s linear infinite; }
+  .focus-ring:hover { animation-play-state: paused; }
+  @keyframes focusspin {
+    from { transform: rotateY(0deg); }
+    to   { transform: rotateY(-360deg); }
+  }
+  .focus-item { position: absolute; top: -110px; left: -85px; width: 170px; transform-style: preserve-3d; }
+  .focus-item .c-card { backface-visibility: hidden; }
+</style>
+</head>
+<body>
+
+<h1>3D回転カルーセル 洗練案 6種</h1>
+<p class="sub">同じ15社データで、見せ方を変えて並べました。</p>
+
+<div class="variant">
+  <h2>C1: コントロールされた円周（正面透明感）</h2>
+  <div class="note">フラットに円周を回転。背景をごく淡いグラデで上品に。最もシンプル／汎用。</div>
+  <div class="cf-scene"><div class="cf-ring" id="cf1"></div></div>
+</div>
+
+<div class="variant">
+  <h2>C2: 傾いたリング（俯瞰視点）</h2>
+  <div class="note">X軸を18°傾けて斜め上から見下ろすような視点。高級感と立体感◎。</div>
+  <div class="tilt-scene"><div class="tilt-ring" id="cf2"></div></div>
+</div>
+
+<div class="variant">
+  <h2>C3: アーク（皿型ディスプレイ）</h2>
+  <div class="note">X軸55°で大きく傾け、皿に並んだような見せ方。手前の数枚だけくっきり見える。</div>
+  <div class="arc-scene"><div class="arc-ring" id="cf3"></div></div>
+</div>
+
+<div class="variant">
+  <h2>C4: 反射付きホイール</h2>
+  <div class="note">カード下に反射シャドウ。ショーケース風のリッチな印象。</div>
+  <div class="wheel-scene"><div class="wheel-ring" id="cf4"></div></div>
+</div>
+
+<div class="variant">
+  <h2>C5: ドラッグ操作（慣性付き）</h2>
+  <div class="note">マウスドラッグ／スワイプで自由に回転。離すと慣性でふわっと停止。操作する楽しさ。</div>
+  <div class="drag-scene" id="cf5scene"><div class="drag-ring" id="cf5"></div><div class="drag-hint">← ドラッグで回転 →</div></div>
+</div>
+
+<div class="variant">
+  <h2>C6: 被写界深度（中央フォーカス）</h2>
+  <div class="note">正面付近は鮮明・大きく、奥はブラー＆縮小。映画的な奥行き表現。</div>
+  <div class="focus-scene"><div class="focus-ring" id="cf6"></div></div>
+</div>
+
+<script>
+const companies = [
+  {n:'OpenAI',d:'ChatGPT',l:'<svg viewBox="0 0 2406 2406"><path d="M1 578.4C1 259.5 259.5 1 578.4 1h1249.1c319 0 577.5 258.5 577.5 577.4V2406H578.4C259.5 2406 1 2147.5 1 1828.6V578.4z" fill="#74aa9c"/><path d="M1107.3 299.1c-198 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.5V833.3h.1v-27.9L1372.7 604c33.7-19.5 70.4-32.9 108.5-39.8L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1z" fill="#fff"/></svg>'},
+  {n:'Google',d:'Gemini',l:'<svg viewBox="0 0 28 28"><path d="M14 28C14 26.06 13.63 24.24 12.88 22.54C12.16 20.84 11.17 19.36 9.9 18.1C8.65 16.84 7.16 15.84 5.46 15.12C3.76 14.37 1.94 14 0 14C1.94 14 3.76 13.64 5.46 12.92C7.16 12.17 8.65 11.17 9.9 9.9C11.17 8.65 12.16 7.16 12.88 5.46C13.63 3.76 14 1.94 14 0C14 1.94 14.36 3.76 15.09 5.46C15.83 7.16 16.84 8.65 18.1 9.9C19.36 11.17 20.84 12.17 22.54 12.92C24.24 13.64 26.06 14 28 14C26.06 14 24.24 14.37 22.54 15.12C20.84 15.84 19.36 16.84 18.1 18.1C16.84 19.36 15.83 20.84 15.09 22.54C14.36 24.24 14 26.06 14 28Z" fill="#5684D1"/></svg>'},
+  {n:'Anthropic',d:'Claude',l:'<img src="images/logo/anthropic_logo.png" alt="Anthropic">'},
+  {n:'Meta AI',d:'LLaMA',l:'<img src="images/logo/meta_logo.png" alt="Meta">'},
+  {n:'Apple',d:'Apple Intelligence',l:'<svg viewBox="0 0 24 24"><path fill="#000" d="M12.15 6.9c-.95 0-2.42-1.08-3.96-1.04-2.04.03-3.91 1.18-4.96 3.01-2.12 3.68-.55 9.1 1.52 12.09 1.01 1.45 2.21 3.09 3.79 3.04 1.52-.07 2.09-.99 3.94-.99 1.83 0 2.35.99 3.96.95 1.64-.03 2.68-1.48 3.68-2.95 1.16-1.69 1.64-3.33 1.66-3.42-.04-.01-3.18-1.22-3.22-4.86-.03-3.04 2.48-4.49 2.6-4.56-1.43-2.09-3.62-2.32-4.39-2.38-2-.16-3.68 1.09-4.61 1.09zM15.53 3.83c.84-1.01 1.4-2.43 1.24-3.83-1.21.05-2.66.8-3.53 1.82-.78.9-1.45 2.34-1.27 3.71 1.34.1 2.72-.69 3.56-1.7"/></svg>'},
+  {n:'Salesforce',d:'Einstein AI',l:'<svg viewBox="0 0 24 24"><path fill="#00A1E0" d="M10 5.4A4.2 4.2 0 0113.05 4.1c1.56 0 2.95.9 3.69 2.2.63-.3 1.35-.45 2.1-.45 2.85 0 5.16 2.34 5.16 5.22s-2.31 5.22-5.18 5.22c-.35 0-.69-.04-1.02-.1a3.75 3.75 0 01-3.3 1.95c-.6 0-1.15-.15-1.65-.37a4.3 4.3 0 01-3.97 2.63 4.3 4.3 0 01-4.05-2.82c-.27.06-.54.08-.82.08-2.2 0-4-1.8-4-4.05 0-1.5.81-2.8 2-3.5A4.6 4.6 0 012.61 8.3c0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.7 3.72 1.8"/></svg>'},
+  {n:'Tesla AI',d:'Autopilot',l:'<svg viewBox="0 0 24 24"><path fill="#E82127" d="M12 5.36l2.48-3.03s4.24.09 8.47 2.05c-1.08 1.64-3.23 2.44-3.23 2.44-.15-1.44-1.15-1.79-4.35-1.79L12 24 8.62 5.03c-3.18 0-4.19.35-4.34 1.79 0 0-2.15-.8-3.23-2.43C5.28 2.43 9.53 2.34 9.53 2.34L12 5.36z"/></svg>'},
+  {n:'Microsoft',d:'Azure AI',l:'<svg viewBox="0 0 48 48"><rect width="22" height="22" x="1" y="1" fill="#f25022"/><rect width="22" height="22" x="25" y="1" fill="#7fba00"/><rect width="22" height="22" x="1" y="25" fill="#00a4ef"/><rect width="22" height="22" x="25" y="25" fill="#ffb900"/></svg>'},
+  {n:'Amazon',d:'AWS',l:'<svg viewBox="0 0 24 24"><path fill="#FF9900" d="M.05 18c.07-.12.19-.13.35-.02 3.64 2.1 7.6 3.17 11.87 3.17 2.85 0 5.67-.53 8.45-1.6l.31-.14c.14-.06.23-.1.29-.13.23-.09.39-.05.53.13.12.17.09.34-.12.48-.26.2-.6.41-1 .65-1.24.74-2.64 1.32-4.19 1.73a17.6 17.6 0 01-10.95-.58A17.9 17.9 0 01.15 18.24c-.1-.08-.15-.15-.15-.22 0-.05.02-.09.05-.13z"/></svg>'},
+  {n:'NVIDIA',d:'GPU',l:'<svg viewBox="0 0 24 24"><path fill="#76B900" d="M8.95 8.8V7.37a6.7 6.7 0 01.42-.02c3.92-.12 6.49 3.37 6.49 3.37s-2.77 3.85-5.75 3.85c-.4 0-.79-.06-1.16-.19V10.04c1.53.19 1.84.86 2.75 2.39l2.04-1.71s-1.49-1.95-4-1.95a6 6 0 00-.79.03"/></svg>'},
+  {n:'IBM',d:'Watson',l:'<svg viewBox="0 0 24 24"><path fill="#0530AD" d="M0 8.13h4.35v-.62H0zm0 1.19h4.35v-.62H0zM0 15.28h4.35v-.62H0zm1.24 1.19h3.1v-.62h-3.1zm0-1.19h3.1v-.62h-3.1zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24z"/></svg>'},
+  {n:'Oracle',d:'OCI AI',l:'<svg viewBox="0 0 24 24"><path fill="#F80000" d="M16.41 4.41h-8.82a7.59 7.59 0 00-.01 15.18h8.83a7.59 7.59 0 000-15.18zm-.19 12.5H7.79a4.92 4.92 0 010-9.83h8.43a4.91 4.91 0 110 9.83z"/></svg>'},
+  {n:'xAI',d:'Grok',l:'<svg viewBox="0 0 24 24"><path fill="#000" d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.59l5.24 6.93z"/></svg>'},
+  {n:'Adobe',d:'Firefly',l:'<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M13.97 22.62l-1.69-4.28H8.12l3.89-9.14 5.66 13.42zM8.88 1.38H0v21.24zm15.12 0h-8.88L24 22.62Z"/></svg>'},
+  {n:'Intel',d:'AI半導体',l:'<svg viewBox="0 0 24 24"><path fill="#0071C5" d="M20.42 7.35v9.18h1.65V7.35zM0 7.48v1.74h1.74V7.47z"/></svg>'}
+];
+
+const RADIUS = 430;
+const card = c => `<a href="#" class="c-card"><div class="logo">${c.l}</div><span class="n">${c.n}</span><span class="d">${c.d}</span></a>`;
+
+function build(ringId, itemClass) {
+  const ring = document.getElementById(ringId);
+  companies.forEach((c, i) => {
+    const angle = (360 / companies.length) * i;
+    const el = document.createElement('div');
+    el.className = itemClass;
+    el.style.transform = `rotateY(${angle}deg) translateZ(${RADIUS}px)`;
+    el.innerHTML = card(c);
+    ring.appendChild(el);
+  });
+}
+
+build('cf1', 'cf-item');
+build('cf2', 'tilt-item');
+build('cf3', 'arc-item');
+build('cf4', 'wheel-item');
+build('cf5', 'drag-item');
+build('cf6', 'focus-item');
+
+// C5: drag to rotate
+(function(){
+  const scene = document.getElementById('cf5scene');
+  const ring = document.getElementById('cf5');
+  let angle = 0, velocity = 0, dragging = false, lastX = 0, lastT = 0, raf = null;
+  function setTransform() { ring.style.transform = `rotateY(${angle}deg)`; }
+  setTransform();
+  function inertia() {
+    if (dragging) return;
+    angle += velocity;
+    velocity *= 0.95;
+    setTransform();
+    if (Math.abs(velocity) > 0.02) raf = requestAnimationFrame(inertia);
+    else { // idle auto spin
+      velocity = -0.2;
+      raf = requestAnimationFrame(autoSpin);
+    }
+  }
+  function autoSpin() {
+    if (dragging) return;
+    angle += -0.15;
+    setTransform();
+    raf = requestAnimationFrame(autoSpin);
+  }
+  scene.addEventListener('pointerdown', e => {
+    dragging = true; lastX = e.clientX; lastT = performance.now();
+    if (raf) cancelAnimationFrame(raf); velocity = 0;
+    scene.setPointerCapture(e.pointerId);
+  });
+  scene.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const now = performance.now();
+    const dx = e.clientX - lastX;
+    const dt = Math.max(1, now - lastT);
+    velocity = (dx / dt) * 8;
+    angle += dx * 0.4;
+    lastX = e.clientX; lastT = now;
+    setTransform();
+  });
+  scene.addEventListener('pointerup', () => { dragging = false; raf = requestAnimationFrame(inertia); });
+  scene.addEventListener('pointercancel', () => { dragging = false; raf = requestAnimationFrame(inertia); });
+  raf = requestAnimationFrame(autoSpin);
+})();
+
+// C6: focus effect — update each item transform based on facing angle
+(function(){
+  const ring = document.getElementById('cf6');
+  const items = Array.from(ring.children);
+  function update() {
+    const style = getComputedStyle(ring);
+    const m = style.transform;
+    // Extract rotation Y from matrix3d.
+    let rotY = 0;
+    if (m && m.startsWith('matrix3d')) {
+      const nums = m.match(/-?[\d.]+/g).map(parseFloat);
+      rotY = Math.atan2(-nums[2], nums[0]) * 180 / Math.PI;
+    } else if (m && m.startsWith('matrix')) {
+      const nums = m.match(/-?[\d.]+/g).map(parseFloat);
+      rotY = Math.atan2(nums[1], nums[0]) * 180 / Math.PI;
+    }
+    items.forEach((el, i) => {
+      const base = (360 / companies.length) * i;
+      let delta = ((base + rotY) % 360 + 540) % 360 - 180; // -180..180
+      const absD = Math.abs(delta);
+      const scale = 1.15 - Math.min(absD, 90) / 90 * 0.45; // 1.15 at front, 0.7 at side
+      const blur = Math.min(absD / 90 * 4, 6);
+      const opacity = 1 - Math.min(absD, 120) / 120 * 0.55;
+      el.style.transform = `rotateY(${base}deg) translateZ(${RADIUS}px) scale(${scale.toFixed(3)})`;
+      el.style.filter = `blur(${blur.toFixed(1)}px)`;
+      el.style.opacity = opacity.toFixed(2);
+      el.style.zIndex = Math.round(100 - absD);
+    });
+    requestAnimationFrame(update);
+  }
+  update();
+})();
+</script>
+</body>
+</html>

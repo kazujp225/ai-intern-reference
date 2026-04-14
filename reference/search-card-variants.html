@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>検索カテゴリカード UI案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .variant { max-width: 1080px; margin: 28px auto 60px; background: #fff; padding: 28px 24px 36px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.1em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 22px; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+
+  /* ---------- 1: gradient tiles ---------- */
+  .v1 .item { border-radius: 16px; padding: 22px 14px; color: #fff; text-align: center; cursor: pointer;
+              display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform .2s, box-shadow .2s;
+              box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+  .v1 .item:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.18); }
+  .v1 .ico { font-size: 2em; }
+  .v1 .name { font-weight: 700; font-size: .92em; }
+  .v1 .item:nth-child(6n+1){ background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+  .v1 .item:nth-child(6n+2){ background: linear-gradient(135deg, #43cea2, #185a9d); }
+  .v1 .item:nth-child(6n+3){ background: linear-gradient(135deg, #f857a6, #ff5858); }
+  .v1 .item:nth-child(6n+4){ background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .v1 .item:nth-child(6n+5){ background: linear-gradient(135deg, #f6d365, #fda085); }
+  .v1 .item:nth-child(6n+6){ background: linear-gradient(135deg, #a8edea, #fed6e3); color: #222; }
+
+  /* ---------- 2: neumorphism ---------- */
+  .v2 { background: #e8ecf0; border-radius: 14px; padding: 30px; }
+  .v2 .item { background: #e8ecf0; border-radius: 18px; padding: 22px 14px; text-align: center; cursor: pointer;
+              box-shadow: 8px 8px 18px #c4c8cc, -8px -8px 18px #ffffff;
+              transition: box-shadow .2s; }
+  .v2 .item:hover { box-shadow: inset 5px 5px 12px #c4c8cc, inset -5px -5px 12px #ffffff; }
+  .v2 .ico { font-size: 1.8em; display: block; margin-bottom: 8px; }
+  .v2 .name { font-weight: 700; font-size: .9em; color: #444; }
+
+  /* ---------- 3: horizontal cards with badge ---------- */
+  .v3 .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .v3 .item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fff; border-radius: 12px;
+              border: 1px solid #eef0f2; cursor: pointer; transition: all .2s; }
+  .v3 .item:hover { border-color: #2e7d32; box-shadow: 0 4px 14px rgba(46,125,50,.15); }
+  .v3 .ico { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+             display: flex; align-items: center; justify-content: center; font-size: 1.5em; }
+  .v3 .body { flex: 1; }
+  .v3 .name { font-weight: 700; font-size: .95em; }
+  .v3 .badge { font-size: .72em; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 3px; }
+
+  /* ---------- 4: hand-drawn sketch ---------- */
+  .v4 { background: #fdfaf3; }
+  .v4 .item { background: #fff; border: 2px dashed #b8a87a; border-radius: 14px; padding: 20px 12px; text-align: center;
+              cursor: pointer; transition: transform .2s; font-family: "Comic Sans MS", "Hiragino Maru Gothic ProN", sans-serif; }
+  .v4 .item:hover { transform: rotate(-1deg) scale(1.03); border-color: #1b5e20; }
+  .v4 .ico { font-size: 2em; display: block; margin-bottom: 6px; }
+  .v4 .name { font-weight: 700; color: #5a4a1f; }
+
+  /* ---------- 5: glassmorphism ---------- */
+  .v5 { background: linear-gradient(135deg, #c8e6c9, #bbdefb, #f8bbd0); padding: 30px; border-radius: 14px; }
+  .v5 .item { background: rgba(255,255,255,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+              border: 1px solid rgba(255,255,255,.5); border-radius: 16px; padding: 22px 14px; text-align: center;
+              cursor: pointer; transition: all .2s; color: #222; }
+  .v5 .item:hover { background: rgba(255,255,255,.55); transform: translateY(-2px); }
+  .v5 .ico { font-size: 2em; display: block; margin-bottom: 8px; }
+  .v5 .name { font-weight: 700; font-size: .92em; }
+
+  /* ---------- 6: pill tags ---------- */
+  .v6 .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .v6 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px;
+              background: #f1f5f0; color: #2e3b2e; font-weight: 600; font-size: .9em; cursor: pointer;
+              border: 1px solid #d8e2d4; transition: all .2s; }
+  .v6 .pill:hover { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  .v6 .count { font-size: .75em; opacity: .7; background: rgba(0,0,0,.06); padding: 1px 7px; border-radius: 999px; }
+  .v6 .pill:hover .count { background: rgba(255,255,255,.2); opacity: 1; }
+
+  /* ---------- 7: sticker tilt ---------- */
+  .v7 .item { background: #fff8e1; border-radius: 4px; padding: 22px 14px; text-align: center; cursor: pointer;
+              box-shadow: 3px 6px 12px rgba(0,0,0,.15); transition: transform .2s; position: relative; }
+  .v7 .item:nth-child(odd){ transform: rotate(-2deg); background: #fff3e0; }
+  .v7 .item:nth-child(even){ transform: rotate(1.5deg); background: #f1f8e9; }
+  .v7 .item:hover { transform: rotate(0deg) scale(1.06) !important; box-shadow: 6px 10px 20px rgba(0,0,0,.22); z-index: 5; }
+  .v7 .ico { font-size: 2em; display: block; margin-bottom: 6px; }
+  .v7 .name { font-weight: 700; font-size: .9em; color: #333; }
+
+  /* ---------- 8: neon ---------- */
+  .v8 { background: #0d1410; padding: 30px; border-radius: 14px; }
+  .v8 .item { background: #131c14; border: 1.5px solid #2e7d32; border-radius: 12px; padding: 22px 14px; text-align: center; cursor: pointer;
+              box-shadow: 0 0 12px rgba(46,175,80,.3), inset 0 0 8px rgba(46,175,80,.15); color: #cef0d4;
+              transition: all .25s; }
+  .v8 .item:hover { box-shadow: 0 0 20px rgba(46,175,80,.7), inset 0 0 14px rgba(46,175,80,.4); color: #fff; }
+  .v8 .ico { font-size: 2em; display: block; margin-bottom: 6px; filter: drop-shadow(0 0 6px rgba(139,255,158,.7)); }
+  .v8 .name { font-weight: 700; font-size: .9em; letter-spacing: .04em; }
+
+  /* ---------- 9: terminal ---------- */
+  .v9 { background: #1e1e1e; padding: 22px; border-radius: 12px; font-family: "Menlo", "Consolas", monospace; }
+  .v9 .item { color: #8bff9e; padding: 10px 14px; cursor: pointer; border-radius: 4px; transition: background .2s; display: flex; align-items: center; gap: 10px; }
+  .v9 .item:hover { background: rgba(139,255,158,.1); }
+  .v9 .item::before { content: '>'; color: #888; }
+  .v9 .name { font-size: .92em; }
+  .v9 .name::after { content: '_'; color: #8bff9e; opacity: 0; margin-left: 2px; }
+  .v9 .item:hover .name::after { opacity: 1; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .v9 .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px; }
+
+  /* ---------- 10: 3D flip ---------- */
+  .v10 .item { perspective: 800px; height: 110px; cursor: pointer; }
+  .v10 .inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; }
+  .v10 .item:hover .inner { transform: rotateY(180deg); }
+  .v10 .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 12px;
+               display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+               box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+  .v10 .front { background: #fff; }
+  .v10 .back { background: #2e7d32; color: #fff; transform: rotateY(180deg); }
+  .v10 .ico { font-size: 1.8em; }
+  .v10 .name { font-weight: 700; font-size: .9em; }
+  .v10 .count { font-weight: 700; font-size: 1.1em; }
+  .v10 .label { font-size: .75em; opacity: .85; }
+</style>
+</head>
+<body>
+
+<h1>検索カテゴリカード UI案 10種</h1>
+<p class="sub">「AI職種」「尖った特徴」のカードを想定したサンプルで並べました。</p>
+
+<script id="dataTpl" type="text/template">[
+  {"i":"💬","n":"プロンプトエンジニア","c":24},
+  {"i":"🧠","n":"MLエンジニア","c":42},
+  {"i":"🔬","n":"AIリサーチャー","c":18},
+  {"i":"💻","n":"LLMアプリ開発","c":31},
+  {"i":"📊","n":"データサイエンティスト","c":27},
+  {"i":"🤖","n":"AIエージェント開発","c":15},
+  {"i":"🖥️","n":"GPU使い放題","c":12},
+  {"i":"🏠","n":"フルリモート可","c":38},
+  {"i":"📖","n":"論文読み会あり","c":9},
+  {"i":"🌱","n":"未経験OK","c":56}
+]</script>
+
+<div class="variant"><h2>案1: グラデーションタイル</h2><div class="note">鮮やかでサービス感、視認性高い。</div><div class="grid v1" data-render="v1"></div></div>
+<div class="variant"><h2>案2: ニューモーフィズム</h2><div class="note">凹凸のある柔らかなボタン。落ち着いた高級感。</div><div class="v2"><div class="grid" data-render="v2"></div></div></div>
+<div class="variant"><h2>案3: 横長カード（バッジ付き）</h2><div class="note">アイコン左、件数バッジ付き。一覧性◎。</div><div class="v3"><div class="grid" data-render="v3"></div></div></div>
+<div class="variant"><h2>案4: 手書きスケッチ風</h2><div class="note">点線ボーダー＋丸ゴシック。親しみやすい。</div><div class="v4"><div class="grid" data-render="v4"></div></div></div>
+<div class="variant"><h2>案5: ガラスモーフィズム</h2><div class="note">半透明＋ブラーで今っぽい。</div><div class="v5"><div class="grid" data-render="v5"></div></div></div>
+<div class="variant"><h2>案6: ピル型タグ</h2><div class="note">カードをやめてピル一覧に。コンパクト。</div><div class="v6"><div class="pills" data-render="v6"></div></div></div>
+<div class="variant"><h2>案7: ステッカー（傾き＋影）</h2><div class="note">付箋風で遊び心。</div><div class="v7"><div class="grid" data-render="v7"></div></div></div>
+<div class="variant"><h2>案8: ネオン</h2><div class="note">黒背景＋緑グロー。「ヤバい声」トーンと合う。</div><div class="v8"><div class="grid" data-render="v8"></div></div></div>
+<div class="variant"><h2>案9: ターミナル風</h2><div class="note">エンジニア向けで刺さる。</div><div class="v9"><div class="grid" data-render="v9"></div></div></div>
+<div class="variant"><h2>案10: 3Dフリップ</h2><div class="note">ホバーで裏返り件数表示。インタラクティブ。</div><div class="v10"><div class="grid" data-render="v10"></div></div></div>
+
+<script>
+const data = JSON.parse(document.getElementById('dataTpl').textContent);
+const renderers = {
+  v1: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v2: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v3: d => `<div class="item"><div class="ico">${d.i}</div><div class="body"><div class="name">${d.n}</div><span class="badge">${d.c}件</span></div></div>`,
+  v4: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v5: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v6: d => `<a class="pill"><span>${d.i}</span><span>${d.n}</span><span class="count">${d.c}</span></a>`,
+  v7: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v8: d => `<div class="item"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>`,
+  v9: d => `<div class="item"><span class="name">${d.n}</span></div>`,
+  v10: d => `<div class="item"><div class="inner">
+                <div class="face front"><span class="ico">${d.i}</span><span class="name">${d.n}</span></div>
+                <div class="face back"><span class="count">${d.c}件</span><span class="label">のインターン</span></div>
+              </div></div>`,
+};
+document.querySelectorAll('[data-render]').forEach(el => {
+  const fn = renderers[el.dataset.render];
+  el.innerHTML = data.map(fn).join('');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>企業ページ | AIme</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #fafbfa; color: #222; }
+  header { background: #fff; border-bottom: 1px solid #e8ecea; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+  header .brand { font-weight: 900; color: #1b5e20; font-size: 1.2em; letter-spacing: .05em; }
+  header .back { color: #2e7d32; font-weight: 700; font-size: .9em; text-decoration: none; }
+  main { max-width: 900px; margin: 30px auto 60px; padding: 0 20px; }
+  .crumbs { font-size: .8em; color: #888; margin-bottom: 10px; }
+  .crumbs a { color: #2e7d32; text-decoration: none; }
+  .hero { display: flex; align-items: center; gap: 24px; background: #fff; border: 1px solid #e8ecea; border-radius: 16px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+  .hero .logo { width: 100px; height: 100px; flex-shrink: 0; background: #f5f7f5; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 2em; color: #1b5e20; }
+  .hero h1 { margin: 0 0 4px; font-size: 1.6em; }
+  .hero .tagline { color: #666; font-size: .92em; }
+  .hero .meta { display: flex; gap: 14px; margin-top: 10px; font-size: .82em; color: #777; }
+  .section { background: #fff; border: 1px solid #e8ecea; border-radius: 12px; padding: 24px 28px; margin-top: 20px; }
+  .section h2 { margin: 0 0 12px; font-size: 1.1em; color: #1b5e20; }
+  .section p { line-height: 1.7; color: #333; }
+  .openings { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .opening { padding: 14px 16px; border: 1px solid #eef0ee; border-radius: 8px; transition: all .15s; text-decoration: none; color: inherit; display: block; }
+  .opening:hover { border-color: #2e7d32; background: #f7faf7; }
+  .opening .ttl { font-weight: 700; }
+  .opening .tags { margin-top: 4px; }
+  .opening .tag { display: inline-block; background: #f1f8f1; color: #2e7d32; padding: 1px 8px; border-radius: 4px; font-size: .72em; margin-right: 4px; }
+  footer { text-align: center; padding: 30px 20px; color: #999; font-size: .8em; border-top: 1px solid #eef0ee; background: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="original.html" class="back">← トップへ戻る</a>
+  <a href="original.html" class="brand">AIme</a>
+</header>
+
+<main>
+  <div class="crumbs"><a href="original.html">ホーム</a> / 企業 / <span id="crumb">企業</span></div>
+  <div class="hero">
+    <div class="logo" id="logo">?</div>
+    <div>
+      <h1 id="name">企業名</h1>
+      <div class="tagline" id="tagline"></div>
+      <div class="meta"><span>所在地: <span id="loc">-</span></span><span>従業員: <span id="size">-</span></span><span>設立: <span id="founded">-</span></span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>企業について</h2>
+    <p id="desc">企業情報は準備中です。</p>
+  </div>
+
+  <div class="section">
+    <h2>募集中のインターン</h2>
+    <div class="openings" id="openings"></div>
+  </div>
+</main>
+
+<footer>© AIme - AIインターンシップ情報サービス</footer>
+
+<script>
+const COMPANIES = {
+  'OpenAI': { tagline: 'ChatGPT / GPT-5 を作る企業', loc: 'San Francisco, CA', size: '約1,500名', founded: '2015', desc: 'AIの安全で有益な発展を目指す研究開発企業。日本語ネイティブ向けインターン枠も拡大中。', logo: 'O' },
+  'Google': { tagline: 'Gemini / DeepMind', loc: 'Mountain View, CA', size: '約180,000名', founded: '1998', desc: 'Geminiモデル開発、AIインフラ、応用研究まで幅広いポジションを提供。', logo: 'G' },
+  'Anthropic': { tagline: 'Claude を開発するAIスタートアップ', loc: 'San Francisco, CA', size: '約500名', founded: '2021', desc: '安全性重視のLLM研究開発企業。日本市場進出に伴い東京拠点で募集中。', logo: 'A' },
+  'Meta AI': { tagline: 'LLaMA / PyTorch', loc: 'Menlo Park, CA', size: '約75,000名', founded: '2004', desc: 'オープンソースLLMのリーダー。研究と実装の両軸でインターン受け入れ。', logo: 'M' },
+  'Apple': { tagline: 'Apple Intelligence / Siri', loc: 'Cupertino, CA', size: '約160,000名', founded: '1976', desc: 'デバイス上で動くAIに特化。プライバシー重視のAI研究。', logo: '' },
+  'Salesforce': { tagline: 'Einstein AI / Slack AI', loc: 'San Francisco, CA', size: '約75,000名', founded: '1999', desc: 'CRMにおけるAI活用のパイオニア。BizDev寄りのインターンも豊富。', logo: 'S' },
+  'Tesla AI': { tagline: 'Autopilot / Optimus', loc: 'Palo Alto, CA', size: '約140,000名', founded: '2003', desc: '自動運転とロボティクスの最前線。', logo: 'T' },
+  'Microsoft': { tagline: 'Azure AI / Copilot', loc: 'Redmond, WA', size: '約220,000名', founded: '1975', desc: 'OpenAIと提携しエンタープライズAIをリード。', logo: 'M' },
+  'Amazon': { tagline: 'AWS / Alexa / Bedrock', loc: 'Seattle, WA', size: '約1,500,000名', founded: '1994', desc: 'クラウドAI基盤Bedrockを軸に幅広い事業領域。', logo: 'a' },
+  'NVIDIA': { tagline: 'GPU / CUDA / AI半導体', loc: 'Santa Clara, CA', size: '約30,000名', founded: '1993', desc: 'AI半導体の事実上の標準。研究開発のインターン多数。', logo: 'N' },
+  'IBM': { tagline: 'Watson / AI研究', loc: 'Armonk, NY', size: '約280,000名', founded: '1911', desc: 'エンタープライズ向けAIの老舗。日本IBMでも採用予定。', logo: 'I' },
+  'Oracle': { tagline: 'OCI AI / クラウド', loc: 'Austin, TX', size: '約160,000名', founded: '1977', desc: 'クラウドAIを急拡大中。', logo: 'O' },
+  'xAI': { tagline: 'Grok', loc: 'Austin, TX', size: '約500名', founded: '2023', desc: 'X(Twitter)と統合されたAI開発を推進。', logo: 'X' },
+  'Adobe': { tagline: 'Firefly / Sensei AI', loc: 'San Jose, CA', size: '約30,000名', founded: '1982', desc: 'クリエイティブAIのリーダー。', logo: 'A' },
+  'Intel': { tagline: 'AI半導体 / Gaudi', loc: 'Santa Clara, CA', size: '約120,000名', founded: '1968', desc: 'CPU/AIアクセラレーターの両輪。', logo: 'i' },
+};
+const SAMPLE_OPENINGS = [
+  {ttl:'AIエンジニアインターン', tags:['LLM','Python','フルリモート可']},
+  {ttl:'リサーチサイエンティスト・インターン', tags:['論文','研究','大学院生歓迎']},
+  {ttl:'プロダクトAIエンジニア', tags:['React','TypeScript','API']},
+];
+
+const params = new URLSearchParams(location.search);
+const name = params.get('name') || 'OpenAI';
+const c = COMPANIES[name] || { tagline: '-', loc: '-', size: '-', founded: '-', desc: '情報は準備中です。', logo: name[0] || '?' };
+
+document.getElementById('crumb').textContent = name;
+document.getElementById('name').textContent = name;
+document.getElementById('tagline').textContent = c.tagline;
+document.getElementById('loc').textContent = c.loc;
+document.getElementById('size').textContent = c.size;
+document.getElementById('founded').textContent = c.founded;
+document.getElementById('desc').textContent = c.desc;
+document.getElementById('logo').textContent = c.logo;
+document.title = name + ' | AIme';
+
+document.getElementById('openings').innerHTML = SAMPLE_OPENINGS.map(o => `
+  <a href="job.html?co=${encodeURIComponent(name)}&t=${encodeURIComponent(o.ttl)}" class="opening">
+    <div class="ttl">${o.ttl}</div>
+    <div class="tags">${o.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+  </a>`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>検索カテゴリカード（絵文字なし）UI案</title>
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 28px 10px 6px; margin: 0; font-size: 1.5em; }
+  .sub { text-align: center; color: #666; font-size: .9em; margin-bottom: 20px; }
+  .variant { max-width: 1080px; margin: 28px auto 60px; background: #fff; padding: 28px 24px 36px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.1em; margin: 0 0 6px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .82em; color: #777; margin: 0 auto 22px; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+
+  /* 1: text-only pills */
+  .v1 .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .v1 .pill { padding: 10px 18px; background: #f0f3f0; color: #1b3a1c; border-radius: 999px; font-weight: 700; font-size: .9em; cursor: pointer;
+              border: 1px solid #d6e0d4; transition: all .2s; }
+  .v1 .pill:hover { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  .v1 .pill.lg { font-size: 1em; padding: 12px 22px; }
+
+  /* 2: numbered cards */
+  .v2 .item { background: #fff; border: 1px solid #ececec; border-radius: 12px; padding: 18px 16px; cursor: pointer; transition: all .2s;
+              display: flex; flex-direction: column; gap: 6px; }
+  .v2 .item:hover { border-color: #2e7d32; box-shadow: 0 6px 16px rgba(46,125,50,.15); }
+  .v2 .num { font-family: "Georgia", serif; font-size: 2.4em; font-weight: 800; color: #2e7d32; line-height: 1; opacity: .25; }
+  .v2 .name { font-weight: 700; font-size: .95em; }
+  .v2 .meta { font-size: .75em; color: #888; }
+
+  /* 3: bar-left list */
+  .v3 .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .v3 .item { display: flex; align-items: center; padding: 12px 14px; background: #fff; cursor: pointer;
+              border-left: 4px solid #2e7d32; transition: background .2s; }
+  .v3 .item:hover { background: #f1f8f1; }
+  .v3 .name { font-weight: 700; flex: 1; font-size: .92em; }
+  .v3 .count { font-size: .78em; color: #2e7d32; font-weight: 700; }
+
+  /* 4: geometric badges */
+  .v4 .item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 12px; background: #fff;
+              border-radius: 12px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.05); transition: transform .2s; }
+  .v4 .item:hover { transform: translateY(-3px); }
+  .v4 .shape { width: 44px; height: 44px; }
+  .v4 .name { font-weight: 700; font-size: .88em; text-align: center; }
+
+  /* 5: marker highlight */
+  .v5 .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .v5 .item { padding: 14px 16px; background: #fff; cursor: pointer; border-radius: 8px; transition: transform .2s; }
+  .v5 .item:hover { transform: translateX(3px); }
+  .v5 .name { font-weight: 700; font-size: 1em;
+              background: linear-gradient(120deg, transparent 0%, transparent 30%, #fff59d 30%, #fff59d 100%);
+              padding: 2px 6px; }
+  .v5 .item:nth-child(even) .name { background: linear-gradient(120deg, transparent 0%, transparent 30%, #c8e6c9 30%, #c8e6c9 100%); }
+  .v5 .meta { font-size: .76em; color: #888; margin-top: 6px; }
+
+  /* 6: SVG line icons */
+  .v6 .item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 12px; background: #fff;
+              border: 1px solid #eef0f2; border-radius: 12px; cursor: pointer; transition: all .2s; }
+  .v6 .item:hover { border-color: #2e7d32; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(46,125,50,.12); }
+  .v6 .ico { width: 36px; height: 36px; color: #2e7d32; }
+  .v6 .ico svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .v6 .name { font-weight: 700; font-size: .9em; text-align: center; }
+
+  /* 7: typography hero */
+  .v7 .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .v7 .item { padding: 22px 18px; background: #fff; border-radius: 14px; cursor: pointer; transition: all .2s;
+              border-bottom: 3px solid transparent; }
+  .v7 .item:hover { border-bottom-color: #2e7d32; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+  .v7 .name { font-size: 1.25em; font-weight: 800; line-height: 1.3; }
+  .v7 .meta { font-size: .75em; color: #888; margin-top: 6px; letter-spacing: .05em; }
+
+  /* 8: color blocks */
+  .v8 .item { padding: 26px 14px; border-radius: 12px; color: #fff; cursor: pointer; transition: transform .2s;
+              display: flex; flex-direction: column; gap: 4px; }
+  .v8 .item:hover { transform: scale(1.03); }
+  .v8 .name { font-weight: 800; font-size: 1em; }
+  .v8 .meta { font-size: .78em; opacity: .85; }
+  .v8 .item:nth-child(8n+1){ background: #1b5e20; }
+  .v8 .item:nth-child(8n+2){ background: #283593; }
+  .v8 .item:nth-child(8n+3){ background: #b71c1c; }
+  .v8 .item:nth-child(8n+4){ background: #4527a0; }
+  .v8 .item:nth-child(8n+5){ background: #00695c; }
+  .v8 .item:nth-child(8n+6){ background: #ef6c00; }
+  .v8 .item:nth-child(8n+7){ background: #37474f; }
+  .v8 .item:nth-child(8n+8){ background: #c2185b; }
+
+  /* 9: outline only */
+  .v9 .item { padding: 22px 14px; border: 1.5px solid #222; border-radius: 4px; cursor: pointer; text-align: center;
+              transition: all .2s; background: #fff; }
+  .v9 .item:hover { background: #222; color: #fff; }
+  .v9 .name { font-weight: 700; font-size: .92em; }
+  .v9 .meta { font-size: .72em; color: #888; margin-top: 4px; }
+  .v9 .item:hover .meta { color: #aaa; }
+
+  /* 10: segmented tabs */
+  .v10 .tabs { display: flex; flex-wrap: wrap; border: 1px solid #d0d4d2; border-radius: 10px; overflow: hidden; }
+  .v10 .tab { flex: 1 1 auto; padding: 14px 18px; background: #fff; cursor: pointer; text-align: center; border-right: 1px solid #d0d4d2;
+              transition: background .2s; min-width: 140px; }
+  .v10 .tab:last-child { border-right: none; }
+  .v10 .tab:hover, .v10 .tab.active { background: #2e7d32; color: #fff; }
+  .v10 .name { font-weight: 700; font-size: .88em; }
+  .v10 .count { font-size: .72em; opacity: .8; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<h1>絵文字なし 検索カテゴリカード UI案 10種</h1>
+<p class="sub">「AI職種」「尖った特徴」のカードを想定。</p>
+
+<script id="dataTpl" type="text/template">[
+  {"n":"プロンプトエンジニア","c":24,"shape":"circle","color":"#1b5e20"},
+  {"n":"MLエンジニア","c":42,"shape":"square","color":"#283593"},
+  {"n":"AIリサーチャー","c":18,"shape":"triangle","color":"#b71c1c"},
+  {"n":"LLMアプリ開発","c":31,"shape":"hexagon","color":"#4527a0"},
+  {"n":"データサイエンティスト","c":27,"shape":"diamond","color":"#00695c"},
+  {"n":"AIエージェント開発","c":15,"shape":"circle","color":"#ef6c00"},
+  {"n":"GPU使い放題","c":12,"shape":"square","color":"#37474f"},
+  {"n":"フルリモート可","c":38,"shape":"hexagon","color":"#c2185b"},
+  {"n":"論文読み会あり","c":9,"shape":"triangle","color":"#1b5e20"},
+  {"n":"未経験OK","c":56,"shape":"diamond","color":"#283593"}
+]</script>
+
+<div class="variant"><h2>案1: テキストのみピル</h2><div class="note">最もシンプル。タグ感覚で並ぶ。</div><div class="v1"><div class="pills" data-render="v1"></div></div></div>
+<div class="variant"><h2>案2: ナンバリングカード</h2><div class="note">大きな番号でエディトリアル感。</div><div class="v2"><div class="grid" data-render="v2"></div></div></div>
+<div class="variant"><h2>案3: 縦バー＋リスト</h2><div class="note">新聞風。情報密度高め。</div><div class="v3"><div class="grid" data-render="v3"></div></div></div>
+<div class="variant"><h2>案4: ジオメトリックバッジ</h2><div class="note">幾何図形をアイコン代わりに。</div><div class="v4"><div class="grid" data-render="v4"></div></div></div>
+<div class="variant"><h2>案5: マーカーハイライト</h2><div class="note">名前にマーカーを引いた手書きノート風。</div><div class="v5"><div class="grid" data-render="v5"></div></div></div>
+<div class="variant"><h2>案6: SVGラインアイコン</h2><div class="note">抽象的な細線アイコン。プロ向け／クリーン。</div><div class="v6"><div class="grid" data-render="v6"></div></div></div>
+<div class="variant"><h2>案7: 大型タイポグラフィ</h2><div class="note">職種名を主役に。贅沢な余白。</div><div class="v7"><div class="grid" data-render="v7"></div></div></div>
+<div class="variant"><h2>案8: 色面ブロック</h2><div class="note">Notion風の色塗りカード。</div><div class="v8"><div class="grid" data-render="v8"></div></div></div>
+<div class="variant"><h2>案9: アウトラインミニマル</h2><div class="note">枠線とテキストのみ。極シンプル。</div><div class="v9"><div class="grid" data-render="v9"></div></div></div>
+<div class="variant"><h2>案10: セグメントタブ</h2><div class="note">タブ風で1段に集約。</div><div class="v10"><div class="tabs" data-render="v10"></div></div></div>
+
+<script>
+const data = JSON.parse(document.getElementById('dataTpl').textContent);
+
+// SVG line icons (10 abstract shapes)
+const svgIcons = [
+  '<svg viewBox="0 0 24 24"><path d="M4 6h12l4 4-4 4H4z"/><circle cx="9" cy="10" r="1"/></svg>', // chat
+  '<svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>', // brain
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>', // research
+  '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg>', // app
+  '<svg viewBox="0 0 24 24"><path d="M4 20V8M10 20V4M16 20v-7M22 20H2"/></svg>', // chart
+  '<svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 12l6-6M9 12l6 6"/></svg>', // agent
+  '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/><rect x="8" y="10" width="8" height="4"/><path d="M2 6v12M22 6v12"/></svg>', // gpu
+  '<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-7H10v7H4a1 1 0 01-1-1z"/></svg>', // home
+  '<svg viewBox="0 0 24 24"><path d="M6 4h11a2 2 0 012 2v14a1 1 0 01-1.4.9L15 19l-3.6 1.9a1 1 0 01-1 0L7 19l-3.6 1.9A1 1 0 012 20V6a2 2 0 012-2z"/><path d="M9 9h6M9 13h6"/></svg>', // book
+  '<svg viewBox="0 0 24 24"><path d="M12 22V12M12 12c0-4 3-7 7-7M12 12c0-4-3-7-7-7"/></svg>', // sprout
+];
+
+const shapes = {
+  circle: c => `<svg class="shape" viewBox="0 0 44 44"><circle cx="22" cy="22" r="20" fill="${c}"/></svg>`,
+  square: c => `<svg class="shape" viewBox="0 0 44 44"><rect x="4" y="4" width="36" height="36" rx="6" fill="${c}"/></svg>`,
+  triangle: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,4 42,40 2,40" fill="${c}"/></svg>`,
+  hexagon: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,3 40,13 40,31 22,41 4,31 4,13" fill="${c}"/></svg>`,
+  diamond: c => `<svg class="shape" viewBox="0 0 44 44"><polygon points="22,3 41,22 22,41 3,22" fill="${c}"/></svg>`,
+};
+
+const renderers = {
+  v1: (d,i) => `<a class="pill ${i%3===0?'lg':''}">${d.n}</a>`,
+  v2: (d,i) => `<div class="item"><div class="num">${String(i+1).padStart(2,'0')}</div><div class="name">${d.n}</div><div class="meta">${d.c}件のインターン</div></div>`,
+  v3: d => `<div class="item"><div class="name">${d.n}</div><div class="count">${d.c}件</div></div>`,
+  v4: d => `<div class="item">${shapes[d.shape](d.color)}<div class="name">${d.n}</div></div>`,
+  v5: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件のインターン</div></div>`,
+  v6: (d,i) => `<div class="item"><div class="ico">${svgIcons[i%svgIcons.length]}</div><div class="name">${d.n}</div></div>`,
+  v7: (d,i) => `<div class="item"><div class="name">${d.n}</div><div class="meta">${String(d.c).padStart(2,'0')} INTERNSHIPS</div></div>`,
+  v8: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c}件</div></div>`,
+  v9: d => `<div class="item"><div class="name">${d.n}</div><div class="meta">${d.c} interns</div></div>`,
+  v10: (d,i) => `<div class="tab ${i===0?'active':''}"><div class="name">${d.n}</div><div class="count">${d.c}件</div></div>`,
+};
+document.querySelectorAll('[data-render]').forEach(el => {
+  const fn = renderers[el.dataset.render];
+  el.innerHTML = data.map(fn).join('');
+});
+</script>
+</body>
+</html>

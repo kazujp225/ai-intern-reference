@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>特集AI企業 スライドUI案</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+<style>
+  body { font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; margin: 0; background: #f6f7f9; color: #222; }
+  h1 { text-align: center; padding: 30px 0 10px; margin: 0; font-size: 1.6em; }
+  .variant { max-width: 1100px; margin: 30px auto 60px; background: #fff; padding: 30px 10px 40px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .variant h2 { text-align: center; font-size: 1.2em; margin: 0 0 24px; color: #1b5e20; }
+  .variant .note { text-align: center; font-size: .85em; color: #666; margin: -18px 0 20px; }
+
+  /* shared card */
+  .c-card { background: #fff; border-radius: 12px; padding: 20px 14px; width: 150px; box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; color: inherit; box-sizing: border-box; }
+  .c-card .logo { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
+  .c-card .logo svg, .c-card .logo img { width: 50px; height: 50px; object-fit: contain; }
+  .c-card .n { font-size: .95em; font-weight: 700; }
+  .c-card .d { font-size: .75em; color: #888; }
+
+  /* A: marquee (2-row) */
+  .marquee { overflow: hidden; position: relative; padding: 10px 0; }
+  .marquee-track { display: flex; gap: 20px; width: max-content; animation: marquee 40s linear infinite; }
+  .marquee-track.reverse { animation-direction: reverse; animation-duration: 50s; margin-top: 18px; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee::before, .marquee::after { content: ''; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2; pointer-events: none; }
+  .marquee::before { left: 0; background: linear-gradient(to right, #fff, transparent); }
+  .marquee::after { right: 0; background: linear-gradient(to left, #fff, transparent); }
+
+  /* B: slick */
+  .slick-wrap { padding: 0 40px; }
+  .slick-wrap .slick-slide { padding: 10px 8px; }
+  .slick-wrap .slick-prev:before, .slick-wrap .slick-next:before { color: #1b5e20; }
+
+  /* C: 3D coverflow */
+  .cover3d-scene { perspective: 1200px; height: 260px; overflow: hidden; position: relative; }
+  .cover3d { position: relative; width: 220px; height: 220px; margin: 20px auto 0; transform-style: preserve-3d;
+             animation: spin3d 30s linear infinite; }
+  .cover3d .c-card { position: absolute; top: 0; left: 0; }
+  @keyframes spin3d { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+  .cover3d-scene:hover .cover3d { animation-play-state: paused; }
+
+  /* D: fade cloud */
+  .cloud-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+  .cloud-slot { position: relative; height: 150px; }
+  .cloud-slot .c-card { position: absolute; inset: 0; width: auto; opacity: 0; transition: opacity .6s ease; }
+  .cloud-slot .c-card.active { opacity: 1; }
+
+  /* E: shuffle tiles */
+  .tile-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 900px; margin: 0 auto; }
+  .tile-slot { height: 150px; perspective: 800px; }
+  .tile-card { position: relative; width: 100%; height: 100%; transition: transform .7s; transform-style: preserve-3d; }
+  .tile-card.flipped { transform: rotateY(180deg); }
+  .tile-face { position: absolute; inset: 0; backface-visibility: hidden; }
+  .tile-face.back { transform: rotateY(180deg); }
+  .tile-face .c-card { width: auto; height: 100%; }
+</style>
+</head>
+<body>
+
+<h1>特集：トップAI企業 — スライドUI案 5種</h1>
+
+<!-- A: Marquee -->
+<div class="variant">
+  <h2>案A: 無限マーキー（2段逆方向）</h2>
+  <div class="note">自動で流れ続ける。ホバーで一時停止。軽量でシンプル。</div>
+  <div class="marquee">
+    <div class="marquee-track" id="mqA1"></div>
+    <div class="marquee-track reverse" id="mqA2"></div>
+  </div>
+</div>
+
+<!-- B: Slick -->
+<div class="variant">
+  <h2>案B: Slickカルーセル（手動送り+autoplay）</h2>
+  <div class="note">矢印/ドット操作。既存Slick資産と統一感。</div>
+  <div class="slick-wrap"><div id="slickB"></div></div>
+</div>
+
+<!-- C: 3D -->
+<div class="variant">
+  <h2>案C: 3D回転カルーセル</h2>
+  <div class="note">立体的に回転。インパクト大。</div>
+  <div class="cover3d-scene"><div class="cover3d" id="cover3d"></div></div>
+</div>
+
+<!-- D: Fade cloud -->
+<div class="variant">
+  <h2>案D: ロゴクラウド（フェード切替）</h2>
+  <div class="note">5枠固定。一定間隔でロゴが静かに入れ替わる。</div>
+  <div class="cloud-grid" id="cloudGrid"></div>
+</div>
+
+<!-- E: Shuffle tiles -->
+<div class="variant">
+  <h2>案E: タイルシャッフル（フリップ）</h2>
+  <div class="note">各セルがランダムにフリップして別ロゴに切り替わる。</div>
+  <div class="tile-grid" id="tileGrid"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+const companies = [
+  {n:'OpenAI',d:'ChatGPT',l:'<svg viewBox="0 0 2406 2406"><path d="M1 578.4C1 259.5 259.5 1 578.4 1h1249.1c319 0 577.5 258.5 577.5 577.4V2406H578.4C259.5 2406 1 2147.5 1 1828.6V578.4z" fill="#74aa9c"/><path d="M1107.3 299.1c-198 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.5V833.3h.1v-27.9L1372.7 604c33.7-19.5 70.4-32.9 108.5-39.8L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1z" fill="#fff"/></svg>'},
+  {n:'Google',d:'Gemini',l:'<svg viewBox="0 0 28 28" fill="none"><path d="M14 28C14 26.06 13.63 24.24 12.88 22.54C12.16 20.84 11.17 19.36 9.9 18.1C8.65 16.84 7.16 15.84 5.46 15.12C3.76 14.37 1.94 14 0 14C1.94 14 3.76 13.64 5.46 12.92C7.16 12.17 8.65 11.17 9.9 9.9C11.17 8.65 12.16 7.16 12.88 5.46C13.63 3.76 14 1.94 14 0C14 1.94 14.36 3.76 15.09 5.46C15.83 7.16 16.84 8.65 18.1 9.9C19.36 11.17 20.84 12.17 22.54 12.92C24.24 13.64 26.06 14 28 14C26.06 14 24.24 14.37 22.54 15.12C20.84 15.84 19.36 16.84 18.1 18.1C16.84 19.36 15.83 20.84 15.09 22.54C14.36 24.24 14 26.06 14 28Z" fill="#5684D1"/></svg>'},
+  {n:'Anthropic',d:'Claude',l:'<img src="images/logo/anthropic_logo.png" alt="Anthropic">'},
+  {n:'Meta AI',d:'LLaMA',l:'<img src="images/logo/meta_logo.png" alt="Meta">'},
+  {n:'Apple',d:'Apple Intelligence',l:'<svg viewBox="0 0 24 24"><path fill="#000" d="M12.15 6.9c-.95 0-2.42-1.08-3.96-1.04-2.04.03-3.91 1.18-4.96 3.01-2.12 3.68-.55 9.1 1.52 12.09 1.01 1.45 2.21 3.09 3.79 3.04 1.52-.07 2.09-.99 3.94-.99 1.83 0 2.35.99 3.96.95 1.64-.03 2.68-1.48 3.68-2.95 1.16-1.69 1.64-3.33 1.66-3.42-.04-.01-3.18-1.22-3.22-4.86-.03-3.04 2.48-4.49 2.6-4.56-1.43-2.09-3.62-2.32-4.39-2.38-2-.16-3.68 1.09-4.61 1.09zM15.53 3.83c.84-1.01 1.4-2.43 1.24-3.83-1.21.05-2.66.8-3.53 1.82-.78.9-1.45 2.34-1.27 3.71 1.34.1 2.72-.69 3.56-1.7"/></svg>'},
+  {n:'Salesforce',d:'Einstein AI',l:'<svg viewBox="0 0 24 24"><path fill="#00A1E0" d="M10 5.4A4.2 4.2 0 0113.05 4.1c1.56 0 2.95.9 3.69 2.2.63-.3 1.35-.45 2.1-.45 2.85 0 5.16 2.34 5.16 5.22s-2.31 5.22-5.18 5.22c-.35 0-.69-.04-1.02-.1a3.75 3.75 0 01-3.3 1.95c-.6 0-1.15-.15-1.65-.37a4.3 4.3 0 01-3.97 2.63 4.3 4.3 0 01-4.05-2.82c-.27.06-.54.08-.82.08-2.2 0-4-1.8-4-4.05 0-1.5.81-2.8 2-3.5A4.6 4.6 0 012.61 8.3c0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.7 3.72 1.8"/></svg>'},
+  {n:'Tesla AI',d:'Autopilot',l:'<svg viewBox="0 0 24 24"><path fill="#E82127" d="M12 5.36l2.48-3.03s4.24.09 8.47 2.05c-1.08 1.64-3.23 2.44-3.23 2.44-.15-1.44-1.15-1.79-4.35-1.79L12 24 8.62 5.03c-3.18 0-4.19.35-4.34 1.79 0 0-2.15-.8-3.23-2.43C5.28 2.43 9.53 2.34 9.53 2.34L12 5.36zm0-3.9c3.42-.03 7.33.53 11.33 2.28.53-.97.67-1.4.67-1.4C19.63.61 15.53.02 12 0 8.47.02 4.38.61 0 2.35c0 0 .2.52.67 1.4C4.67 1.99 8.59 1.43 12 1.46z"/></svg>'},
+  {n:'Microsoft',d:'Azure AI',l:'<svg viewBox="0 0 48 48"><rect width="22" height="22" x="1" y="1" fill="#f25022"/><rect width="22" height="22" x="25" y="1" fill="#7fba00"/><rect width="22" height="22" x="1" y="25" fill="#00a4ef"/><rect width="22" height="22" x="25" y="25" fill="#ffb900"/></svg>'},
+  {n:'Amazon',d:'AWS',l:'<svg viewBox="0 0 24 24"><path fill="#FF9900" d="M.05 18c.07-.12.19-.13.35-.02 3.64 2.1 7.6 3.17 11.87 3.17 2.85 0 5.67-.53 8.45-1.6l.31-.14c.14-.06.23-.1.29-.13.23-.09.39-.05.53.13.12.17.09.34-.12.48-.26.2-.6.41-1 .65-1.24.74-2.64 1.32-4.19 1.73a17.6 17.6 0 01-10.95-.58A17.9 17.9 0 01.15 18.24c-.1-.08-.15-.15-.15-.22 0-.05.02-.09.05-.13z"/></svg>'},
+  {n:'NVIDIA',d:'GPU',l:'<svg viewBox="0 0 24 24"><path fill="#76B900" d="M8.95 8.8V7.37a6.7 6.7 0 01.42-.02c3.92-.12 6.49 3.37 6.49 3.37s-2.77 3.85-5.75 3.85c-.4 0-.79-.06-1.16-.19V10.04c1.53.19 1.84.86 2.75 2.39l2.04-1.71s-1.49-1.95-4-1.95a6 6 0 00-.79.03m0-4.73v2.14l.42-.03c5.45-.19 9.01 4.47 9.01 4.47s-4.08 4.96-8.33 4.96c-.37 0-.73-.03-1.1-.1v1.32c.3.04.61.07.91.07 3.96 0 6.82-2.02 9.6-4.41.46.37 2.34 1.26 2.73 1.65-2.63 2.21-8.77 3.98-12.25 3.98-.34 0-.66-.02-.97-.05v1.86H24V4.06"/></svg>'},
+  {n:'IBM',d:'Watson',l:'<svg viewBox="0 0 24 24"><path fill="#0530AD" d="M0 8.13h4.35v-.62H0zm0 1.19h4.35v-.62H0zM0 15.28h4.35v-.62H0zm1.24 1.19h3.1v-.62h-3.1zm0-1.19h3.1v-.62h-3.1zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24zm0-1.19h1.87v-.62H1.24zm5.5 5.95c.62 0 1.18-.24 1.6-.62H4.97v.62zm-1.77-1.19h5.39a2.4 2.4 0 00-.52-.62h-4.87zm0-1.19h4.87c.21-.18.38-.39.52-.62H4.97zm0-1.19h4.87c-.14-.23-.31-.44-.52-.62H4.97zm0-1.19h5.13c0-.22-.03-.43-.08-.62H4.97zm0-1.19h5.13c.05-.2.08-.4.08-.62H4.97zm0-1.19h4.87c.21-.18.38-.39.52-.62H4.97zm0-1.19h4.87a2.4 2.4 0 00-.52-.62H4.97zm0-1.19h5.39a2.36 2.36 0 00-1.6-.62H4.97z"/></svg>'},
+  {n:'Oracle',d:'OCI AI',l:'<svg viewBox="0 0 24 24"><path fill="#F80000" d="M16.41 4.41h-8.82a7.59 7.59 0 00-.01 15.18h8.83a7.59 7.59 0 000-15.18zm-.19 12.5H7.79a4.92 4.92 0 010-9.83h8.43a4.91 4.91 0 110 9.83z"/></svg>'},
+  {n:'xAI',d:'Grok',l:'<svg viewBox="0 0 24 24"><path fill="#000" d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.59l5.24 6.93zM17.61 20.64h2.04L6.49 3.24H4.3z"/></svg>'},
+  {n:'Adobe',d:'Firefly',l:'<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M13.97 22.62l-1.69-4.28H8.12l3.89-9.14 5.66 13.42zM8.88 1.38H0v21.24zm15.12 0h-8.88L24 22.62Z"/></svg>'},
+  {n:'Intel',d:'AI半導体',l:'<svg viewBox="0 0 24 24"><path fill="#0071C5" d="M20.42 7.35v9.18h1.65V7.35zM0 7.48v1.74h1.74V7.47zm9.78.35v6.05c0 .51.04.95.13 1.29.09.34.24.62.44.83.2.21.48.36.8.45.33.09.75.14 1.26.14h.22v-1.53c-.24 0-.45-.01-.59-.04a.67.67 0 01-.39-.17.7.7 0 01-.17-.38 4 4 0 01-.04-.6v-2.18h1.2V10.2h-1.2V7.83z"/></svg>'}
+];
+
+// Card builder
+function card(c) {
+  return `<a href="#" class="c-card"><div class="logo">${c.l}</div><span class="n">${c.n}</span><span class="d">${c.d}</span></a>`;
+}
+
+// A: Marquee (duplicate list for seamless loop)
+const mqHalf1 = companies.slice(0, 8).map(card).join('');
+const mqHalf2 = companies.slice(7).map(card).join('');
+document.getElementById('mqA1').innerHTML = mqHalf1 + mqHalf1;
+document.getElementById('mqA2').innerHTML = mqHalf2 + mqHalf2;
+
+// B: Slick
+document.getElementById('slickB').innerHTML = companies.map(c => `<div>${card(c)}</div>`).join('');
+$('#slickB').slick({
+  slidesToShow: 5, slidesToScroll: 1, autoplay: true, autoplaySpeed: 2000,
+  arrows: true, dots: true,
+  responsive: [{ breakpoint: 768, settings: { slidesToShow: 2 } }]
+});
+
+// C: 3D
+const radius = 320;
+const c3d = document.getElementById('cover3d');
+companies.forEach((c, i) => {
+  const angle = (360 / companies.length) * i;
+  const el = document.createElement('div');
+  el.style.cssText = `position:absolute; top:0; left:0; transform: rotateY(${angle}deg) translateZ(${radius}px);`;
+  el.innerHTML = card(c);
+  c3d.appendChild(el);
+});
+
+// D: Fade cloud (5 slots, rotating through all companies)
+const cloudGrid = document.getElementById('cloudGrid');
+const slotCount = 5;
+const slots = [];
+for (let i = 0; i < slotCount; i++) {
+  const s = document.createElement('div');
+  s.className = 'cloud-slot';
+  cloudGrid.appendChild(s);
+  slots.push({ el: s, idx: i, cur: null });
+}
+function rotateCloud() {
+  slots.forEach((s, i) => {
+    s.idx = (s.idx + slotCount) % companies.length;
+    const newCard = document.createElement('div');
+    newCard.innerHTML = card(companies[s.idx]);
+    const el = newCard.firstChild;
+    s.el.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('active'));
+    if (s.cur) {
+      const old = s.cur;
+      old.classList.remove('active');
+      setTimeout(() => old.remove(), 600);
+    }
+    s.cur = el;
+    s.idx += slotCount; // advance
+  });
+}
+rotateCloud();
+setInterval(rotateCloud, 2200);
+
+// E: Shuffle tiles (flip to random new company)
+const tileGrid = document.getElementById('tileGrid');
+const initialTiles = companies.slice(0, 5);
+const tileStates = [];
+initialTiles.forEach((c, i) => {
+  const slot = document.createElement('div');
+  slot.className = 'tile-slot';
+  slot.innerHTML = `<div class="tile-card">
+      <div class="tile-face front">${card(c)}</div>
+      <div class="tile-face back">${card(c)}</div>
+    </div>`;
+  tileGrid.appendChild(slot);
+  tileStates.push({ slot, cardEl: slot.querySelector('.tile-card'), flipped: false, front: c, back: c });
+});
+function shuffleTile() {
+  const idx = Math.floor(Math.random() * tileStates.length);
+  const t = tileStates[idx];
+  const next = companies[Math.floor(Math.random() * companies.length)];
+  if (t.flipped) {
+    t.cardEl.querySelector('.front').innerHTML = card(next);
+    t.front = next;
+  } else {
+    t.cardEl.querySelector('.back').innerHTML = card(next);
+    t.back = next;
+  }
+  t.flipped = !t.flipped;
+  t.cardEl.classList.toggle('flipped');
+}
+setInterval(shuffleTile, 1200);
+</script>
+</body>
+</html>
