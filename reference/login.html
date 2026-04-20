@@ -49,16 +49,17 @@
   </form>
 
   <div style="text-align:right; margin-top: 12px; font-size: .85em;">
-    <a href="#">パスワードをお忘れですか？</a>
+    <a href="reset-password.html">パスワードをお忘れですか？</a>
   </div>
 
   <div class="form-divider">または</div>
 
-  <a href="#" class="social-btn">Googleでログイン</a>
-  <a href="#" class="social-btn">GitHubでログイン</a>
+  <button type="button" id="google-login" class="social-btn" style="background:#fff; color:#222; border:1px solid #e0e0e0; cursor:pointer; display:block; text-align:center; width:100%; padding:12px;">
+    <span style="font-weight:800;">G</span> Googleでログイン
+  </button>
 
   <div class="auth-foot">
-    初めてのご利用ですか？ <a href="signup.html">新規登録</a>
+    初めてのご利用ですか？ <a href="signup-role.html">新規登録</a>
   </div>
 </div>
 
@@ -95,8 +96,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
 <script>
 (function () {
+  document.getElementById('google-login')?.addEventListener('click', async () => {
+    if (window.AImeBiz) await window.AImeBiz.signInWithGoogle();
+  });
+
   const form = document.getElementById('login-form');
   const emailEl = document.getElementById('login-email');
   const passEl = document.getElementById('login-password');

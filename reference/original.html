@@ -920,9 +920,13 @@
         <a href="search.html" class="header-category-item">インターンを探す</a>
         <a href="search.html?view=companies" class="header-category-item">AI企業を探す</a>
         <a href="blog.html" class="header-category-item">AIコラム</a>
+        <a href="company-dashboard.html" class="header-category-item" id="nav-company" style="display:none;">企業管理</a>
+        <a href="admin.html" class="header-category-item" id="nav-admin" style="display:none;">管理者</a>
+        <a href="messages.html" class="header-category-item" id="nav-messages" style="display:none;">メッセージ</a>
+        <a href="notifications.html" class="header-category-item" id="nav-notif" style="display:none; position:relative;">🔔<span id="notif-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f44336; color:#fff; border-radius:999px; padding:1px 6px; font-size:.65em; font-weight:900;">0</span></a>
         <a href="mypage.html" class="header-category-item" id="nav-mypage" style="display:none;">マイページ</a>
         <a href="login.html" class="neo-login" id="nav-login">ログイン</a>
-        <a href="signup.html" class="neo-register" id="nav-signup">新規登録</a>
+        <a href="signup-role.html" class="neo-register" id="nav-signup">新規登録</a>
       </div>
     </div>
   </div>
@@ -1451,6 +1455,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/realtime.js"></script>
+  <script src="js/supabase-biz.js"></script>
 
   <script>
     jQuery(function ($) {
@@ -1846,13 +1851,38 @@
   </style>
   <script>
     (async function () {
-      // ナビ: ログイン状態に応じて表示切替
+      // ナビ: ログイン状態・ロールに応じて表示切替
       if (window.sb) {
         const { data: { user } } = await window.sb.auth.getUser();
         if (user) {
           document.getElementById('nav-mypage').style.display = 'inline-block';
+          document.getElementById('nav-messages').style.display = 'inline-block';
+          document.getElementById('nav-notif').style.display = 'inline-block';
           document.getElementById('nav-login').style.display = 'none';
           document.getElementById('nav-signup').style.display = 'none';
+
+          if (window.AImeBiz) {
+            const role = await window.AImeBiz.getRole();
+            if (role === 'company') document.getElementById('nav-company').style.display = 'inline-block';
+            if (role === 'admin') document.getElementById('nav-admin').style.display = 'inline-block';
+
+            // 通知バッジ（未読数）
+            const notifs = await window.AImeBiz.listNotifications({ unreadOnly: true });
+            const badge = document.getElementById('notif-badge');
+            if (notifs.length) { badge.textContent = notifs.length; badge.style.display = 'inline-block'; }
+
+            // リアルタイム通知購読 → バッジ更新 + トースト
+            window.AImeBiz.subscribeNotifications(user.id, (n) => {
+              const cur = parseInt(badge.textContent) || 0;
+              badge.textContent = cur + 1; badge.style.display = 'inline-block';
+              if (window.AImeRealtime) window.AImeRealtime.showToast(
+                `<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🔔 新着通知</div><div><strong>${n.title}</strong></div><div style="color:#666;font-size:.85em;margin-top:2px;">${n.body || ''}</div>`
+              );
+            });
+
+            // アクセスログ
+            window.AImeBiz.logAccess('original.html').catch(() => {});
+          }
         }
       }
 

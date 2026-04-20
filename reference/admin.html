@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者パネル | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .ad-hero { background: linear-gradient(135deg,#212121,#424242); color:#fff; padding: 30px 24px; }
+  .ad-hero h1 { margin: 0; font-size: 1.6em; font-weight: 900; }
+  .ad-wrap { max-width: 1200px; margin: 24px auto 60px; padding: 0 24px; }
+  .ad-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .ad-stat { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .ad-stat .n { font-size: 2em; font-weight: 900; color: #111; }
+  .ad-stat .l { font-size: .85em; color: #666; }
+  .ad-tabs { display: flex; gap: 8px; background: #fff; padding: 6px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); flex-wrap: wrap; }
+  .ad-tab { flex: 1; padding: 10px; background: transparent; border: none; border-radius: 6px; cursor: pointer; font-weight: 800; color: #666; min-width: 100px; }
+  .ad-tab.active { background: #212121; color: #fff; }
+  .ad-panel { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .ad-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px; }
+  .ad-row .info { font-size: .9em; }
+  .ad-row .actions { display: flex; gap: 6px; }
+  .ad-row .actions button { padding: 6px 12px; border: 1px solid #e0e0e0; background: #fff; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: .8em; }
+  .ad-row .actions button.approve { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  .ad-row .actions button.reject { background: #c62828; color: #fff; border-color: #c62828; }
+</style></head>
+<body>
+
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="admin.html" class="current">管理者</a>
+    <a href="#" id="logout-link" class="login">ログアウト</a>
+  </nav>
+</div></header>
+
+<div id="ad-gate" style="display:none; text-align:center; padding: 80px 24px;">
+  <h2>管理者権限が必要です</h2>
+  <p style="color:#666;">このページにアクセスするには admin ロールが必要です。</p>
+  <p style="font-size:.85em; color:#888;">ロール付与: Supabase SQL Editor で<br><code>update profiles set role='admin' where id='&lt;あなたのuid&gt;';</code></p>
+</div>
+
+<div id="ad-main" style="display:none;">
+  <section class="ad-hero"><h1>🔧 管理者パネル</h1></section>
+  <div class="ad-wrap">
+    <div class="ad-stats">
+      <div class="ad-stat"><div class="n" id="st-users">0</div><div class="l">総ユーザー数</div></div>
+      <div class="ad-stat"><div class="n" id="st-jobs">0</div><div class="l">総求人数</div></div>
+      <div class="ad-stat"><div class="n" id="st-apps">0</div><div class="l">総応募数</div></div>
+    </div>
+
+    <div class="ad-tabs">
+      <button class="ad-tab active" data-p="users">ユーザー</button>
+      <button class="ad-tab" data-p="pending-jobs">求人審査</button>
+      <button class="ad-tab" data-p="reports">通報</button>
+      <button class="ad-tab" data-p="logs">アクセスログ</button>
+    </div>
+
+    <div class="ad-panel">
+      <div id="p-users"></div>
+      <div id="p-pending-jobs" style="display:none;"></div>
+      <div id="p-reports" style="display:none;"></div>
+      <div id="p-logs" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) { location.href = 'login.html'; return; }
+  const role = await window.AImeBiz.getRole();
+  if (role !== 'admin') { document.getElementById('ad-gate').style.display = 'block'; return; }
+
+  document.getElementById('ad-main').style.display = 'block';
+  document.getElementById('logout-link').addEventListener('click', async (e) => {
+    e.preventDefault(); await window.sb.auth.signOut(); location.href = 'original.html';
+  });
+
+  const stats = await window.AImeBiz.adminAnalytics();
+  document.getElementById('st-users').textContent = stats.userCount;
+  document.getElementById('st-jobs').textContent = stats.jobCount;
+  document.getElementById('st-apps').textContent = stats.appCount;
+
+  // Users
+  const users = await window.AImeBiz.adminListUsers();
+  document.getElementById('p-users').innerHTML = users.map(u => `
+    <div class="ad-row">
+      <div class="info"><strong>${u.nickname || '—'}</strong><br><small>${u.id.slice(0,8)}... / ${u.role}</small></div>
+      <div class="actions">
+        <select data-uid="${u.id}" class="ad-role-sel">
+          <option ${u.role==='student'?'selected':''}>student</option>
+          <option ${u.role==='company'?'selected':''}>company</option>
+          <option ${u.role==='admin'?'selected':''}>admin</option>
+        </select>
+      </div>
+    </div>
+  `).join('') || '<div style="padding:40px; text-align:center; color:#888;">ユーザーがいません</div>';
+  document.querySelectorAll('.ad-role-sel').forEach(s => s.addEventListener('change', async () => {
+    await window.AImeBiz.adminSetRole(s.dataset.uid, s.value); alert('変更しました');
+  }));
+
+  // Pending jobs
+  const pending = await window.AImeBiz.adminListPendingJobs();
+  document.getElementById('p-pending-jobs').innerHTML = pending.length ? pending.map(j => `
+    <div class="ad-row">
+      <div class="info"><strong>${j.title}</strong><br><small>${j.companies?.name || ''}</small></div>
+      <div class="actions">
+        <button class="approve" data-aid="${j.id}">承認</button>
+        <button class="reject" data-rid="${j.id}">却下</button>
+      </div>
+    </div>
+  `).join('') : '<div style="padding:40px; text-align:center; color:#888;">審査待ちの求人はありません</div>';
+  document.querySelectorAll('[data-aid]').forEach(b => b.addEventListener('click', async () => {
+    await window.AImeBiz.adminApproveJob(b.dataset.aid); location.reload();
+  }));
+  document.querySelectorAll('[data-rid]').forEach(b => b.addEventListener('click', async () => {
+    await window.AImeBiz.adminRejectJob(b.dataset.rid); location.reload();
+  }));
+
+  // Reports
+  const reports = await window.AImeBiz.adminListReports();
+  document.getElementById('p-reports').innerHTML = reports.length ? reports.map(r => `
+    <div class="ad-row">
+      <div class="info"><strong>${r.target_type}:${r.target_id}</strong><br><small>${r.reason} / ${r.status}</small></div>
+      <div class="actions">
+        <button data-done="${r.id}">解決済みに</button>
+      </div>
+    </div>
+  `).join('') : '<div style="padding:40px; text-align:center; color:#888;">通報はありません</div>';
+  document.querySelectorAll('[data-done]').forEach(b => b.addEventListener('click', async () => {
+    await window.AImeBiz.adminUpdateReport(b.dataset.done, 'resolved'); location.reload();
+  }));
+
+  // Access logs
+  const { data: logs } = await window.sb.from('access_logs').select('*').order('created_at',{ascending:false}).limit(50);
+  document.getElementById('p-logs').innerHTML = (logs||[]).map(l => `
+    <div class="ad-row"><div class="info"><strong>${l.page}</strong><br><small>${new Date(l.created_at).toLocaleString('ja-JP')} / ${l.user_id ? l.user_id.slice(0,8)+'…' : '(匿名)'}</small></div></div>
+  `).join('') || '<div style="padding:40px; text-align:center; color:#888;">ログなし</div>';
+
+  // Tabs
+  document.querySelectorAll('.ad-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.ad-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      ['users','pending-jobs','reports','logs'].forEach(p => {
+        document.getElementById('p-' + p).style.display = (p === t.dataset.p) ? 'block' : 'none';
+      });
+    });
+  });
+})();
+</script>
+</body></html>

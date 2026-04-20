@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メッセージ | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .ms-wrap { max-width: 1200px; margin: 24px auto 60px; padding: 0 24px; display: grid; grid-template-columns: 320px 1fr; gap: 16px; height: calc(100vh - 130px); }
+  @media (max-width: 800px) { .ms-wrap { grid-template-columns: 1fr; height: auto; } }
+  .ms-list { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.05); display: flex; flex-direction: column; }
+  .ms-list h2 { margin: 0; padding: 20px; font-size: 1.1em; font-weight: 900; border-bottom: 1px solid #eee; }
+  .ms-conv-list { flex: 1; overflow-y: auto; }
+  .ms-conv { padding: 16px 20px; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: center; }
+  .ms-conv:hover { background: #f9fafb; }
+  .ms-conv.active { background: #e8f5e9; border-left: 4px solid #2e7d32; padding-left: 16px; }
+  .ms-conv-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .ms-conv-name { font-weight: 800; font-size: .95em; }
+  .ms-conv-meta { font-size: .75em; color: #888; margin-top: 2px; }
+
+  .ms-chat { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.05); display: flex; flex-direction: column; }
+  .ms-chat-head { padding: 16px 24px; border-bottom: 1px solid #eee; font-weight: 900; }
+  .ms-chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; background: #fafafa; }
+  .ms-msg { max-width: 70%; padding: 10px 14px; border-radius: 14px; font-size: .92em; line-height: 1.5; white-space: pre-wrap; }
+  .ms-msg.me { align-self: flex-end; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border-bottom-right-radius: 4px; }
+  .ms-msg.other { align-self: flex-start; background: #fff; color: #222; border: 1px solid #eee; border-bottom-left-radius: 4px; }
+  .ms-msg-time { font-size: .7em; opacity: .7; margin-top: 4px; }
+  .ms-input { padding: 14px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+  .ms-input textarea { flex: 1; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 20px; font-family: inherit; resize: none; height: 42px; font-size: .9em; }
+  .ms-input button { padding: 0 20px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; }
+  .ms-empty { text-align: center; padding: 40px; color: #888; }
+</style></head>
+<body>
+
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="mypage.html">マイページ</a>
+    <a href="messages.html" class="current">メッセージ</a>
+    <a href="notifications.html">通知</a>
+  </nav>
+</div></header>
+
+<div id="auth-req" style="display:none; text-align:center; padding: 80px 24px;">
+  <h2>メッセージはログインが必要です</h2>
+  <a href="login.html" class="btn btn-primary">ログイン</a>
+</div>
+
+<div class="ms-wrap" id="ms-main" style="display:none;">
+  <aside class="ms-list">
+    <h2>会話一覧</h2>
+    <div class="ms-conv-list" id="conv-list"><div class="ms-empty">読み込み中...</div></div>
+  </aside>
+  <section class="ms-chat" id="ms-chat">
+    <div class="ms-chat-head" id="chat-head">会話を選択</div>
+    <div class="ms-chat-body" id="chat-body"></div>
+    <form class="ms-input" id="chat-form" style="display:none;">
+      <textarea id="chat-input" placeholder="メッセージを入力..." required></textarea>
+      <button type="submit">送信</button>
+    </form>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) { document.getElementById('auth-req').style.display = 'block'; return; }
+  document.getElementById('ms-main').style.display = 'grid';
+
+  const role = await window.AImeBiz.getRole();
+  let activeConvId = null, sub = null;
+  function esc(s){return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  async function loadConvs() {
+    const list = await window.AImeBiz.listConversations();
+    const el = document.getElementById('conv-list');
+    if (!list.length) { el.innerHTML = '<div class="ms-empty">会話がありません</div>'; return; }
+    el.innerHTML = list.map(c => {
+      const name = role === 'company' ? (c.profiles?.nickname || '学生') : (c.companies?.name || '企業');
+      const initial = name.charAt(0).toUpperCase();
+      return `
+        <div class="ms-conv" data-cid="${c.id}">
+          <div class="ms-conv-avatar">${initial}</div>
+          <div>
+            <div class="ms-conv-name">${esc(name)}</div>
+            <div class="ms-conv-meta">${new Date(c.last_message_at).toLocaleString('ja-JP')}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    el.querySelectorAll('.ms-conv').forEach(c => c.addEventListener('click', () => openConv(c.dataset.cid)));
+    // auto-open from ?cid
+    const qcid = new URLSearchParams(location.search).get('cid');
+    if (qcid) openConv(qcid);
+  }
+
+  async function openConv(cid) {
+    activeConvId = cid;
+    document.querySelectorAll('.ms-conv').forEach(c => c.classList.toggle('active', c.dataset.cid === cid));
+    document.getElementById('chat-form').style.display = 'flex';
+    document.getElementById('chat-head').textContent = '会話';
+    await renderMessages();
+    if (sub) sub.unsubscribe();
+    sub = window.AImeBiz.subscribeMessages(cid, () => renderMessages());
+  }
+
+  async function renderMessages() {
+    const msgs = await window.AImeBiz.listMessages(activeConvId);
+    const body = document.getElementById('chat-body');
+    body.innerHTML = msgs.map(m => `
+      <div class="ms-msg ${m.sender_id === user.id ? 'me' : 'other'}">
+        ${esc(m.body || '')}
+        <div class="ms-msg-time">${new Date(m.created_at).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+    `).join('');
+    body.scrollTop = body.scrollHeight;
+  }
+
+  document.getElementById('chat-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('chat-input');
+    const body = input.value.trim(); if (!body || !activeConvId) return;
+    input.value = '';
+    await window.AImeBiz.sendMessage(activeConvId, body);
+    renderMessages();
+  });
+
+  loadConvs();
+})();
+</script>
+</body></html>

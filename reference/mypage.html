@@ -90,7 +90,9 @@
     <div class="mp-tabs">
       <button class="mp-tab active" data-panel="apps">応募履歴</button>
       <button class="mp-tab" data-panel="bookmarks">ブックマーク</button>
+      <button class="mp-tab" data-panel="history">閲覧履歴</button>
       <button class="mp-tab" data-panel="posts">自分の投稿</button>
+      <button class="mp-tab" data-panel="files">ファイル</button>
       <button class="mp-tab" data-panel="profile">プロフィール</button>
     </div>
 
@@ -102,9 +104,27 @@
       <h2>ブックマーク</h2>
       <div id="bookmarks-list"></div>
     </div>
+    <div class="mp-panel" id="panel-history" style="display:none;">
+      <h2>閲覧履歴</h2>
+      <div id="history-list"></div>
+    </div>
     <div class="mp-panel" id="panel-posts" style="display:none;">
       <h2>自分の投稿</h2>
       <div id="posts-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-files" style="display:none;">
+      <h2>ファイル管理</h2>
+      <div style="background:#f9fafb; padding:16px; border-radius:10px; margin-bottom:16px;">
+        <div style="font-weight:800; margin-bottom:8px;">📄 履歴書をアップロード</div>
+        <input type="file" id="upload-resume" accept=".pdf,.doc,.docx">
+        <span id="upload-status" style="margin-left:10px; font-size:.85em; color:#2e7d32; font-weight:700;"></span>
+      </div>
+      <div style="background:#f9fafb; padding:16px; border-radius:10px; margin-bottom:16px;">
+        <div style="font-weight:800; margin-bottom:8px;">🎨 ポートフォリオをアップロード</div>
+        <input type="file" id="upload-portfolio" accept=".pdf,.zip,image/*">
+        <span id="upload-portfolio-status" style="margin-left:10px; font-size:.85em; color:#2e7d32; font-weight:700;"></span>
+      </div>
+      <div id="files-list"></div>
     </div>
     <div class="mp-panel" id="panel-profile" style="display:none;">
       <h2>プロフィール編集</h2>
@@ -137,6 +157,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-social.js"></script>
+<script src="js/supabase-biz.js"></script>
 <script>
 (async function(){
   const { data: { user } } = await window.sb.auth.getUser();
@@ -164,7 +185,7 @@
     tab.addEventListener('click', () => {
       document.querySelectorAll('.mp-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      ['apps','bookmarks','posts','profile'].forEach(name => {
+      ['apps','bookmarks','history','posts','files','profile'].forEach(name => {
         document.getElementById('panel-'+name).style.display = (name === tab.dataset.panel) ? 'block' : 'none';
       });
     });
@@ -228,6 +249,64 @@
         <a href="post.html?id=${p.id}" class="mp-item-btn">開く</a>
       </div>
     `).join('');
+  }
+
+  // 閲覧履歴
+  if (window.AImeBiz) {
+    const history = await window.AImeBiz.listBrowseHistory(30);
+    const hl = document.getElementById('history-list');
+    if (!history.length) hl.innerHTML = '<div class="mp-empty">まだ閲覧履歴はありません</div>';
+    else {
+      const seen = new Set();
+      const unique = history.filter(h => { if (seen.has(h.job_id)) return false; seen.add(h.job_id); return true; });
+      hl.innerHTML = unique.map(h => {
+        const job = (window.JOBS_GET && window.JOBS_GET(h.job_id)) || { title: h.job_id, company: '' };
+        return `<div class="mp-item">
+          <div><div class="mp-item-title">${job.title}</div><div class="mp-item-meta">${job.company} ・ ${new Date(h.viewed_at).toLocaleDateString('ja-JP')}</div></div>
+          <a href="job.html?id=${encodeURIComponent(h.job_id)}" class="mp-item-btn">再表示</a>
+        </div>`;
+      }).join('');
+    }
+
+    // ファイル管理
+    async function renderFiles() {
+      const files = await window.AImeBiz.listFiles();
+      const fl = document.getElementById('files-list');
+      if (!files.length) { fl.innerHTML = '<div class="mp-empty">ファイルなし</div>'; return; }
+      fl.innerHTML = files.map(f => `
+        <div class="mp-item">
+          <div><div class="mp-item-title">${f.kind === 'resume' ? '📄' : f.kind === 'portfolio' ? '🎨' : '📎'} ${f.original_name || 'ファイル'}</div>
+          <div class="mp-item-meta">${Math.round((f.size_bytes || 0) / 1024)} KB ・ ${new Date(f.created_at).toLocaleDateString('ja-JP')}</div></div>
+          <a href="${f.url}" target="_blank" class="mp-item-btn">ダウンロード</a>
+        </div>
+      `).join('');
+    }
+    renderFiles();
+
+    document.getElementById('upload-resume').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      document.getElementById('upload-status').textContent = 'アップロード中...';
+      try {
+        await window.AImeBiz.uploadFile('resumes', file, 'resume');
+        document.getElementById('upload-status').textContent = '✓ アップロード完了';
+        renderFiles();
+      } catch (err) {
+        document.getElementById('upload-status').textContent = 'エラー: ' + err.message;
+        document.getElementById('upload-status').style.color = '#c62828';
+      }
+    });
+    document.getElementById('upload-portfolio').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      document.getElementById('upload-portfolio-status').textContent = 'アップロード中...';
+      try {
+        await window.AImeBiz.uploadFile('portfolios', file, 'portfolio');
+        document.getElementById('upload-portfolio-status').textContent = '✓ アップロード完了';
+        renderFiles();
+      } catch (err) {
+        document.getElementById('upload-portfolio-status').textContent = 'エラー: ' + err.message;
+        document.getElementById('upload-portfolio-status').style.color = '#c62828';
+      }
+    });
   }
 
   // プロフィール編集

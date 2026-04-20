@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通知 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .nt-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; padding: 30px 24px; }
+  .nt-hero-inner { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .nt-hero h1 { margin: 0; font-size: 1.5em; font-weight: 900; }
+  .nt-wrap { max-width: 800px; margin: 24px auto 60px; padding: 0 24px; }
+  .nt-item { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 14px; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.04); text-decoration: none; color: inherit; }
+  .nt-item.unread { border-left: 4px solid #2e7d32; }
+  .nt-item-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2em; flex-shrink: 0; color: #fff; }
+  .nt-item-icon.application { background: #2e7d32; }
+  .nt-item-icon.message { background: #1976d2; }
+  .nt-item-icon.result { background: #ef6c00; }
+  .nt-item-icon.system { background: #757575; }
+  .nt-item-title { font-weight: 800; margin-bottom: 2px; }
+  .nt-item-body { font-size: .85em; color: #666; }
+  .nt-item-time { font-size: .75em; color: #999; margin-top: 2px; }
+  .nt-mark-all { padding: 8px 16px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); color: #fff; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: .85em; }
+</style></head>
+<body>
+
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="mypage.html">マイページ</a>
+    <a href="messages.html">メッセージ</a>
+    <a href="notifications.html" class="current">通知</a>
+  </nav>
+</div></header>
+
+<section class="nt-hero">
+  <div class="nt-hero-inner">
+    <h1>通知 <span id="nt-unread-count" style="font-size:.7em; opacity:.85;"></span></h1>
+    <button class="nt-mark-all" id="nt-mark-all">すべて既読</button>
+  </div>
+</section>
+
+<div class="nt-wrap" id="nt-list"><div style="text-align:center; color:#888; padding:40px;">読み込み中...</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) { location.href = 'login.html'; return; }
+
+  async function render() {
+    const notifs = await window.AImeBiz.listNotifications();
+    const unread = notifs.filter(n => !n.is_read).length;
+    document.getElementById('nt-unread-count').textContent = unread ? `(${unread}件未読)` : '';
+    const el = document.getElementById('nt-list');
+    if (!notifs.length) { el.innerHTML = '<div style="text-align:center; color:#888; padding:60px;">通知はありません</div>'; return; }
+    const iconMap = { application:'📩', message:'💬', result:'🎯', system:'🔔', post:'📝', comment:'💭' };
+    el.innerHTML = notifs.map(n => `
+      <a class="nt-item ${n.is_read ? '' : 'unread'}" href="${n.link || '#'}" data-nid="${n.id}">
+        <div class="nt-item-icon ${n.kind}">${iconMap[n.kind] || '🔔'}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="nt-item-title">${n.title}</div>
+          <div class="nt-item-body">${n.body || ''}</div>
+          <div class="nt-item-time">${new Date(n.created_at).toLocaleString('ja-JP')}</div>
+        </div>
+      </a>
+    `).join('');
+    el.querySelectorAll('[data-nid]').forEach(a => a.addEventListener('click', async () => {
+      await window.AImeBiz.markNotificationRead(a.dataset.nid);
+    }));
+  }
+  await render();
+
+  document.getElementById('nt-mark-all').addEventListener('click', async () => {
+    await window.AImeBiz.markAllNotificationsRead();
+    render();
+  });
+
+  // Realtime
+  window.AImeBiz.subscribeNotifications(user.id, render);
+})();
+</script>
+</body></html>

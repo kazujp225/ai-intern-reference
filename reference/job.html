@@ -156,6 +156,7 @@
 <script src="js/supabase-client.js"></script>
 <script src="js/realtime.js"></script>
 <script src="js/supabase-social.js"></script>
+<script src="js/supabase-biz.js"></script>
 <script src="js/jobs-data.js"></script>
 <script>
 (async function(){
@@ -339,6 +340,12 @@
 
     // 閲覧カウント加算（ランキング用）
     social.incrementJobView(job.id).catch(() => {});
+
+    // 閲覧履歴 & アクセスログ
+    if (window.AImeBiz) {
+      window.AImeBiz.recordBrowseHistory(job.id).catch(() => {});
+      window.AImeBiz.logAccess('job.html', 'id=' + job.id).catch(() => {});
+    }
 
     // 現在ユーザー
     const { data: { user } } = await window.sb.auth.getUser();

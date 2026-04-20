@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業ダッシュボード | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .cd-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32 50%,#4caf50); color:#fff; padding: 40px 24px; }
+  .cd-hero-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 20px; }
+  .cd-logo { width: 80px; height: 80px; border-radius: 14px; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .cd-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .cd-hero h1 { margin: 0; font-size: 1.6em; font-weight: 900; }
+  .cd-hero .sub { opacity: .9; font-size: .9em; margin-top: 4px; }
+  .cd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 1200px; margin: -26px auto 0; padding: 0 24px; position: relative; z-index: 1; }
+  .cd-stat { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+  .cd-stat .n { font-size: 2em; font-weight: 900; color: #1b5e20; }
+  .cd-stat .l { font-size: .8em; color: #666; font-weight: 700; }
+  .cd-wrap { max-width: 1200px; margin: 24px auto 60px; padding: 0 24px; display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+  @media (max-width: 900px) { .cd-wrap { grid-template-columns: 1fr; } }
+  .cd-side { background: #fff; border-radius: 12px; padding: 16px; height: fit-content; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .cd-side button { display: block; width: 100%; text-align: left; padding: 10px 14px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 800; color: #333; margin-bottom: 4px; }
+  .cd-side button.active { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; }
+  .cd-panel { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .cd-panel h2 { margin: 0 0 16px; font-size: 1.2em; font-weight: 900; }
+  .cd-row { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: #f9fafb; border-radius: 10px; margin-bottom: 8px; }
+  .cd-row-title { font-weight: 800; margin-bottom: 4px; }
+  .cd-row-meta { font-size: .8em; color: #666; }
+  .cd-status { padding: 4px 10px; border-radius: 999px; font-size: .75em; font-weight: 800; }
+  .cd-status.approved { background: #e8f5e9; color: #1b5e20; }
+  .cd-status.pending { background: #fff3e0; color: #ef6c00; }
+  .cd-status.rejected { background: #ffebee; color: #c62828; }
+  .cd-status.closed { background: #eeeeee; color: #666; }
+  .cd-btn-primary { padding: 12px 22px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-block; }
+  .cd-btn-ghost { padding: 6px 12px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: .85em; }
+  .cd-select { padding: 4px 8px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: .85em; font-weight: 700; }
+</style></head>
+<body>
+
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="company-dashboard.html" class="current">企業ダッシュボード</a>
+    <a href="messages.html">メッセージ</a>
+    <a href="#" id="logout-link" class="login">ログアウト</a>
+  </nav>
+</div></header>
+
+<div id="auth-req" style="display:none; text-align:center; padding: 80px 24px;">
+  <h2>企業アカウントでログインしてください</h2>
+  <p><a href="login.html" class="cd-btn-primary">ログイン</a> <a href="company-signup.html" class="cd-btn-ghost">企業登録</a></p>
+</div>
+
+<div id="cd-main" style="display:none;">
+  <section class="cd-hero">
+    <div class="cd-hero-inner">
+      <div class="cd-logo" id="cd-logo"><span style="font-size:2em;">🏢</span></div>
+      <div>
+        <h1 id="cd-name">—</h1>
+        <div class="sub" id="cd-industry">—</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cd-stats">
+    <div class="cd-stat"><div class="n" id="stat-jobs">0</div><div class="l">公開中の求人</div></div>
+    <div class="cd-stat"><div class="n" id="stat-apps">0</div><div class="l">総応募数</div></div>
+    <div class="cd-stat"><div class="n" id="stat-views">0</div><div class="l">総閲覧数</div></div>
+  </div>
+
+  <div class="cd-wrap">
+    <aside class="cd-side">
+      <button class="active" data-p="jobs">求人管理</button>
+      <button data-p="apps">応募者</button>
+      <button data-p="profile">企業情報</button>
+    </aside>
+
+    <div class="cd-panel">
+      <div id="p-jobs">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+          <h2 style="margin:0;">求人管理</h2>
+          <a href="company-job-edit.html" class="cd-btn-primary">＋ 新規求人を作成</a>
+        </div>
+        <div id="jobs-list"></div>
+      </div>
+
+      <div id="p-apps" style="display:none;">
+        <h2>応募者一覧</h2>
+        <div id="apps-list"></div>
+      </div>
+
+      <div id="p-profile" style="display:none;">
+        <h2>企業情報の編集</h2>
+        <form id="profile-form">
+          <div style="display:grid; gap: 12px;">
+            <div><label style="font-weight:800; font-size:.85em;">会社名</label><input id="pf-name" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
+            <div><label style="font-weight:800; font-size:.85em;">業種</label><input id="pf-industry" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
+            <div><label style="font-weight:800; font-size:.85em;">所在地</label><input id="pf-location" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
+            <div><label style="font-weight:800; font-size:.85em;">Webサイト</label><input id="pf-website" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
+            <div><label style="font-weight:800; font-size:.85em;">会社説明</label><textarea id="pf-description" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px; min-height: 100px;"></textarea></div>
+          </div>
+          <button type="submit" class="cd-btn-primary" style="margin-top:16px;">保存</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) { document.getElementById('auth-req').style.display = 'block'; return; }
+  const company = await window.AImeBiz.getMyCompany();
+  if (!company) { location.href = 'company-signup.html'; return; }
+
+  document.getElementById('cd-main').style.display = 'block';
+  document.getElementById('cd-name').textContent = company.name;
+  document.getElementById('cd-industry').textContent = company.industry || '業種未設定';
+  if (company.logo_url) document.getElementById('cd-logo').innerHTML = `<img src="${company.logo_url}" alt="logo">`;
+
+  document.getElementById('logout-link').addEventListener('click', async (e) => {
+    e.preventDefault(); await window.sb.auth.signOut(); location.href = 'original.html';
+  });
+
+  // 求人リスト
+  const jobs = await window.AImeBiz.listMyJobs();
+  const totalViews = jobs.reduce((s, j) => s + (j.view_count || 0), 0);
+  document.getElementById('stat-jobs').textContent = jobs.filter(j => j.status === 'approved' && j.is_public).length;
+  document.getElementById('stat-views').textContent = totalViews;
+
+  const jobsList = document.getElementById('jobs-list');
+  if (!jobs.length) {
+    jobsList.innerHTML = '<div style="text-align:center; color:#888; padding:40px;">まだ求人がありません</div>';
+  } else {
+    jobsList.innerHTML = jobs.map(j => `
+      <div class="cd-row">
+        <div style="flex:1; min-width:0;">
+          <div class="cd-row-title">${j.title}</div>
+          <div class="cd-row-meta">${j.category || ''} / ${j.location || ''} / 閲覧 ${j.view_count || 0}</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="cd-status ${j.status}">${ {approved:'公開中',pending:'審査中',rejected:'拒否',closed:'終了'}[j.status] }</span>
+          <a href="company-job-edit.html?id=${j.id}" class="cd-btn-ghost">編集</a>
+          <button class="cd-btn-ghost" data-del="${j.id}">削除</button>
+        </div>
+      </div>
+    `).join('');
+    jobsList.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+      if (!confirm('この求人を削除しますか？')) return;
+      await window.AImeBiz.deleteJob(b.dataset.del);
+      location.reload();
+    }));
+  }
+
+  // 応募者
+  const apps = await window.AImeBiz.getCompanyApplicants();
+  document.getElementById('stat-apps').textContent = apps.length;
+  const appsList = document.getElementById('apps-list');
+  if (!apps.length) {
+    appsList.innerHTML = '<div style="text-align:center; color:#888; padding:40px;">まだ応募はありません</div>';
+  } else {
+    appsList.innerHTML = apps.map(a => `
+      <div class="cd-row">
+        <div style="flex:1; min-width:0;">
+          <div class="cd-row-title">${a.nickname || '匿名'} さん <span style="color:#999; font-weight:700; font-size:.85em;">(${a.school || '—'})</span></div>
+          <div class="cd-row-meta">→ ${a.job_title || ''} / ${new Date(a.created_at).toLocaleDateString('ja-JP')}</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <select class="cd-select" data-app="${a.app_id}">
+            <option value="pending" ${a.status==='pending'?'selected':''}>審査中</option>
+            <option value="reviewing" ${a.status==='reviewing'?'selected':''}>選考中</option>
+            <option value="accepted" ${a.status==='accepted'?'selected':''}>合格</option>
+            <option value="rejected" ${a.status==='rejected'?'selected':''}>不採用</option>
+          </select>
+          <a href="messages.html?student=${a.user_id}" class="cd-btn-ghost">メッセージ</a>
+        </div>
+      </div>
+    `).join('');
+    appsList.querySelectorAll('[data-app]').forEach(sel => sel.addEventListener('change', async () => {
+      await window.AImeBiz.updateApplicationStatus(sel.dataset.app, sel.value);
+    }));
+  }
+
+  // サイドタブ
+  document.querySelectorAll('.cd-side button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.cd-side button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      ['jobs','apps','profile'].forEach(p => {
+        document.getElementById('p-' + p).style.display = (p === b.dataset.p) ? 'block' : 'none';
+      });
+    });
+  });
+
+  // プロフィール
+  document.getElementById('pf-name').value = company.name || '';
+  document.getElementById('pf-industry').value = company.industry || '';
+  document.getElementById('pf-location').value = company.location || '';
+  document.getElementById('pf-website').value = company.website || '';
+  document.getElementById('pf-description').value = company.description || '';
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await window.AImeBiz.updateCompany({
+      name: document.getElementById('pf-name').value.trim(),
+      industry: document.getElementById('pf-industry').value.trim() || null,
+      location: document.getElementById('pf-location').value.trim() || null,
+      website: document.getElementById('pf-website').value.trim() || null,
+      description: document.getElementById('pf-description').value.trim() || null,
+    });
+    alert('保存しました'); location.reload();
+  });
+})();
+</script>
+</body></html>

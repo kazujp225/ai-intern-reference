@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業登録 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .cs-hero { background: linear-gradient(135deg,#e65100,#ff9800); color:#fff; padding: 40px 24px; text-align: center; }
+  .cs-hero h1 { margin:0; font-size: 1.8em; font-weight: 900; }
+  .cs-hero p { opacity:.9; margin: 6px 0 0; }
+  .cs-wrap { max-width: 640px; margin: 40px auto 60px; background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .cs-step { display: flex; gap: 8px; margin-bottom: 24px; }
+  .cs-dot { flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px; }
+  .cs-dot.active { background: #ff9800; }
+  .cs-field { margin-bottom: 16px; }
+  .cs-field label { display: block; font-size: .85em; font-weight: 800; margin-bottom: 6px; color: #333; }
+  .cs-field input, .cs-field textarea, .cs-field select { width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1em; font-family: inherit; }
+  .cs-field textarea { min-height: 100px; resize: vertical; }
+  .cs-btn { width: 100%; padding: 14px; background: linear-gradient(135deg,#e65100,#ff9800); color:#fff; border: none; border-radius: 8px; font-weight: 900; font-size: 1em; cursor: pointer; margin-top: 12px; }
+  .cs-btn[disabled] { opacity: .6; cursor: not-allowed; }
+  #cs-msg { display: none; padding: 10px 14px; border-radius: 8px; font-size: .9em; font-weight: 700; margin-top: 10px; }
+</style></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav"><a href="login.html" class="login">ログイン</a></nav>
+</div></header>
+
+<section class="cs-hero">
+  <h1>🏢 企業アカウント登録</h1>
+  <p>AIに強い学生に、御社を知ってもらいましょう</p>
+</section>
+
+<div class="cs-wrap">
+  <div class="cs-step"><div class="cs-dot active"></div><div class="cs-dot" id="step2"></div></div>
+
+  <!-- Step 1: Auth -->
+  <div id="step-1">
+    <h2 style="margin:0 0 16px; font-size: 1.2em; font-weight: 900;">① 担当者アカウント作成</h2>
+    <div class="cs-field"><label>担当者メールアドレス</label><input type="email" id="cs-email" required placeholder="recruit@example.com"></div>
+    <div class="cs-field"><label>パスワード（8文字以上）</label><input type="password" id="cs-password" required minlength="8"></div>
+    <div class="cs-field"><label>担当者名</label><input type="text" id="cs-nickname" required placeholder="例: 山田 太郎"></div>
+    <button class="cs-btn" id="cs-next1">次へ（企業情報入力）</button>
+    <div id="cs-msg"></div>
+  </div>
+
+  <!-- Step 2: Company info -->
+  <div id="step-2" style="display:none;">
+    <h2 style="margin:0 0 16px; font-size: 1.2em; font-weight: 900;">② 企業情報</h2>
+    <div class="cs-field"><label>会社名 <span style="color:#f44336;">*</span></label><input type="text" id="cs-co-name" required placeholder="株式会社AIめ"></div>
+    <div class="cs-field"><label>業種</label>
+      <select id="cs-co-industry">
+        <option value="">選択してください</option>
+        <option>AI / 機械学習</option><option>LLM / 生成AI</option><option>SaaS</option>
+        <option>医療AI</option><option>ロボティクス</option><option>金融</option><option>その他</option>
+      </select>
+    </div>
+    <div class="cs-field"><label>所在地</label><input type="text" id="cs-co-location" placeholder="東京都渋谷区"></div>
+    <div class="cs-field"><label>Webサイト</label><input type="url" id="cs-co-website" placeholder="https://..."></div>
+    <div class="cs-field"><label>会社説明</label><textarea id="cs-co-description" placeholder="事業内容、文化、技術スタックなど"></textarea></div>
+    <div class="cs-field"><label>会社ロゴ（任意）</label><input type="file" id="cs-co-logo" accept="image/*"></div>
+    <button class="cs-btn" id="cs-submit">登録を完了する</button>
+    <div id="cs-msg"></div>
+  </div>
+</div>
+
+<footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(function(){
+  const msg = document.getElementById('cs-msg');
+  function show(text, type) {
+    msg.textContent = text; msg.style.display = 'block';
+    if (type === 'error') { msg.style.background = '#ffebee'; msg.style.color = '#c62828'; }
+    else { msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20'; }
+  }
+  let authData = null;
+
+  document.getElementById('cs-next1').addEventListener('click', async () => {
+    const email = document.getElementById('cs-email').value.trim();
+    const password = document.getElementById('cs-password').value;
+    const nickname = document.getElementById('cs-nickname').value.trim();
+    if (!email || !password || !nickname || password.length < 8) { show('全項目を入力してください（パスワードは8文字以上）', 'error'); return; }
+    const { data, error } = await window.sb.auth.signUp({
+      email, password,
+      options: { data: { nickname, role: 'company' } },
+    });
+    if (error) { show('登録失敗: ' + error.message, 'error'); return; }
+    authData = data;
+    document.getElementById('step-1').style.display = 'none';
+    document.getElementById('step-2').style.display = 'block';
+    document.getElementById('step2').classList.add('active');
+    msg.style.display = 'none';
+  });
+
+  document.getElementById('cs-submit').addEventListener('click', async () => {
+    const name = document.getElementById('cs-co-name').value.trim();
+    if (!name) { show('会社名は必須です', 'error'); return; }
+    try {
+      let logoUrl = null;
+      const logoFile = document.getElementById('cs-co-logo').files[0];
+      if (logoFile) {
+        const up = await window.AImeBiz.uploadFile('logos', logoFile, 'logo');
+        logoUrl = up.url;
+      }
+      await window.AImeBiz.createCompany({
+        name,
+        industry: document.getElementById('cs-co-industry').value || null,
+        location: document.getElementById('cs-co-location').value.trim() || null,
+        website: document.getElementById('cs-co-website').value.trim() || null,
+        description: document.getElementById('cs-co-description').value.trim() || null,
+        logo_url: logoUrl,
+      });
+      show('登録完了！管理画面へ移動します...', 'success');
+      setTimeout(() => location.href = 'company-dashboard.html', 1000);
+    } catch (err) {
+      show('登録失敗: ' + err.message, 'error');
+    }
+  });
+})();
+</script>
+</body></html>

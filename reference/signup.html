@@ -61,11 +61,12 @@
 
   <div class="form-divider">または</div>
 
-  <a href="#" class="social-btn">Googleで登録</a>
-  <a href="#" class="social-btn">GitHubで登録</a>
+  <button type="button" id="google-signup" class="social-btn" style="background:#fff; color:#222; border:1px solid #e0e0e0; cursor:pointer; display:block; text-align:center; width:100%; padding:12px;">
+    <span style="font-weight:800;">G</span> Googleで登録
+  </button>
 
   <div class="auth-foot">
-    既にアカウントをお持ちですか？ <a href="login.html">ログイン</a>
+    企業の方は <a href="company-signup.html">企業登録</a> / 既にアカウントをお持ちですか？ <a href="login.html">ログイン</a>
   </div>
 </div>
 
@@ -102,8 +103,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
 <script>
 (function () {
+  document.getElementById('google-signup')?.addEventListener('click', async () => {
+    if (window.AImeBiz) await window.AImeBiz.signInWithGoogle();
+  });
+
   const form = document.getElementById('signup-form');
   const emailEl = document.getElementById('signup-email');
   const passEl = document.getElementById('signup-password');
