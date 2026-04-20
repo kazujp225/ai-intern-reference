@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特集：トップAI企業紹介 - UI案 A〜F</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    background: #f6f7f9;
+    color: #111;
+  }
+  .global-header {
+    position: sticky; top: 0; z-index: 100;
+    background: #111; color: #fff; padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .global-header h1 { margin: 0; font-size: 1em; font-weight: 800; letter-spacing: .04em; }
+  .global-header nav a {
+    color: #fff; text-decoration: none; margin-left: 14px;
+    font-size: .85em; opacity: .75; transition: opacity .15s;
+  }
+  .global-header nav a:hover { opacity: 1; }
+
+  .section { padding: 80px 24px; border-bottom: 1px solid #e1e4e8; position: relative; overflow: hidden; }
+  .section:nth-child(even) { background: #fff; }
+  .section-header { max-width: 1200px; margin: 0 auto 48px; }
+  .section-label {
+    display: inline-block; font-size: .75em; font-weight: 900; letter-spacing: .15em;
+    background: #111; color: #fff; padding: 5px 12px; border-radius: 4px;
+  }
+  .section h2 { font-size: 2em; margin: 14px 0 6px; font-weight: 900; }
+  .section p.sub { color: #666; margin: 0; font-size: .95em; }
+
+  /* ============ Pattern A: Marquee ============ */
+  .marquee {
+    overflow: hidden; position: relative;
+    max-width: 1400px; margin: 0 auto;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex; gap: 32px; width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .logo-chip {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #fff; padding: 14px 24px; border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(0,0,0,0.04);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .logo-chip .badge {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: .9em;
+  }
+  .logo-chip .name { font-weight: 900; font-size: 1em; }
+
+  /* ============ Pattern B: 3D carousel ============ */
+  .carousel-3d-scene {
+    perspective: 1400px; width: 100%; height: 360px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .carousel-3d {
+    position: relative; width: 180px; height: 200px;
+    transform-style: preserve-3d;
+    animation: spin3d 30s linear infinite;
+  }
+  .carousel-3d:hover { animation-play-state: paused; }
+  @keyframes spin3d {
+    from { transform: rotateY(0); }
+    to { transform: rotateY(-360deg); }
+  }
+  .carousel-3d .card3d {
+    position: absolute; inset: 0;
+    background: #fff; border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(0,0,0,0.05);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 20px;
+  }
+  .carousel-3d .card3d .badge { width: 72px; height: 72px; border-radius: 18px; font-size: 1.2em; }
+  .carousel-3d .card3d .name { font-weight: 900; font-size: .95em; }
+  .carousel-3d .card3d .desc { font-size: .72em; color: #666; }
+
+  /* ============ Pattern C: Spotlight ============ */
+  .spotlight-stage {
+    position: relative; max-width: 1200px; margin: 0 auto;
+    height: 420px; display: flex; align-items: center; justify-content: center;
+  }
+  .spotlight-item {
+    position: absolute; transition: all .6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: #fff; border-radius: 24px; padding: 28px 32px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(0,0,0,0.05);
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    width: 180px;
+  }
+  .spotlight-item .badge { width: 64px; height: 64px; border-radius: 18px; font-size: 1.1em; }
+  .spotlight-item .name { font-weight: 900; font-size: 1em; }
+  .spotlight-item .desc { font-size: .75em; color: #666; text-align: center; }
+  .spotlight-item.is-active {
+    transform: scale(1.35); z-index: 10;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.18);
+  }
+  .spotlight-item.prev { transform: translateX(-260px) scale(.85); opacity: .5; z-index: 5; }
+  .spotlight-item.next { transform: translateX(260px) scale(.85); opacity: .5; z-index: 5; }
+  .spotlight-item.far-prev { transform: translateX(-440px) scale(.65); opacity: .2; z-index: 2; }
+  .spotlight-item.far-next { transform: translateX(440px) scale(.65); opacity: .2; z-index: 2; }
+  .spotlight-item.hidden { opacity: 0; transform: scale(.5); pointer-events: none; }
+  .spotlight-dots {
+    display: flex; justify-content: center; gap: 8px; margin-top: 24px;
+  }
+  .spotlight-dots button {
+    width: 10px; height: 10px; border-radius: 50%; border: none;
+    background: #ccc; cursor: pointer; transition: all .2s;
+  }
+  .spotlight-dots button.active { background: #111; transform: scale(1.4); }
+
+  /* ============ Pattern D: Interactive grid with hover ============ */
+  .grid-d {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .grid-d .card {
+    position: relative; overflow: hidden;
+    background: #fff; border-radius: 16px; padding: 28px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(0,0,0,0.04);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    transition: transform .3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .3s;
+    cursor: pointer; min-height: 160px;
+  }
+  .grid-d .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  }
+  .grid-d .card .badge { width: 56px; height: 56px; border-radius: 14px; font-size: 1em; }
+  .grid-d .card .name { font-weight: 900; font-size: 1em; }
+  .grid-d .card .detail {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, transparent, rgba(17,17,17,.95) 30%);
+    color: #fff; padding: 60px 16px 18px; text-align: center;
+    transform: translateY(100%); transition: transform .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .grid-d .card:hover .detail { transform: translateY(0); }
+  .grid-d .card .detail .loc { font-size: .75em; opacity: .75; margin-bottom: 4px; }
+  .grid-d .card .detail .desc { font-size: .85em; font-weight: 700; }
+
+  /* ============ Pattern E: Tag filter ============ */
+  .filter-bar {
+    max-width: 1200px; margin: 0 auto 28px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .filter-bar button {
+    border: 2px solid #111; background: #fff; color: #111;
+    padding: 8px 18px; border-radius: 999px; font-weight: 800; font-size: .85em;
+    cursor: pointer; transition: all .15s;
+  }
+  .filter-bar button:hover { background: #f0f0f0; }
+  .filter-bar button.active { background: #111; color: #fff; }
+  .grid-e {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .grid-e .card {
+    background: #fff; border-radius: 14px; padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(0,0,0,0.04);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    transition: all .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .grid-e .card .badge { width: 48px; height: 48px; border-radius: 12px; font-size: .95em; }
+  .grid-e .card .name { font-weight: 800; font-size: .92em; }
+  .grid-e .card .cat { font-size: .7em; color: #999; }
+  .grid-e .card.hide { opacity: 0; transform: scale(.6); pointer-events: none; height: 0; padding: 0; margin: 0; }
+
+  /* ============ Pattern F: Floating parallax ============ */
+  .float-stage {
+    position: relative; max-width: 1200px; height: 520px; margin: 0 auto;
+    background: radial-gradient(circle at 50% 50%, rgba(76,175,80,0.06), transparent 70%);
+    overflow: hidden;
+  }
+  .float-item {
+    position: absolute;
+    background: #fff; border-radius: 16px; padding: 14px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.04);
+    display: flex; align-items: center; gap: 10px;
+    transition: transform .8s cubic-bezier(0.33, 1, 0.68, 1);
+    animation: floatY 6s ease-in-out infinite;
+  }
+  .float-item .badge { width: 36px; height: 36px; border-radius: 10px; font-size: .8em; }
+  .float-item .name { font-weight: 900; font-size: .9em; }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .badge {
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900;
+  }
+
+  @media (max-width: 640px) {
+    .section { padding: 60px 16px; }
+    .section h2 { font-size: 1.5em; }
+    .carousel-3d { width: 140px; height: 160px; }
+    .spotlight-stage { height: 360px; }
+    .spotlight-item { width: 140px; padding: 20px; }
+    .spotlight-item.prev { transform: translateX(-180px) scale(.8); }
+    .spotlight-item.next { transform: translateX(180px) scale(.8); }
+    .spotlight-item.far-prev, .spotlight-item.far-next { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="global-header">
+  <h1>特集：トップAI企業紹介 - UI案 A〜F</h1>
+  <nav>
+    <a href="#a">A</a><a href="#b">B</a><a href="#c">C</a>
+    <a href="#d">D</a><a href="#e">E</a><a href="#f">F</a>
+  </nav>
+</header>
+
+<!-- ========== Pattern A ========== -->
+<section class="section" id="a">
+  <div class="section-header">
+    <span class="section-label">案 A</span>
+    <h2>無限ロゴマーキー</h2>
+    <p class="sub">横方向に自動で流れ続ける定番パターン。ホバーで一時停止。</p>
+  </div>
+  <div class="marquee"><div class="marquee-track" id="marqueeA"></div></div>
+</section>
+
+<!-- ========== Pattern B ========== -->
+<section class="section" id="b">
+  <div class="section-header">
+    <span class="section-label">案 B</span>
+    <h2>3Dサークル回転カルーセル</h2>
+    <p class="sub">円環状に配置されたロゴが3Dで回転。サイト内の3D職種カルーセルとトーン統一。</p>
+  </div>
+  <div class="carousel-3d-scene"><div class="carousel-3d" id="carouselB"></div></div>
+</section>
+
+<!-- ========== Pattern C ========== -->
+<section class="section" id="c">
+  <div class="section-header">
+    <span class="section-label">案 C</span>
+    <h2>スポットライト型カルーセル</h2>
+    <p class="sub">中央で1社を大きく強調。左右に候補がフェード。自動切替＋ドット操作可。</p>
+  </div>
+  <div class="spotlight-stage" id="spotlightC"></div>
+  <div class="spotlight-dots" id="spotlightDotsC"></div>
+</section>
+
+<!-- ========== Pattern D ========== -->
+<section class="section" id="d">
+  <div class="section-header">
+    <span class="section-label">案 D</span>
+    <h2>インタラクティブグリッド（ホバー詳細）</h2>
+    <p class="sub">静止時も情報整理された見やすいグリッド。ホバーで本社地・事業がスライドイン。</p>
+  </div>
+  <div class="grid-d" id="gridD"></div>
+</section>
+
+<!-- ========== Pattern E ========== -->
+<section class="section" id="e">
+  <div class="section-header">
+    <span class="section-label">案 E</span>
+    <h2>タグフィルタ＋並び替えアニメ</h2>
+    <p class="sub">カテゴリで絞り込み、Isotope風に並び替え。比較検討に向く。</p>
+  </div>
+  <div class="filter-bar" id="filterBarE"></div>
+  <div class="grid-e" id="gridE"></div>
+</section>
+
+<!-- ========== Pattern F ========== -->
+<section class="section" id="f">
+  <div class="section-header">
+    <span class="section-label">案 F</span>
+    <h2>パララックス浮遊（コンステレーション）</h2>
+    <p class="sub">緩やかに浮遊するロゴ群。マウス位置に応じて微量に視差移動。</p>
+  </div>
+  <div class="float-stage" id="floatF"></div>
+</section>
+
+<script>
+const companies = [
+  { name:'OpenAI',     loc:'San Francisco',  desc:'ChatGPT / GPT-4',    color:'#74aa9c', initials:'O',  cat:'LLM'     },
+  { name:'Google',     loc:'Mountain View',  desc:'Gemini / Transformer',color:'#4285f4', initials:'G',  cat:'LLM'     },
+  { name:'Anthropic',  loc:'San Francisco',  desc:'Claude',             color:'#d97706', initials:'A',  cat:'LLM'     },
+  { name:'Meta AI',    loc:'Menlo Park',     desc:'LLaMA / PyTorch',    color:'#0668e1', initials:'M',  cat:'LLM'     },
+  { name:'Apple',      loc:'Cupertino',      desc:'Apple Intelligence', color:'#333',    initials:'',  cat:'デバイス' },
+  { name:'Microsoft',  loc:'Redmond',        desc:'Azure AI / Copilot', color:'#00a4ef', initials:'MS', cat:'クラウド' },
+  { name:'Amazon',     loc:'Seattle',        desc:'AWS / Bedrock',      color:'#ff9900', initials:'a',  cat:'クラウド' },
+  { name:'NVIDIA',     loc:'Santa Clara',    desc:'GPU / CUDA',         color:'#76b900', initials:'N',  cat:'半導体'   },
+  { name:'IBM',        loc:'Armonk',         desc:'Watson',             color:'#0530ad', initials:'IBM',cat:'クラウド' },
+  { name:'Oracle',     loc:'Austin',         desc:'OCI AI',             color:'#f80000', initials:'O',  cat:'クラウド' },
+  { name:'xAI',        loc:'Austin',         desc:'Grok',               color:'#111',    initials:'X',  cat:'LLM'     },
+  { name:'Adobe',      loc:'San Jose',       desc:'Firefly / Sensei',   color:'#ff0000', initials:'A',  cat:'生成'     },
+  { name:'Intel',      loc:'Santa Clara',    desc:'Gaudi / AI半導体',   color:'#0071c5', initials:'i',  cat:'半導体'   },
+  { name:'Salesforce', loc:'San Francisco',  desc:'Einstein AI',        color:'#00a1e0', initials:'S',  cat:'クラウド' },
+  { name:'Tesla',      loc:'Palo Alto',      desc:'Autopilot',          color:'#cc0000', initials:'T',  cat:'デバイス' },
+];
+
+const badge = (c, cls='') => `<div class="badge ${cls}" style="background:${c.color};">${c.initials}</div>`;
+
+/* --- A: marquee --- */
+(() => {
+  const track = document.getElementById('marqueeA');
+  const items = companies.map(c => `
+    <div class="logo-chip">${badge(c)}<span class="name">${c.name}</span></div>
+  `).join('');
+  track.innerHTML = items + items; // duplicate for seamless loop
+})();
+
+/* --- B: 3D carousel --- */
+(() => {
+  const el = document.getElementById('carouselB');
+  const n = companies.length;
+  const radius = 420;
+  el.innerHTML = companies.map((c, i) => {
+    const angle = (360 / n) * i;
+    return `<div class="card3d" style="transform: rotateY(${angle}deg) translateZ(${radius}px);">
+      ${badge(c)}<div class="name">${c.name}</div><div class="desc">${c.desc}</div>
+    </div>`;
+  }).join('');
+})();
+
+/* --- C: spotlight --- */
+(() => {
+  const stage = document.getElementById('spotlightC');
+  const dotsEl = document.getElementById('spotlightDotsC');
+  stage.innerHTML = companies.map((c, i) => `
+    <div class="spotlight-item" data-idx="${i}">
+      ${badge(c)}<div class="name">${c.name}</div><div class="desc">${c.loc}<br>${c.desc}</div>
+    </div>
+  `).join('');
+  dotsEl.innerHTML = companies.map((_, i) =>
+    `<button data-idx="${i}" aria-label="item ${i}"></button>`
+  ).join('');
+
+  const items = stage.querySelectorAll('.spotlight-item');
+  const dots = dotsEl.querySelectorAll('button');
+  let idx = 0;
+  const n = companies.length;
+  const render = () => {
+    items.forEach((it, i) => {
+      it.className = 'spotlight-item';
+      const diff = ((i - idx) % n + n) % n;
+      if (diff === 0) it.classList.add('is-active');
+      else if (diff === 1) it.classList.add('next');
+      else if (diff === 2) it.classList.add('far-next');
+      else if (diff === n - 1) it.classList.add('prev');
+      else if (diff === n - 2) it.classList.add('far-prev');
+      else it.classList.add('hidden');
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  };
+  dots.forEach(d => d.addEventListener('click', () => {
+    idx = +d.dataset.idx; render();
+  }));
+  render();
+  setInterval(() => { idx = (idx + 1) % n; render(); }, 3000);
+})();
+
+/* --- D: interactive grid --- */
+(() => {
+  const el = document.getElementById('gridD');
+  el.innerHTML = companies.map(c => `
+    <div class="card">
+      ${badge(c)}
+      <div class="name">${c.name}</div>
+      <div class="detail">
+        <div class="loc">${c.loc}</div>
+        <div class="desc">${c.desc}</div>
+      </div>
+    </div>
+  `).join('');
+})();
+
+/* --- E: tag filter --- */
+(() => {
+  const bar = document.getElementById('filterBarE');
+  const grid = document.getElementById('gridE');
+  const cats = ['すべて', ...new Set(companies.map(c => c.cat))];
+  bar.innerHTML = cats.map((c, i) =>
+    `<button data-cat="${c}" class="${i===0?'active':''}">${c}</button>`
+  ).join('');
+  grid.innerHTML = companies.map(c => `
+    <div class="card" data-cat="${c.cat}">
+      ${badge(c)}<div class="name">${c.name}</div><div class="cat">${c.cat}</div>
+    </div>
+  `).join('');
+  const cards = grid.querySelectorAll('.card');
+  bar.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      cards.forEach(card => {
+        const show = cat === 'すべて' || card.dataset.cat === cat;
+        card.classList.toggle('hide', !show);
+      });
+    });
+  });
+})();
+
+/* --- F: floating parallax --- */
+(() => {
+  const stage = document.getElementById('floatF');
+  // distribute positions roughly in a grid with jitter
+  const cols = 5, rows = 3;
+  stage.innerHTML = companies.slice(0, cols * rows).map((c, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    const left = (col / (cols - 1)) * 85 + Math.random() * 4 + 5;  // %
+    const top  = (row / (rows - 1)) * 75 + Math.random() * 6 + 6;  // %
+    const depth = Math.random() * 0.8 + 0.4; // 0.4 - 1.2
+    const delay = (Math.random() * 3).toFixed(2);
+    return `<div class="float-item" data-depth="${depth}" style="left:${left}%; top:${top}%; animation-delay:${delay}s;">
+      ${badge(c)}<span class="name">${c.name}</span>
+    </div>`;
+  }).join('');
+  const items = stage.querySelectorAll('.float-item');
+  stage.addEventListener('mousemove', e => {
+    const rect = stage.getBoundingClientRect();
+    const mx = (e.clientX - rect.left - rect.width/2) / rect.width;
+    const my = (e.clientY - rect.top - rect.height/2) / rect.height;
+    items.forEach(it => {
+      const d = +it.dataset.depth;
+      it.style.transform = `translate(${mx * 30 * d}px, ${my * 20 * d}px)`;
+    });
+  });
+  stage.addEventListener('mouseleave', () => {
+    items.forEach(it => { it.style.transform = ''; });
+  });
+})();
+</script>
+</body>
+</html>

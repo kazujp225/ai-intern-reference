@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職種・特徴UI案 A〜F</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; background:#f6f7f9; color:#111; }
+  .global-header {
+    position:sticky; top:0; z-index:100; background:#111; color:#fff;
+    padding:14px 24px; display:flex; justify-content:space-between; align-items:center;
+    box-shadow:0 2px 12px rgba(0,0,0,.15);
+  }
+  .global-header h1 { margin:0; font-size:1em; font-weight:800; letter-spacing:.04em; }
+  .global-header nav a { color:#fff; text-decoration:none; margin-left:14px; font-size:.85em; opacity:.75; transition:opacity .15s; }
+  .global-header nav a:hover { opacity:1; }
+
+  .section { padding:72px 24px; border-bottom:1px solid #e1e4e8; position:relative; }
+  .section:nth-child(even) { background:#fff; }
+  .section-header { max-width:1200px; margin:0 auto 40px; }
+  .section-label { display:inline-block; font-size:.75em; font-weight:900; letter-spacing:.15em; background:#111; color:#fff; padding:5px 12px; border-radius:4px; }
+  .section h2 { font-size:1.9em; margin:14px 0 4px; font-weight:900; }
+  .section p.sub { color:#666; margin:0; font-size:.95em; }
+  .subhead { max-width:1200px; margin:32px auto 16px; font-size:1.1em; font-weight:800; color:#222; border-left:4px solid #111; padding-left:12px; }
+
+  /* ========= A: Pill tag cloud ========= */
+  .tagcloud { max-width:1000px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+  .tagcloud .pill {
+    display:inline-flex; align-items:center; gap:10px;
+    background:#fff; border:2px solid #111; color:#111;
+    padding:10px 20px; border-radius:999px;
+    font-weight:800; font-size:1em; text-decoration:none;
+    transition:all .18s ease; cursor:pointer;
+  }
+  .tagcloud .pill .count { font-size:.75em; background:#111; color:#fff; padding:2px 8px; border-radius:999px; font-weight:900; }
+  .tagcloud .pill:hover { background:#111; color:#fff; transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.15); }
+  .tagcloud .pill:hover .count { background:#fff; color:#111; }
+
+  /* ========= B: Grid cards with big count ========= */
+  .bigrid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px; }
+  .bigrid .card {
+    background:#fff; border-radius:16px; padding:24px 20px;
+    box-shadow:0 4px 14px rgba(0,0,0,.06), inset 0 0 0 1px rgba(0,0,0,.04);
+    display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+    transition:transform .25s, box-shadow .25s; cursor:pointer;
+  }
+  .bigrid .card:hover { transform:translateY(-5px); box-shadow:0 20px 40px rgba(0,0,0,.1); }
+  .bigrid .card .count-big { font-size:2.4em; font-weight:900; color:#111; line-height:1; letter-spacing:-.02em; }
+  .bigrid .card .count-big .unit { font-size:.4em; font-weight:800; color:#888; margin-left:4px; }
+  .bigrid .card .name { font-weight:700; font-size:.95em; color:#333; }
+  .bigrid .card .bar { width:100%; height:4px; background:#f0f0f0; border-radius:2px; overflow:hidden; margin-top:8px; }
+  .bigrid .card .bar span { display:block; height:100%; background:linear-gradient(90deg,#4caf50,#2e7d32); }
+
+  /* ========= C: Ticker (horizontal auto-scroll) ========= */
+  .ticker {
+    overflow:hidden; position:relative; max-width:1400px; margin:0 auto;
+    mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .ticker-track { display:flex; gap:12px; width:max-content; animation:tickerMove 50s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state:paused; }
+  @keyframes tickerMove { from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+  .ticker .chip {
+    flex-shrink:0; background:#fff; padding:12px 20px; border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05), inset 0 0 0 1px rgba(0,0,0,.04);
+    display:inline-flex; align-items:center; gap:10px; white-space:nowrap;
+    font-weight:800; font-size:.95em;
+  }
+  .ticker .chip .num { font-size:.8em; color:#2e7d32; font-weight:900; }
+
+  /* ========= D: Brutalist list buttons ========= */
+  .brutal-list { max-width:900px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px) { .brutal-list { grid-template-columns:1fr; } }
+  .brutal-list a {
+    display:flex; justify-content:space-between; align-items:center;
+    background:#fff; border:3px solid #111; border-radius:8px;
+    padding:18px 22px; color:#111; text-decoration:none; font-weight:900; font-size:1.05em;
+    box-shadow:6px 6px 0 #111; transition:all .12s ease-out;
+  }
+  .brutal-list a:hover { transform:translate(3px,3px); box-shadow:3px 3px 0 #111; background:#fffbe6; }
+  .brutal-list a:active { transform:translate(6px,6px); box-shadow:0 0 0 #111; }
+  .brutal-list .num-tag {
+    font-size:.8em; font-weight:900; color:#fff; background:#111;
+    padding:4px 10px; border-radius:4px; font-family:monospace;
+  }
+
+  /* ========= E: Typo stack (magazine) ========= */
+  .typo-stack { max-width:900px; margin:0 auto; }
+  .typo-stack a {
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid #e1e4e8; padding:18px 8px;
+    text-decoration:none; color:#111; transition:all .2s; position:relative;
+  }
+  .typo-stack a::before {
+    content:'→'; position:absolute; left:-28px; top:50%; transform:translateY(-50%);
+    opacity:0; transition:all .2s; color:#4caf50; font-weight:900;
+  }
+  .typo-stack a:hover { padding-left:28px; background:linear-gradient(90deg, rgba(76,175,80,.06), transparent); }
+  .typo-stack a:hover::before { opacity:1; left:0; }
+  .typo-stack .name { font-size:1.6em; font-weight:800; letter-spacing:-.01em; }
+  .typo-stack .count { font-size:.85em; color:#888; font-weight:700; font-family:monospace; }
+
+  /* ========= F: Gradient large cards ========= */
+  .gradgrid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:18px; }
+  .gradgrid .card {
+    position:relative; overflow:hidden; border-radius:20px; padding:28px 24px;
+    color:#fff; min-height:160px; cursor:pointer;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:transform .3s, box-shadow .3s;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+  }
+  .gradgrid .card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 20px 50px rgba(0,0,0,.2); }
+  .gradgrid .card::after {
+    content:''; position:absolute; right:-40px; bottom:-40px; width:140px; height:140px;
+    background:rgba(255,255,255,.1); border-radius:50%;
+  }
+  .gradgrid .card .name { font-size:1.2em; font-weight:900; letter-spacing:-.01em; position:relative; z-index:1; }
+  .gradgrid .card .count { font-size:2em; font-weight:900; line-height:1; position:relative; z-index:1; }
+  .gradgrid .card .count .unit { font-size:.45em; font-weight:800; opacity:.8; margin-left:3px; }
+  /* gradient palette */
+  .g1 { background:linear-gradient(135deg,#1b5e20,#4caf50); }
+  .g2 { background:linear-gradient(135deg,#0d47a1,#42a5f5); }
+  .g3 { background:linear-gradient(135deg,#4a148c,#ab47bc); }
+  .g4 { background:linear-gradient(135deg,#bf360c,#ff7043); }
+  .g5 { background:linear-gradient(135deg,#004d40,#26a69a); }
+  .g6 { background:linear-gradient(135deg,#880e4f,#ec407a); }
+  .g7 { background:linear-gradient(135deg,#263238,#546e7a); }
+  .g8 { background:linear-gradient(135deg,#f57f17,#ffd54f); color:#111; }
+</style>
+</head>
+<body>
+
+<header class="global-header">
+  <h1>職種・特徴 UI案 A〜F（絵文字なし）</h1>
+  <nav><a href="#a">A</a><a href="#b">B</a><a href="#c">C</a><a href="#d">D</a><a href="#e">E</a><a href="#f">F</a></nav>
+</header>
+
+<!-- ========== A ========== -->
+<section class="section" id="a">
+  <div class="section-header">
+    <span class="section-label">案 A</span>
+    <h2>ピル型タグクラウド</h2>
+    <p class="sub">角丸タグをセンタリング配置。件数を小さく添える。タイポ主導で軽量。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="tagcloud" id="aJobs"></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="tagcloud" id="aFeat"></div>
+</section>
+
+<!-- ========== B ========== -->
+<section class="section" id="b">
+  <div class="section-header">
+    <span class="section-label">案 B</span>
+    <h2>マス目カード（件数大）</h2>
+    <p class="sub">件数を大きく、職種名を副次的に。ダッシュボード的で比較しやすい。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="bigrid" id="bJobs"></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="bigrid" id="bFeat"></div>
+</section>
+
+<!-- ========== C ========== -->
+<section class="section" id="c">
+  <div class="section-header">
+    <span class="section-label">案 C</span>
+    <h2>水平自動スクロール（ティッカー）</h2>
+    <p class="sub">横に流れ続ける帯。ホバーで停止。動きが出る。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="ticker"><div class="ticker-track" id="cJobs"></div></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="ticker"><div class="ticker-track" id="cFeat"></div></div>
+</section>
+
+<!-- ========== D ========== -->
+<section class="section" id="d">
+  <div class="section-header">
+    <span class="section-label">案 D</span>
+    <h2>Brutalist リストボタン</h2>
+    <p class="sub">サイト内CTAと同じ太字アウトライン。件数を右端のタグで表示。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="brutal-list" id="dJobs"></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="brutal-list" id="dFeat"></div>
+</section>
+
+<!-- ========== E ========== -->
+<section class="section" id="e">
+  <div class="section-header">
+    <span class="section-label">案 E</span>
+    <h2>縦スタック タイポ強調</h2>
+    <p class="sub">大きなサンセリフで列挙、件数を右に小さく。雑誌風・ミニマル。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="typo-stack" id="eJobs"></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="typo-stack" id="eFeat"></div>
+</section>
+
+<!-- ========== F ========== -->
+<section class="section" id="f">
+  <div class="section-header">
+    <span class="section-label">案 F</span>
+    <h2>グラデーション大型カード</h2>
+    <p class="sub">ブランドカラーのグラデ。職種名と件数を同居。華やか。</p>
+  </div>
+  <div class="subhead">AI職種からインターンを探す</div>
+  <div class="gradgrid" id="fJobs"></div>
+  <div class="subhead">尖った特徴からインターンを探す</div>
+  <div class="gradgrid" id="fFeat"></div>
+</section>
+
+<script>
+const jobs = [
+  { n:'LLMアプリ開発',         c:56 },
+  { n:'プロンプトエンジニア',   c:42 },
+  { n:'MLエンジニア',           c:38 },
+  { n:'データサイエンティスト', c:31 },
+  { n:'AI PMM / BizDev',        c:27 },
+  { n:'AIリサーチャー',         c:24 },
+  { n:'AIエージェント開発',     c:19 },
+  { n:'AI × クリエイティブ',    c:15 },
+];
+const feats = [
+  { n:'フルリモート可',       c:89 },
+  { n:'未経験OK',             c:67 },
+  { n:'時給2,000円以上',      c:52 },
+  { n:'文系歓迎',             c:45 },
+  { n:'CEO / CTO直下',        c:38 },
+  { n:'論文読み会あり',       c:34 },
+  { n:'GPU使い放題',          c:23 },
+  { n:'Kaggle推奨',           c:21 },
+  { n:'論文共著チャンス',     c:15 },
+  { n:'自社LLM開発中',        c:12 },
+  { n:'国際学会発表',         c:11 },
+  { n:'ストックオプション',   c:8  },
+];
+
+/* ----- A ----- */
+const aTpl = arr => arr.map(d =>
+  `<a class="pill" href="#">${d.n}<span class="count">${d.c}</span></a>`
+).join('');
+aJobs.innerHTML = aTpl(jobs);
+aFeat.innerHTML = aTpl(feats);
+
+/* ----- B ----- */
+const bTpl = arr => {
+  const max = Math.max(...arr.map(d => d.c));
+  return arr.map(d =>
+    `<div class="card">
+      <div class="count-big">${d.c}<span class="unit">件</span></div>
+      <div class="name">${d.n}</div>
+      <div class="bar"><span style="width:${(d.c/max)*100}%"></span></div>
+    </div>`
+  ).join('');
+};
+bJobs.innerHTML = bTpl(jobs);
+bFeat.innerHTML = bTpl(feats);
+
+/* ----- C ----- */
+const cTpl = arr => {
+  const chips = arr.map(d =>
+    `<div class="chip">${d.n}<span class="num">${d.c}</span></div>`
+  ).join('');
+  return chips + chips;
+};
+cJobs.innerHTML = cTpl(jobs);
+cFeat.innerHTML = cTpl(feats);
+
+/* ----- D ----- */
+const dTpl = arr => arr.map(d =>
+  `<a href="#">${d.n}<span class="num-tag">${d.c}件</span></a>`
+).join('');
+dJobs.innerHTML = dTpl(jobs);
+dFeat.innerHTML = dTpl(feats);
+
+/* ----- E ----- */
+const eTpl = arr => arr.map(d =>
+  `<a href="#"><span class="name">${d.n}</span><span class="count">${String(d.c).padStart(3,'0')} 件</span></a>`
+).join('');
+eJobs.innerHTML = eTpl(jobs);
+eFeat.innerHTML = eTpl(feats);
+
+/* ----- F ----- */
+const fTpl = arr => arr.map((d, i) =>
+  `<div class="card g${(i % 8) + 1}">
+    <div class="name">${d.n}</div>
+    <div class="count">${d.c}<span class="unit">件</span></div>
+  </div>`
+).join('');
+fJobs.innerHTML = fTpl(jobs);
+fFeat.innerHTML = fTpl(feats);
+</script>
+</body>
+</html>

@@ -66,7 +66,7 @@
     .neo-nav .neo-register:hover { opacity: 0.9; }
 
     /* Hero background image - right side, fading to left */
-    .cover-area { position: relative; overflow: hidden; }
+    .cover-area { position: relative; overflow: hidden; height: 720px; }
     .cover-area::before {
       content: '';
       position: absolute;
@@ -85,7 +85,7 @@
     /* ヒーロー内の小さな検索欄 */
     .hero-search {
       position: absolute;
-      bottom: -160px;
+      bottom: -170px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
@@ -96,7 +96,8 @@
       border-radius: 30px;
       padding: 0 8px 0 20px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-      width: 700px;
+      width: 780px;
+      max-width: 90vw;
       height: 38px;
       box-sizing: border-box;
     }
@@ -135,7 +136,7 @@
     /* 人気タグ */
     .hero-popular-tags {
       position: absolute;
-      bottom: -120px;
+      bottom: -200px;
       left: 10%;
       z-index: 3;
       display: flex;
@@ -274,44 +275,58 @@
       font-weight: 500;
       margin: 0;
     }
-    /* アメリカ地図 + 企業ピン */
+    /* スポットライト型カルーセル (地図非表示) */
     .usa-map-wrap {
-      position: relative; max-width: 700px; margin: 30px auto 0;
-      overflow: hidden; border-radius: 12px;
+      position: relative; max-width: 1200px; margin: 30px auto 0;
+      height: 440px; overflow: hidden; cursor: ew-resize;
     }
-    .usa-map-img {
-      width: 110%; display: block; margin: -3% 0 -12% -5%;
-    }
-    .usa-pin {
-      position: absolute; cursor: pointer; z-index: 5;
-      transform: translate(-50%, -50%);
-    }
-    .usa-pin-dot {
-      width: 16px; height: 16px; border-radius: 50%;
-      border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      transition: all 0.2s;
-      animation: usa-pulse 2s ease-in-out infinite;
-    }
-    .usa-pin:hover .usa-pin-dot { transform: scale(1.4); }
-    .usa-pin-label {
-      position: absolute; top: -180px; left: 50%; transform: translateX(-50%) translateY(20px) scale(0.85);
-      font-size: 1.15em; font-weight: 900; color: #111;
-      background: rgba(255, 255, 255, 0.95); padding: 24px 32px; border-radius: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.8);
-      white-space: nowrap; opacity: 0; visibility: hidden;
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      z-index: 50; pointer-events: none;
-    }
-    .usa-pin-label img, .usa-pin-label svg { width: 100px; height: 100px; object-fit: contain; display: block; transition: transform 0.3s ease; }
-    .usa-pin:hover .usa-pin-label { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
-    .usa-pin:hover .usa-pin-label img, .usa-pin:hover .usa-pin-label svg { transform: scale(1.05); }
+    .usa-map-img { display: none; }
+    .usa-pin-dot { display: none; }
     .usa-pin-tooltip { display: none !important; }
-    @keyframes usa-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(76,175,80,0); }
+    .usa-map-wrap::before,
+    .usa-map-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 12%;
+      z-index: 20; pointer-events: none;
     }
+    .usa-map-wrap::before { left: 0;  background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0)); }
+    .usa-map-wrap::after  { right: 0; background: linear-gradient(to left,  rgba(255,255,255,1), rgba(255,255,255,0)); }
+    .usa-map-hint {
+      position: absolute; left: 50%; top: 12px; transform: translateX(-50%);
+      z-index: 25; font-size: 0.8em; font-weight: 700; color: #666;
+      background: rgba(255,255,255,0.85); padding: 4px 14px; border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      pointer-events: none; white-space: nowrap;
+    }
+
+    .usa-pin {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.45s ease;
+      z-index: 1; pointer-events: none;
+    }
+    .usa-pin-label {
+      position: static !important; transform: none !important;
+      opacity: 1 !important; visibility: visible !important;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      background: transparent;
+      padding: 26px 32px; border-radius: 20px;
+      box-shadow: none;
+      font-size: 1.05em; font-weight: 900; color: #111; white-space: nowrap;
+      width: 200px; text-align: center;
+    }
+    .usa-pin-label img, .usa-pin-label svg { width: 70px; height: 70px; object-fit: contain; display: block; }
+    .usa-pin-label img[alt="OpenAI"] { width: 160px; height: auto; }
+
+    .usa-pin.is-active {
+      transform: translate(-50%, -50%) scale(1.4);
+      z-index: 10; pointer-events: auto;
+    }
+    .usa-pin.is-prev     { transform: translate(calc(-50% - 280px), -50%) scale(0.85); opacity: 0.55; z-index: 5; }
+    .usa-pin.is-next     { transform: translate(calc(-50% + 280px), -50%) scale(0.85); opacity: 0.55; z-index: 5; }
+    .usa-pin.is-far-prev { transform: translate(calc(-50% - 500px), -50%) scale(0.65); opacity: 0.22; z-index: 2; }
+    .usa-pin.is-far-next { transform: translate(calc(-50% + 500px), -50%) scale(0.65); opacity: 0.22; z-index: 2; }
+    .usa-pin.is-hidden   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; pointer-events: none; }
 
     .search-new-title {
       font-size: 2.2em;
@@ -437,6 +452,35 @@
       padding-left: 14px;
       border-left: 5px solid #4caf50;
     }
+    .brutal-row {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center;
+      max-width: 1000px; margin: 0 auto 24px;
+      padding: 4px 8px;
+    }
+    .brutal-row a {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; border: 3px solid #111; border-radius: 8px;
+      padding: 14px 20px; color: #111; text-decoration: none;
+      font-weight: 900; font-size: 0.95em;
+      box-shadow: 5px 5px 0 #111;
+      transition: all 0.12s ease-out;
+      white-space: nowrap;
+    }
+    .brutal-row a:hover {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0 #111;
+      background: #fffbe6;
+    }
+    .brutal-row a:active {
+      transform: translate(5px, 5px);
+      box-shadow: 0 0 0 #111;
+    }
+    .brutal-row .num-tag {
+      font-size: 0.75em; font-weight: 900; color: #fff;
+      background: #111; padding: 3px 8px; border-radius: 4px;
+      font-family: monospace;
+    }
     .search-icon-grid {
       display: flex;
       flex-wrap: wrap;
@@ -503,14 +547,37 @@
     .kanto-map-wrap img {
       border-radius: 12px;
     }
+    .kanto-group { cursor: pointer; }
     .kanto-pref {
-      fill: transparent;
-      stroke: transparent;
-      cursor: pointer;
-      transition: fill 0.2s ease;
+      fill: #fafafa;
+      stroke: #444;
+      stroke-width: 0.8;
+      stroke-linejoin: round;
+      transition: fill 0.25s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
     }
-    .kanto-pref:hover {
-      fill: rgba(76, 175, 80, 0.35);
+    .kanto-group:hover .kanto-pref,
+    .kanto-group.is-linked .kanto-pref {
+      fill: #4caf50;
+      stroke: #1b5e20;
+      stroke-width: 1.2;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+    }
+    .kanto-pref-label {
+      font-size: 5px;
+      font-weight: 800;
+      fill: #333;
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+      transition: fill 0.2s ease;
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+    }
+    .kanto-group:hover .kanto-pref-label,
+    .kanto-group.is-linked .kanto-pref-label { fill: #fff; }
+    .brutal-row a.is-linked {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0 #111;
+      background: #fffbe6;
     }
     .kanto-tooltip {
       display: none;
@@ -620,8 +687,8 @@
       max-width: 100% !important;
     }
     /* ネオ・ブルータリズム V5 ピュアホワイト */
-    .cta-brutal-microcopy { font-family: monospace; font-size: 0.95em; font-weight: 900; background: #111; color: #fff; display: inline-block; padding: 6px 16px; margin-bottom: 0; transform: rotate(-2deg); position: relative; top: 12px; left: -20px; z-index: 2; }
-    .cta-brutal-btn { display: inline-block; background: #ffffff; border: 4px solid #111; padding: 20px 40px; border-radius: 8px; font-weight: 900; font-size: 1.3em; text-decoration: none; color: #111; box-shadow: 8px 8px 0px #111; transition: all 0.1s ease-out; position: relative; }
+    .cta-brutal-microcopy { font-family: monospace; font-size: 1.15em; font-weight: 900; background: #111; color: #fff; display: inline-block; padding: 8px 20px; margin-bottom: 0; transform: rotate(-2deg); position: relative; top: 12px; left: -20px; z-index: 2; }
+    .cta-brutal-btn { display: inline-block; background: #ffffff; border: 4px solid #111; padding: 26px 52px; border-radius: 8px; font-weight: 900; font-size: 1.6em; text-decoration: none; color: #111; box-shadow: 8px 8px 0px #111; transition: all 0.1s ease-out; position: relative; }
     .cta-brutal-btn:active { transform: translate(5px, 5px); box-shadow: 3px 3px 0px #111; }
     .cta-brutal-tag { border: 3px solid #111; font-size: 0.7em; padding: 2px 8px; margin-right: 15px; vertical-align: middle; background: #111; font-weight: 900; color: #fff; }
     
@@ -821,9 +888,9 @@
     /* 「真の成果を、その手に」テキスト画像 */
     .seika-text-img {
       position: absolute;
-      right: 28%;
-      bottom: -22%;
-      width: 400px;
+      right: 24%;
+      bottom: -25%;
+      width: 520px;
       opacity: 0.9;
       transform: rotate(-9deg);
       z-index: 2;
@@ -857,12 +924,12 @@
 <div class="container-wrap top-page">
   <div class="cover-area">
   <div class="cover-inner">
-    <div class="top-catch">
+    <div class="top-catch" style="margin-left: -80px;">
       <img class="top-catch-tag" src="images/top/crown.svg" alt="crown.svg">
-      <h2 class="top-catch-title" style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AIと共創し、未来を切り開く。</h2>
-      <h1 class="top-catch-sub-title" style="font-size: 3em; margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AIme</h1>
-      <p style="font-size: 1.5em; font-weight: 600; margin-top: 0; text-shadow: 0 0 15px #fff, 0 0 30px #fff;">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
-              <div class="top-catch-action" style="margin-top: 40px;">
+      <h2 class="top-catch-title" style="font-size: 4em; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AIと共創し、未来を切り開く。</h2>
+      <h1 class="top-catch-sub-title" style="font-size: 4em; margin-top: 0; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AIme</h1>
+      <p style="font-size: 1.9em; font-weight: 600; margin-top: 0; text-shadow: 0 0 15px #fff, 0 0 30px #fff;">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
+              <div class="top-catch-action" style="margin-top: 90px;">
           <div class="top-catch-action-wrapper" style="text-align: left; margin-bottom: 20px;">
             <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
             <br>
@@ -912,7 +979,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       <!-- === カリフォルニア・ベイエリア === -->
       <div class="usa-pin" style="left: 10%; top: 36%;" data-company="OpenAI" data-location="San Francisco, CA" data-desc="ChatGPT / GPT-4">
         <div class="usa-pin-dot" style="background: #74aa9c;"></div>
-        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 2406 2406"><path d="M1 578.4C1 259.5 259.5 1 578.4 1h1249.1c319 0 577.5 258.5 577.5 577.4V2406H578.4C259.5 2406 1 2147.5 1 1828.6V578.4z" fill="#74aa9c"/><path d="M1107.3 299.1c-198 0-373.9 127.3-435.2 315.3L650 743.5v427.9c0 21.4 11 40.4 29.4 51.4l344.5 198.5V833.3h.1v-27.9L1372.7 604c33.7-19.5 70.4-32.9 108.5-39.8L1447.6 450.3C1361 353.5 1237.1 298.5 1107.3 299.1z" fill="#fff"/></svg>OpenAI</div>
+        <div class="usa-pin-label"><img src="images/logo/openai_logo.webp" alt="OpenAI">OpenAI</div>
       </div>
       <div class="usa-pin" style="left: 8%; top: 41%;" data-company="Google / DeepMind" data-location="Mountain View, CA" data-desc="Gemini / Transformer">
         <div class="usa-pin-dot" style="background: #4285f4;"></div>
@@ -980,8 +1047,69 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       </div>
 
       <div class="usa-pin-tooltip" id="usaPinTooltip"></div>
+      <div class="usa-map-hint">カーソルを左右に動かしてスクロール</div>
     </div>
   </div>
+
+  <script>
+  (function () {
+    const wrap = document.querySelector('.featured-companies .usa-map-wrap');
+    if (!wrap) return;
+    const pins = Array.from(wrap.querySelectorAll('.usa-pin'));
+    if (!pins.length) return;
+
+    pins.forEach(p => { p.style.left = ''; p.style.top = ''; });
+
+    const n = pins.length;
+    let idx = 0;
+    let direction = 0;
+    let speed = 0;
+    let lastStep = 0;
+
+    const render = () => {
+      pins.forEach((pin, i) => {
+        pin.classList.remove('is-active', 'is-prev', 'is-next', 'is-far-prev', 'is-far-next', 'is-hidden');
+        const diff = ((i - idx) % n + n) % n;
+        if (diff === 0) pin.classList.add('is-active');
+        else if (diff === 1) pin.classList.add('is-next');
+        else if (diff === 2) pin.classList.add('is-far-next');
+        else if (diff === n - 1) pin.classList.add('is-prev');
+        else if (diff === n - 2) pin.classList.add('is-far-prev');
+        else pin.classList.add('is-hidden');
+      });
+    };
+    render();
+
+    const deadzone = 0.08;
+    wrap.addEventListener('mousemove', (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const relX = (e.clientX - rect.left) / rect.width;
+      if (relX > 0.5 + deadzone) {
+        direction = 1;
+        speed = Math.min(1, (relX - 0.5 - deadzone) / (0.5 - deadzone));
+      } else if (relX < 0.5 - deadzone) {
+        direction = -1;
+        speed = Math.min(1, (0.5 - deadzone - relX) / (0.5 - deadzone));
+      } else {
+        direction = 0; speed = 0;
+      }
+    });
+    wrap.addEventListener('mouseleave', () => { direction = 0; speed = 0; });
+
+    const tick = (t) => {
+      if (direction !== 0 && speed > 0) {
+        const interval = 1000 - speed * 780;
+        if (t - lastStep > interval) {
+          idx = (idx + direction + n) % n;
+          render();
+          lastStep = t;
+        }
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+  </script>
 
   <!-- バナーカルーセル削除済み -->
 
@@ -995,54 +1123,56 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           <div class="section-title-e"><img src="images/sections/sect_01.png" style="height:80px;width:auto;margin-right:-5px;" alt="01 pictogram"><span class="e-num">01</span><div class="e-text"><h2>AImeシップを探す</h2><p class="e-sub">職種・特徴・エリアから検索</p></div></div>
 
           <h3 class="search-category-label">AI職種からインターンを探す</h3>
-          <div class="carousel-3d-scene">
-            <div class="carousel-3d" id="carousel3d-jobs"></div>
-          </div>
+          <div class="brutal-row" id="brutal-jobs"></div>
 
           <h3 class="search-category-label">尖った特徴からインターンを探す</h3>
-          <div class="carousel-3d-scene">
-            <div class="carousel-3d" id="carousel3d-features" style="animation-duration: 30s;"></div>
-          </div>
+          <div class="brutal-row" id="brutal-features"></div>
 
           <h3 class="search-category-label">エリアからインターンを探す</h3>
           <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
-            <!-- 関東地方マップ -->
-            <div class="kanto-map-wrap" style="width: 420px; height: 420px;">
-              <img src="images/kanto-map.png" alt="関東地方" width="420" height="420" style="display: block; position: absolute; top: 0; left: 0;">
-              <svg viewBox="0 0 960 960" width="420" height="420" style="position: absolute; top: 0; left: 0;">
-                <!-- 群馬県 - 左上 -->
-                <polygon class="kanto-pref" data-pref="群馬県" data-count="12"
-                  points="68,300 58,260 72,220 90,185 115,165 140,140 165,118 195,95 225,78 260,65 290,58 310,60 330,72 350,90 375,110 395,130 395,239 429,244 424,272 411,311 396,336 415,366 387,216 385,225 375,237 340,290 310,310 280,330 250,345 215,350 180,340 150,320 120,305 90,298"/>
-                <!-- 栃木県 -->
-                <polygon class="kanto-pref" data-pref="栃木県" data-count="8"
-                  points="387,216 394,183 409,153 399,129 424,105 454,90 485,72 518,58 545,50 571,25 605,29 639,41 662,66 678,87 680,120 684,153 682,186 673,206 675,240 679,273 666,302 651,322 619,328 595,336 568,356 546,367 530,397 496,407 480,379 447,374 415,366 396,336 411,311 424,272 429,244 395,239"/>
-                <!-- 茨城県 -->
-                <polygon class="kanto-pref" data-pref="茨城県" data-count="10"
-                  points="693,150 684,153 682,186 673,206 675,240 679,273 666,302 651,322 619,328 595,336 568,356 552,385 539,458 504,422 584,509 622,538 644,545 665,552 688,546 714,490 724,464 744,509 760,523 778,513 796,517 774,467 800,487 802,468 816,500 869,592 857,586 884,610 863,612 804,628 851,595 817,561 781,529 752,536 710,556 666,562 625,552 583,528 548,500 570,572 576,611 572,632 552,385 587,357 640,336 676,304 688,247 697,208 718,134 761,172 800,121 838,140 842,184 823,244 800,306 792,365 788,424"/>
-                <!-- 埼玉県 -->
-                <polygon class="kanto-pref" data-pref="埼玉県" data-count="18"
-                  points="75,293 87,251 118,220 152,201 194,191 221,165 251,151 266,115 293,85 319,83 343,111 387,121 393,153 387,192 375,237 416,251 405,287 389,329 465,389 445,384 476,412 451,410 422,412 363,388 318,376 288,412 265,440 228,458 191,476 156,483 154,439 152,413 144,383 158,330 131,318 78,314"/>
-                <!-- 東京都 -->
-                <polygon class="kanto-pref" data-pref="東京都" data-count="89"
-                  points="186,499 209,486 232,467 259,457 282,448 296,428 307,400 329,389 356,400 384,400 407,413 435,421 463,416 487,419 499,438 513,464 535,482 541,510 558,537 561,565 548,572 519,569 499,573 472,583 456,580 433,581 405,586 383,575 365,557 337,555 310,547 248,551 267,539 273,534 206,541 189,524 185,500"/>
-                <!-- 千葉県 -->
-                <polygon class="kanto-pref" data-pref="千葉県" data-count="15"
-                  points="548,500 570,572 576,611 572,632 606,631 628,688 625,691 605,716 576,741 571,756 562,802 550,842 550,884 558,897 563,937 585,918 625,872 660,849 699,838 729,810 728,768 730,723 752,679 884,610 863,612 804,628 851,595 817,561 781,529 752,536 710,556 666,562 625,552 583,528 646,672 643,664"/>
-                <!-- 神奈川県 -->
-                <polygon class="kanto-pref" data-pref="神奈川県" data-count="22"
-                  points="72,480 100,460 130,445 156,440 156,483 191,476 228,458 265,440 288,412 318,376 363,388 422,412 451,410 476,412 465,389 445,384 389,329 405,287 416,251 375,237 387,192 393,153 387,121 343,111 319,83 293,85 266,115 251,151 221,165 194,191 152,201 118,220 87,251 75,293 78,314 131,318 158,330 144,383 152,413 154,439 156,483 186,499 185,500 189,524 206,541 273,534 267,539 248,551 310,547 337,555 365,557 383,575 405,586 433,581 456,580 472,583 499,573 519,569 548,572 561,565 558,537 541,510 535,482 513,464 499,438 487,419 463,416 435,421 407,413 384,400 356,400 329,389 307,400 296,428 282,448 259,457 232,467 209,486 186,499 156,483 130,445"/>
+            <!-- 関東地方マップ (geolonia正確パス) -->
+            <div class="kanto-map-wrap" style="width: 420px; height: 485px; position: relative;">
+              <svg viewBox="555 560 130 150" width="420" height="485" style="display: block; width: 100%; height: 100%;">
+                <g class="kanto-group" transform="translate(557, 570)">
+                  <polygon class="kanto-pref" data-pref="群馬県" data-count="12" points="64 52 54 54 48 50 37 48 32 58 16 67 12 65 12 59 9 56 12 55 10 49 13 47 12 41 3 41 0 36 1 29 6 25 5 23 14 20 26 14 26 11 29 10 28 5 32 4 34 0 41 7 49 9 47 12 50 14 47 17 46 26 54 29 48 42 53 49 62 48"/>
+                  <text class="kanto-pref-label" x="30" y="40">群馬</text>
+                </g>
+                <g class="kanto-group" transform="translate(603, 563)">
+                  <polygon class="kanto-pref" data-pref="栃木県" data-count="8" points="19 60 18 59 16 55 7 56 2 49 8 36 0 33 1 24 4 21 1 19 3 16 28 0 40 3 46 7 47 13 47 24 48 27 45 29 47 39 44 46 33 48 30 53 27 53 26 57"/>
+                  <text class="kanto-pref-label" x="26" y="33">栃木</text>
+                </g>
+                <g class="kanto-group" transform="translate(622, 575)">
+                  <polygon class="kanto-pref" data-pref="茨城県" data-count="10" points="5 54 5 54 2 55 0 48 7 45 8 41 11 41 14 36 25 34 28 27 26 17 29 15 28 12 28 1 38 10 44 4 44 0 54 5 46 29 47 35 44 42 46 52 51 61 49 63 51 66 52 62 60 74 42 62 42 65 24 69 13 64"/>
+                  <text class="kanto-pref-label" x="30" y="42">茨城</text>
+                </g>
+                <g class="kanto-group" transform="translate(573, 618)">
+                  <polygon class="kanto-pref" data-pref="埼玉県" data-count="18" points="48 4 49 5 51 12 54 11 54 11 60 24 60 31 54 29 52 31 48 30 42 33 42 29 35 32 30 28 15 24 12 27 1 24 0 19 16 10 21 0 32 2 38 6"/>
+                  <text class="kanto-pref-label" x="33" y="19">埼玉</text>
+                </g>
+                <g class="kanto-group" transform="translate(585, 642)">
+                  <path class="kanto-pref" data-pref="東京都" data-count="89" d="M49,173 L49,178 L44,171 L49,173 Z M34,113 L32,115 L29,114 L31,111 L34,113 Z M11,104 L13,106 L11,107 L11,104 Z M18,98 L16,96 L18,92 L18,98 Z M22,75 L22,69 L26,70 L26,76 L22,75 Z M48,7 L49,12 L47,16 L41,15 L43,19 L39,20 L43,20 L43,23 L29,16 L26,18 L29,20 L27,20 L27,25 L23,20 L9,14 L4,11 L0,3 L3,0 L18,4 L23,8 L30,5 L30,9 L36,6 L40,7 L42,5 L48,7 Z"/>
+                  <text class="kanto-pref-label" x="22" y="16">東京</text>
+                </g>
+                <g class="kanto-group" transform="translate(627, 629)">
+                  <polygon class="kanto-pref" data-pref="千葉県" data-count="15" points="5 29 7 25 6 20 6 13 0 0 8 10 19 15 37 11 37 8 55 20 55 24 45 24 34 35 32 57 19 61 7 75 0 71 5 69 3 66 4 63 3 58 5 53 1 49 4 45 7 46 7 42 13 39 18 33 11 26 6 30"/>
+                  <text class="kanto-pref-label" x="25" y="38">千葉</text>
+                </g>
+                <g class="kanto-group" transform="translate(584, 656)">
+                  <polygon class="kanto-pref" data-pref="神奈川県" data-count="22" points="10 0 24 6 28 11 28 6 30 6 27 4 30 2 44 9 40 13 36 12 39 16 36 16 36 23 42 26 38 30 39 33 35 33 36 28 33 24 26 22 15 25 11 28 12 34 10 34 4 30 4 17 0 17 9 9"/>
+                  <text class="kanto-pref-label" x="22" y="22">神奈川</text>
+                </g>
               </svg>
               <div class="kanto-tooltip" id="kantoTooltip"></div>
             </div>
             <!-- 関東の県チップ -->
-            <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; padding-top: 10px;">
-              <a href="#" class="search-icon-card"><span>東京都</span></a>
-              <a href="#" class="search-icon-card"><span>神奈川県</span></a>
-              <a href="#" class="search-icon-card"><span>埼玉県</span></a>
-              <a href="#" class="search-icon-card"><span>千葉県</span></a>
-              <a href="#" class="search-icon-card"><span>茨城県</span></a>
-              <a href="#" class="search-icon-card"><span>栃木県</span></a>
-              <a href="#" class="search-icon-card"><span>群馬県</span></a>
+            <div class="brutal-row" id="kantoPrefButtons" style="flex: 1; justify-content: flex-start; margin: 0; padding-top: 10px;">
+              <a href="#" data-pref="東京都">東京都<span class="num-tag">89件</span></a>
+              <a href="#" data-pref="神奈川県">神奈川県<span class="num-tag">22件</span></a>
+              <a href="#" data-pref="埼玉県">埼玉県<span class="num-tag">18件</span></a>
+              <a href="#" data-pref="千葉県">千葉県<span class="num-tag">15件</span></a>
+              <a href="#" data-pref="茨城県">茨城県<span class="num-tag">10件</span></a>
+              <a href="#" data-pref="栃木県">栃木県<span class="num-tag">8件</span></a>
+              <a href="#" data-pref="群馬県">群馬県<span class="num-tag">12件</span></a>
             </div>
           </div>
         </section>
@@ -1402,16 +1532,31 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           el.appendChild(cell);
         });
       }
-      setup3DCarousel('carousel3d-jobs', [
-        {icon:'💬',name:'プロンプトエンジニア'},{icon:'🧠',name:'MLエンジニア'},
-        {icon:'🔬',name:'AIリサーチャー'},{icon:'💻',name:'LLMアプリ開発'},
-        {icon:'📊',name:'データサイエンティスト'},{icon:'🤖',name:'AIエージェント開発'}
-      ]);
-      setup3DCarousel('carousel3d-features', [
-        {icon:'🖥️',name:'GPU使い放題'},{icon:'🏠',name:'フルリモート可'},
-        {icon:'📖',name:'論文読み会あり'},{icon:'🌱',name:'未経験OK'},
-        {icon:'🚀',name:'自社LLM開発中'},{icon:'💰',name:'時給2,000円以上'}
-      ]);
+      (function(){
+        var brutalJobs = [
+          {n:'LLMアプリ開発',c:56},{n:'プロンプトエンジニア',c:42},
+          {n:'MLエンジニア',c:38},{n:'データサイエンティスト',c:31},
+          {n:'AI PMM / BizDev',c:27},{n:'AIリサーチャー',c:24},
+          {n:'AIエージェント開発',c:19},{n:'AI × クリエイティブ',c:15}
+        ];
+        var brutalFeat = [
+          {n:'フルリモート可',c:89},{n:'未経験OK',c:67},
+          {n:'時給2,000円以上',c:52},{n:'文系歓迎',c:45},
+          {n:'CEO / CTO直下',c:38},{n:'論文読み会あり',c:34},
+          {n:'GPU使い放題',c:23},{n:'Kaggle推奨',c:21},
+          {n:'論文共著チャンス',c:15},{n:'自社LLM開発中',c:12},
+          {n:'国際学会発表',c:11},{n:'ストックオプション',c:8}
+        ];
+        function renderBrutal(id, items){
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.innerHTML = items.map(function(d){
+            return '<a href="#">' + d.n + '<span class="num-tag">' + d.c + '件</span></a>';
+          }).join('');
+        }
+        renderBrutal('brutal-jobs', brutalJobs);
+        renderBrutal('brutal-features', brutalFeat);
+      })();
 
       // 3台スマホスクロール風フィルター生成
       (function(){
@@ -1434,17 +1579,32 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         if(s3){var h3=makeCards(areas.concat(kw));s3.innerHTML=h3+h3;}
       })();
 
-      // 関東地方マップ ツールチップ（SVGオーバーレイ版）
+      // 関東地方マップ ツールチップ（SVGオーバーレイ版）+ 県ボタン連動
       var kantoTooltip = document.getElementById('kantoTooltip');
       var kantoWrap = document.querySelector('.kanto-map-wrap');
+      var kantoButtonsWrap = document.getElementById('kantoPrefButtons');
       if (kantoWrap) {
         var prefs = kantoWrap.querySelectorAll('.kanto-pref');
+        var btnByPref = {};
+        if (kantoButtonsWrap) {
+          kantoButtonsWrap.querySelectorAll('a[data-pref]').forEach(function(a){
+            btnByPref[a.getAttribute('data-pref')] = a;
+          });
+        }
+        var groupByPref = {};
+        kantoWrap.querySelectorAll('.kanto-group').forEach(function(g){
+          var p = g.querySelector('.kanto-pref');
+          if (p) groupByPref[p.getAttribute('data-pref')] = g;
+        });
+
         prefs.forEach(function(pref) {
+          var prefName = pref.getAttribute('data-pref');
+          var linkedBtn = btnByPref[prefName];
           pref.addEventListener('mouseenter', function(e) {
-            var name = pref.getAttribute('data-pref');
             var count = pref.getAttribute('data-count');
-            kantoTooltip.innerHTML = name + '<span class="kt-count">' + count + '件のインターン</span>';
+            kantoTooltip.innerHTML = prefName + '<span class="kt-count">' + count + '件のインターン</span>';
             kantoTooltip.style.display = 'block';
+            if (linkedBtn) linkedBtn.classList.add('is-linked');
           });
           pref.addEventListener('mousemove', function(e) {
             var rect = kantoWrap.getBoundingClientRect();
@@ -1453,8 +1613,18 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           });
           pref.addEventListener('mouseleave', function() {
             kantoTooltip.style.display = 'none';
+            if (linkedBtn) linkedBtn.classList.remove('is-linked');
           });
         });
+
+        if (kantoButtonsWrap) {
+          kantoButtonsWrap.querySelectorAll('a[data-pref]').forEach(function(a){
+            var g = groupByPref[a.getAttribute('data-pref')];
+            if (!g) return;
+            a.addEventListener('mouseenter', function(){ g.classList.add('is-linked'); });
+            a.addEventListener('mouseleave', function(){ g.classList.remove('is-linked'); });
+          });
+        }
       }
 
       // カードデータ（各カテゴリのテンプレート）
