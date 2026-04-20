@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .mp-hero {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32 50%, #4caf50);
+    color: #fff; padding: 48px 24px;
+  }
+  .mp-hero-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 20px; }
+  .mp-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2em; font-weight: 900; color: #fff; flex-shrink: 0;
+    background: rgba(255,255,255,.2);
+  }
+  .mp-hero h1 { margin: 0; font-size: 1.8em; font-weight: 900; }
+  .mp-hero .sub { opacity: .85; font-size: .95em; margin-top: 4px; }
+  .mp-container { max-width: 1100px; margin: -30px auto 60px; padding: 0 24px; position: relative; }
+  .mp-tabs { display: flex; gap: 8px; background: #fff; padding: 6px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.08); margin-bottom: 20px; }
+  .mp-tab { flex: 1; padding: 12px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 800; color: #666; transition: all .15s; font-size: .9em; }
+  .mp-tab.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+  .mp-panel { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .mp-panel h2 { margin: 0 0 16px; font-size: 1.2em; font-weight: 900; }
+  .mp-empty { text-align: center; padding: 40px 20px; color: #888; }
+  .mp-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px; margin-bottom: 8px; background: #f9fafb;
+    border-radius: 10px; transition: background .15s;
+  }
+  .mp-item:hover { background: #f1f8e9; }
+  .mp-item-title { font-weight: 800; color: #111; margin-bottom: 4px; }
+  .mp-item-meta { font-size: .8em; color: #666; }
+  .mp-item-status {
+    padding: 4px 10px; border-radius: 999px; font-size: .75em; font-weight: 800;
+    background: #fff3e0; color: #ef6c00;
+  }
+  .mp-item-status.accepted { background: #e8f5e9; color: #1b5e20; }
+  .mp-item-status.rejected { background: #ffebee; color: #c62828; }
+  .mp-item-actions { display: flex; gap: 8px; }
+  .mp-item-btn { padding: 6px 12px; border-radius: 6px; background: #fff; border: 1px solid #e0e0e0; cursor: pointer; font-size: .85em; font-weight: 700; }
+  .mp-item-btn:hover { border-color: #4caf50; color: #2e7d32; }
+  .mp-form-field { margin-bottom: 16px; }
+  .mp-form-field label { display: block; font-size: .85em; font-weight: 800; margin-bottom: 6px; color: #333; }
+  .mp-form-field input { width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1em; }
+  .mp-save-btn { padding: 12px 28px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+  .mp-auth-required { text-align: center; padding: 80px 24px; }
+  .mp-auth-required h2 { font-size: 1.4em; font-weight: 900; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
+      <a href="mypage.html" class="current">マイページ</a>
+      <a href="#" id="logout-link" style="display:none;" class="login">ログアウト</a>
+    </nav>
+  </div>
+</header>
+
+<div id="mypage-auth-required" class="mp-auth-required" style="display:none;">
+  <h2>マイページはログインが必要です</h2>
+  <p style="color:#666;">ログインまたは新規登録してください。</p>
+  <div style="margin-top:20px; display:inline-flex; gap:10px;">
+    <a href="login.html" class="btn btn-primary">ログイン</a>
+    <a href="signup.html" class="btn btn-ghost">新規登録</a>
+  </div>
+</div>
+
+<div id="mypage-content" style="display:none;">
+  <section class="mp-hero">
+    <div class="mp-hero-inner">
+      <div class="mp-avatar" id="mp-avatar">U</div>
+      <div>
+        <h1 id="mp-nickname">—</h1>
+        <div class="sub" id="mp-email">—</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mp-container">
+    <div class="mp-tabs">
+      <button class="mp-tab active" data-panel="apps">応募履歴</button>
+      <button class="mp-tab" data-panel="bookmarks">ブックマーク</button>
+      <button class="mp-tab" data-panel="posts">自分の投稿</button>
+      <button class="mp-tab" data-panel="profile">プロフィール</button>
+    </div>
+
+    <div class="mp-panel" id="panel-apps">
+      <h2>応募履歴</h2>
+      <div id="apps-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-bookmarks" style="display:none;">
+      <h2>ブックマーク</h2>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-posts" style="display:none;">
+      <h2>自分の投稿</h2>
+      <div id="posts-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-profile" style="display:none;">
+      <h2>プロフィール編集</h2>
+      <form id="profile-form">
+        <div class="mp-form-field">
+          <label>ニックネーム</label>
+          <input type="text" id="pf-nickname" required>
+        </div>
+        <div class="mp-form-field">
+          <label>大学・学部</label>
+          <input type="text" id="pf-school">
+        </div>
+        <button type="submit" class="mp-save-btn">保存する</button>
+        <span id="pf-status" style="margin-left:12px; font-size:.85em; color:#2e7d32; font-weight:700;"></span>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div><p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p></div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="mypage.html">マイページ</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-social.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) {
+    document.getElementById('mypage-auth-required').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('mypage-content').style.display = 'block';
+  document.getElementById('logout-link').style.display = 'inline-block';
+  document.getElementById('logout-link').addEventListener('click', async (e) => {
+    e.preventDefault(); await window.sb.auth.signOut(); location.href = 'original.html';
+  });
+
+  const profile = await window.AImeSocial.getProfile(user.id);
+  const nickname = profile?.nickname || user.email.split('@')[0];
+  document.getElementById('mp-nickname').textContent = nickname;
+  document.getElementById('mp-email').textContent = user.email;
+  document.getElementById('mp-avatar').textContent = nickname.charAt(0).toUpperCase();
+  document.getElementById('pf-nickname').value = nickname;
+  document.getElementById('pf-school').value = profile?.school || '';
+
+  // タブ切替
+  document.querySelectorAll('.mp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.mp-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      ['apps','bookmarks','posts','profile'].forEach(name => {
+        document.getElementById('panel-'+name).style.display = (name === tab.dataset.panel) ? 'block' : 'none';
+      });
+    });
+  });
+
+  // 応募履歴
+  const apps = await window.AImeSocial.listApplications();
+  const appsList = document.getElementById('apps-list');
+  if (!apps.length) {
+    appsList.innerHTML = '<div class="mp-empty">まだ応募はありません</div>';
+  } else {
+    appsList.innerHTML = apps.map(a => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${a.job_title || '求人'}</div>
+          <div class="mp-item-meta">${a.job_company || ''} / ${new Date(a.created_at).toLocaleDateString('ja-JP')}</div>
+        </div>
+        <span class="mp-item-status ${a.status}">${ {pending:'審査中', reviewing:'選考中', accepted:'合格', rejected:'不採用'}[a.status] || a.status }</span>
+      </div>
+    `).join('');
+  }
+
+  // ブックマーク
+  const bms = await window.AImeSocial.listBookmarks();
+  const bmList = document.getElementById('bookmarks-list');
+  if (!bms.length) {
+    bmList.innerHTML = '<div class="mp-empty">まだブックマークはありません</div>';
+  } else {
+    bmList.innerHTML = bms.map(b => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${b.job_title || '求人'}</div>
+          <div class="mp-item-meta">${b.job_company || ''}</div>
+        </div>
+        <div class="mp-item-actions">
+          <a href="job.html?id=${encodeURIComponent(b.job_id)}" class="mp-item-btn">開く</a>
+          <button class="mp-item-btn" data-unbm="${b.job_id}">削除</button>
+        </div>
+      </div>
+    `).join('');
+    bmList.querySelectorAll('[data-unbm]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        await window.AImeSocial.unbookmark(btn.dataset.unbm);
+        location.reload();
+      });
+    });
+  }
+
+  // 自分の投稿
+  const { data: myPosts } = await window.sb.from('posts').select('*').eq('author_id', user.id).order('created_at', { ascending: false });
+  const postsList = document.getElementById('posts-list');
+  if (!myPosts || !myPosts.length) {
+    postsList.innerHTML = '<div class="mp-empty">まだ投稿はありません <a href="blog.html">投稿する</a></div>';
+  } else {
+    postsList.innerHTML = myPosts.map(p => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${p.title}</div>
+          <div class="mp-item-meta">${new Date(p.created_at).toLocaleDateString('ja-JP')}</div>
+        </div>
+        <a href="post.html?id=${p.id}" class="mp-item-btn">開く</a>
+      </div>
+    `).join('');
+  }
+
+  // プロフィール編集
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await window.AImeSocial.updateProfile({
+        nickname: document.getElementById('pf-nickname').value.trim(),
+        school: document.getElementById('pf-school').value.trim() || null,
+      });
+      document.getElementById('pf-status').textContent = '✓ 保存しました';
+      setTimeout(() => location.reload(), 800);
+    } catch (err) {
+      document.getElementById('pf-status').textContent = 'エラー: ' + err.message;
+      document.getElementById('pf-status').style.color = '#c62828';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業詳細 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .company-hero {
+    background: linear-gradient(135deg, #111 0%, #1b5e20 100%);
+    color: #fff; padding: 48px 24px;
+  }
+  .company-hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  }
+  .company-logo-box {
+    width: 120px; height: 120px; flex-shrink: 0;
+    background: #fff; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    font-size: 3em; font-weight: 900;
+  }
+  .company-hero h1 { font-size: 2.4em; font-weight: 900; margin: 0 0 6px; letter-spacing: -.02em; }
+  .company-hero .loc { font-size: .95em; opacity: .85; font-weight: 700; }
+  .company-hero .desc { font-size: 1em; margin: 10px 0 14px; max-width: 680px; opacity: .9; }
+  .company-hero .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .company-hero .tag-list span {
+    padding: 4px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.15); font-size: .78em; font-weight: 700;
+  }
+
+  .about { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .about h2 { margin-top: 0; font-size: 1.4em; font-weight: 900; }
+  .about p { color: #333; line-height: 1.9; }
+
+  .pos-list { margin-top: 24px; display: grid; gap: 12px; }
+
+  .cta-bar {
+    position: sticky; bottom: 0; z-index: 50;
+    background: #fff; border-top: 1px solid #e1e4e8;
+    padding: 12px 24px; display: flex; justify-content: center; gap: 12px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.05);
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="search.html?view=companies" class="current">AI企業を探す</a>
+      <a href="#">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup.html" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span>
+  <a href="search.html?view=companies">企業一覧</a><span>/</span>
+  <span id="crumb-name">企業詳細</span>
+</nav>
+
+<section class="company-hero">
+  <div class="company-hero-inner">
+    <div class="company-logo-box" id="logo-box">AI</div>
+    <div style="flex:1; min-width: 260px;">
+      <h1 id="company-name">企業名</h1>
+      <div class="loc" id="company-loc">所在地</div>
+      <p class="desc" id="company-desc">企業の説明がここに入ります。</p>
+      <div class="tag-list" id="company-tags"></div>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num" id="stat-open">12<span class="unit">件</span></div><div class="label">募集中の求人</div></div>
+    <div class="stat-card"><div class="num">2,800<span class="unit">円</span></div><div class="label">平均時給</div></div>
+    <div class="stat-card"><div class="num">4.6<span class="unit">/5</span></div><div class="label">インターン評価</div></div>
+    <div class="stat-card"><div class="num">98<span class="unit">%</span></div><div class="label">返信率</div></div>
+  </div>
+
+  <section class="about">
+    <h2>About</h2>
+    <p id="company-about">最先端のAI技術を事業化し、社会課題の解決を目指しています。インターン生も主要プロジェクトに初日から関わり、プロダクション級のコードを書き、論文を読み、研究開発にも携われる環境です。メンターは経験豊富なエンジニアとリサーチャー。週次1on1・GPU使い放題・フルリモート可。</p>
+  </section>
+
+  <section style="margin-top: 32px;">
+    <h2 style="font-size: 1.4em; font-weight: 900;">募集中の求人</h2>
+    <div class="pos-list" id="pos-list"></div>
+  </section>
+</div>
+
+<div class="cta-bar">
+  <a href="signup.html" class="btn btn-primary">この企業に応募する</a>
+  <a href="#" class="btn btn-ghost">ブックマーク</a>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="brand">AIme</div>
+      <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p>
+    </div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="search.html?view=companies">企業一覧</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup.html">新規登録</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">採用担当者様へ</a></li><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script>
+(function(){
+  const DB = {
+    'OpenAI':     { loc:'San Francisco, CA', desc:'ChatGPT / GPT-4 の開発元。LLM研究・API/プロダクト開発を牽引。', tags:['LLM','API','研究'], initials:'O', color:'#74aa9c' },
+    'Google':     { loc:'Mountain View, CA', desc:'Gemini / Transformer を生み出した世界最大級のAI研究組織。',     tags:['LLM','研究','クラウド'], initials:'G', color:'#4285f4' },
+    'Anthropic':  { loc:'San Francisco, CA', desc:'Claude の開発元。安全性とアラインメント研究を重視したAI企業。', tags:['LLM','Safety'], initials:'A', color:'#d97706' },
+    'Meta AI':    { loc:'Menlo Park, CA',    desc:'LLaMA / PyTorch を公開するオープンソースAI開発の中心。',    tags:['LLM','OSS'], initials:'M', color:'#0668e1' },
+    'Apple':      { loc:'Cupertino, CA',     desc:'Apple Intelligence / Siri。プライバシー重視のオンデバイスAI。', tags:['デバイス','エッジAI'], initials:'', color:'#333' },
+    'Microsoft':  { loc:'Redmond, WA',       desc:'Azure AI / Copilot / OpenAI との協業。エンタープライズAIの雄。',tags:['クラウド','Copilot'], initials:'MS',color:'#00a4ef' },
+    'Amazon':     { loc:'Seattle, WA',       desc:'AWS Bedrock / Alexa。大規模クラウド×AI。',                     tags:['クラウド','エージェント'], initials:'a', color:'#ff9900' },
+    'NVIDIA':     { loc:'Santa Clara, CA',   desc:'GPU / CUDA。AI計算基盤のデファクト。',                         tags:['半導体','GPU'], initials:'N', color:'#76b900' },
+    'IBM':        { loc:'Armonk, NY',        desc:'Watson / エンタープライズAI / 量子コンピューティング。',       tags:['エンタープライズ'], initials:'IBM',color:'#0530ad' },
+    'Oracle':     { loc:'Austin, TX',        desc:'OCI AI / クラウド + DB。',                                    tags:['クラウド','DB'], initials:'O', color:'#f80000' },
+    'xAI':        { loc:'Austin, TX',        desc:'Grok を開発するイーロン・マスクのAIスタートアップ。',         tags:['LLM','スタートアップ'], initials:'X', color:'#111' },
+    'Adobe':      { loc:'San Jose, CA',      desc:'Firefly / Sensei。クリエイティブ×AI。',                        tags:['生成','クリエイティブ'], initials:'A', color:'#ff0000' },
+    'Intel':      { loc:'Santa Clara, CA',   desc:'Gaudi / AI半導体。',                                          tags:['半導体'], initials:'i', color:'#0071c5' },
+    'Salesforce': { loc:'San Francisco, CA', desc:'Einstein AI / Slack。SaaS × AI。',                            tags:['SaaS'], initials:'S', color:'#00a1e0' },
+    'Tesla':      { loc:'Palo Alto, CA',     desc:'Autopilot / Optimus。物理世界のAI。',                         tags:['ロボ','自動運転'], initials:'T', color:'#cc0000' },
+  };
+
+  const name = new URLSearchParams(location.search).get('name') || 'OpenAI';
+  const c = DB[name] || DB['OpenAI'];
+
+  document.title = name + ' | AIme';
+  document.getElementById('crumb-name').textContent = name;
+  document.getElementById('company-name').textContent = name;
+  document.getElementById('company-loc').textContent = c.loc;
+  document.getElementById('company-desc').textContent = c.desc;
+  document.getElementById('company-tags').innerHTML = c.tags.map(t => `<span>${t}</span>`).join('');
+
+  const logoBox = document.getElementById('logo-box');
+  logoBox.textContent = c.initials || name.charAt(0);
+  logoBox.style.background = c.color;
+  logoBox.style.color = (c.color === '#333' || c.color === '#111') ? '#fff' : '#fff';
+
+  const positions = [
+    { title: `${name} で LLMアプリ開発インターン`,       tags: ['LLM','Python','リモート可'], wage: 2400 },
+    { title: `${name} プロンプトエンジニア`,               tags: ['Prompt','評価','未経験OK'], wage: 2000 },
+    { title: `${name} AIエージェント開発（バックエンド）`, tags: ['Agent','FastAPI'],          wage: 2800 },
+    { title: `${name} 研究開発アシスタント（論文実装）`,   tags: ['論文','PyTorch','GPU'],     wage: 3200 },
+    { title: `${name} データアナリスト / BI`,             tags: ['SQL','分析','未経験OK'],     wage: 1800 },
+  ];
+  document.getElementById('pos-list').innerHTML = positions.map(p => `
+    <a class="job-card" href="search.html?company=${encodeURIComponent(name)}">
+      <div class="jc-company">${name}</div>
+      <div class="jc-title">${p.title}</div>
+      <div class="jc-tags">${p.tags.map(t=>`<span class="jc-tag">${t}</span>`).join('')}</div>
+      <div class="jc-meta">
+        <span class="jc-wage">時給 ¥${p.wage.toLocaleString()}</span>
+        <span>${c.loc.split(',')[0]}</span>
+        <span>週2日〜</span>
+      </div>
+    </a>
+  `).join('');
+  document.getElementById('stat-open').innerHTML = positions.length + '<span class="unit">件</span>';
+})();
+</script>
+</body>
+</html>

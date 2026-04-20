@@ -739,31 +739,40 @@
     .student-voice-carousel .slick-slide {
       margin: 0 8px;
     }
-    /* カルーセル矢印: ピル型縦長ボタン */
+    /* カルーセル矢印: 案3 外枠のみミニマル矢印 */
     .student-voice-carousel .slick-prev,
     .student-voice-carousel .slick-next {
-      width: 36px !important;
-      height: 60px !important;
-      border-radius: 18px !important;
-      background: rgba(0,0,0,0.06) !important;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 50% !important;
+      background: transparent !important;
+      border: 2px solid transparent !important;
       z-index: 10 !important;
-      transition: all 0.2s !important;
+      transition: all 0.2s ease !important;
     }
     .student-voice-carousel .slick-prev:hover,
     .student-voice-carousel .slick-next:hover {
-      background: rgba(76,175,80,0.15) !important;
+      background: rgba(76,175,80,0.08) !important;
+      border-color: #4caf50 !important;
     }
-    .student-voice-carousel .slick-prev { left: -36px !important; }
-    .student-voice-carousel .slick-next { right: -36px !important; }
+    .student-voice-carousel .slick-prev { left: -44px !important; }
+    .student-voice-carousel .slick-next { right: -44px !important; }
+    /* 重複した矢印を非表示 (1組だけ残す) */
+    .student-voice-carousel .slick-prev ~ .slick-prev,
+    .student-voice-carousel .slick-next ~ .slick-next {
+      display: none !important;
+    }
     .student-voice-carousel .slick-prev:before,
     .student-voice-carousel .slick-next:before {
-      font-size: 20px !important;
-      color: #888 !important;
+      font-size: 24px !important;
+      color: #4caf50 !important;
       opacity: 1 !important;
+      font-weight: 900 !important;
+      transition: color 0.2s ease !important;
     }
     .student-voice-carousel .slick-prev:hover:before,
     .student-voice-carousel .slick-next:hover:before {
-      color: #2e7d32 !important;
+      color: #1b5e20 !important;
     }
     .student-voice-carousel .slick-prev:before { content: '\2039' !important; }
     .student-voice-carousel .slick-next:before { content: '\203A' !important; }
@@ -905,14 +914,15 @@
   <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
     <div class="header-content" style="display: flex; align-items: center; width: 100%;">
       <div class="header-left" style="margin-right: auto;">
-        <a href="#" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="logo icon" style="height: 38px; width: auto;">AIme</a>
+        <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="logo icon" style="height: 38px; width: auto;">AIme</a>
       </div>
       <div class="neo-nav">
-        <a href="#" class="header-category-item current">AIme</a>
-        <a href="#" class="header-category-item">AI勉強会</a>
-        <a href="#" class="neo-corp">採用担当者様</a>
-        <a href="#" class="neo-login">ログイン</a>
-        <a href="#" class="neo-register">新規登録</a>
+        <a href="search.html" class="header-category-item">インターンを探す</a>
+        <a href="search.html?view=companies" class="header-category-item">AI企業を探す</a>
+        <a href="blog.html" class="header-category-item">AIコラム</a>
+        <a href="mypage.html" class="header-category-item" id="nav-mypage" style="display:none;">マイページ</a>
+        <a href="login.html" class="neo-login" id="nav-login">ログイン</a>
+        <a href="signup.html" class="neo-register" id="nav-signup">新規登録</a>
       </div>
     </div>
   </div>
@@ -933,7 +943,7 @@
           <div class="top-catch-action-wrapper" style="text-align: left; margin-bottom: 20px;">
             <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
             <br>
-            <a href="#" class="cta-brutal-btn">
+            <a href="signup.html" class="cta-brutal-btn">
               <span class="cta-brutal-tag">無料</span>新規登録する
             </a>
           </div>
@@ -941,31 +951,22 @@
         <img src="images/top/seika-text.png" alt="真の成果を、その手に" class="seika-text-img">
         <div class="hero-popular-tags">
           <span class="popular-label">人気:</span>
-          <a href="#" class="popular-tag">LLM</a>
-          <a href="#" class="popular-tag">RAG</a>
-          <a href="#" class="popular-tag">AIエージェント</a>
-          <a href="#" class="popular-tag">Python</a>
-          <a href="#" class="popular-tag">GPT</a>
-          <a href="#" class="popular-tag">フルリモート</a>
-          <a href="#" class="popular-tag">未経験OK</a>
+          <a href="search.html?tag=LLM" class="popular-tag">LLM</a>
+          <a href="search.html?tag=RAG" class="popular-tag">RAG</a>
+          <a href="search.html?tag=AI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88" class="popular-tag">AIエージェント</a>
+          <a href="search.html?tag=Python" class="popular-tag">Python</a>
+          <a href="search.html?tag=GPT" class="popular-tag">GPT</a>
+          <a href="search.html?tag=%E3%83%95%E3%83%AB%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88" class="popular-tag">フルリモート</a>
+          <a href="search.html?tag=%E6%9C%AA%E7%B5%8C%E9%A8%93OK" class="popular-tag">未経験OK</a>
         </div>
-        <div class="hero-search">
-          <input id="hero-search-input" type="text" placeholder="スキル、企業、条件で探す">
+        <form class="hero-search" method="get" action="search.html">
+          <input id="hero-search-input" type="text" name="q" placeholder="スキル、企業、条件で探す">
           <button type="submit"><i class="material-icons">search</i></button>
-        </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-<script>
-document.querySelectorAll('.popular-tag').forEach(function(tag) {
-  tag.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('hero-search-input').value = this.textContent;
-    document.getElementById('hero-search-input').focus();
-  });
-});
-</script>
 
   <!-- 特集トップ企業紹介 -->
   <div class="featured-companies">
@@ -1058,7 +1059,10 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
     const pins = Array.from(wrap.querySelectorAll('.usa-pin'));
     if (!pins.length) return;
 
-    pins.forEach(p => { p.style.left = ''; p.style.top = ''; });
+    pins.forEach(p => {
+      p.style.left = ''; p.style.top = '';
+      p.style.cursor = 'default';
+    });
 
     const n = pins.length;
     let idx = 0;
@@ -1166,13 +1170,13 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
             </div>
             <!-- 関東の県チップ -->
             <div class="brutal-row" id="kantoPrefButtons" style="flex: 1; justify-content: flex-start; margin: 0; padding-top: 10px;">
-              <a href="#" data-pref="東京都">東京都<span class="num-tag">89件</span></a>
-              <a href="#" data-pref="神奈川県">神奈川県<span class="num-tag">22件</span></a>
-              <a href="#" data-pref="埼玉県">埼玉県<span class="num-tag">18件</span></a>
-              <a href="#" data-pref="千葉県">千葉県<span class="num-tag">15件</span></a>
-              <a href="#" data-pref="茨城県">茨城県<span class="num-tag">10件</span></a>
-              <a href="#" data-pref="栃木県">栃木県<span class="num-tag">8件</span></a>
-              <a href="#" data-pref="群馬県">群馬県<span class="num-tag">12件</span></a>
+              <a href="search.html?area=%E6%9D%B1%E4%BA%AC%E9%83%BD&count=89" data-pref="東京都">東京都<span class="num-tag">89件</span></a>
+              <a href="search.html?area=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C&count=22" data-pref="神奈川県">神奈川県<span class="num-tag">22件</span></a>
+              <a href="search.html?area=%E5%9F%BC%E7%8E%89%E7%9C%8C&count=18" data-pref="埼玉県">埼玉県<span class="num-tag">18件</span></a>
+              <a href="search.html?area=%E5%8D%83%E8%91%89%E7%9C%8C&count=15" data-pref="千葉県">千葉県<span class="num-tag">15件</span></a>
+              <a href="search.html?area=%E8%8C%A8%E5%9F%8E%E7%9C%8C&count=10" data-pref="茨城県">茨城県<span class="num-tag">10件</span></a>
+              <a href="search.html?area=%E6%A0%83%E6%9C%A8%E7%9C%8C&count=8" data-pref="栃木県">栃木県<span class="num-tag">8件</span></a>
+              <a href="search.html?area=%E7%BE%A4%E9%A6%AC%E7%9C%8C&count=12" data-pref="群馬県">群馬県<span class="num-tag">12件</span></a>
             </div>
           </div>
         </section>
@@ -1387,18 +1391,18 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         <h3 class="footer-container-upper-content-title">AImeを探す</h3>
         <div class="footer-container-upper-content-inner">
           <ul class="footer-container-upper-content-items is-first">
-            <li class="footer-container-upper-content-item"><a href="#">プロンプトエンジニア</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">MLエンジニア</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">LLMアプリ開発</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">データサイエンティスト</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">AIリサーチャー</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">AIエージェント開発</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">AI PMM / BizDev</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2">プロンプトエンジニア</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=ML%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2">MLエンジニア</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=LLM%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA">LLMアプリ開発</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=%E3%83%87%E3%83%BC%E3%82%BF%E3%82%B5%E3%82%A4%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%82%B9%E3%83%88">データサイエンティスト</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%E3%83%AA%E3%82%B5%E3%83%BC%E3%83%81%E3%83%A3%E3%83%BC">AIリサーチャー</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E9%96%8B%E7%99%BA">AIエージェント開発</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%20PMM">AI PMM / BizDev</a></li>
           </ul>
           <ul class="footer-container-upper-content-items">
-            <li class="footer-container-upper-content-item"><a href="#">AIme募集一覧</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">AIキーワード一覧</a></li>
-            <li class="footer-container-upper-content-item"><a href="#">AI企業一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html">AIme募集一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html">AIキーワード一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?view=companies">AI企業一覧</a></li>
           </ul>
         </div>
       </div>
@@ -1414,7 +1418,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       <div class="footer-container-upper-content">
         <h3 class="footer-container-upper-content-title">サービス</h3>
         <ul class="footer-container-upper-content-items">
-          <li class="footer-container-upper-content-item"><a href="#">AIme</a></li>
+          <li class="footer-container-upper-content-item"><a href="original.html">AIme</a></li>
           <li class="footer-container-upper-content-item"><a href="#">AI勉強会・ハッカソン</a></li>
         </ul>
       </div>
@@ -1443,6 +1447,10 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
   <script>window.Laravel = { csrfToken: 'dummy' };</script>
   <script src="js/top.js"></script>
   <script src="js/top-vue.js"></script>
+  <script src="js/jobs-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/realtime.js"></script>
 
   <script>
     jQuery(function ($) {
@@ -1486,6 +1494,11 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           centerPadding: "0",
           centerMode: false,
       }});
+      // 万が一矢印が重複生成された場合、先頭1組だけ残して削除
+      setTimeout(function(){
+        $('.student-voice-carousel .slick-prev').slice(1).remove();
+        $('.student-voice-carousel .slick-next').slice(1).remove();
+      }, 100);
     });
   </script>
 
@@ -1547,15 +1560,16 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           {n:'論文共著チャンス',c:15},{n:'自社LLM開発中',c:12},
           {n:'国際学会発表',c:11},{n:'ストックオプション',c:8}
         ];
-        function renderBrutal(id, items){
+        function renderBrutal(id, items, paramKey){
           var el = document.getElementById(id);
           if (!el) return;
           el.innerHTML = items.map(function(d){
-            return '<a href="#">' + d.n + '<span class="num-tag">' + d.c + '件</span></a>';
+            var url = 'search.html?' + paramKey + '=' + encodeURIComponent(d.n) + '&count=' + encodeURIComponent(d.c);
+            return '<a href="' + url + '">' + d.n + '<span class="num-tag">' + d.c + '件</span></a>';
           }).join('');
         }
-        renderBrutal('brutal-jobs', brutalJobs);
-        renderBrutal('brutal-features', brutalFeat);
+        renderBrutal('brutal-jobs', brutalJobs, 'job');
+        renderBrutal('brutal-features', brutalFeat, 'feature');
       })();
 
       // 3台スマホスクロール風フィルター生成
@@ -1564,19 +1578,20 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         var feat=[{n:'フルリモート可',c:'89'},{n:'未経験OK',c:'67'},{n:'時給2,000円以上',c:'52'},{n:'文系歓迎',c:'45'},{n:'CEO / CTO直下',c:'38'},{n:'論文読み会あり',c:'34'},{n:'GPU使い放題',c:'23'},{n:'Kaggle推奨',c:'21'},{n:'論文共著チャンス',c:'15'},{n:'自社LLM開発中',c:'12'},{n:'国際学会発表',c:'11'},{n:'ストックオプション',c:'8'}];
         var areas=[{n:'LLM / 大規模言語モデル',c:'78'},{n:'AI SaaS',c:'56'},{n:'AIエージェント',c:'34'},{n:'画像生成 / Diffusion',c:'23'},{n:'AI x 教育',c:'21'},{n:'ヘルスケアAI',c:'18'},{n:'AI x 金融',c:'14'},{n:'音声AI / TTS',c:'12'},{n:'ロボティクス',c:'9'},{n:'AI x ゲーム',c:'8'}];
         var kw=[{n:'RAG',c:''},{n:'ファインチューニング',c:''},{n:'Claude',c:''},{n:'LangChain',c:''},{n:'Stable Diffusion',c:''},{n:'Kaggle',c:''},{n:'Transformer',c:''},{n:'強化学習',c:''}];
-        function makeCards(items){
+        function makeCards(items, paramKey){
           var h='';
           items.forEach(function(d){
-            h+='<a class="pf-card" href="#"><div class="pf-card-name">'+d.n+'</div>'+(d.c?'<div class="pf-card-num">'+d.c+'件</div>':'')+'</a>';
+            var url='search.html?'+paramKey+'='+encodeURIComponent(d.n)+(d.c?'&count='+encodeURIComponent(d.c):'');
+            h+='<a class="pf-card" href="'+url+'"><div class="pf-card-name">'+d.n+'</div>'+(d.c?'<div class="pf-card-num">'+d.c+'件</div>':'')+'</a>';
           });
           return h;
         }
         var s1=document.getElementById('pfScroll1');
-        if(s1){var h1=makeCards(jobs);s1.innerHTML=h1+h1;}
+        if(s1){var h1=makeCards(jobs,'job');s1.innerHTML=h1+h1;}
         var s2=document.getElementById('pfScroll2');
-        if(s2){var h2=makeCards(feat);s2.innerHTML=h2+h2;}
+        if(s2){var h2=makeCards(feat,'feature');s2.innerHTML=h2+h2;}
         var s3=document.getElementById('pfScroll3');
-        if(s3){var h3=makeCards(areas.concat(kw));s3.innerHTML=h3+h3;}
+        if(s3){var h3=makeCards(areas,'area')+makeCards(kw,'tag');s3.innerHTML=h3+h3;}
       })();
 
       // 関東地方マップ ツールチップ（SVGオーバーレイ版）+ 県ボタン連動
@@ -1600,6 +1615,7 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         prefs.forEach(function(pref) {
           var prefName = pref.getAttribute('data-pref');
           var linkedBtn = btnByPref[prefName];
+          pref.style.cursor = 'pointer';
           pref.addEventListener('mouseenter', function(e) {
             var count = pref.getAttribute('data-count');
             kantoTooltip.innerHTML = prefName + '<span class="kt-count">' + count + '件のインターン</span>';
@@ -1614,6 +1630,9 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           pref.addEventListener('mouseleave', function() {
             kantoTooltip.style.display = 'none';
             if (linkedBtn) linkedBtn.classList.remove('is-linked');
+          });
+          pref.addEventListener('click', function() {
+            location.href = 'search.html?area=' + encodeURIComponent(prefName);
           });
         });
 
@@ -1696,7 +1715,8 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
           tagHTML = '<span class="' + cls2 + '">' + d.badge + '</span>';
         }
         var tagsHTML = d.tags.map(function(t){ return '<span>' + t + '</span>'; }).join('');
-        return '<a class="compact-card" href="#">' +
+        var href = 'job.html?id=' + encodeURIComponent(d.id);
+        return '<a class="compact-card" href="' + href + '">' +
             '<div class="compact-card-top">' + tagHTML + '</div>' +
             '<div class="compact-card-title">' + d.title + '</div>' +
             '<div class="compact-card-company">' + d.company + '</div>' +
@@ -1706,10 +1726,12 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
       }
       // 指定カテゴリのカードを必要数生成
       function generateCards(cat, count) {
-        var templates = cardTemplates[cat];
+        var templates = (window.JOBS_DATA && window.JOBS_DATA[cat]) || cardTemplates[cat] || [];
         var html = '';
         for (var i = 0; i < count; i++) {
-          html += createCardHTML(templates[i % templates.length]);
+          var idx = i % templates.length;
+          var tpl = Object.assign({}, templates[idx], { id: cat + '-' + idx });
+          html += createCardHTML(tpl);
         }
         return html;
       }
@@ -1808,6 +1830,54 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
         });
       }
     });
+  </script>
+
+  <!-- ====== Realtime: オンライン人数バッジ & 応募トースト ====== -->
+  <div id="live-online-badge" style="position:fixed;bottom:20px;right:20px;background:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.12);font-size:.85em;font-weight:800;color:#1b5e20;display:flex;align-items:center;gap:8px;z-index:999;opacity:0;transition:opacity .4s ease;cursor:default;user-select:none;">
+    <span style="width:8px;height:8px;background:#4caf50;border-radius:50%;display:inline-block;box-shadow:0 0 0 0 rgba(76,175,80,.6);animation:live-pulse 1.8s infinite;"></span>
+    <span>今 <span id="live-online-count">—</span> 人が見ています</span>
+  </div>
+  <style>
+    @keyframes live-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(76,175,80,.6); }
+      70% { box-shadow: 0 0 0 10px rgba(76,175,80,0); }
+      100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); }
+    }
+  </style>
+  <script>
+    (async function () {
+      // ナビ: ログイン状態に応じて表示切替
+      if (window.sb) {
+        const { data: { user } } = await window.sb.auth.getUser();
+        if (user) {
+          document.getElementById('nav-mypage').style.display = 'inline-block';
+          document.getElementById('nav-login').style.display = 'none';
+          document.getElementById('nav-signup').style.display = 'none';
+        }
+      }
+
+      if (!window.AImeRealtime) return;
+
+      // サイト全体のオンライン人数
+      const badge = document.getElementById('live-online-badge');
+      const countEl = document.getElementById('live-online-count');
+      window.AImeRealtime.initSitePresence(function (count) {
+        countEl.textContent = count.toLocaleString();
+        badge.style.opacity = '1';
+      });
+
+      // 応募イベントのリアルタイム通知
+      window.AImeRealtime.onApplyEvent(function (data) {
+        const company = (data.company || '匿名企業').toString();
+        const title = (data.title || 'AIインターン').toString();
+        const shortTitle = title.length > 24 ? title.slice(0, 24) + '…' : title;
+        window.AImeRealtime.showToast(
+          '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🎉 たった今</div>' +
+          '<div>誰かが <strong>' + company + '</strong> に応募しました</div>' +
+          '<div style="color:#666;font-size:.8em;margin-top:2px;">' + shortTitle + '</div>'
+        );
+      });
+    })();
   </script>
 
 </body>

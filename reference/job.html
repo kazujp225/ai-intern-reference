@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>求人詳細 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .job-hero {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
+    color: #fff; padding: 40px 24px 44px;
+    position: relative; overflow: hidden;
+  }
+  .job-hero::after {
+    content: ''; position: absolute; right: -60px; bottom: -60px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .job-hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .job-hero .band {
+    display: inline-block; background: #fff; color: #1b5e20;
+    font-size: .78em; font-weight: 900; padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .job-hero h1 { font-size: 2em; font-weight: 900; margin: 0 0 10px; letter-spacing: -.02em; line-height: 1.3; }
+  .job-hero .co { font-size: 1em; font-weight: 700; opacity: .9; }
+  .job-hero .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .job-hero .tags span {
+    padding: 5px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.15); font-size: .8em; font-weight: 700;
+  }
+
+  .layout-detail {
+    max-width: 1200px; margin: 32px auto;
+    display: grid; grid-template-columns: 1fr 320px; gap: 32px;
+    padding: 0 24px;
+  }
+  @media (max-width: 900px) { .layout-detail { grid-template-columns: 1fr; } }
+
+  .card-box {
+    background: #fff; border-radius: 16px; padding: 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.05), inset 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 20px;
+  }
+  .card-box h2 { font-size: 1.25em; font-weight: 900; margin: 0 0 14px; padding-left: 12px; border-left: 4px solid #4caf50; }
+  .card-box ul { padding-left: 20px; line-height: 2; color: #333; }
+
+  .aside-apply { position: sticky; top: 88px; align-self: start; }
+  .aside-apply .meta-row {
+    display: flex; justify-content: space-between; padding: 10px 0;
+    border-bottom: 1px dashed #e1e4e8; font-size: .9em;
+  }
+  .aside-apply .meta-row:last-of-type { border-bottom: none; }
+  .aside-apply .meta-row .k { color: #666; font-weight: 700; }
+  .aside-apply .meta-row .v { color: #111; font-weight: 800; text-align: right; }
+  .aside-apply .v .wage { color: #2e7d32; font-size: 1.2em; font-weight: 900; }
+
+  .related-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;
+  }
+  .related-card {
+    background: #fff; border-radius: 12px; padding: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.03);
+    transition: all .2s; color: inherit; display: block;
+  }
+  .related-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.08); color: inherit; }
+  .related-card .c { font-size: .75em; color: #666; font-weight: 700; }
+  .related-card .t { font-size: .95em; font-weight: 900; margin: 4px 0; line-height: 1.4; color: #111; }
+  .related-card .w { font-size: .85em; color: #2e7d32; font-weight: 800; }
+
+  .nf-hero {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
+    color: #fff; padding: 60px 24px 80px;
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .nf-hero::after {
+    content: ''; position: absolute; right: -80px; bottom: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .nf-hero::before {
+    content: ''; position: absolute; left: -60px; top: -60px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: rgba(255,255,255,.05);
+  }
+  .nf-hero-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+  .nf-hero .icon {
+    font-size: 3em; font-weight: 900; letter-spacing: .1em;
+    background: rgba(255,255,255,.15); display: inline-block;
+    padding: 8px 22px; border-radius: 999px; margin-bottom: 18px;
+  }
+  .nf-hero h1 { font-size: 2.2em; font-weight: 900; margin: 0 0 12px; letter-spacing: -.02em; line-height: 1.3; }
+  .nf-hero p { font-size: 1em; margin: 0 0 24px; opacity: .92; }
+  .nf-actions { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .nf-actions .btn {
+    padding: 14px 28px; border-radius: 8px; font-weight: 900; font-size: .95em;
+    text-decoration: none; transition: all .15s;
+  }
+  .nf-actions .btn-white { background: #fff; color: #1b5e20; }
+  .nf-actions .btn-white:hover { background: #f1f8e9; color: #1b5e20; transform: translateY(-1px); }
+  .nf-actions .btn-ghost {
+    background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.6);
+  }
+  .nf-actions .btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff; }
+  .nf-suggest {
+    max-width: 1100px; margin: -40px auto 40px; padding: 0 24px; position: relative; z-index: 2;
+  }
+  .nf-suggest-title {
+    text-align: center; font-size: 1.3em; font-weight: 900; color: #111;
+    background: #fff; padding: 16px 28px; border-radius: 14px; display: inline-block;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  .nf-suggest-title-wrap { text-align: center; margin-bottom: 20px; }
+  .nf-suggest-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html" class="current">インターンを探す</a>
+      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="#">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup.html" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span>
+  <a href="search.html">求人検索</a><span>/</span>
+  <span id="crumb-title">求人詳細</span>
+</nav>
+
+<div id="main"></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="brand">AIme</div>
+      <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p>
+    </div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="search.html?view=companies">企業一覧</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup.html">新規登録</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">採用担当者様へ</a></li><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/realtime.js"></script>
+<script src="js/supabase-social.js"></script>
+<script src="js/jobs-data.js"></script>
+<script>
+(async function(){
+  const id = new URLSearchParams(location.search).get('id');
+  const job = window.JOBS_GET(id);
+  const main = document.getElementById('main');
+  if (!job) {
+    const suggestions = [];
+    Object.keys(window.JOBS_DATA || {}).forEach(cat => {
+      (window.JOBS_DATA[cat] || []).forEach((j, i) => {
+        suggestions.push(Object.assign({}, j, { id: cat + '-' + i, category: cat }));
+      });
+    });
+    const pickup = suggestions.filter(j => j.band && (j.band.indexOf('Pickup') >= 0 || j.band.indexOf('急募') >= 0)).slice(0, 3);
+    const shown = pickup.length >= 3 ? pickup : suggestions.slice(0, 3);
+
+    main.innerHTML = `
+      <section class="nf-hero">
+        <div class="nf-hero-inner">
+          <div class="icon">404</div>
+          <h1>この求人は見つかりませんでした</h1>
+          <p>掲載が終了したか、URLが間違っている可能性があります。<br>下の人気求人からあなたに合うAIインターンを探してみましょう。</p>
+          <div class="nf-actions">
+            <a href="search.html" class="btn btn-white">AIインターンを探す</a>
+            <a href="original.html" class="btn btn-ghost">トップページへ戻る</a>
+          </div>
+        </div>
+      </section>
+      <div class="nf-suggest">
+        <div class="nf-suggest-title-wrap"><span class="nf-suggest-title">注目のAIインターン</span></div>
+        <div class="nf-suggest-grid">
+          ${shown.map(j => `
+            <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
+              <div class="jc-company">${j.company}</div>
+              <div class="jc-title">${j.title}</div>
+              <div class="jc-tags">
+                ${j.band ? `<span class="jc-tag hot">${j.band}</span>` : ''}
+                ${(j.tags||[]).slice(0,3).map(t => `<span class="jc-tag">${t}</span>`).join('')}
+              </div>
+              <div class="jc-meta">
+                <span class="jc-wage">時給 ${j.salary}</span>
+                <span>${j.location}</span>
+              </div>
+            </a>
+          `).join('')}
+        </div>
+      </div>`;
+    return;
+  }
+
+  document.title = job.title + ' | AIme';
+  document.getElementById('crumb-title').textContent = job.company;
+
+  const catLabel = {
+    llm:'LLM / 言語AI', prompt:'プロンプト', image:'画像生成',
+    agent:'エージェント', medical:'医療AI', robotics:'ロボティクス',
+    data:'データ分析', business:'ビジネス'
+  }[job.category] || job.category;
+
+  const relatedList = (window.JOBS_DATA[job.category] || [])
+    .map((t, i) => ({ t, idx: i }))
+    .filter(o => o.idx !== parseInt(id.split('-')[1], 10))
+    .slice(0, 4);
+
+  main.innerHTML = `
+    <section class="job-hero">
+      <div class="job-hero-inner">
+        ${job.band ? `<span class="band">${job.band}</span>` : ''}
+        <h1>${job.title}</h1>
+        <div class="co">${job.company} ・ ${catLabel}</div>
+        <div class="tags">${job.tags.map(t => `<span>${t}</span>`).join('')}</div>
+      </div>
+    </section>
+
+    <div class="layout-detail">
+      <main>
+        <div class="card-box">
+          <h2>この求人について</h2>
+          <p style="line-height: 1.9; color: #333; margin: 0;">${job.about || ''}</p>
+        </div>
+        <div class="card-box">
+          <h2>応募要件</h2>
+          <ul>${(job.skills || []).map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="card-box">
+          <h2>歓迎スキル</h2>
+          <ul>${(job.welcome || []).map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="card-box">
+          <h2>福利厚生 / 待遇</h2>
+          <ul>${(job.benefits || []).map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+
+        <h2 style="margin: 32px 0 16px; font-size: 1.3em; font-weight: 900;">同じカテゴリの求人</h2>
+        <div class="related-grid">
+          ${relatedList.map(o => `
+            <a class="related-card" href="job.html?id=${job.category}-${o.idx}">
+              <div class="c">${o.t.company}</div>
+              <div class="t">${o.t.title}</div>
+              <div class="w">時給 ${o.t.salary}</div>
+            </a>
+          `).join('')}
+        </div>
+      </main>
+
+      <aside class="aside-apply card-box" style="margin-bottom: 0;">
+        <h2 style="border: none; padding: 0;">応募情報</h2>
+        <div id="live-viewers" style="display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:10px;background:#e8f5e9;color:#1b5e20;border-radius:8px;font-size:.82em;font-weight:800;opacity:0;transition:opacity .4s ease;">
+          <span style="width:7px;height:7px;background:#4caf50;border-radius:50%;display:inline-block;animation:live-pulse-job 1.8s infinite;"></span>
+          <span>この求人を <span id="live-viewers-count">—</span> 人が閲覧中</span>
+        </div>
+        <div class="meta-row"><span class="k">時給</span><span class="v"><span class="wage">${job.salary}</span></span></div>
+        <div class="meta-row"><span class="k">勤務地</span><span class="v">${job.location}</span></div>
+        <div class="meta-row"><span class="k">勤務日数</span><span class="v">${job.workdays || '応相談'}</span></div>
+        <div class="meta-row"><span class="k">カテゴリ</span><span class="v">${catLabel}</span></div>
+        <div style="display:flex; gap:8px; margin-top:16px;">
+          <button id="like-btn" class="job-like-btn" title="いいね" style="flex:1; padding:10px; background:#fff; border:2px solid #e0e0e0; border-radius:8px; cursor:pointer; font-weight:800; color:#666; transition:all .15s;">
+            ♥ <span id="like-count">0</span>
+          </button>
+          <button id="bookmark-btn" class="job-bm-btn" title="ブックマーク" style="flex:1; padding:10px; background:#fff; border:2px solid #e0e0e0; border-radius:8px; cursor:pointer; font-weight:800; color:#666; transition:all .15s;">
+            ☆ <span id="bookmark-label">保存</span>
+          </button>
+        </div>
+        <button id="apply-btn" class="btn btn-primary" style="width:100%; margin-top: 12px;">この求人に応募する</button>
+        <a href="search.html?company=${encodeURIComponent(job.company)}" class="btn btn-ghost" style="width:100%; margin-top: 8px;">${job.company} の他の求人</a>
+      </aside>
+    </div>
+
+    <!-- コメント欄 -->
+    <div class="layout-detail" style="margin-top: -20px;">
+      <main>
+        <div class="card-box" id="comments-card">
+          <h2>コメント (<span id="cm-count">0</span>)</h2>
+          <div id="cm-form-wrap">
+            <div id="cm-login-prompt" style="display:none; text-align:center; padding:16px; background:#f1f8e9; border-radius:8px; color:#2e7d32; font-weight:700;">
+              コメントするには <a href="login.html">ログイン</a> してください
+            </div>
+            <form id="cm-form" style="display:none;">
+              <textarea id="cm-body" placeholder="この求人についてコメント..." style="width:100%; padding:12px; border:1px solid #e0e0e0; border-radius:8px; min-height:80px; font-family:inherit; resize:vertical; font-size:.95em;" required></textarea>
+              <button type="submit" style="margin-top:10px; padding:10px 22px; background:linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:800;">コメント投稿</button>
+            </form>
+          </div>
+          <div id="cm-list" style="margin-top: 20px;"></div>
+        </div>
+      </main>
+      <aside></aside>
+    </div>
+    <style>
+      @keyframes live-pulse-job {
+        0% { box-shadow: 0 0 0 0 rgba(76,175,80,.6); }
+        70% { box-shadow: 0 0 0 8px rgba(76,175,80,0); }
+        100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); }
+      }
+    </style>
+  `;
+
+  // ---- Realtime: 求人ごとのオンライン閲覧者数 & 応募ブロードキャスト ----
+  if (window.AImeRealtime) {
+    const viewersBox = document.getElementById('live-viewers');
+    const viewersCountEl = document.getElementById('live-viewers-count');
+    if (viewersBox && viewersCountEl) {
+      window.AImeRealtime.initJobPresence(job.id, function (count) {
+        viewersCountEl.textContent = count.toLocaleString();
+        viewersBox.style.opacity = '1';
+      });
+    }
+
+    // 応募イベントの受信（他ユーザーの応募トースト表示）
+    window.AImeRealtime.onApplyEvent(function (data) {
+      if (data.jobId === job.id) return;
+      window.AImeRealtime.showToast(
+        '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🎉 たった今</div>' +
+        '<div>誰かが <strong>' + (data.company || '匿名企業') + '</strong> に応募しました</div>'
+      );
+    });
+  }
+
+  // ---- DB連動: 閲覧カウント / いいね / ブックマーク / 応募 / コメント ----
+  if (window.AImeSocial) {
+    const social = window.AImeSocial;
+
+    // 閲覧カウント加算（ランキング用）
+    social.incrementJobView(job.id).catch(() => {});
+
+    // 現在ユーザー
+    const { data: { user } } = await window.sb.auth.getUser();
+
+    // いいね
+    const likeBtn = document.getElementById('like-btn');
+    const likeCountEl = document.getElementById('like-count');
+    const [initialLiked, initialLikes] = await Promise.all([
+      social.hasLiked('job', job.id),
+      social.countLikes('job', job.id),
+    ]);
+    likeCountEl.textContent = initialLikes;
+    if (initialLiked) { likeBtn.style.background = '#ffebee'; likeBtn.style.borderColor = '#f44336'; likeBtn.style.color = '#c62828'; likeBtn.dataset.liked = '1'; }
+    likeBtn.addEventListener('click', async () => {
+      if (!user) { location.href = 'login.html'; return; }
+      try {
+        if (likeBtn.dataset.liked === '1') {
+          await social.unlike('job', job.id);
+          likeBtn.style.background = '#fff'; likeBtn.style.borderColor = '#e0e0e0'; likeBtn.style.color = '#666';
+          likeBtn.dataset.liked = '';
+          likeCountEl.textContent = Math.max(0, parseInt(likeCountEl.textContent) - 1);
+        } else {
+          await social.like('job', job.id);
+          likeBtn.style.background = '#ffebee'; likeBtn.style.borderColor = '#f44336'; likeBtn.style.color = '#c62828';
+          likeBtn.dataset.liked = '1';
+          likeCountEl.textContent = parseInt(likeCountEl.textContent) + 1;
+        }
+      } catch (err) { alert(err.message); }
+    });
+
+    // ブックマーク
+    const bmBtn = document.getElementById('bookmark-btn');
+    const bmLabel = document.getElementById('bookmark-label');
+    const initialBm = await social.isBookmarked(job.id);
+    if (initialBm) { bmBtn.style.background = '#fff3e0'; bmBtn.style.borderColor = '#ff9800'; bmBtn.style.color = '#ef6c00'; bmBtn.dataset.bm = '1'; bmLabel.textContent = '保存済み'; bmBtn.firstChild.textContent = '★ '; }
+    bmBtn.addEventListener('click', async () => {
+      if (!user) { location.href = 'login.html'; return; }
+      try {
+        if (bmBtn.dataset.bm === '1') {
+          await social.unbookmark(job.id);
+          bmBtn.style.background = '#fff'; bmBtn.style.borderColor = '#e0e0e0'; bmBtn.style.color = '#666';
+          bmBtn.dataset.bm = ''; bmLabel.textContent = '保存'; bmBtn.firstChild.textContent = '☆ ';
+        } else {
+          await social.bookmark(job.id, { company: job.company, title: job.title });
+          bmBtn.style.background = '#fff3e0'; bmBtn.style.borderColor = '#ff9800'; bmBtn.style.color = '#ef6c00';
+          bmBtn.dataset.bm = '1'; bmLabel.textContent = '保存済み'; bmBtn.firstChild.textContent = '★ ';
+        }
+      } catch (err) { alert(err.message); }
+    });
+
+    // 応募
+    document.getElementById('apply-btn').addEventListener('click', async () => {
+      if (!user) { location.href = 'login.html'; return; }
+      try {
+        await social.apply(job.id, { company: job.company, title: job.title });
+        if (window.AImeRealtime) {
+          window.AImeRealtime.sendApplyEvent({ jobId: job.id, company: job.company, title: job.title });
+          window.AImeRealtime.showToast('<div style="color:#2e7d32;">✓ 応募しました</div><div style="color:#666;font-size:.85em;">マイページから確認できます</div>');
+        }
+      } catch (err) {
+        if (err.message.includes('duplicate')) alert('既にこの求人に応募済みです');
+        else alert(err.message);
+      }
+    });
+
+    // コメント
+    function esc(s){return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    async function refreshComments() {
+      const list = await social.listComments('job', job.id);
+      document.getElementById('cm-count').textContent = list.length;
+      const el = document.getElementById('cm-list');
+      if (!list.length) { el.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">まだコメントはありません</div>'; return; }
+      el.innerHTML = list.map(c => {
+        const n = c.profiles?.nickname || '匿名';
+        const i = n.charAt(0).toUpperCase();
+        const canDelete = user && c.author_id === user.id;
+        return `
+          <div style="display:flex; gap:12px; padding:14px 0; border-bottom:1px solid #f0f0f0;">
+            <div style="width:32px; height:32px; border-radius:50%; background:#2e7d32; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; flex-shrink:0;">${i}</div>
+            <div style="flex:1;">
+              <div style="font-weight:800; font-size:.9em;">${esc(n)}</div>
+              <div style="font-size:.92em; margin-top:4px; white-space:pre-wrap; line-height:1.6;">${esc(c.body)}</div>
+              <div style="font-size:.75em; color:#888; margin-top:4px;">
+                ${new Date(c.created_at).toLocaleString('ja-JP')}
+                ${canDelete ? `・<button class="cm-del" data-cid="${c.id}" style="background:none; border:none; color:#c62828; font-size:.8em; cursor:pointer; padding:0;">削除</button>` : ''}
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+      el.querySelectorAll('.cm-del').forEach(b => b.addEventListener('click', async () => {
+        await social.deleteComment(b.dataset.cid); refreshComments();
+      }));
+    }
+    if (user) {
+      document.getElementById('cm-form').style.display = 'block';
+      document.getElementById('cm-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const body = document.getElementById('cm-body').value.trim();
+        if (!body) return;
+        try {
+          await social.addComment('job', job.id, body);
+          document.getElementById('cm-body').value = '';
+          refreshComments();
+        } catch (err) { alert(err.message); }
+      });
+    } else {
+      document.getElementById('cm-login-prompt').style.display = 'block';
+    }
+    refreshComments();
+
+    // Realtime: いいね/コメントの変化を反映
+    social.subscribeTargetUpdates('job', job.id, async (ev) => {
+      if (ev.kind === 'likes') {
+        const c = await social.countLikes('job', job.id);
+        likeCountEl.textContent = c;
+      } else if (ev.kind === 'comments') {
+        refreshComments();
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規登録 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="#">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup.html" class="register current">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span>新規登録
+</nav>
+
+<div class="auth-wrap">
+  <h1 class="auth-title">無料で新規登録</h1>
+  <p class="auth-sub">30秒でスタート。AI特化インターン情報があなたに届きます。</p>
+
+  <form id="signup-form">
+    <div class="form-field">
+      <label>メールアドレス</label>
+      <input type="email" id="signup-email" required placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="form-field">
+      <label>パスワード（8文字以上）</label>
+      <input type="password" id="signup-password" required minlength="8" autocomplete="new-password">
+    </div>
+    <div class="form-field">
+      <label>ニックネーム</label>
+      <input type="text" id="signup-nickname" required placeholder="例: taro">
+    </div>
+    <div class="form-field">
+      <label>大学・学部（任意）</label>
+      <input type="text" id="signup-school" placeholder="例: ○○大学 情報学部">
+    </div>
+
+    <label class="form-check">
+      <input type="checkbox" required>
+      <span><a href="#">利用規約</a>・<a href="#">プライバシーポリシー</a>に同意する</span>
+    </label>
+
+    <div id="signup-message" class="auth-message" role="alert" style="display:none; margin: 10px 0 0; padding: 10px 14px; border-radius: 8px; font-size: .9em; font-weight: 700;"></div>
+
+    <button type="submit" id="signup-submit" class="btn-brutal" style="width: 100%; margin-top: 12px;">
+      <span class="tag">無料</span>新規登録する
+    </button>
+  </form>
+
+  <div class="form-divider">または</div>
+
+  <a href="#" class="social-btn">Googleで登録</a>
+  <a href="#" class="social-btn">GitHubで登録</a>
+
+  <div class="auth-foot">
+    既にアカウントをお持ちですか？ <a href="login.html">ログイン</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="brand">AIme</div>
+      <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。次世代のAIキャリアを始めよう。</p>
+    </div>
+    <div>
+      <h4>検索</h4>
+      <ul>
+        <li><a href="search.html">求人を探す</a></li>
+        <li><a href="search.html?view=companies">企業一覧</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>アカウント</h4>
+      <ul>
+        <li><a href="login.html">ログイン</a></li>
+        <li><a href="signup.html">新規登録</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>サービス</h4>
+      <ul>
+        <li><a href="#">採用担当者様へ</a></li>
+        <li><a href="#">お問合せ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+(function () {
+  const form = document.getElementById('signup-form');
+  const emailEl = document.getElementById('signup-email');
+  const passEl = document.getElementById('signup-password');
+  const nickEl = document.getElementById('signup-nickname');
+  const schoolEl = document.getElementById('signup-school');
+  const btn = document.getElementById('signup-submit');
+  const msg = document.getElementById('signup-message');
+
+  function showMessage(text, type) {
+    msg.innerHTML = text;
+    msg.style.display = 'block';
+    if (type === 'error') {
+      msg.style.background = '#ffebee';
+      msg.style.color = '#c62828';
+      msg.style.border = '1px solid #ef9a9a';
+    } else {
+      msg.style.background = '#e8f5e9';
+      msg.style.color = '#1b5e20';
+      msg.style.border = '1px solid #a5d6a7';
+    }
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!window.sb) { showMessage('Supabase クライアントが初期化されていません', 'error'); return; }
+
+    btn.disabled = true;
+    const originalHTML = btn.innerHTML;
+    btn.textContent = '登録中...';
+    msg.style.display = 'none';
+
+    const { data, error } = await window.sb.auth.signUp({
+      email: emailEl.value.trim(),
+      password: passEl.value,
+      options: {
+        data: {
+          nickname: nickEl.value.trim(),
+          school: schoolEl.value.trim() || null,
+        },
+        emailRedirectTo: location.origin + '/login.html',
+      },
+    });
+
+    if (error) {
+      showMessage('登録に失敗しました: ' + error.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+      return;
+    }
+
+    if (data?.user && !data.session) {
+      showMessage('登録メールを送信しました。<br>メール内のリンクから認証を完了してください。', 'success');
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    } else {
+      showMessage('登録が完了しました。トップページへ移動します...', 'success');
+      setTimeout(() => { location.href = 'original.html'; }, 1000);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
