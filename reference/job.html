@@ -123,8 +123,8 @@
     <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
     <nav class="site-nav">
       <a href="search.html" class="current">インターンを探す</a>
-      <a href="search.html?view=companies">AI企業を探す</a>
-      <a href="#">AIコラム</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
       <a href="login.html" class="login">ログイン</a>
       <a href="signup.html" class="register">新規登録</a>
     </nav>
@@ -145,7 +145,7 @@
       <div class="brand">AIme</div>
       <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p>
     </div>
-    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="search.html?view=companies">企業一覧</a></li></ul></div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="companies.html">企業一覧</a></li></ul></div>
     <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup.html">新規登録</a></li></ul></div>
     <div><h4>サービス</h4><ul><li><a href="#">採用担当者様へ</a></li><li><a href="#">お問合せ</a></li></ul></div>
   </div>
@@ -153,6 +153,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/realtime.js"></script>
 <script src="js/supabase-social.js"></script>
@@ -161,8 +162,41 @@
 <script>
 (async function(){
   const id = new URLSearchParams(location.search).get('id');
-  const job = window.JOBS_GET(id);
   const main = document.getElementById('main');
+
+  // UUID 判定（DB ID は UUID、レガシーは 'llm-0' のような形式）
+  const isUuid = id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+  let job = null;
+  if (isUuid && window.AImeBiz) {
+    try {
+      const dbJob = await window.AImeBiz.getJob(id);
+      if (dbJob) {
+        job = {
+          id: dbJob.id,
+          title: dbJob.title,
+          company: dbJob.companies?.name || '',
+          companyId: dbJob.companies?.id,
+          companyLogo: dbJob.companies?.logo_url,
+          about: dbJob.description || '',
+          skills: dbJob.skills || [],
+          welcome: dbJob.welcome_skills || [],
+          benefits: dbJob.benefits || [],
+          tags: dbJob.tags || [],
+          category: dbJob.category || 'other',
+          location: dbJob.location || '',
+          salary: dbJob.salary_min ? `¥${Number(dbJob.salary_min).toLocaleString()}` : '応相談',
+          workdays: dbJob.workdays || '応相談',
+          band: dbJob.is_boosted ? '注目' : null,
+          _isDb: true,
+          _dbJobId: dbJob.id,
+        };
+      }
+    } catch (err) { console.warn('DB fetch failed, falling back:', err); }
+  }
+  // レガシーフォールバック
+  if (!job && window.JOBS_GET) job = window.JOBS_GET(id);
+
   if (!job) {
     const suggestions = [];
     Object.keys(window.JOBS_DATA || {}).forEach(cat => {
@@ -216,10 +250,22 @@
     data:'データ分析', business:'ビジネス'
   }[job.category] || job.category;
 
-  const relatedList = (window.JOBS_DATA[job.category] || [])
-    .map((t, i) => ({ t, idx: i }))
-    .filter(o => o.idx !== parseInt(id.split('-')[1], 10))
-    .slice(0, 4);
+  // 同じカテゴリの関連求人 (DB 優先 → レガシー fallback)
+  let relatedItems = [];
+  if (job._isDb && window.AImeBiz) {
+    try {
+      const r = await window.AImeBiz.listPublicJobs({ category: job.category, limit: 5 });
+      relatedItems = (r.items || []).filter(j => j.id !== job.id).slice(0, 4).map(j => ({
+        id: j.id, company: j.companies?.name || '', title: j.title,
+        salary: j.salary_min ? `¥${Number(j.salary_min).toLocaleString()}` : '応相談',
+      }));
+    } catch (err) { console.warn(err); }
+  } else if (window.JOBS_DATA) {
+    const list = window.JOBS_DATA[job.category] || [];
+    relatedItems = list.map((t, i) => ({
+      id: job.category + '-' + i, company: t.company, title: t.title, salary: t.salary,
+    })).filter(o => o.id !== id).slice(0, 4);
+  }
 
   main.innerHTML = `
     <section class="job-hero">
@@ -252,11 +298,11 @@
 
         <h2 style="margin: 32px 0 16px; font-size: 1.3em; font-weight: 900;">同じカテゴリの求人</h2>
         <div class="related-grid">
-          ${relatedList.map(o => `
-            <a class="related-card" href="job.html?id=${job.category}-${o.idx}">
-              <div class="c">${o.t.company}</div>
-              <div class="t">${o.t.title}</div>
-              <div class="w">時給 ${o.t.salary}</div>
+          ${relatedItems.map(o => `
+            <a class="related-card" href="job.html?id=${encodeURIComponent(o.id)}">
+              <div class="c">${o.company}</div>
+              <div class="t">${o.title}</div>
+              <div class="w">時給 ${o.salary}</div>
             </a>
           `).join('')}
         </div>
@@ -328,7 +374,7 @@
     window.AImeRealtime.onApplyEvent(function (data) {
       if (data.jobId === job.id) return;
       window.AImeRealtime.showToast(
-        '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🎉 たった今</div>' +
+        '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">たった今</div>' +
         '<div>誰かが <strong>' + (data.company || '匿名企業') + '</strong> に応募しました</div>'
       );
     });
@@ -400,7 +446,15 @@
     document.getElementById('apply-btn').addEventListener('click', async () => {
       if (!user) { location.href = 'login.html'; return; }
       try {
-        await social.apply(job.id, { company: job.company, title: job.title });
+        // DB求人なら AImeBiz.apply (db_job_id 付き) を優先
+        if (job._isDb && window.AImeBiz) {
+          await window.AImeBiz.apply({
+            jobId: job.id, dbJobId: job._dbJobId,
+            company: job.company, title: job.title,
+          });
+        } else {
+          await social.apply(job.id, { company: job.company, title: job.title });
+        }
         if (window.AImeRealtime) {
           window.AImeRealtime.sendApplyEvent({ jobId: job.id, company: job.company, title: job.title });
           window.AImeRealtime.showToast('<div style="color:#2e7d32;">✓ 応募しました</div><div style="color:#666;font-size:.85em;">マイページから確認できます</div>');

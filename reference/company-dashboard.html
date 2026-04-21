@@ -5,34 +5,216 @@
 <title>企業ダッシュボード | AIme</title>
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  .cd-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32 50%,#4caf50); color:#fff; padding: 40px 24px; }
-  .cd-hero-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 20px; }
-  .cd-logo { width: 80px; height: 80px; border-radius: 14px; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  body { background: #fff; }
+
+  /* ===== カバー背景 (編集可能) ===== */
+  .cd-cover {
+    height: 140px;
+    background-color: #d1d5db;
+    background-size: cover; background-position: center;
+    position: relative; cursor: pointer; overflow: hidden;
+    transition: filter .2s;
+  }
+  .cd-cover::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.15), transparent 60%);
+    pointer-events: none;
+  }
+  .cd-cover:hover { filter: brightness(.95); }
+  .cd-cover-hint {
+    position: absolute; top: 14px; right: 20px;
+    background: rgba(0,0,0,.5); color: #fff;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: .76em; font-weight: 700;
+    opacity: 0; transition: opacity .2s; pointer-events: none;
+  }
+  .cd-cover:hover .cd-cover-hint { opacity: 1; }
+
+  /* ===== コンパクトヘッダー (Notionライク) ===== */
+  .cd-container { max-width: 1100px; margin: 0 auto; }
+  .cd-crumb {
+    font-size: .82em; color: #999; padding: 18px 28px 6px;
+  }
+  .cd-crumb a { color: #999; text-decoration: none; }
+  .cd-crumb a:hover { color: #2e7d32; }
+  .cd-head {
+    padding: 0 28px 20px; border-bottom: 1px solid #e8e8e8;
+  }
+  .cd-head-title-row {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .cd-logo-wrap { position: relative; display: inline-block; flex-shrink: 0; }
+  .cd-logo {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: #e5e7eb; color: #9ca3af;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    cursor: pointer; transition: filter .2s;
+  }
+  .cd-logo:hover { filter: brightness(.95); }
   .cd-logo img { width: 100%; height: 100%; object-fit: cover; }
-  .cd-hero h1 { margin: 0; font-size: 1.6em; font-weight: 900; }
-  .cd-hero .sub { opacity: .9; font-size: .9em; margin-top: 4px; }
-  .cd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 1200px; margin: -26px auto 0; padding: 0 24px; position: relative; z-index: 1; }
-  .cd-stat { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
-  .cd-stat .n { font-size: 2em; font-weight: 900; color: #1b5e20; }
-  .cd-stat .l { font-size: .8em; color: #666; font-weight: 700; }
-  .cd-wrap { max-width: 1200px; margin: 24px auto 60px; padding: 0 24px; display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+  .cd-logo svg { width: 62%; height: 62%; display: block; }
+  .cd-logo-edit {
+    position: absolute; bottom: -4px; right: -4px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; color: #2e7d32;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: .85em;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    pointer-events: none; border: 1px solid #e8f5e9;
+  }
+  .cd-head h1 {
+    margin: 0; font-size: 1.5em; font-weight: 900; letter-spacing: -.01em; color: #111;
+  }
+  .cd-head-meta {
+    display: flex; align-items: center; gap: 18px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .cd-chip {
+    font-size: .82em; color: #555; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .cd-chip .num {
+    color: #1b5e20; font-weight: 900; font-size: 1.02em;
+    font-family: 'Arial Black', sans-serif;
+  }
+  .cd-industry {
+    margin-left: auto; color: #999; font-size: .82em;
+    font-family: monospace; letter-spacing: .5px;
+  }
+
+  /* ===== レイアウト ===== */
+  .cd-wrap {
+    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    min-height: 480px;
+  }
   @media (max-width: 900px) { .cd-wrap { grid-template-columns: 1fr; } }
-  .cd-side { background: #fff; border-radius: 12px; padding: 16px; height: fit-content; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
-  .cd-side button { display: block; width: 100%; text-align: left; padding: 10px 14px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 800; color: #333; margin-bottom: 4px; }
-  .cd-side button.active { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; }
-  .cd-panel { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
-  .cd-panel h2 { margin: 0 0 16px; font-size: 1.2em; font-weight: 900; }
-  .cd-row { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: #f9fafb; border-radius: 10px; margin-bottom: 8px; }
-  .cd-row-title { font-weight: 800; margin-bottom: 4px; }
-  .cd-row-meta { font-size: .8em; color: #666; }
-  .cd-status { padding: 4px 10px; border-radius: 999px; font-size: .75em; font-weight: 800; }
+
+  /* ===== サイドバー (Notion左ペイン風) ===== */
+  .cd-side {
+    padding: 20px 18px 20px 28px;
+    border-right: 1px solid #e8e8e8;
+  }
+  .cd-side button {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 8px 10px; background: transparent; border: none;
+    border-radius: 6px; cursor: pointer;
+    font-weight: 700; color: #333; font-size: .9em; margin-bottom: 2px;
+    font-family: inherit; transition: all .15s;
+  }
+  .cd-side button:hover { background: #f5f5f5; color: #111; }
+  .cd-side button.active {
+    background: #f0faf0; color: #1b5e20;
+  }
+  .cd-side .badge {
+    background: #e8f5e9; color: #2e7d32;
+    padding: 1px 10px; border-radius: 999px;
+    font-size: .75em; font-weight: 800; font-family: 'Arial Black', sans-serif;
+  }
+  .cd-side button.active .badge { background: #fff; color: #1b5e20; }
+
+  /* ===== メインパネル ===== */
+  .cd-panel {
+    padding: 22px 28px;
+  }
+  .cd-panel h2 {
+    margin: 0 0 14px; font-size: 1em; font-weight: 900; color: #111;
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .cd-panel-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .cd-panel-head h2 { margin: 0; }
+
+  /* ===== 行 (Notion的にボーダー区切り) ===== */
+  .cd-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 4px; border-bottom: 1px solid #f0f0f0;
+    gap: 12px; transition: background .15s;
+  }
+  .cd-row:hover { background: #fafafa; }
+  .cd-row:last-child { border-bottom: none; }
+  .cd-row-title { font-weight: 700; color: #111; font-size: .95em; }
+  .cd-row-meta { font-size: .78em; color: #888; margin-top: 3px; }
+  .cd-row-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+
+  /* ===== ステータスバッジ (Notion的にスッキリ) ===== */
+  .cd-status {
+    padding: 2px 10px; border-radius: 4px;
+    font-size: .72em; font-weight: 800;
+  }
   .cd-status.approved { background: #e8f5e9; color: #1b5e20; }
-  .cd-status.pending { background: #fff3e0; color: #ef6c00; }
+  .cd-status.pending  { background: #fff3e0; color: #ef6c00; }
   .cd-status.rejected { background: #ffebee; color: #c62828; }
-  .cd-status.closed { background: #eeeeee; color: #666; }
-  .cd-btn-primary { padding: 12px 22px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-block; }
-  .cd-btn-ghost { padding: 6px 12px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: .85em; }
-  .cd-select { padding: 4px 8px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: .85em; font-weight: 700; }
+  .cd-status.closed   { background: #eeeeee; color: #666; }
+
+  /* ===== ボタン ===== */
+  .cd-btn-primary {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff !important; border: none; border-radius: 6px;
+    font-weight: 800; font-size: .85em; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all .15s;
+  }
+  .cd-btn-primary:hover { opacity: .92; transform: translateY(-1px); }
+  .cd-btn-ghost {
+    padding: 4px 12px; background: #fff; color: #555;
+    border: 1px solid #e0e0e0; border-radius: 4px;
+    cursor: pointer; font-weight: 700; font-size: .78em;
+    transition: all .15s;
+  }
+  .cd-btn-ghost:hover { border-color: #2e7d32; color: #2e7d32; }
+  .cd-select {
+    padding: 5px 10px; border: 1px solid #e0e0e0; border-radius: 6px;
+    font-size: .82em; font-weight: 700; background: #fff;
+  }
+  .cd-select:focus { outline: none; border-color: #4caf50; }
+
+  /* ===== ログインゲート (signup/login と同系統の auth-wrap を踏襲) ===== */
+  #auth-req .auth-wrap { text-align: center; }
+  #auth-req .auth-title { text-align: center; font-size: 1.5em; }
+  #auth-req .auth-sub { text-align: center; }
+
+  .auth-gate__btns {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .auth-gate__btn {
+    flex: 1; min-width: 140px; padding: 12px 20px;
+    border-radius: 8px; font-weight: 900; font-size: .95em;
+    text-decoration: none; transition: all .15s;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 2px solid transparent; box-sizing: border-box;
+  }
+  .auth-gate__btn--primary {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(76,175,80,.3);
+  }
+  .auth-gate__btn--primary:hover { opacity: .92; transform: translateY(-1px); }
+  .auth-gate__btn--ghost {
+    background: #fff; color: #111 !important; border-color: #111;
+  }
+  .auth-gate__btn--ghost:hover { background: #111; color: #fff !important; }
+
+  .auth-gate__dev {
+    margin-top: 24px; padding: 14px;
+    background: #fff3e0; border: 1px dashed #ff9800; border-radius: 10px;
+  }
+  .auth-gate__dev-label {
+    font-family: monospace; font-size: .72em; font-weight: 800; letter-spacing: 2px;
+    color: #e65100; margin-bottom: 8px;
+  }
+  .auth-gate__dev-btn {
+    display: inline-block; padding: 9px 18px;
+    background: #e65100; color: #fff !important;
+    border-radius: 999px; font-weight: 800; font-size: .82em;
+    text-decoration: none; transition: opacity .15s;
+  }
+  .auth-gate__dev-btn:hover { opacity: .85; color: #fff !important; }
+  .auth-gate__dev-note {
+    margin-top: 8px; font-size: .7em; color: #bf4700;
+  }
 </style></head>
 <body>
 
@@ -45,61 +227,85 @@
   </nav>
 </div></header>
 
-<div id="auth-req" style="display:none; text-align:center; padding: 80px 24px;">
-  <h2>企業アカウントでログインしてください</h2>
-  <p><a href="login.html" class="cd-btn-primary">ログイン</a> <a href="company-signup.html" class="cd-btn-ghost">企業登録</a></p>
+<div id="auth-req" style="display:none;">
+  <nav class="breadcrumb" style="max-width: 1100px; margin: 16px auto 0; padding: 0 24px; font-size: .85em; color: #666;">
+    <a href="original.html" style="color:#666; text-decoration:none;">トップ</a>
+    <span style="margin:0 6px; color:#ccc;">/</span>
+    企業ダッシュボード
+  </nav>
+  <div class="auth-wrap">
+    <h1 class="auth-title">企業アカウントでログインしてください</h1>
+    <p class="auth-sub">
+      このページは企業アカウント専用です。すでに登録済みの方はログイン、未登録の方は企業登録へお進みください。
+    </p>
+    <div class="auth-gate__btns">
+      <a href="login.html" class="auth-gate__btn auth-gate__btn--primary">ログイン</a>
+      <a href="company-signup.html" class="auth-gate__btn auth-gate__btn--ghost">企業登録</a>
+    </div>
+  </div>
 </div>
 
 <div id="cd-main" style="display:none;">
-  <section class="cd-hero">
-    <div class="cd-hero-inner">
-      <div class="cd-logo" id="cd-logo"><span style="font-size:2em;">🏢</span></div>
-      <div>
+  <section class="cd-cover" id="cd-cover" role="button" tabindex="0" aria-label="カバー画像を変更" title="クリックしてカバー画像を変更">
+    <span class="cd-cover-hint">📷 カバーを変更</span>
+  </section>
+  <input type="file" id="cd-cover-input" accept="image/*" style="display:none;">
+  <input type="file" id="cd-logo-input" accept="image/*" style="display:none;">
+
+  <div class="cd-container">
+    <div class="cd-crumb"><a href="original.html">トップ</a> / 企業ダッシュボード</div>
+    <div class="cd-head">
+      <div class="cd-head-title-row">
+        <div class="cd-logo-wrap">
+          <div class="cd-logo" id="cd-logo" role="button" tabindex="0" aria-label="ロゴを変更" title="クリックしてロゴを変更">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 21V7a1 1 0 0 1 1-1h6V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18H3Zm2-2h4v-3H5v3Zm0-5h4v-3H5v3Zm0-5h4V6H5v3Zm6 10h8V4h-8v15Zm2-11h4V6h-4v2Zm0 4h4v-2h-4v2Zm0 4h4v-2h-4v2Z"/>
+            </svg>
+          </div>
+          <span class="cd-logo-edit">+</span>
+        </div>
         <h1 id="cd-name">—</h1>
-        <div class="sub" id="cd-industry">—</div>
+      </div>
+      <div class="cd-head-meta">
+        <span class="cd-chip"><span class="num" id="stat-jobs">0</span>公開中</span>
+        <span class="cd-chip"><span class="num" id="stat-apps">0</span>応募</span>
+        <span class="cd-chip"><span class="num" id="stat-views">0</span>閲覧</span>
+        <span class="cd-industry" id="cd-industry">—</span>
       </div>
     </div>
-  </section>
 
-  <div class="cd-stats">
-    <div class="cd-stat"><div class="n" id="stat-jobs">0</div><div class="l">公開中の求人</div></div>
-    <div class="cd-stat"><div class="n" id="stat-apps">0</div><div class="l">総応募数</div></div>
-    <div class="cd-stat"><div class="n" id="stat-views">0</div><div class="l">総閲覧数</div></div>
-  </div>
+    <div class="cd-wrap">
+      <aside class="cd-side">
+        <button class="active" data-p="jobs">求人管理 <span class="badge" id="badge-jobs">0</span></button>
+        <button data-p="apps">応募者 <span class="badge" id="badge-apps">0</span></button>
+        <button data-p="profile">企業情報</button>
+      </aside>
 
-  <div class="cd-wrap">
-    <aside class="cd-side">
-      <button class="active" data-p="jobs">求人管理</button>
-      <button data-p="apps">応募者</button>
-      <button data-p="profile">企業情報</button>
-    </aside>
-
-    <div class="cd-panel">
-      <div id="p-jobs">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
-          <h2 style="margin:0;">求人管理</h2>
-          <a href="company-job-edit.html" class="cd-btn-primary">＋ 新規求人を作成</a>
-        </div>
-        <div id="jobs-list"></div>
-      </div>
-
-      <div id="p-apps" style="display:none;">
-        <h2>応募者一覧</h2>
-        <div id="apps-list"></div>
-      </div>
-
-      <div id="p-profile" style="display:none;">
-        <h2>企業情報の編集</h2>
-        <form id="profile-form">
-          <div style="display:grid; gap: 12px;">
-            <div><label style="font-weight:800; font-size:.85em;">会社名</label><input id="pf-name" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
-            <div><label style="font-weight:800; font-size:.85em;">業種</label><input id="pf-industry" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
-            <div><label style="font-weight:800; font-size:.85em;">所在地</label><input id="pf-location" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
-            <div><label style="font-weight:800; font-size:.85em;">Webサイト</label><input id="pf-website" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"></div>
-            <div><label style="font-weight:800; font-size:.85em;">会社説明</label><textarea id="pf-description" style="width:100%; padding:10px; border:1px solid #e0e0e0; border-radius:8px; min-height: 100px;"></textarea></div>
+      <div class="cd-panel">
+        <div id="p-jobs">
+          <div class="cd-panel-head">
+            <h2>求人管理</h2>
+            <a href="company-job-edit.html" class="cd-btn-primary">＋ 新規求人を作成</a>
           </div>
-          <button type="submit" class="cd-btn-primary" style="margin-top:16px;">保存</button>
-        </form>
+          <div id="jobs-list"></div>
+        </div>
+
+        <div id="p-apps" style="display:none;">
+          <div class="cd-panel-head"><h2>応募者一覧</h2></div>
+          <div id="apps-list"></div>
+        </div>
+
+        <div id="p-profile" style="display:none;">
+          <div class="cd-panel-head"><h2>企業情報の編集</h2></div>
+          <form id="profile-form">
+            <div class="form-field"><label>会社名</label><input id="pf-name"></div>
+            <div class="form-field"><label>業種</label><input id="pf-industry"></div>
+            <div class="form-field"><label>所在地</label><input id="pf-location"></div>
+            <div class="form-field"><label>Webサイト</label><input id="pf-website" type="url"></div>
+            <div class="form-field"><label>会社説明</label><textarea id="pf-description" style="min-height: 110px; resize: vertical;"></textarea></div>
+            <button type="submit" class="cd-btn-primary" style="margin-top:8px;">保存</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -108,10 +314,144 @@
 <footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-biz.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
 <script>
 (async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  // ===== ロゴ / カバー 共通ヘルパー =====
+  const BUILDING_SVG = `
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 21V7a1 1 0 0 1 1-1h6V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v18H3Zm2-2h4v-3H5v3Zm0-5h4v-3H5v3Zm0-5h4V6H5v3Zm6 10h8V4h-8v15Zm2-11h4V6h-4v2Zm0 4h4v-2h-4v2Zm0 4h4v-2h-4v2Z"/>
+    </svg>`;
+  function renderLogo(imgUrl) {
+    const el = document.getElementById('cd-logo');
+    if (imgUrl) {
+      el.innerHTML = `<img src="${imgUrl}" alt="logo">`;
+    } else {
+      el.innerHTML = BUILDING_SVG;
+    }
+  }
+  function renderCover(imgUrl) {
+    const el = document.getElementById('cd-cover');
+    el.style.backgroundImage = imgUrl ? `url("${imgUrl}")` : '';
+  }
+  function readAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+  function saveLocal(key, value) { try { localStorage.setItem(key, value); } catch(e) {} }
+  function loadLocal(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
+
+  // クリック → ファイル選択
+  document.getElementById('cd-logo').addEventListener('click', () => {
+    document.getElementById('cd-logo-input').click();
+  });
+  document.getElementById('cd-cover').addEventListener('click', () => {
+    document.getElementById('cd-cover-input').click();
+  });
+
+  // 本番用: Supabase Storage → companies テーブルに URL 保存
+  async function uploadCompanyImage(file, kind) {
+    try {
+      const up = await window.AImeBiz.uploadFile('logos', file, kind); // logos バケットは公開URL
+      const patch = kind === 'logo' ? { logo_url: up.url } : { cover_url: up.url };
+      await window.AImeBiz.updateCompany(patch); // 失敗時は catch
+      return up.url;
+    } catch (err) {
+      console.warn('Company image upload failed:', err);
+      return null;
+    }
+  }
+
+  if (PREVIEW) {
+    document.getElementById('cd-main').style.display = 'block';
+    document.getElementById('cd-name').textContent = '株式会社コンフィグ (プレビュー)';
+    document.getElementById('cd-industry').textContent = 'AI / LLM / SaaS';
+    renderLogo(loadLocal('aime_preview_company_logo'));
+    renderCover(loadLocal('aime_preview_company_cover'));
+    document.getElementById('stat-jobs').textContent = '3';
+    document.getElementById('stat-apps').textContent = '12';
+    document.getElementById('stat-views').textContent = '1,284';
+    document.getElementById('badge-jobs').textContent = '3';
+    document.getElementById('badge-apps').textContent = '12';
+
+    // プレビュー用: ロゴ・カバーは localStorage
+    document.getElementById('cd-logo-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const dataUrl = await readAsDataURL(file);
+      saveLocal('aime_preview_company_logo', dataUrl);
+      renderLogo(dataUrl);
+    });
+    document.getElementById('cd-cover-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const dataUrl = await readAsDataURL(file);
+      saveLocal('aime_preview_company_cover', dataUrl);
+      renderCover(dataUrl);
+    });
+    const demoJobs = [
+      {id:'j1', title:'LLM開発インターン', category:'エンジニア', location:'渋谷', views:428, status:'approved', label:'公開中'},
+      {id:'j2', title:'RAGエンジニア (学生)', category:'エンジニア', location:'フルリモート', views:512, status:'approved', label:'公開中'},
+      {id:'j3', title:'AIエージェント PoC', category:'研究', location:'渋谷/ハイブリッド', views:344, status:'pending', label:'審査中'},
+    ];
+    document.getElementById('jobs-list').innerHTML = demoJobs.map(j=>`
+      <div class="cd-row">
+        <div style="flex:1; min-width:0;">
+          <div class="cd-row-title">${j.title}</div>
+          <div class="cd-row-meta">${j.category} / ${j.location} / 閲覧 ${j.views}</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="cd-status ${j.status}">${j.label}</span>
+          <a href="company-job-edit.html?preview=1" class="cd-btn-ghost">編集</a>
+          <button class="cd-btn-ghost">削除</button>
+        </div>
+      </div>`).join('');
+    const demoApps = [
+      {name:'taro', school:'○○大学 情報学部', job:'LLM開発インターン', date:'2026-04-20', status:'pending'},
+      {name:'hanako', school:'△△大学 理工学部', job:'RAGエンジニア (学生)', date:'2026-04-19', status:'reviewing'},
+      {name:'kenji', school:'□□大学 大学院', job:'LLM開発インターン', date:'2026-04-18', status:'accepted'},
+    ];
+    document.getElementById('apps-list').innerHTML = demoApps.map(a=>`
+      <div class="cd-row">
+        <div style="flex:1; min-width:0;">
+          <div class="cd-row-title">${a.name} さん <span style="color:#999; font-weight:700; font-size:.85em;">(${a.school})</span></div>
+          <div class="cd-row-meta">→ ${a.job} / ${a.date}</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <select class="cd-select">
+            <option ${a.status==='pending'?'selected':''}>審査中</option>
+            <option ${a.status==='reviewing'?'selected':''}>選考中</option>
+            <option ${a.status==='accepted'?'selected':''}>合格</option>
+            <option>不採用</option>
+          </select>
+          <a href="messages.html?preview=1" class="cd-btn-ghost">メッセージ</a>
+        </div>
+      </div>`).join('');
+    document.querySelectorAll('.cd-side button').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.cd-side button').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        ['jobs','apps','profile'].forEach(p => {
+          document.getElementById('p-' + p).style.display = (p === b.dataset.p) ? 'block' : 'none';
+        });
+      });
+    });
+    document.getElementById('pf-name').value = '株式会社コンフィグ';
+    document.getElementById('pf-industry').value = 'AI / LLM / SaaS';
+    document.getElementById('pf-location').value = '東京都渋谷区';
+    document.getElementById('pf-website').value = 'https://example.com';
+    document.getElementById('pf-description').value = 'LLM/RAGを軸にしたエンタープライズ向けAIアシスタントを開発しています。';
+    return;
+  }
+
   const { data: { user } } = await window.sb.auth.getUser();
   if (!user) { document.getElementById('auth-req').style.display = 'block'; return; }
   const company = await window.AImeBiz.getMyCompany();
@@ -120,7 +460,31 @@
   document.getElementById('cd-main').style.display = 'block';
   document.getElementById('cd-name').textContent = company.name;
   document.getElementById('cd-industry').textContent = company.industry || '業種未設定';
-  if (company.logo_url) document.getElementById('cd-logo').innerHTML = `<img src="${company.logo_url}" alt="logo">`;
+
+  // ロゴ / カバー (Supabase → localStorage fallback)
+  const logoKey  = `aime_company_${company.id}_logo`;
+  const coverKey = `aime_company_${company.id}_cover`;
+  renderLogo(company.logo_url || loadLocal(logoKey));
+  renderCover(company.cover_url || loadLocal(coverKey));
+
+  // アップロード: ロゴ
+  document.getElementById('cd-logo-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const dataUrl = await readAsDataURL(file);
+    renderLogo(dataUrl);
+    saveLocal(logoKey, dataUrl);
+    const remote = await uploadCompanyImage(file, 'logo');
+    if (remote) renderLogo(remote);
+  });
+  // アップロード: カバー
+  document.getElementById('cd-cover-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const dataUrl = await readAsDataURL(file);
+    renderCover(dataUrl);
+    saveLocal(coverKey, dataUrl);
+    const remote = await uploadCompanyImage(file, 'cover');
+    if (remote) renderCover(remote);
+  });
 
   document.getElementById('logout-link').addEventListener('click', async (e) => {
     e.preventDefault(); await window.sb.auth.signOut(); location.href = 'original.html';
@@ -129,8 +493,10 @@
   // 求人リスト
   const jobs = await window.AImeBiz.listMyJobs();
   const totalViews = jobs.reduce((s, j) => s + (j.view_count || 0), 0);
-  document.getElementById('stat-jobs').textContent = jobs.filter(j => j.status === 'approved' && j.is_public).length;
+  const publicCount = jobs.filter(j => j.status === 'approved' && j.is_public).length;
+  document.getElementById('stat-jobs').textContent = publicCount;
   document.getElementById('stat-views').textContent = totalViews;
+  document.getElementById('badge-jobs').textContent = jobs.length;
 
   const jobsList = document.getElementById('jobs-list');
   if (!jobs.length) {
@@ -159,6 +525,7 @@
   // 応募者
   const apps = await window.AImeBiz.getCompanyApplicants();
   document.getElementById('stat-apps').textContent = apps.length;
+  document.getElementById('badge-apps').textContent = apps.length;
   const appsList = document.getElementById('apps-list');
   if (!apps.length) {
     appsList.innerHTML = '<div style="text-align:center; color:#888; padding:40px;">まだ応募はありません</div>';

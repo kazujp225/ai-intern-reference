@@ -71,10 +71,37 @@
 <footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-biz.js"></script>
 <script>
 (async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  if (PREVIEW) {
+    document.getElementById('je-title').textContent = '求人の編集 (プレビュー)';
+    document.getElementById('j-title').value = 'LLM開発インターン';
+    document.getElementById('j-description').value = 'LLMを活用したエンタープライズ向けAIアシスタントの開発に携わる学生インターンを募集します。プロンプトエンジニアリング、RAG実装、評価パイプライン構築を担当いただきます。';
+    document.getElementById('j-salary-min').value = '2000';
+    document.getElementById('j-salary-max').value = '3500';
+    document.getElementById('j-location').value = '東京都渋谷区 / フルリモート可';
+    const catEl = document.getElementById('j-category'); if (catEl) catEl.value = 'エンジニア';
+    document.getElementById('j-workdays').value = '週3日〜 / 平日10-19時';
+    document.getElementById('j-tags').value = 'LLM, RAG, Python, GPT, プロンプトエンジニアリング';
+    document.getElementById('j-skills').value = 'Python基礎\nGit / GitHub\nLLM APIの利用経験';
+    document.getElementById('j-welcome').value = 'LangChain / LlamaIndex経験\nベクトルDB (pgvector / Pinecone)の経験\n英語ドキュメント読解';
+    document.getElementById('j-benefits').value = '交通費支給\n書籍購入補助\nフルリモートOK\nメンター制度';
+    document.getElementById('j-deadline').value = '2026-06-30';
+    document.getElementById('j-public').checked = true;
+    document.getElementById('je-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('je-msg');
+      msg.style.color = '#1b5e20';
+      msg.textContent = '✓ (プレビューモード) 保存はスキップされました';
+    });
+    return;
+  }
+
   const { data: { user } } = await window.sb.auth.getUser();
   if (!user) { location.href = 'login.html'; return; }
   const company = await window.AImeBiz.getMyCompany();

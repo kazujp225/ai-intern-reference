@@ -918,12 +918,12 @@
       </div>
       <div class="neo-nav">
         <a href="search.html" class="header-category-item">インターンを探す</a>
-        <a href="search.html?view=companies" class="header-category-item">AI企業を探す</a>
+        <a href="companies.html" class="header-category-item">AI企業を探す</a>
         <a href="blog.html" class="header-category-item">AIコラム</a>
         <a href="company-dashboard.html" class="header-category-item" id="nav-company" style="display:none;">企業管理</a>
         <a href="admin.html" class="header-category-item" id="nav-admin" style="display:none;">管理者</a>
         <a href="messages.html" class="header-category-item" id="nav-messages" style="display:none;">メッセージ</a>
-        <a href="notifications.html" class="header-category-item" id="nav-notif" style="display:none; position:relative;">🔔<span id="notif-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f44336; color:#fff; border-radius:999px; padding:1px 6px; font-size:.65em; font-weight:900;">0</span></a>
+        <a href="notifications.html" class="header-category-item" id="nav-notif" style="display:none; position:relative;">通知<span id="notif-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f44336; color:#fff; border-radius:999px; padding:1px 6px; font-size:.65em; font-weight:900;">0</span></a>
         <a href="mypage.html" class="header-category-item" id="nav-mypage" style="display:none;">マイページ</a>
         <a href="login.html" class="neo-login" id="nav-login">ログイン</a>
         <a href="signup-role.html" class="neo-register" id="nav-signup">新規登録</a>
@@ -1406,7 +1406,7 @@
           <ul class="footer-container-upper-content-items">
             <li class="footer-container-upper-content-item"><a href="search.html">AIme募集一覧</a></li>
             <li class="footer-container-upper-content-item"><a href="search.html">AIキーワード一覧</a></li>
-            <li class="footer-container-upper-content-item"><a href="search.html?view=companies">AI企業一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="companies.html">AI企業一覧</a></li>
           </ul>
         </div>
       </div>
@@ -1414,7 +1414,7 @@
       <div class="footer-container-upper-content">
         <h3 class="footer-container-upper-content-title">AIを学ぶ</h3>
         <ul class="footer-container-upper-content-items">
-          <li class="footer-container-upper-content-item"><a href="#">AIコラム（GPTに書かせてない、多分）</a></li>
+          <li class="footer-container-upper-content-item"><a href="blog.html">AIコラム（GPTに書かせてない、多分）</a></li>
           <li class="footer-container-upper-content-item"><a href="#">AI用語辞典</a></li>
         </ul>
       </div>
@@ -1453,7 +1453,8 @@
   <script src="js/top-vue.js"></script>
   <script src="js/jobs-data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-  <script src="js/supabase-client.js"></script>
+  <script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
   <script src="js/realtime.js"></script>
   <script src="js/supabase-biz.js"></script>
 
@@ -1806,6 +1807,32 @@
       }
       render();
 
+      // ===== Supabase DB から求人を優先取得 (実データがあれば差し替え) =====
+      (async function dbOverride() {
+        if (!window.AImeBiz) return;
+        try {
+          const result = await window.AImeBiz.listPublicJobs({ limit: 36, sort: 'new' });
+          if (!result || !result.items || !result.items.length) return; // 実データ無ければ静的表示を維持
+          const dbJobs = result.items.map(j => ({
+            id: j.id,
+            title: j.title,
+            company: j.companies?.name || '',
+            salary: j.salary_min ? `¥${Number(j.salary_min).toLocaleString()}` : '応相談',
+            location: j.location || '場所未定',
+            tags: (j.tags || []).slice(0, 3),
+            badge: j.is_boosted ? '注目' : '',
+            _cat: j.category || 'all',
+          }));
+          // render を DB ベースに置き換え
+          getAllCards = function(){ return dbJobs; };
+          getCategoryCards = function(cat){ return dbJobs.filter(d => d._cat === cat); };
+          if (countEl) countEl.textContent = result.total || dbJobs.length;
+          render();
+        } catch (err) {
+          console.warn('DB job override failed:', err);
+        }
+      })();
+
       // タブ切り替え
       var tabsContainer = document.querySelector('.compact-tabs');
       if (tabsContainer) {
@@ -1876,7 +1903,7 @@
               const cur = parseInt(badge.textContent) || 0;
               badge.textContent = cur + 1; badge.style.display = 'inline-block';
               if (window.AImeRealtime) window.AImeRealtime.showToast(
-                `<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🔔 新着通知</div><div><strong>${n.title}</strong></div><div style="color:#666;font-size:.85em;margin-top:2px;">${n.body || ''}</div>`
+                `<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">新着通知</div><div><strong>${n.title}</strong></div><div style="color:#666;font-size:.85em;margin-top:2px;">${n.body || ''}</div>`
               );
             });
 
@@ -1902,7 +1929,7 @@
         const title = (data.title || 'AIインターン').toString();
         const shortTitle = title.length > 24 ? title.slice(0, 24) + '…' : title;
         window.AImeRealtime.showToast(
-          '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">🎉 たった今</div>' +
+          '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">たった今</div>' +
           '<div>誰かが <strong>' + company + '</strong> に応募しました</div>' +
           '<div style="color:#666;font-size:.8em;margin-top:2px;">' + shortTitle + '</div>'
         );

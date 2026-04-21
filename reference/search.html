@@ -6,76 +6,223 @@
 <title>求人検索 | AIme</title>
 <link rel="stylesheet" href="css/pages.css">
 <style>
+  body { background: #f7f8fa; }
+
+  /* ===== ヒーロー: blog.html と同系統 (ソフト緑グラデ) ===== */
   .search-hero {
     background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
-    padding: 40px 24px 32px;
+    padding: 48px 24px 40px;
   }
-  .search-hero-inner { max-width: 1200px; margin: 0 auto; }
+  .search-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .search-hero h1 {
+    margin: 0; font-size: 2em; font-weight: 900; letter-spacing: -.02em; color: #111;
+  }
+  .search-hero p { color: #555; margin: 6px 0 0; font-size: .95em; }
+
+  /* ===== 検索バー: blog.html の bl-search に合わせる ===== */
   .search-bar {
-    display: flex; gap: 10px; max-width: 700px; margin: 16px auto 0;
-    background: #fff; border-radius: 999px; padding: 6px 6px 6px 24px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    display: flex; gap: 8px; max-width: 680px; margin: 18px 0 0;
+    background: #fff; border-radius: 999px; padding: 4px 4px 4px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
   }
   .search-bar input {
-    flex: 1; border: none; outline: none; font-size: 1em; background: transparent;
+    flex: 1; border: none; outline: none; font-size: .95em;
+    background: transparent; padding: 0;
   }
   .search-bar button {
-    width: 44px; height: 44px; border: none; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%; border: none;
     background: #4caf50; color: #fff; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4em; font-weight: 900;
+    font-weight: 900; font-size: 1em; transition: background .15s;
   }
-  .search-bar button:hover { background: #2e7d32; }
+  .search-bar button:hover { background: #388e3c; }
 
+  /* ===== レイアウト ===== */
   .layout {
-    display: grid; grid-template-columns: 260px 1fr; gap: 32px;
-    max-width: 1200px; margin: 32px auto; padding: 0 24px;
+    display: grid; grid-template-columns: 260px 1fr; gap: 28px;
+    max-width: 1100px; margin: 28px auto 60px; padding: 0 24px;
   }
   @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ===== サイドバー (クリーンカード) ===== */
   .filter-side {
-    position: sticky; top: 88px; align-self: start;
-    background: #fff; padding: 20px; border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    position: sticky; top: 20px; align-self: start;
+    background: #fff; padding: 20px 20px 8px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
   }
-  .filter-side h3 { font-size: .85em; font-weight: 900; color: #222; letter-spacing: .05em; margin: 16px 0 8px; text-transform: uppercase; }
+  .filter-side h3 {
+    font-size: .95em; font-weight: 900; color: #111;
+    margin: 18px 0 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .filter-side h3::before {
+    content: ''; width: 4px; height: 16px; background: #4caf50; border-radius: 2px;
+  }
   .filter-side h3:first-child { margin-top: 0; }
-  .filter-side ul { list-style: none; padding: 0; margin: 0 0 8px; }
+  .filter-side ul { list-style: none; padding: 0; margin: 0 0 4px; }
+  .filter-side li { border-bottom: 1px solid #f0f0f0; }
+  .filter-side li:last-child { border-bottom: none; }
   .filter-side li a {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 0; color: #333; font-size: .9em; font-weight: 700;
+    padding: 10px 6px; color: #333; font-size: .9em; font-weight: 700;
+    text-decoration: none; border-radius: 6px; transition: all .15s;
   }
-  .filter-side li a:hover { color: #2e7d32; }
-  .filter-side li a .n { color: #999; font-size: .8em; font-weight: 700; font-family: monospace; }
+  .filter-side li a:hover {
+    background: #f0faf0; color: #2e7d32; padding-left: 12px;
+  }
+  .filter-side li a .n {
+    color: #666; font-size: .78em; font-weight: 800;
+    background: #f5f5f5; padding: 2px 10px; border-radius: 999px;
+  }
+  .filter-side li a:hover .n { background: #e8f5e9; color: #2e7d32; }
 
+  /* ===== 結果ヘッダ ===== */
   .results-head {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px; padding-bottom: 12px;
+    border-bottom: 1px solid #e8e8e8;
   }
-  .results-head h2 { margin: 0; font-size: 1.3em; font-weight: 900; }
-  .results-head .count { color: #666; font-size: .9em; }
+  .results-head h2 {
+    margin: 0; font-size: 1.3em; font-weight: 900; letter-spacing: -.01em;
+    color: #111;
+  }
+  .results-head .count {
+    color: #2e7d32; font-size: .82em; font-weight: 800;
+    background: #e8f5e9; padding: 3px 12px; border-radius: 999px;
+  }
 
   .results-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
   }
-  .active-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+
+  /* ===== ジョブカード (pages.css の job-card を踏襲して上書きなし) ===== */
+  .job-card {
+    background: #fff;
+    border-radius: 14px !important;
+    padding: 22px !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04) !important;
+    transition: transform .2s, box-shadow .2s !important;
+    display: block; text-decoration: none; color: inherit;
+  }
+  .job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,.08) !important;
+  }
+  .job-card .jc-company {
+    font-size: .78em; font-weight: 800; color: #666;
+    letter-spacing: .02em; margin-bottom: 4px;
+  }
+  .job-card .jc-title {
+    font-size: 1.1em; font-weight: 900; color: #111;
+    margin-bottom: 12px; line-height: 1.4;
+  }
+  .job-card .jc-tag {
+    font-size: .72em !important; font-weight: 700 !important;
+    background: #f0f0f0 !important; color: #333 !important;
+    padding: 4px 10px !important; border-radius: 999px !important;
+    border: none !important;
+  }
+  .job-card .jc-tag.hot {
+    background: #1b5e20 !important; color: #fff !important;
+  }
+  .job-card .jc-meta {
+    border-top: 1px solid #eee !important;
+    padding-top: 12px !important; margin-top: 12px !important;
+    font-size: .8em; font-weight: 700; color: #666;
+  }
+  .job-card .jc-wage {
+    color: #2e7d32 !important; font-weight: 800 !important;
+    background: none; padding: 0; border: none;
+  }
+
+  /* ===== アクティブフィルタ ===== */
+  .active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
   .active-filter {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: #111; color: #fff; padding: 6px 14px; border-radius: 999px;
-    font-size: .85em; font-weight: 800;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #e8f5e9; color: #1b5e20;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: .82em; font-weight: 800;
+    border: 1px solid #c8e6c9;
   }
   .active-filter .x {
-    background: rgba(255,255,255,.2); width: 18px; height: 18px;
-    border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-    font-size: .9em; cursor: pointer; font-weight: 900;
+    background: #2e7d32; color: #fff;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .8em; cursor: pointer; font-weight: 900;
+    transition: background .15s;
   }
-  .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 32px; }
+  .active-filter .x:hover { background: #1b5e20; }
+
+  /* ===== ソート select ===== */
+  #sort-select {
+    padding: 6px 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    font-size: .85em !important; font-weight: 700 !important;
+    background: #fff;
+    font-family: inherit;
+  }
+  #sort-select:focus { outline: none; border-color: #4caf50; }
+
+  /* ===== ランキング ===== */
+  #ranking-section {
+    background: #fff !important;
+    border-radius: 14px !important;
+    padding: 20px 22px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  #ranking-section .rank-head {
+    font-weight: 900; color: #111; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;
+  }
+  #ranking-section .rank-head::before {
+    content: ''; width: 4px; height: 16px; background: #ff9800; border-radius: 2px;
+  }
+  #ranking-section .rank-head .sub {
+    font-size: .78em; color: #888; font-weight: 700;
+  }
+  #ranking-list > a {
+    display: flex; gap: 12px; align-items: center;
+    padding: 10px 14px; background: #fafafa;
+    border-radius: 10px; color: inherit; text-decoration: none;
+    margin-bottom: 6px; transition: all .15s;
+  }
+  #ranking-list > a:hover { background: #f0faf0; transform: translateX(3px); }
+  #ranking-list .rank-num {
+    font-family: 'Arial Black', sans-serif; font-size: 1em; font-weight: 900;
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    flex-shrink: 0;
+  }
+  #ranking-list .rank-views {
+    font-size: .75em; color: #666; font-weight: 800;
+    background: #fff3e0; color: #e65100;
+    padding: 3px 10px; border-radius: 999px;
+  }
+
+  /* ===== ページネーション ===== */
+  .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 40px; }
   .pagination a {
-    width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
-    background: #fff; border: 2px solid #e1e4e8; border-radius: 8px;
-    color: #333; font-weight: 800; font-size: .9em;
+    width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+    background: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
+    color: #333; font-weight: 700; font-size: .88em;
+    transition: all .15s; text-decoration: none;
   }
-  .pagination a.active { background: #111; color: #fff; border-color: #111; }
-  .pagination a:hover { border-color: #111; }
+  .pagination a.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border-color: transparent; }
+  .pagination a:hover { border-color: #2e7d32; color: #2e7d32; }
+  .pagination a.active:hover { color: #fff; }
+
+  /* ===== パンくず (pages.css に合わせる) ===== */
+  .breadcrumb {
+    max-width: 1100px; margin: 16px auto 0; padding: 0 24px;
+    font-size: .85em; color: #666;
+  }
+  .breadcrumb a { color: #666; font-weight: 600; }
+  .breadcrumb a:hover { color: #2e7d32; }
+  .breadcrumb span { margin: 0 6px; color: #ccc; }
 </style>
 </head>
 <body>
@@ -85,8 +232,8 @@
     <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
     <nav class="site-nav">
       <a href="search.html" class="current">インターンを探す</a>
-      <a href="search.html?view=companies">AI企業を探す</a>
-      <a href="#">AIコラム</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
       <a href="login.html" class="login">ログイン</a>
       <a href="signup.html" class="register">新規登録</a>
     </nav>
@@ -94,9 +241,9 @@
 </header>
 
 <section class="search-hero">
-  <div class="search-hero-inner" style="text-align:center;">
-    <h1 style="font-size: 2em; font-weight: 900; margin: 0; letter-spacing: -.02em;">AI特化インターン 求人検索</h1>
-    <p style="color: #555; margin: 6px 0 0;">職種・特徴・エリア・キーワードからあなたにぴったりの求人を見つけよう</p>
+  <div class="search-hero-inner">
+    <h1>AI特化インターン 求人検索</h1>
+    <p>職種・特徴・エリア・キーワードからあなたにぴったりの求人を見つけよう</p>
     <form class="search-bar" method="get" action="search.html">
       <input name="q" id="search-q" placeholder="スキル、企業、条件で探す">
       <button type="submit" aria-label="検索">→</button>
@@ -106,7 +253,22 @@
 
 <nav class="breadcrumb">
   <a href="original.html">トップ</a><span>/</span>求人検索<span id="crumb-extra"></span>
+  <button id="save-search-btn" style="margin-left:12px; padding:4px 12px; background:#e8f5e9; color:#1b5e20; border:1px solid #c8e6c9; border-radius:999px; font-size:.82em; font-weight:800; cursor:pointer;">＋ この検索を保存</button>
+  <a href="saved-searches.html" style="margin-left:6px; font-size:.82em; color:#2e7d32; font-weight:700;">保存済み検索 →</a>
 </nav>
+<script src="js/supabase-v3.js"></script>
+<script>
+document.getElementById('save-search-btn')?.addEventListener('click', async () => {
+  if (!window.AImeV3) return alert('ログインしてください');
+  const params = Object.fromEntries(new URLSearchParams(location.search).entries());
+  const label = prompt('この検索に名前を付けてください', Object.values(params).filter(Boolean).join(' × ') || 'マイ検索');
+  if (!label) return;
+  try {
+    await window.AImeV3.saveSearch(label, params, true);
+    alert('✓ 検索を保存しました');
+  } catch (err) { alert('保存失敗: ' + err.message); }
+});
+</script>
 
 <div class="layout">
   <aside class="filter-side">
@@ -144,9 +306,9 @@
     <div id="active-filters" class="active-filters"></div>
 
     <!-- ランキング -->
-    <div id="ranking-section" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2); padding:18px 22px; border-radius:14px; margin-bottom:20px; display:none;">
-      <div style="font-weight:900; color:#e65100; margin-bottom:10px; display:flex; align-items:center; gap:8px;">🏆 人気ランキング <span style="font-size:.75em; color:#888; font-weight:700;">閲覧数ベース</span></div>
-      <div id="ranking-list" style="display:grid; gap:8px;"></div>
+    <div id="ranking-section" style="display:none;">
+      <div class="rank-head">人気ランキング <span class="sub">閲覧数ベース</span></div>
+      <div id="ranking-list"></div>
     </div>
 
     <div class="results-head">
@@ -177,7 +339,7 @@
       <div class="brand">AIme</div>
       <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p>
     </div>
-    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="search.html?view=companies">企業一覧</a></li></ul></div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="companies.html">企業一覧</a></li></ul></div>
     <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup.html">新規登録</a></li></ul></div>
     <div><h4>サービス</h4><ul><li><a href="#">採用担当者様へ</a></li><li><a href="#">お問合せ</a></li></ul></div>
   </div>
@@ -185,9 +347,10 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
 <script src="js/supabase-social.js"></script>
-<script src="js/jobs-data.js"></script>
 <script>
 (async function(){
   const params = new URLSearchParams(location.search);
@@ -197,16 +360,19 @@
   const feat = params.get('feature');
   const area = params.get('area');
   const comp = params.get('company');
-  const view = params.get('view');
-  const displayCount = parseInt(params.get('count'), 10);
+  const remote = params.get('remote');
+  const pageIdx = Math.max(0, parseInt(params.get('page') || '0', 10));
+  const PAGE_SIZE = 12;
 
+  // アクティブフィルタ表示
   const filters = [];
-  if (q)    filters.push({ label: `"${q}"`,       key: 'q' });
-  if (tag)  filters.push({ label: `#${tag}`,      key: 'tag' });
-  if (job)  filters.push({ label: `職種: ${job}`, key: 'job' });
-  if (feat) filters.push({ label: `特徴: ${feat}`,key: 'feature' });
-  if (area) filters.push({ label: `エリア: ${area}`, key: 'area' });
-  if (comp) filters.push({ label: `企業: ${comp}`, key: 'company' });
+  if (q)      filters.push({ label: `"${q}"`,       key: 'q' });
+  if (tag)    filters.push({ label: `#${tag}`,      key: 'tag' });
+  if (job)    filters.push({ label: `職種: ${job}`, key: 'job' });
+  if (feat)   filters.push({ label: `特徴: ${feat}`,key: 'feature' });
+  if (area)   filters.push({ label: `エリア: ${area}`, key: 'area' });
+  if (comp)   filters.push({ label: `企業: ${comp}`,   key: 'company' });
+  if (remote) filters.push({ label: `働き方: ${remote}`, key: 'remote' });
 
   const afEl = document.getElementById('active-filters');
   afEl.innerHTML = filters.map(f =>
@@ -219,123 +385,144 @@
 
   if (q) document.getElementById('search-q').value = q;
 
-  const title = filters.length
+  const titleText = filters.length
     ? filters.map(f => f.label).join(' / ') + ' の求人'
-    : (view === 'companies' ? '企業一覧' : 'すべての求人');
-  document.getElementById('results-title').textContent = title;
+    : 'すべての求人';
+  document.getElementById('results-title').textContent = titleText;
 
-  const crumb = filters.length ? ' / ' + filters[0].label : '';
-  document.getElementById('crumb-extra').innerHTML = crumb ? `<span>/</span>${filters[0].label}` : '';
+  document.getElementById('crumb-extra').innerHTML = filters.length ? `<span>/</span>${filters[0].label}` : '';
 
-  // 全職種を JOBS_DATA からフラット化
-  const allJobs = [];
-  Object.keys(window.JOBS_DATA || {}).forEach(cat => {
-    window.JOBS_DATA[cat].forEach((j, i) => {
-      allJobs.push(Object.assign({}, j, { id: cat + '-' + i, category: cat }));
-    });
-  });
+  // 検索履歴を保存 (ログイン時のみ)
+  if (q && window.AImeV3) { window.AImeV3.logSearch(q).catch(()=>{}); }
 
-  // URL フィルタ適用
-  const norm = s => (s || '').toLowerCase();
-  const qStr = norm(q);
-  const filtered = allJobs.filter(j => {
-    if (q && !(norm(j.title).includes(qStr) || norm(j.company).includes(qStr) || j.tags.some(t => norm(t).includes(qStr)))) return false;
-    if (tag && !j.tags.some(t => norm(t).includes(norm(tag)))) return false;
-    if (feat && !j.tags.some(t => norm(t).includes(norm(feat)))) return false;
-    if (comp && !j.company.includes(comp)) return false;
-    if (area && !j.location.includes(area.replace(/県|都/g,''))) return false;
-    if (job) {
-      const jobCatMap = { 'LLMアプリ開発':'llm', 'プロンプトエンジニア':'prompt', 'MLエンジニア':'data', 'データサイエンティスト':'data', 'AI PMM / BizDev':'business', 'AIリサーチャー':'agent', 'AIエージェント開発':'agent', 'AI × クリエイティブ':'image' };
-      const cat = jobCatMap[job];
-      if (cat && j.category !== cat) return false;
-      if (!cat && !(norm(j.title).includes(norm(job)) || j.tags.some(t => norm(t).includes(norm(job))))) return false;
+  // ソートセレクト初期値
+  const sortSelect = document.getElementById('sort-select');
+  sortSelect.value = params.get('sort') || 'new';
+
+  // DB検索実行
+  async function doSearch() {
+    const grid = document.getElementById('results-grid');
+    grid.innerHTML = '<div style="grid-column:1/-1; padding:40px; text-align:center; color:#888;">読み込み中…</div>';
+
+    let companyId = null;
+    if (comp) {
+      // 企業名から id を解決 (部分一致)
+      const { data: companies } = await window.sb.from('companies').select('id').ilike('name', `%${comp}%`).limit(1);
+      if (companies && companies.length) companyId = companies[0].id;
     }
-    return true;
-  });
 
-  const totalForDisplay = !isNaN(displayCount) ? displayCount : (filtered.length || allJobs.length);
-  const pageSize = Math.min(totalForDisplay, 12);
-  const baseItems = filtered.length ? filtered : allJobs;
-  const gridItems = [];
-  for (let i = 0; i < pageSize; i++) {
-    gridItems.push(baseItems[i % baseItems.length]);
-  }
+    let result = { items: [], total: 0 };
+    try {
+      result = await window.AImeBiz.listPublicJobs({
+        limit: PAGE_SIZE,
+        offset: pageIdx * PAGE_SIZE,
+        keyword: q || null,
+        location: area || null,
+        companyId,
+        tag: tag || job || null,
+        feature: feat || null,
+        remoteType: remote || null,
+        sort: sortSelect.value,
+      });
+    } catch (err) {
+      grid.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; color:#c62828;">検索エラー: ${err.message}</div>`;
+      return;
+    }
 
-  const grid = document.getElementById('results-grid');
-  grid.innerHTML = gridItems.map((j, i) => {
-    const isHot = (j.band && j.band.indexOf('急募') >= 0) || (j.band && j.band.indexOf('Pickup') >= 0);
-    return `
-      <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
-        <div class="jc-company">${j.company}</div>
-        <div class="jc-title">${j.title}</div>
-        <div class="jc-tags">
-          ${isHot ? `<span class="jc-tag hot">${j.band}</span>` : (j.band ? `<span class="jc-tag">${j.band}</span>` : '')}
-          ${j.tags.map(t => `<span class="jc-tag">${t}</span>`).join('')}
-        </div>
-        <div class="jc-meta">
-          <span class="jc-wage">時給 ${j.salary}</span>
-          <span>${j.location}</span>
-        </div>
-      </a>`;
-  }).join('');
+    // 結果件数
+    document.getElementById('results-count').textContent = result.total
+      ? `${Math.min(PAGE_SIZE, result.items.length)}件（全${result.total.toLocaleString()}件中）`
+      : '該当求人なし';
 
-  document.getElementById('results-count').textContent = `${pageSize}件（全${totalForDisplay.toLocaleString()}件中）`;
-
-  // ---- ランキング表示（閲覧数上位5件） ----
-  if (window.AImeSocial) {
-    const topJobs = await window.AImeSocial.topJobsByViews(5);
-    if (topJobs.length) {
-      const section = document.getElementById('ranking-section');
-      const list = document.getElementById('ranking-list');
-      list.innerHTML = topJobs.map((s, i) => {
-        const job = window.JOBS_GET(s.job_id);
-        if (!job) return '';
-        const medal = ['🥇','🥈','🥉','4','5'][i];
+    if (!result.items.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1; padding:60px; text-align:center; color:#888; background:#fff; border-radius:14px;">
+        該当する求人が見つかりませんでした。<br>
+        <a href="search.html" style="color:#2e7d32; font-weight:800;">フィルタをリセット</a></div>`;
+    } else {
+      grid.innerHTML = result.items.map(j => {
+        const company = j.companies?.name || '';
+        const isHot = j.is_boosted;
+        const tags = (j.tags || []).slice(0, 4).map(t => `<span class="jc-tag">${escapeHtml(t)}</span>`).join('');
+        const wage = j.salary_min ? `時給 ¥${Number(j.salary_min).toLocaleString()}${j.salary_max ? '〜¥' + Number(j.salary_max).toLocaleString() : ''}` : '時給応相談';
         return `
-          <a href="job.html?id=${encodeURIComponent(s.job_id)}" style="display:flex; gap:10px; align-items:center; padding:8px; background:#fff; border-radius:8px; color:inherit; text-decoration:none;">
-            <div style="font-size:1.2em; font-weight:900; width:24px; text-align:center;">${medal}</div>
-            <div style="flex:1; min-width:0;">
-              <div style="font-weight:800; font-size:.9em; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${job.title}</div>
-              <div style="font-size:.75em; color:#888;">${job.company}</div>
+          <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
+            <div class="jc-company">${escapeHtml(company)}</div>
+            <div class="jc-title">${escapeHtml(j.title)}</div>
+            <div class="jc-tags">
+              ${isHot ? `<span class="jc-tag hot">注目</span>` : ''}
+              ${tags}
             </div>
-            <div style="font-size:.8em; color:#e65100; font-weight:800;">${s.view_count}回</div>
+            <div class="jc-meta">
+              <span class="jc-wage">${wage}</span>
+              <span>${escapeHtml(j.location || '場所未定')}</span>
+            </div>
           </a>`;
       }).join('');
-      section.style.display = 'block';
     }
+
+    // ページネーション更新
+    const totalPages = Math.ceil((result.total || 0) / PAGE_SIZE);
+    renderPagination(totalPages, pageIdx);
   }
 
-  // ---- 並び替え ----
-  const sortSelect = document.getElementById('sort-select');
-  sortSelect.addEventListener('change', async () => {
-    if (sortSelect.value === 'popular' && window.AImeSocial) {
-      const stats = await window.AImeSocial.topJobsByViews(50);
-      const statsMap = {}; stats.forEach(s => { statsMap[s.job_id] = s.view_count; });
-      gridItems.sort((a, b) => (statsMap[b.id] || 0) - (statsMap[a.id] || 0));
-      renderGrid();
-    } else {
-      renderGrid();
+  function renderPagination(totalPages, current) {
+    const nav = document.querySelector('.pagination');
+    if (!nav) return;
+    if (totalPages <= 1) { nav.style.display = 'none'; return; }
+    nav.style.display = 'flex';
+    const make = (p, label, isActive) => {
+      const np = new URLSearchParams(location.search);
+      np.set('page', p);
+      return `<a href="?${np.toString()}" class="${isActive?'active':''}">${label}</a>`;
+    };
+    const parts = [];
+    if (current > 0) parts.push(make(current - 1, '«', false));
+    for (let i = 0; i < Math.min(totalPages, 5); i++) {
+      parts.push(make(i, i + 1, i === current));
     }
-  });
-  function renderGrid() {
-    const grid = document.getElementById('results-grid');
-    grid.innerHTML = gridItems.map((j) => {
-      const isHot = (j.band && j.band.indexOf('急募') >= 0) || (j.band && j.band.indexOf('Pickup') >= 0);
-      return `
-        <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
-          <div class="jc-company">${j.company}</div>
-          <div class="jc-title">${j.title}</div>
-          <div class="jc-tags">
-            ${isHot ? `<span class="jc-tag hot">${j.band}</span>` : (j.band ? `<span class="jc-tag">${j.band}</span>` : '')}
-            ${j.tags.map(t => `<span class="jc-tag">${t}</span>`).join('')}
-          </div>
-          <div class="jc-meta">
-            <span class="jc-wage">時給 ${j.salary}</span>
-            <span>${j.location}</span>
-          </div>
-        </a>`;
-    }).join('');
+    if (current < totalPages - 1) parts.push(make(current + 1, '»', false));
+    nav.innerHTML = parts.join('');
   }
+
+  function escapeHtml(s) {
+    return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ソート変更で再検索
+  sortSelect.addEventListener('change', () => {
+    const np = new URLSearchParams(location.search);
+    np.set('sort', sortSelect.value);
+    np.delete('page');
+    location.search = np.toString();
+  });
+
+  // ランキング表示 (閲覧数上位)
+  try {
+    const topJobs = await window.AImeSocial.topJobsByViews(5);
+    if (topJobs && topJobs.length) {
+      const section = document.getElementById('ranking-section');
+      const list = document.getElementById('ranking-list');
+      const details = await Promise.all(topJobs.map(async s => {
+        const j = await window.AImeBiz.getJob(s.job_id);
+        return j ? { ...j, view_count: s.view_count } : null;
+      }));
+      const valid = details.filter(Boolean);
+      if (valid.length) {
+        list.innerHTML = valid.map((j, i) => `
+          <a href="job.html?id=${encodeURIComponent(j.id)}">
+            <div class="rank-num">${String(i + 1).padStart(2, '0')}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-weight:900; font-size:.95em; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(j.title)}</div>
+              <div style="font-size:.78em; color:#666; font-family:monospace; margin-top:2px;">${escapeHtml(j.companies?.name || '')}</div>
+            </div>
+            <div class="rank-views">${j.view_count} VIEW</div>
+          </a>`).join('');
+        section.style.display = 'block';
+      }
+    }
+  } catch (err) { console.warn('ranking failed:', err); }
+
+  doSearch();
 })();
 </script>
 </body>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ UI 案 (6案) | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f0f1f3; }
+
+  /* ====== 共通の比較ページ骨組み ====== */
+  .px-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+  .px-title { font-size: 2em; font-weight: 900; margin: 0 0 8px; letter-spacing: -.02em; }
+  .px-sub { color: #666; margin: 0 0 32px; }
+  .px-toc {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px;
+    position: sticky; top: 0; background: #f0f1f3;
+    padding: 14px 0; z-index: 50; border-bottom: 1px solid #e0e0e0;
+  }
+  .px-toc a {
+    padding: 8px 14px; background: #fff; border: 1px solid #e0e0e0;
+    border-radius: 999px; font-size: .85em; font-weight: 700;
+    color: #333; text-decoration: none; transition: all .15s;
+  }
+  .px-toc a:hover { border-color: #2e7d32; color: #2e7d32; }
+  .px-case { margin-bottom: 60px; }
+  .px-case-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #111;
+  }
+  .px-case-label {
+    font-family: 'Arial Black', sans-serif;
+    background: #111; color: #fff; padding: 4px 12px; border-radius: 4px;
+    font-size: .78em; letter-spacing: 2px;
+  }
+  .px-case-name { font-size: 1.15em; font-weight: 900; color: #111; }
+  .px-case-desc { color: #666; font-size: .85em; margin-left: auto; }
+  .px-demo {
+    background: #f7f8fa; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  }
+
+  /* ============================
+     [A] コンパクト Notion風
+     ============================ */
+  .a-crumb { font-size: .82em; color: #999; padding: 18px 28px 6px; }
+  .a-head { padding: 0 28px 18px; border-bottom: 1px solid #e8e8e8; background: #fff; }
+  .a-head-row { display: flex; align-items: center; gap: 14px; }
+  .a-avatar-s { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1em; font-family: 'Arial Black', sans-serif; flex-shrink: 0; }
+  .a-head h1 { margin: 0; font-size: 1.5em; font-weight: 900; letter-spacing: -.01em; }
+  .a-head-meta { display: flex; align-items: center; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .a-chip { font-size: .82em; color: #555; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+  .a-chip .num { color: #1b5e20; font-weight: 900; font-size: 1em; font-family: 'Arial Black', sans-serif; }
+  .a-email { margin-left: auto; color: #999; font-size: .82em; font-family: monospace; }
+  .a-tabs { padding: 12px 28px 0; border-bottom: 1px solid #e8e8e8; background: #fff; display: flex; gap: 4px; }
+  .a-tab { padding: 8px 14px; background: transparent; border: none; cursor: pointer; font-weight: 700; color: #888; font-size: .88em; border-radius: 6px 6px 0 0; }
+  .a-tab.active { color: #1b5e20; border-bottom: 2px solid #2e7d32; }
+  .a-panel { padding: 22px 28px; background: #fff; }
+  .a-row { display: flex; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid #f0f0f0; }
+  .a-row-t { font-weight: 700; font-size: .95em; }
+  .a-row-m { font-size: .78em; color: #888; margin-top: 3px; }
+  .a-status { padding: 2px 10px; border-radius: 4px; font-size: .72em; font-weight: 800; background: #e8f5e9; color: #1b5e20; align-self: flex-start; }
+
+  /* ============================
+     [B] LinkedIn風プロフィール重視
+     ============================ */
+  .b-cover {
+    height: 140px;
+    background: linear-gradient(135deg, #1b5e20, #4caf50 50%, #8bc34a);
+    position: relative;
+  }
+  .b-cover::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at top right, rgba(255,255,255,.15), transparent); }
+  .b-prof-card { background: #fff; margin: -48px 24px 0; padding: 20px 28px 24px; border-radius: 16px; position: relative; box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+  .b-avatar { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 2.4em; font-family: 'Arial Black', sans-serif; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.1); margin-top: -58px; }
+  .b-prof-name { font-size: 1.6em; font-weight: 900; margin: 12px 0 4px; letter-spacing: -.01em; }
+  .b-prof-sub { color: #666; font-size: .9em; margin-bottom: 4px; }
+  .b-prof-bio { color: #333; font-size: .92em; line-height: 1.6; margin: 10px 0 14px; max-width: 600px; }
+  .b-skill { display: inline-block; background: #e8f5e9; color: #1b5e20; padding: 4px 12px; border-radius: 999px; font-size: .78em; font-weight: 800; margin-right: 6px; margin-bottom: 6px; }
+  .b-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .b-actions .primary { padding: 8px 18px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 800; font-size: .88em; cursor: pointer; }
+  .b-actions .ghost { padding: 8px 18px; background: #fff; color: #333; border: 1px solid #e0e0e0; border-radius: 8px; font-weight: 700; font-size: .85em; cursor: pointer; }
+  .b-sub-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; padding: 24px; }
+  .b-tabs-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .b-tabs-card h3 { margin: 0 0 12px; font-size: 1em; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .b-tabs-card h3::before { content: ''; width: 4px; height: 14px; background: #4caf50; border-radius: 2px; }
+  .b-mini-list { display: grid; gap: 8px; }
+  .b-mini-row { padding: 10px 12px; background: #fafafa; border-radius: 8px; font-size: .88em; font-weight: 700; }
+  .b-side-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.04); height: fit-content; }
+  .b-side-card h3 { margin: 0 0 10px; font-size: .9em; font-weight: 900; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  .b-side-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: .88em; }
+  .b-side-row:last-child { border-bottom: none; }
+
+  /* ============================
+     [C] スタッツダッシュボード型
+     ============================ */
+  .c-hero { background: linear-gradient(135deg, #f1f8e9, #e8f5e9); padding: 32px 28px 24px; }
+  .c-hero-inner { display: flex; align-items: center; gap: 18px; }
+  .c-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.6em; font-family: 'Arial Black', sans-serif; }
+  .c-hero h1 { margin: 0; font-size: 1.4em; font-weight: 900; letter-spacing: -.01em; }
+  .c-hero .sub { color: #555; font-size: .88em; font-weight: 600; margin-top: 4px; }
+  .c-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 20px 28px 0; }
+  .c-stat { background: #fff; border-radius: 14px; padding: 18px 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .c-stat .label { font-family: monospace; font-size: .72em; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: 800; }
+  .c-stat .n { font-size: 1.9em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; line-height: 1; margin-top: 4px; }
+  .c-stat .delta { font-size: .75em; color: #2e7d32; font-weight: 700; margin-top: 4px; }
+  .c-tabs { display: flex; gap: 4px; padding: 6px; margin: 20px 28px 0; background: #fff; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .c-tab { flex: 1; padding: 8px 12px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; color: #666; font-size: .85em; }
+  .c-tab.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+  .c-panel { background: #fff; margin: 14px 28px 28px; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .c-panel h2 { margin: 0 0 14px; font-size: 1em; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .c-panel h2::before { content: ''; width: 4px; height: 14px; background: #4caf50; border-radius: 2px; }
+  .c-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #f0f0f0; }
+  .c-row:last-child { border-bottom: none; }
+  .c-row-t { font-weight: 800; font-size: .92em; }
+  .c-row-m { font-size: .78em; color: #888; margin-top: 2px; }
+  .c-row-status { font-size: .7em; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: #e8f5e9; color: #1b5e20; }
+
+  /* ============================
+     [D] 左サイドバー型
+     ============================ */
+  .d-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 0; background: #fff; min-height: 500px; }
+  .d-side { background: #fafafa; padding: 24px 18px; border-right: 1px solid #e8e8e8; }
+  .d-side-avatar { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.7em; font-family: 'Arial Black', sans-serif; margin: 0 auto 12px; }
+  .d-side-name { text-align: center; font-weight: 900; font-size: 1.05em; margin-bottom: 2px; }
+  .d-side-email { text-align: center; font-size: .75em; color: #999; margin-bottom: 18px; font-family: monospace; }
+  .d-tabs { border-top: 1px solid #e8e8e8; padding-top: 16px; display: flex; flex-direction: column; gap: 2px; }
+  .d-tab { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: transparent; border: none; border-radius: 8px; text-align: left; cursor: pointer; font-weight: 700; color: #333; font-size: .92em; }
+  .d-tab:hover { background: #f0faf0; color: #2e7d32; }
+  .d-tab.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+  .d-tab .d-badge { background: rgba(255,255,255,.3); color: inherit; padding: 1px 8px; border-radius: 999px; font-size: .75em; font-weight: 800; }
+  .d-tab:not(.active) .d-badge { background: #e8f5e9; color: #2e7d32; }
+  .d-panel { padding: 30px 32px; }
+  .d-panel h2 { margin: 0 0 18px; font-size: 1.2em; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .d-panel h2::before { content: ''; width: 4px; height: 18px; background: #4caf50; border-radius: 2px; }
+  .d-row { padding: 14px 16px; background: #fafafa; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .d-row-t { font-weight: 800; }
+  .d-row-m { font-size: .8em; color: #666; }
+
+  /* ============================
+     [E] タイムライン型
+     ============================ */
+  .e-hero { background: linear-gradient(135deg, #f1f8e9, #e8f5e9); padding: 28px; display: flex; align-items: center; gap: 16px; }
+  .e-avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5em; font-family: 'Arial Black', sans-serif; }
+  .e-hero h1 { margin: 0; font-size: 1.4em; font-weight: 900; letter-spacing: -.01em; }
+  .e-hero .sub { color: #555; font-size: .88em; margin-top: 3px; }
+  .e-body { padding: 24px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; background: #fff; }
+  .e-tl-card { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .e-tl-card h2 { margin: 0 0 18px; font-size: 1.05em; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .e-tl-card h2::before { content: ''; width: 4px; height: 16px; background: #4caf50; border-radius: 2px; }
+  .e-tl-item { display: flex; gap: 14px; padding: 14px 0; border-left: 2px solid #e8f5e9; padding-left: 20px; position: relative; }
+  .e-tl-item::before { content: ''; position: absolute; left: -7px; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid #4caf50; }
+  .e-tl-kind {
+    font-family: monospace; font-size: .7em; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 4px;
+    flex-shrink: 0; align-self: flex-start;
+  }
+  .e-tl-kind.apply { background: #e8f5e9; color: #1b5e20; }
+  .e-tl-kind.bookmark { background: #fff3e0; color: #ef6c00; }
+  .e-tl-kind.post { background: #e3f2fd; color: #1565c0; }
+  .e-tl-kind.view { background: #f3e5f5; color: #6a1b9a; }
+  .e-tl-body { flex: 1; }
+  .e-tl-title { font-weight: 800; font-size: .92em; }
+  .e-tl-time { font-size: .75em; color: #888; margin-top: 3px; }
+  .e-side-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 4px 14px rgba(0,0,0,.04); height: fit-content; }
+  .e-side-card h3 { margin: 0 0 10px; font-size: .9em; font-weight: 900; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  .e-side-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: .88em; font-weight: 700; }
+  .e-side-item:last-child { border-bottom: none; }
+  .e-side-item small { color: #888; font-weight: 600; display: block; margin-top: 2px; font-size: .82em; }
+
+  /* ============================
+     [F] カードグリッド型
+     ============================ */
+  .f-hero { background: linear-gradient(135deg, #f1f8e9, #e8f5e9); padding: 28px; }
+  .f-hero-inner { display: flex; align-items: center; gap: 16px; max-width: 100%; }
+  .f-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.6em; font-family: 'Arial Black', sans-serif; }
+  .f-hero h1 { margin: 0; font-size: 1.4em; font-weight: 900; letter-spacing: -.01em; }
+  .f-hero .sub { color: #555; font-size: .88em; margin-top: 4px; }
+  .f-grid { padding: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; background: #fff; }
+  .f-card { background: #fafafa; border-radius: 14px; padding: 20px 22px; transition: all .15s; cursor: pointer; text-decoration: none; color: inherit; display: block; border: 1px solid transparent; }
+  .f-card:hover { background: #f0faf0; border-color: #c8e6c9; transform: translateY(-2px); }
+  .f-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .f-card-head h3 { margin: 0; font-size: 1.05em; font-weight: 900; color: #111; }
+  .f-card-head .num { color: #1b5e20; font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 1.4em; line-height: 1; }
+  .f-card-preview { display: grid; gap: 6px; }
+  .f-card-preview .item { padding: 8px 10px; background: #fff; border-radius: 6px; font-size: .85em; font-weight: 700; }
+  .f-card-preview .item small { display: block; color: #888; font-size: .8em; font-weight: 600; margin-top: 2px; }
+  .f-card-more { display: block; text-align: right; margin-top: 10px; font-size: .8em; font-weight: 800; color: #2e7d32; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="mypage.html">現行マイページ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="px-wrap">
+  <h1 class="px-title">マイページ UI 案（6案）</h1>
+  <p class="px-sub">現行は <a href="mypage.html?preview=1">mypage.html?preview=1</a>。気に入った案を1つ（または組み合わせ）選んでください。</p>
+
+  <nav class="px-toc">
+    <a href="#case-a">案A Notion風</a>
+    <a href="#case-b">案B LinkedIn風</a>
+    <a href="#case-c">案C スタッツ型</a>
+    <a href="#case-d">案D 左サイドバー</a>
+    <a href="#case-e">案E タイムライン</a>
+    <a href="#case-f">案F カードグリッド</a>
+  </nav>
+
+  <!-- ============================ 案A ============================ -->
+  <section id="case-a" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">A</span>
+      <span class="px-case-name">コンパクト Notion風 (企業ダッシュボードと統一)</span>
+      <span class="px-case-desc">ヒーロー撤去 / チップスタッツ / 情報密度↑</span>
+    </div>
+    <div class="px-demo">
+      <div class="a-crumb"><a href="#">マイページ</a></div>
+      <div class="a-head">
+        <div class="a-head-row">
+          <div class="a-avatar-s">T</div>
+          <h1>taro</h1>
+        </div>
+        <div class="a-head-meta">
+          <span class="a-chip"><span class="num">3</span>応募</span>
+          <span class="a-chip"><span class="num">5</span>ブックマーク</span>
+          <span class="a-chip"><span class="num">12</span>閲覧</span>
+          <span class="a-chip"><span class="num">2</span>投稿</span>
+          <span class="a-email">preview@example.com</span>
+        </div>
+      </div>
+      <div class="a-tabs">
+        <button class="a-tab active">応募履歴</button>
+        <button class="a-tab">ブックマーク</button>
+        <button class="a-tab">閲覧履歴</button>
+        <button class="a-tab">自分の投稿</button>
+        <button class="a-tab">ファイル</button>
+        <button class="a-tab">プロフィール</button>
+      </div>
+      <div class="a-panel">
+        <div class="a-row">
+          <div>
+            <div class="a-row-t">LLM開発インターン</div>
+            <div class="a-row-m">株式会社コンフィグ · 2026/04/20</div>
+          </div>
+          <span class="a-status">選考中</span>
+        </div>
+        <div class="a-row">
+          <div>
+            <div class="a-row-t">RAGエンジニア (学生)</div>
+            <div class="a-row-m">株式会社ニューラル · 2026/04/18</div>
+          </div>
+          <span class="a-status">応募済み</span>
+        </div>
+        <div class="a-row">
+          <div>
+            <div class="a-row-t">AIエージェント PoC</div>
+            <div class="a-row-m">オートノミー · 2026/04/15</div>
+          </div>
+          <span class="a-status">結果待ち</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案B ============================ -->
+  <section id="case-b" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">B</span>
+      <span class="px-case-name">LinkedIn風プロフィール重視</span>
+      <span class="px-case-desc">カバー画像 / 大アバター / スキル / 自己PR</span>
+    </div>
+    <div class="px-demo">
+      <div class="b-cover"></div>
+      <div class="b-prof-card">
+        <div class="b-avatar">T</div>
+        <h1 class="b-prof-name">taro</h1>
+        <div class="b-prof-sub">○○大学 情報学部 B3 · 東京都</div>
+        <div class="b-prof-bio">
+          LLMアプリ開発に興味がある情報系B3。Python/FastAPI/React経験。Kaggle参加中、Zennで学習記録を発信中。AIエージェント開発のインターンを探しています。
+        </div>
+        <div>
+          <span class="b-skill">Python</span>
+          <span class="b-skill">LLM</span>
+          <span class="b-skill">FastAPI</span>
+          <span class="b-skill">React</span>
+          <span class="b-skill">LangChain</span>
+          <span class="b-skill">未経験OK歓迎</span>
+        </div>
+        <div class="b-actions">
+          <button class="primary">プロフィール編集</button>
+          <button class="ghost">履歴書アップロード</button>
+        </div>
+      </div>
+      <div class="b-sub-grid">
+        <div class="b-tabs-card">
+          <h3>最近の応募 (3件)</h3>
+          <div class="b-mini-list">
+            <div class="b-mini-row">LLM開発インターン — 株式会社コンフィグ</div>
+            <div class="b-mini-row">RAGエンジニア (学生) — 株式会社ニューラル</div>
+            <div class="b-mini-row">AIエージェント PoC — オートノミー</div>
+          </div>
+        </div>
+        <div class="b-side-card">
+          <h3>ACTIVITY</h3>
+          <div class="b-side-row"><span>応募</span><span><strong>3</strong></span></div>
+          <div class="b-side-row"><span>ブックマーク</span><span><strong>5</strong></span></div>
+          <div class="b-side-row"><span>閲覧</span><span><strong>12</strong></span></div>
+          <div class="b-side-row"><span>投稿</span><span><strong>2</strong></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案C ============================ -->
+  <section id="case-c" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">C</span>
+      <span class="px-case-name">スタッツダッシュボード型</span>
+      <span class="px-case-desc">就活進捗が数値で一目で / 4つの大きな統計カード</span>
+    </div>
+    <div class="px-demo">
+      <div class="c-hero">
+        <div class="c-hero-inner">
+          <div class="c-avatar">T</div>
+          <div>
+            <h1>taro</h1>
+            <div class="sub">preview@example.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="c-stats">
+        <div class="c-stat">
+          <div class="label">応募</div>
+          <div class="n">3</div>
+          <div class="delta">+1 this week</div>
+        </div>
+        <div class="c-stat">
+          <div class="label">ブックマーク</div>
+          <div class="n">5</div>
+          <div class="delta">+2 this week</div>
+        </div>
+        <div class="c-stat">
+          <div class="label">閲覧</div>
+          <div class="n">12</div>
+          <div class="delta">+8 this week</div>
+        </div>
+        <div class="c-stat">
+          <div class="label">投稿</div>
+          <div class="n">2</div>
+          <div class="delta" style="color:#888;">−</div>
+        </div>
+      </div>
+      <div class="c-tabs">
+        <button class="c-tab active">応募履歴</button>
+        <button class="c-tab">ブックマーク</button>
+        <button class="c-tab">閲覧履歴</button>
+        <button class="c-tab">自分の投稿</button>
+        <button class="c-tab">ファイル</button>
+        <button class="c-tab">プロフィール</button>
+      </div>
+      <div class="c-panel">
+        <h2>応募履歴</h2>
+        <div class="c-row">
+          <div>
+            <div class="c-row-t">LLM開発インターン</div>
+            <div class="c-row-m">株式会社コンフィグ · 2026/04/20</div>
+          </div>
+          <span class="c-row-status">選考中</span>
+        </div>
+        <div class="c-row">
+          <div>
+            <div class="c-row-t">RAGエンジニア (学生)</div>
+            <div class="c-row-m">株式会社ニューラル · 2026/04/18</div>
+          </div>
+          <span class="c-row-status">応募済み</span>
+        </div>
+        <div class="c-row">
+          <div>
+            <div class="c-row-t">AIエージェント PoC</div>
+            <div class="c-row-m">オートノミー · 2026/04/15</div>
+          </div>
+          <span class="c-row-status">結果待ち</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案D ============================ -->
+  <section id="case-d" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">D</span>
+      <span class="px-case-name">左サイドバー型 (管理画面風)</span>
+      <span class="px-case-desc">タブが縦並び / 6タブに強い / 管理画面らしい</span>
+    </div>
+    <div class="px-demo">
+      <div class="d-wrap">
+        <aside class="d-side">
+          <div class="d-side-avatar">T</div>
+          <div class="d-side-name">taro</div>
+          <div class="d-side-email">preview@example.com</div>
+          <div class="d-tabs">
+            <button class="d-tab active">応募履歴 <span class="d-badge">3</span></button>
+            <button class="d-tab">ブックマーク <span class="d-badge">5</span></button>
+            <button class="d-tab">閲覧履歴 <span class="d-badge">12</span></button>
+            <button class="d-tab">自分の投稿 <span class="d-badge">2</span></button>
+            <button class="d-tab">ファイル</button>
+            <button class="d-tab">プロフィール</button>
+          </div>
+        </aside>
+        <div class="d-panel">
+          <h2>応募履歴</h2>
+          <div class="d-row">
+            <div>
+              <div class="d-row-t">LLM開発インターン</div>
+              <div class="d-row-m">株式会社コンフィグ · 2026/04/20</div>
+            </div>
+            <span class="a-status">選考中</span>
+          </div>
+          <div class="d-row">
+            <div>
+              <div class="d-row-t">RAGエンジニア (学生)</div>
+              <div class="d-row-m">株式会社ニューラル · 2026/04/18</div>
+            </div>
+            <span class="a-status">応募済み</span>
+          </div>
+          <div class="d-row">
+            <div>
+              <div class="d-row-t">AIエージェント PoC</div>
+              <div class="d-row-m">オートノミー · 2026/04/15</div>
+            </div>
+            <span class="a-status">結果待ち</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案E ============================ -->
+  <section id="case-e" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">E</span>
+      <span class="px-case-name">タイムライン (アクティビティフィード)</span>
+      <span class="px-case-desc">全活動を時系列で / 振り返り用 / SNS風</span>
+    </div>
+    <div class="px-demo">
+      <div class="e-hero">
+        <div class="e-avatar">T</div>
+        <div>
+          <h1>taro</h1>
+          <div class="sub">preview@example.com · あなたの就活アクティビティ</div>
+        </div>
+      </div>
+      <div class="e-body">
+        <div class="e-tl-card">
+          <h2>最近の活動</h2>
+          <div class="e-tl-item">
+            <span class="e-tl-kind apply">APPLY</span>
+            <div class="e-tl-body">
+              <div class="e-tl-title">LLM開発インターンに応募しました</div>
+              <div class="e-tl-time">株式会社コンフィグ · 2時間前</div>
+            </div>
+          </div>
+          <div class="e-tl-item">
+            <span class="e-tl-kind bookmark">BOOKMARK</span>
+            <div class="e-tl-body">
+              <div class="e-tl-title">「RAGエンジニア (学生)」をブックマーク</div>
+              <div class="e-tl-time">株式会社ニューラル · 昨日</div>
+            </div>
+          </div>
+          <div class="e-tl-item">
+            <span class="e-tl-kind post">POST</span>
+            <div class="e-tl-body">
+              <div class="e-tl-title">「Claude Code 使い倒し記録」を投稿</div>
+              <div class="e-tl-time">AIコラム · 2日前</div>
+            </div>
+          </div>
+          <div class="e-tl-item">
+            <span class="e-tl-kind view">VIEW</span>
+            <div class="e-tl-body">
+              <div class="e-tl-title">AIエージェント PoC を閲覧</div>
+              <div class="e-tl-time">オートノミー · 3日前</div>
+            </div>
+          </div>
+          <div class="e-tl-item">
+            <span class="e-tl-kind apply">APPLY</span>
+            <div class="e-tl-body">
+              <div class="e-tl-title">AIエージェント PoC に応募しました</div>
+              <div class="e-tl-time">オートノミー · 3日前</div>
+            </div>
+          </div>
+        </div>
+        <div class="e-side-card">
+          <h3>SUMMARY</h3>
+          <div class="e-side-item">応募中<small>3社</small></div>
+          <div class="e-side-item">ブックマーク<small>5件</small></div>
+          <div class="e-side-item">投稿<small>2本 · 17いいね</small></div>
+          <div class="e-side-item">閲覧<small>12件</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案F ============================ -->
+  <section id="case-f" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">F</span>
+      <span class="px-case-name">カードグリッド (ダイジェスト)</span>
+      <span class="px-case-desc">6機能を6カードで一覧表示 / 全体把握しやすい</span>
+    </div>
+    <div class="px-demo">
+      <div class="f-hero">
+        <div class="f-hero-inner">
+          <div class="f-avatar">T</div>
+          <div>
+            <h1>taro</h1>
+            <div class="sub">preview@example.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="f-grid">
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>応募履歴</h3><span class="num">3</span></div>
+          <div class="f-card-preview">
+            <div class="item">LLM開発インターン<small>株式会社コンフィグ</small></div>
+            <div class="item">RAGエンジニア (学生)<small>株式会社ニューラル</small></div>
+          </div>
+          <span class="f-card-more">すべて見る →</span>
+        </a>
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>ブックマーク</h3><span class="num">5</span></div>
+          <div class="f-card-preview">
+            <div class="item">画像生成AIエンジニア<small>ディフュージョン・ワークス</small></div>
+            <div class="item">プロンプトエンジニア<small>株式会社プロンプトマスター</small></div>
+          </div>
+          <span class="f-card-more">すべて見る →</span>
+        </a>
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>閲覧履歴</h3><span class="num">12</span></div>
+          <div class="f-card-preview">
+            <div class="item">AIエージェント PoC<small>2時間前</small></div>
+            <div class="item">データサイエンティスト<small>昨日</small></div>
+          </div>
+          <span class="f-card-more">すべて見る →</span>
+        </a>
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>自分の投稿</h3><span class="num">2</span></div>
+          <div class="f-card-preview">
+            <div class="item">Claude Code 使い倒し記録<small>♥12</small></div>
+            <div class="item">RAG 2026年の潮流<small>♥5</small></div>
+          </div>
+          <span class="f-card-more">すべて見る →</span>
+        </a>
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>ファイル</h3><span class="num">1</span></div>
+          <div class="f-card-preview">
+            <div class="item">履歴書.pdf<small>2026/04/18</small></div>
+          </div>
+          <span class="f-card-more">アップロード →</span>
+        </a>
+        <a href="#" class="f-card">
+          <div class="f-card-head"><h3>プロフィール</h3><span class="num" style="font-size:.8em; color:#666;">80%</span></div>
+          <div class="f-card-preview">
+            <div class="item">taro<small>○○大学 情報学部</small></div>
+          </div>
+          <span class="f-card-more">編集 →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div style="margin-top:60px; padding:24px; background:#fff; border-radius:14px; box-shadow:0 4px 14px rgba(0,0,0,.04); text-align:center;">
+    <p style="margin:0; color:#666;">気に入った案を教えてください（組み合わせもOK）</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div></div>
+    <div></div><div></div><div></div>
+  </div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+</body>
+</html>

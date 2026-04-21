@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業ダッシュボード UI案 v2 | AIme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;900&family=Noto+Serif+JP:wght@700;900&family=Fraunces:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; background: #0b0b0d; color: #fff; }
+
+  .toc { position: sticky; top: 0; z-index: 100; background: #0b0b0d; padding: 14px 24px; border-bottom: 1px solid #222; display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center; font-size: 13px; }
+  .toc b { margin-right: 10px; color: #7CFF7F; font-family: 'JetBrains Mono', monospace; }
+  .toc a { color: #ddd; text-decoration: none; padding: 4px 10px; border: 1px solid #333; border-radius: 999px; }
+  .toc a:hover { background: #1a1a1a; border-color: #7CFF7F; color: #7CFF7F; }
+
+  .proposal { padding: 60px 24px 100px; border-bottom: 2px dashed #222; }
+  .proposal-label { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; color: #7CFF7F; background: #000; padding: 6px 12px; border-radius: 4px; margin-bottom: 8px; }
+  .proposal-title { color: #fff; font-size: 28px; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.5px; }
+  .proposal-desc { color: #888; font-size: 14px; margin: 0 0 36px; max-width: 780px; }
+
+  /* ==============================================================
+     7. Bento Grid — Apple風の非対称グリッド
+     ============================================================== */
+  .b7 { background: #f2f4f7; color: #111; max-width: 1280px; margin: 0 auto; border-radius: 20px; overflow: hidden; padding: 20px; }
+  .b7-top { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px 20px; }
+  .b7-top b { font-family: 'Space Grotesk'; font-size: 18px; letter-spacing: -0.5px; }
+  .b7-top nav a { margin-left: 22px; font-size: 13px; color: #555; text-decoration: none; }
+  .b7-top nav a.active { color: #111; font-weight: 700; }
+  .b7-top .cta { padding: 9px 16px; background: #111; color: #fff; border-radius: 10px; font-weight: 700; font-size: 13px; text-decoration: none; }
+  .b7-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 130px; gap: 12px; }
+  .b7-cell { background: #fff; border-radius: 18px; padding: 22px 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .b7-name { grid-column: span 2; grid-row: span 2; background: linear-gradient(135deg, #111, #2a2a2a); color: #fff; padding: 28px; }
+  .b7-name .role { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #7CFF7F; }
+  .b7-name h1 { font-family: 'Space Grotesk'; font-size: 36px; margin: 12px 0 6px; letter-spacing: -1px; font-weight: 700; }
+  .b7-name .sub { color: #aaa; font-size: 13px; }
+  .b7-name .foot { margin-top: auto; font-size: 11px; color: #888; letter-spacing: 2px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 12px; }
+  .b7-s .l { font-size: 11px; color: #666; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; }
+  .b7-s .n { font-family: 'Space Grotesk'; font-size: 46px; font-weight: 700; line-height: 1; margin-top: 6px; letter-spacing: -2px; }
+  .b7-s.ac { background: #e8fce8; }
+  .b7-s.ap { background: #fff7e8; }
+  .b7-s.mv { background: #e8f0ff; }
+  .b7-jobs { grid-column: span 4; grid-row: span 2; padding: 22px 26px; }
+  .b7-jobs h3 { margin: 0 0 4px; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .b7-jobs .rows { margin-top: 12px; }
+  .b7-row { display: grid; grid-template-columns: 2fr 1fr 1fr 110px 110px; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; align-items: center; font-size: 13px; }
+  .b7-row:last-child { border-bottom: none; }
+  .b7-row .t { font-weight: 700; }
+  .b7-row .m { font-size: 11px; color: #888; margin-top: 2px; }
+  .b7-st { padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-align: center; }
+  .b7-st.on { background: #dcfce7; color: #166534; }
+  .b7-st.pe { background: #fef3c7; color: #854d0e; }
+  .b7-act { display: flex; gap: 4px; justify-content: flex-end; }
+  .b7-act button { border: 1px solid #e5e5e5; background: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+  .b7-side { grid-column: span 2; background: #0b1221; color: #fff; padding: 22px 26px; border-radius: 18px; }
+  .b7-side .l { font-size: 11px; color: #6f7d9a; letter-spacing: 2px; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; }
+  .b7-side .item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 13px; display: flex; justify-content: space-between; }
+  .b7-side .item:last-child { border-bottom: none; }
+  .b7-side .item b { color: #7CFF7F; font-family: 'Space Grotesk'; }
+
+  /* ==============================================================
+     8. Editorial Magazine — 雑誌風
+     ============================================================== */
+  .b8 { background: #f5f0e5; color: #1a1a1a; max-width: 1280px; margin: 0 auto; border-radius: 4px; overflow: hidden; padding: 40px 48px 48px; border-top: 10px solid #1a1a1a; border-bottom: 10px solid #1a1a1a; }
+  .b8-masthead { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1a1a1a; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; }
+  .b8-title-area { text-align: center; padding: 32px 0 24px; border-bottom: 1px solid #1a1a1a; }
+  .b8-title-area .kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 4px; color: #b80f0a; }
+  .b8-title-area h1 { font-family: 'Fraunces', 'Noto Serif JP', serif; font-size: 64px; font-weight: 900; margin: 10px 0 6px; letter-spacing: -1px; line-height: 1; }
+  .b8-title-area .byline { font-family: 'Noto Serif JP', serif; font-style: italic; font-size: 14px; color: #555; }
+  .b8-pull { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 28px; }
+  .b8-pull > div { border-right: 1px solid #1a1a1a; padding: 20px 28px; }
+  .b8-pull > div:last-child { border-right: none; }
+  .b8-pull .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #666; }
+  .b8-pull .n { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 900; line-height: 1; margin-top: 4px; letter-spacing: -2px; }
+  .b8-pull .c { font-size: 12px; font-style: italic; color: #b80f0a; margin-top: 4px; }
+  .b8-cols { display: grid; grid-template-columns: 1.2fr 1px 2fr; gap: 0; margin-top: 36px; }
+  .b8-rule { background: #1a1a1a; }
+  .b8-left { padding-right: 28px; }
+  .b8-left h3 { font-family: 'Fraunces', serif; font-size: 22px; margin: 0 0 14px; font-weight: 900; }
+  .b8-nav-item { padding: 10px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; border-bottom: 1px dashed #1a1a1a; display: flex; justify-content: space-between; }
+  .b8-nav-item.active { color: #b80f0a; font-weight: 700; }
+  .b8-right { padding-left: 32px; }
+  .b8-right .section-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 14px; }
+  .b8-right .section-head h3 { font-family: 'Fraunces', serif; font-size: 22px; margin: 0; font-weight: 900; }
+  .b8-right .section-head a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #b80f0a; text-decoration: none; border-bottom: 1px solid; padding-bottom: 2px; }
+  .b8-article { display: grid; grid-template-columns: 60px 1fr 130px 100px; gap: 16px; padding: 16px 0; border-bottom: 1px solid #c7b9a0; align-items: center; }
+  .b8-article:last-child { border-bottom: none; }
+  .b8-article .num { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 900; color: #b80f0a; line-height: 1; }
+  .b8-article .t { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 900; line-height: 1.2; }
+  .b8-article .m { font-size: 12px; color: #555; margin-top: 4px; font-style: italic; }
+  .b8-article .st { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; padding: 3px 8px; border: 1.5px solid; display: inline-block; }
+  .b8-article .st.on { color: #166534; border-color: #166534; }
+  .b8-article .st.pe { color: #854d0e; border-color: #854d0e; }
+  .b8-article .go { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 3px 0; text-align: center; font-weight: 700; }
+
+  /* ==============================================================
+     9. Glass — グラスモーフィズム（ガラス質感）
+     ============================================================== */
+  .b9 { max-width: 1280px; margin: 0 auto; border-radius: 24px; overflow: hidden; position: relative; padding: 0; background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #db2777 100%); color: #fff; min-height: 720px; }
+  .b9::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,.25), transparent 40%), radial-gradient(circle at 80% 80%, rgba(255,255,255,.2), transparent 40%); pointer-events: none; }
+  .b9-top { position: relative; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,.15); backdrop-filter: blur(12px); background: rgba(0,0,0,.15); }
+  .b9-top b { font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+  .b9-top nav a { margin-left: 22px; color: rgba(255,255,255,.7); text-decoration: none; font-size: 13px; }
+  .b9-top nav a.active { color: #fff; font-weight: 700; }
+  .b9-body { position: relative; padding: 32px; }
+  .b9-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+  .b9-head h1 { font-family: 'Space Grotesk'; font-size: 40px; font-weight: 700; margin: 0; letter-spacing: -1px; }
+  .b9-head .sub { color: rgba(255,255,255,.8); font-size: 14px; margin-top: 4px; }
+  .b9-cta { padding: 12px 20px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3); color: #fff; border-radius: 12px; font-weight: 700; text-decoration: none; backdrop-filter: blur(10px); font-size: 13px; }
+  .b9-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .b9-stat { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(20px); border-radius: 18px; padding: 24px 28px; }
+  .b9-stat .l { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.75); font-weight: 600; }
+  .b9-stat .n { font-family: 'Space Grotesk'; font-size: 52px; font-weight: 700; letter-spacing: -2px; margin-top: 8px; line-height: 1; }
+  .b9-stat .d { font-size: 12px; color: rgba(255,255,255,.85); margin-top: 8px; }
+  .b9-grid { display: grid; grid-template-columns: 220px 1fr; gap: 16px; }
+  .b9-side { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(20px); border-radius: 18px; padding: 20px 16px; }
+  .b9-side a { display: block; padding: 10px 14px; color: rgba(255,255,255,.8); text-decoration: none; font-size: 13px; border-radius: 10px; margin-bottom: 2px; }
+  .b9-side a.active { background: rgba(255,255,255,.2); color: #fff; font-weight: 700; }
+  .b9-main { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(20px); border-radius: 18px; padding: 22px 26px; }
+  .b9-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.15); }
+  .b9-mh h3 { margin: 0; font-family: 'Space Grotesk'; font-size: 18px; }
+  .b9-row { display: grid; grid-template-columns: 2fr 1fr 1fr 110px 120px; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); align-items: center; }
+  .b9-row:last-child { border-bottom: none; }
+  .b9-row .t { font-weight: 600; }
+  .b9-row .m { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 2px; }
+  .b9-st { padding: 4px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 1px; font-weight: 700; text-align: center; }
+  .b9-st.on { background: rgba(52,211,153,.25); color: #a7f3d0; border: 1px solid rgba(52,211,153,.4); }
+  .b9-st.pe { background: rgba(251,191,36,.25); color: #fde68a; border: 1px solid rgba(251,191,36,.4); }
+  .b9-act { display: flex; gap: 6px; justify-content: flex-end; }
+  .b9-act a { padding: 4px 10px; background: rgba(255,255,255,.15); color: #fff; border-radius: 6px; font-size: 11px; text-decoration: none; border: 1px solid rgba(255,255,255,.2); }
+
+  /* ==============================================================
+     10. Compact Inbox — メーラー風
+     ============================================================== */
+  .b10 { background: #fff; color: #111; max-width: 1280px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid #e5e7eb; }
+  .b10-top { padding: 14px 24px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .b10-top b { font-weight: 700; font-size: 15px; }
+  .b10-top .query { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #777; min-width: 360px; }
+  .b10-top .cta { background: #111; color: #fff; padding: 7px 14px; border-radius: 8px; font-weight: 600; text-decoration: none; }
+  .b10-body { display: grid; grid-template-columns: 220px 1fr 360px; min-height: 620px; }
+  .b10-side { border-right: 1px solid #eaeaea; padding: 16px 8px; background: #fafbfc; }
+  .b10-side .group { font-size: 10px; color: #888; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px 6px; font-weight: 700; }
+  .b10-side a { display: flex; justify-content: space-between; align-items: center; padding: 7px 12px; color: #333; text-decoration: none; border-radius: 6px; font-size: 13px; margin-bottom: 1px; }
+  .b10-side a.active { background: #111; color: #fff; font-weight: 600; }
+  .b10-side a.active span { background: #fff; color: #111; }
+  .b10-side a span { background: #eee; color: #555; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .b10-list { border-right: 1px solid #eaeaea; overflow-y: auto; }
+  .b10-item { padding: 12px 18px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; gap: 12px; }
+  .b10-item:hover { background: #fafafa; }
+  .b10-item.active { background: #fffbeb; border-left: 3px solid #f59e0b; padding-left: 15px; }
+  .b10-item .mark { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; flex: 0 0 10px; margin-top: 5px; }
+  .b10-item.unread .mark { background: #3b82f6; }
+  .b10-item .t { font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; }
+  .b10-item .t .time { font-weight: 400; font-size: 11px; color: #888; }
+  .b10-item .m { font-size: 12px; color: #666; margin-top: 3px; }
+  .b10-item .tags { display: flex; gap: 4px; margin-top: 6px; }
+  .b10-item .tags span { font-size: 10px; padding: 2px 7px; background: #eee; color: #444; border-radius: 4px; font-weight: 600; }
+  .b10-preview { padding: 24px 28px; }
+  .b10-preview .head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #eee; margin-bottom: 16px; }
+  .b10-preview h2 { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+  .b10-preview .meta { font-size: 12px; color: #666; }
+  .b10-preview .st { background: #fef3c7; color: #854d0e; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+  .b10-preview .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .b10-preview .stats div { background: #f9fafb; border-radius: 8px; padding: 12px; }
+  .b10-preview .stats .l { font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .b10-preview .stats .n { font-family: 'Space Grotesk'; font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .b10-preview .body { font-size: 13px; line-height: 1.7; color: #333; }
+  .b10-preview .actions { display: flex; gap: 8px; margin-top: 18px; }
+  .b10-preview .actions a { padding: 8px 14px; background: #111; color: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; }
+  .b10-preview .actions a.gh { background: #fff; color: #111; border: 1px solid #e5e7eb; }
+
+  /* ==============================================================
+     11. Scandinavian Neutral — ベージュ・余白・穏やか
+     ============================================================== */
+  .b11 { background: #f1ece3; color: #2d2921; max-width: 1280px; margin: 0 auto; border-radius: 22px; overflow: hidden; border: 1px solid #d8d0c0; }
+  .b11-top { padding: 22px 36px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #d8d0c0; }
+  .b11-top b { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  .b11-top nav a { margin-left: 24px; font-size: 13px; color: #6e675a; text-decoration: none; }
+  .b11-top nav a.active { color: #2d2921; font-weight: 700; border-bottom: 1.5px solid #c46b3e; padding-bottom: 2px; }
+  .b11-head { padding: 40px 36px 28px; }
+  .b11-head .kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #c46b3e; }
+  .b11-head h1 { font-family: 'Fraunces', serif; font-size: 44px; font-weight: 900; margin: 8px 0 2px; letter-spacing: -1px; }
+  .b11-head .sub { color: #6e675a; font-size: 14px; }
+  .b11-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 36px 28px; }
+  .b11-stat { background: #fff; border-radius: 18px; padding: 28px 30px; border: 1px solid #e8dfd0; }
+  .b11-stat .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #9a907e; text-transform: uppercase; font-weight: 700; }
+  .b11-stat .n { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 900; line-height: 1; margin-top: 10px; letter-spacing: -2px; color: #2d2921; }
+  .b11-stat .d { font-size: 12px; color: #8a7d62; margin-top: 8px; font-style: italic; }
+  .b11-body { display: grid; grid-template-columns: 220px 1fr; padding: 0 36px 36px; gap: 20px; }
+  .b11-side { background: #fff; border: 1px solid #e8dfd0; border-radius: 18px; padding: 22px 18px; align-self: start; }
+  .b11-side .group { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #9a907e; padding: 0 10px 10px; font-weight: 700; }
+  .b11-side a { display: block; padding: 9px 12px; color: #2d2921; text-decoration: none; font-size: 13px; border-radius: 10px; margin-bottom: 2px; }
+  .b11-side a.active { background: #2d2921; color: #f1ece3; font-weight: 700; }
+  .b11-main { background: #fff; border-radius: 18px; border: 1px solid #e8dfd0; padding: 28px 32px; }
+  .b11-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #e8dfd0; }
+  .b11-mh h3 { font-family: 'Fraunces', serif; font-size: 22px; margin: 0; font-weight: 900; letter-spacing: -0.5px; }
+  .b11-cta { padding: 10px 20px; background: #c46b3e; color: #fff; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 13px; }
+  .b11-row { display: grid; grid-template-columns: 2fr 1fr 120px 130px; gap: 14px; padding: 18px 0; border-bottom: 1px solid #f0ead9; align-items: center; }
+  .b11-row:last-child { border-bottom: none; }
+  .b11-row .t { font-family: 'Fraunces', serif; font-weight: 900; font-size: 18px; letter-spacing: -0.3px; }
+  .b11-row .m { font-size: 12px; color: #8a7d62; margin-top: 2px; font-style: italic; }
+  .b11-row .mt { color: #6e675a; font-size: 13px; }
+  .b11-st { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-align: center; }
+  .b11-st.on { background: #e4ecd6; color: #4d6b1d; }
+  .b11-st.pe { background: #f5e3d2; color: #904812; }
+  .b11-act { display: flex; gap: 6px; justify-content: flex-end; }
+  .b11-act a { padding: 6px 12px; background: #f1ece3; color: #2d2921; border-radius: 8px; font-size: 11px; text-decoration: none; font-weight: 600; }
+
+  /* ==============================================================
+     12. Mission Control — 管制室・ゲージ中心
+     ============================================================== */
+  .b12 { background: #050913; color: #cfe6ff; max-width: 1280px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #0c1a2e; box-shadow: 0 0 60px rgba(0,150,255,.1); }
+  .b12-top { padding: 14px 24px; background: #081020; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #0c1a2e; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; }
+  .b12-top b { color: #66ccff; }
+  .b12-top .st { display: inline-flex; align-items: center; gap: 6px; }
+  .b12-top .st::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #00ff9c; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  .b12-head { padding: 26px 32px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: end; border-bottom: 1px solid #0c1a2e; }
+  .b12-head h1 { font-family: 'Space Grotesk'; font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -1px; color: #fff; }
+  .b12-head .kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 4px; color: #66ccff; }
+  .b12-head .sub { color: #7092c4; font-size: 13px; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  .b12-cta { padding: 10px 16px; background: #00ff9c; color: #050913; border-radius: 6px; font-weight: 900; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; text-decoration: none; }
+  .b12-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #0c1a2e; border-bottom: 1px solid #0c1a2e; }
+  .b12-gauge { background: #050913; padding: 24px 28px; display: grid; grid-template-columns: 1fr 110px; gap: 20px; align-items: center; min-height: 160px; }
+  .b12-gauge .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #66ccff; font-weight: 700; }
+  .b12-gauge .n { font-family: 'Space Grotesk'; font-size: 48px; font-weight: 700; color: #fff; line-height: 1; margin-top: 6px; letter-spacing: -1px; }
+  .b12-gauge .d { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #00ff9c; margin-top: 6px; letter-spacing: 1px; }
+  .b12-dial { position: relative; width: 100px; height: 100px; }
+  .b12-dial svg { transform: rotate(-90deg); }
+  .b12-dial .val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #fff; }
+  .b12-body { display: grid; grid-template-columns: 200px 1fr 220px; }
+  .b12-side { border-right: 1px solid #0c1a2e; padding: 18px 12px; background: #081020; }
+  .b12-side .group { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #4a6895; padding: 6px 12px 4px; font-weight: 700; }
+  .b12-side a { display: block; padding: 8px 12px; color: #7092c4; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-decoration: none; border-left: 2px solid transparent; margin-bottom: 1px; }
+  .b12-side a.active { color: #00ff9c; border-left-color: #00ff9c; background: rgba(0,255,156,.04); }
+  .b12-main { padding: 20px 28px; }
+  .b12-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #66ccff; }
+  .b12-row { display: grid; grid-template-columns: 2fr 1fr 120px 120px; gap: 12px; padding: 12px 14px; border: 1px solid #0c1a2e; border-radius: 6px; align-items: center; margin-bottom: 8px; background: #081020; }
+  .b12-row .t { color: #fff; font-weight: 600; font-family: 'Space Grotesk'; }
+  .b12-row .m { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4a6895; margin-top: 4px; letter-spacing: 1px; }
+  .b12-row .stat { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #7092c4; }
+  .b12-st { padding: 3px 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; font-weight: 700; text-align: center; }
+  .b12-st.on { background: #00ff9c; color: #050913; }
+  .b12-st.pe { background: #ffcc00; color: #050913; }
+  .b12-act { display: flex; gap: 4px; justify-content: flex-end; }
+  .b12-act a { padding: 4px 10px; border: 1px solid #0c1a2e; color: #7092c4; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-decoration: none; }
+  .b12-act a:hover { border-color: #00ff9c; color: #00ff9c; }
+  .b12-right { border-left: 1px solid #0c1a2e; padding: 20px; background: #081020; }
+  .b12-right h4 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #66ccff; margin: 0 0 14px; }
+  .b12-log { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 8px 0; border-bottom: 1px solid #0c1a2e; color: #7092c4; }
+  .b12-log b { color: #00ff9c; }
+  .b12-log .ts { color: #4a6895; font-size: 10px; }
+
+  @media (max-width: 900px) {
+    .b7-grid, .b8-cols, .b9-grid, .b10-body, .b11-body, .b12-body, .b12-grid, .b11-stats, .b9-stats, .b8-pull { grid-template-columns: 1fr !important; }
+    .b7-jobs, .b7-side, .b7-name { grid-column: span 1; }
+    .b8-rule { display: none; }
+    .b10-list, .b10-side, .b12-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <b>企業ダッシュボード案 v2 /</b>
+  <a href="#b7">07 Bento Grid</a>
+  <a href="#b8">08 Editorial Magazine</a>
+  <a href="#b9">09 Glass</a>
+  <a href="#b10">10 Inbox</a>
+  <a href="#b11">11 Scandinavian</a>
+  <a href="#b12">12 Mission Control</a>
+</nav>
+
+<!-- ===== 7 Bento Grid ===== -->
+<section id="b7" class="proposal">
+  <span class="proposal-label">// 07</span>
+  <h2 class="proposal-title">Bento Grid — Apple風の非対称グリッド</h2>
+  <p class="proposal-desc">角丸の大小カードを組み合わせたお弁当箱レイアウト。直感的に情報の重要度が伝わり、視覚的リズムも出る。</p>
+  <div class="b7">
+    <div class="b7-top">
+      <b>AIme / Company</b>
+      <nav><a class="active">Overview</a><a>Jobs</a><a>Applicants</a><a>Messages</a></nav>
+      <a class="cta">+ 新規求人</a>
+    </div>
+    <div class="b7-grid">
+      <div class="b7-cell b7-name">
+        <div class="role">/ COMPANY</div>
+        <h1>株式会社コンフィグ</h1>
+        <div class="sub">AI / LLM / SaaS ・ 渋谷区</div>
+        <div class="foot">PLAN: BUSINESS ・ SINCE 2023</div>
+      </div>
+      <div class="b7-cell b7-s ac"><div class="l">Open Jobs</div><div class="n">3</div></div>
+      <div class="b7-cell b7-s ap"><div class="l">Applications</div><div class="n">12</div></div>
+      <div class="b7-cell b7-s mv" style="grid-column: span 2;"><div class="l">Total Views</div><div class="n">1,284</div><div style="font-size:12px; color:#4a5568; margin-top:4px;">前週比 +24.3%</div></div>
+      <div class="b7-cell b7-jobs">
+        <h3>求人管理</h3>
+        <div style="font-size:12px; color:#666;">3件の求人を管理しています</div>
+        <div class="rows">
+          <div class="b7-row">
+            <div><div class="t">LLM開発インターン</div><div class="m">閲覧 428 ・ 応募 5</div></div>
+            <div style="color:#555;">エンジニア</div>
+            <div style="color:#555;">渋谷</div>
+            <div><span class="b7-st on">公開中</span></div>
+            <div class="b7-act"><button>編集</button><button>削除</button></div>
+          </div>
+          <div class="b7-row">
+            <div><div class="t">RAGエンジニア (学生)</div><div class="m">閲覧 512 ・ 応募 4</div></div>
+            <div style="color:#555;">エンジニア</div>
+            <div style="color:#555;">リモート</div>
+            <div><span class="b7-st on">公開中</span></div>
+            <div class="b7-act"><button>編集</button><button>削除</button></div>
+          </div>
+          <div class="b7-row">
+            <div><div class="t">AIエージェント PoC</div><div class="m">閲覧 344 ・ 応募 3</div></div>
+            <div style="color:#555;">研究</div>
+            <div style="color:#555;">ハイブリッド</div>
+            <div><span class="b7-st pe">審査中</span></div>
+            <div class="b7-act"><button>編集</button><button>削除</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="b7-cell b7-side">
+        <div class="l">最新アクション</div>
+        <div class="item">新規応募 <b>+1</b></div>
+        <div class="item">未読メッセージ <b>2</b></div>
+        <div class="item">面接予定 <b>3</b></div>
+        <div class="item">審査待ち <b>1</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8 Editorial Magazine ===== -->
+<section id="b8" class="proposal">
+  <span class="proposal-label">// 08</span>
+  <h2 class="proposal-title">Editorial Magazine — 雑誌風・明朝タイポ</h2>
+  <p class="proposal-desc">新聞／雑誌レイアウト。Fraunces（セリフ）＋JetBrains Mono。格調と「読ませる」構えで、採用に強い企業のブランディング寄り。</p>
+  <div class="b8">
+    <div class="b8-masthead">
+      <span>AIME / ISSUE 2026.04</span>
+      <span><b>COMPANY BULLETIN</b></span>
+      <span>No. 00248 ・ TOKYO</span>
+    </div>
+    <div class="b8-title-area">
+      <div class="kicker">COMPANY PROFILE</div>
+      <h1>株式会社コンフィグ</h1>
+      <div class="byline">AI / LLM / SaaS ・ Tokyo, Shibuya ・ Since 2023</div>
+    </div>
+    <div class="b8-pull">
+      <div><div class="l">OPEN POSITIONS</div><div class="n">03</div><div class="c">one pending review</div></div>
+      <div><div class="l">APPLICATIONS</div><div class="n">12</div><div class="c">+4 this week</div></div>
+      <div><div class="l">TOTAL VIEWS</div><div class="n">1,284</div><div class="c">+24.3% WOW</div></div>
+    </div>
+    <div class="b8-cols">
+      <div class="b8-left">
+        <h3>Sections</h3>
+        <div class="b8-nav-item active">JOBS <span>03</span></div>
+        <div class="b8-nav-item">APPLICANTS <span>12</span></div>
+        <div class="b8-nav-item">MESSAGES <span>02</span></div>
+        <div class="b8-nav-item">COMPANY <span>—</span></div>
+        <div class="b8-nav-item">ANALYTICS <span>—</span></div>
+      </div>
+      <div class="b8-rule"></div>
+      <div class="b8-right">
+        <div class="section-head">
+          <h3>Jobs on board</h3>
+          <a>+ CREATE NEW</a>
+        </div>
+        <div class="b8-article">
+          <div class="num">01</div>
+          <div><div class="t">LLM開発インターン</div><div class="m">Engineer ・ Shibuya ・ 閲覧 428 ・ 応募 5</div></div>
+          <div><span class="st on">LIVE</span></div>
+          <div class="go">EDIT →</div>
+        </div>
+        <div class="b8-article">
+          <div class="num">02</div>
+          <div><div class="t">RAGエンジニア (学生)</div><div class="m">Engineer ・ Remote ・ 閲覧 512 ・ 応募 4</div></div>
+          <div><span class="st on">LIVE</span></div>
+          <div class="go">EDIT →</div>
+        </div>
+        <div class="b8-article">
+          <div class="num">03</div>
+          <div><div class="t">AIエージェント PoC</div><div class="m">Research ・ Hybrid ・ 閲覧 344 ・ 応募 3</div></div>
+          <div><span class="st pe">REVIEW</span></div>
+          <div class="go">EDIT →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9 Glass ===== -->
+<section id="b9" class="proposal">
+  <span class="proposal-label">// 09</span>
+  <h2 class="proposal-title">Glass — グラスモーフィズム（ガラス質感）</h2>
+  <p class="proposal-desc">背景のグラデーションに半透明ガラスが重なる近未来UI。AI/クリエイティブ文脈と親和性が高い派手系。</p>
+  <div class="b9">
+    <div class="b9-top">
+      <b>AIme / Company</b>
+      <nav><a class="active">Dashboard</a><a>Messages</a><a>Logout</a></nav>
+    </div>
+    <div class="b9-body">
+      <div class="b9-head">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:3px; color:rgba(255,255,255,.7);">/ COMPANY</div>
+          <h1>株式会社コンフィグ</h1>
+          <div class="sub">AI / LLM / SaaS ・ Tokyo, Shibuya</div>
+        </div>
+        <a class="b9-cta">+ 新規求人を作成</a>
+      </div>
+      <div class="b9-stats">
+        <div class="b9-stat"><div class="l">Open Jobs</div><div class="n">3</div><div class="d">1 pending review</div></div>
+        <div class="b9-stat"><div class="l">Applications</div><div class="n">12</div><div class="d">+4 this week</div></div>
+        <div class="b9-stat"><div class="l">Total Views</div><div class="n">1,284</div><div class="d">↑ +24.3%</div></div>
+      </div>
+      <div class="b9-grid">
+        <aside class="b9-side">
+          <a class="active">求人管理</a>
+          <a>応募者</a>
+          <a>メッセージ</a>
+          <a>企業情報</a>
+          <a>分析</a>
+        </aside>
+        <div class="b9-main">
+          <div class="b9-mh">
+            <h3>求人管理</h3>
+            <span style="font-size:12px; color:rgba(255,255,255,.6);">3件の求人</span>
+          </div>
+          <div class="b9-row">
+            <div><div class="t">LLM開発インターン</div><div class="m">閲覧 428 ・ 応募 5</div></div>
+            <div>エンジニア</div>
+            <div>渋谷</div>
+            <div><span class="b9-st on">公開中</span></div>
+            <div class="b9-act"><a>編集</a><a>削除</a></div>
+          </div>
+          <div class="b9-row">
+            <div><div class="t">RAGエンジニア (学生)</div><div class="m">閲覧 512 ・ 応募 4</div></div>
+            <div>エンジニア</div>
+            <div>リモート</div>
+            <div><span class="b9-st on">公開中</span></div>
+            <div class="b9-act"><a>編集</a><a>削除</a></div>
+          </div>
+          <div class="b9-row">
+            <div><div class="t">AIエージェント PoC</div><div class="m">閲覧 344 ・ 応募 3</div></div>
+            <div>研究</div>
+            <div>ハイブリッド</div>
+            <div><span class="b9-st pe">審査中</span></div>
+            <div class="b9-act"><a>編集</a><a>削除</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 Inbox ===== -->
+<section id="b10" class="proposal">
+  <span class="proposal-label">// 10</span>
+  <h2 class="proposal-title">Compact Inbox — メーラー風3ペイン</h2>
+  <p class="proposal-desc">サイドバー / 求人リスト / プレビューの3ペイン。大量求人を効率管理したい企業向け。メールクライアントの操作感。</p>
+  <div class="b10">
+    <div class="b10-top">
+      <b>AIme Console</b>
+      <div class="query">Search jobs, applicants, messages…</div>
+      <a class="cta">+ 新規求人</a>
+    </div>
+    <div class="b10-body">
+      <aside class="b10-side">
+        <div class="group">COMPANY</div>
+        <a class="active">求人管理 <span>3</span></a>
+        <a>応募者 <span>12</span></a>
+        <a>メッセージ <span>2</span></a>
+        <a>通知 <span>5</span></a>
+        <div class="group" style="margin-top:14px;">FILTERS</div>
+        <a>公開中 <span>2</span></a>
+        <a>審査中 <span>1</span></a>
+        <a>終了 <span>0</span></a>
+        <div class="group" style="margin-top:14px;">SETTINGS</div>
+        <a>企業情報</a>
+        <a>メンバー</a>
+      </aside>
+      <div class="b10-list">
+        <div class="b10-item unread active">
+          <div class="mark"></div>
+          <div style="flex:1;">
+            <div class="t">AIエージェント PoC <span class="time">10:42</span></div>
+            <div class="m">研究 ・ 渋谷/ハイブリッド ・ 応募 3件 ・ 閲覧 344</div>
+            <div class="tags"><span>審査中</span><span>Research</span></div>
+          </div>
+        </div>
+        <div class="b10-item">
+          <div class="mark"></div>
+          <div style="flex:1;">
+            <div class="t">LLM開発インターン <span class="time">昨日</span></div>
+            <div class="m">エンジニア ・ 渋谷 ・ 応募 5件 ・ 閲覧 428</div>
+            <div class="tags"><span>公開中</span><span>LLM</span><span>RAG</span></div>
+          </div>
+        </div>
+        <div class="b10-item unread">
+          <div class="mark"></div>
+          <div style="flex:1;">
+            <div class="t">RAGエンジニア (学生) <span class="time">4/19</span></div>
+            <div class="m">エンジニア ・ リモート ・ 応募 4件 ・ 閲覧 512</div>
+            <div class="tags"><span>公開中</span><span>RAG</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="b10-preview">
+        <div class="head">
+          <div>
+            <h2>AIエージェント PoC</h2>
+            <div class="meta">研究 ・ 渋谷/ハイブリッド ・ 作成 2026-04-18</div>
+          </div>
+          <span class="st">審査中</span>
+        </div>
+        <div class="stats">
+          <div><div class="l">VIEWS</div><div class="n">344</div></div>
+          <div><div class="l">APPS</div><div class="n">3</div></div>
+          <div><div class="l">CTR</div><div class="n">2.8%</div></div>
+        </div>
+        <div class="body">
+          AIエージェントのPoC開発に参加する学生/若手エンジニアを募集。LangGraph、OpenAI Agents SDKを用いた自律型エージェントの設計実装を担当します。週3日〜、フルリモート相談可能。
+        </div>
+        <div class="actions">
+          <a>編集</a>
+          <a class="gh">プレビュー</a>
+          <a class="gh">削除</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11 Scandinavian Neutral ===== -->
+<section id="b11" class="proposal">
+  <span class="proposal-label">// 11</span>
+  <h2 class="proposal-title">Scandinavian Neutral — ベージュ×余白×穏やか</h2>
+  <p class="proposal-desc">北欧家具のような柔らかいベージュ基調。Fraunces（セリフ）で品良く、情報密度を上げすぎない人間味のある案。</p>
+  <div class="b11">
+    <div class="b11-top">
+      <b>AIme</b>
+      <nav><a class="active">ダッシュボード</a><a>メッセージ</a><a>設定</a><a>ログアウト</a></nav>
+    </div>
+    <div class="b11-head">
+      <div class="kicker">/ COMPANY</div>
+      <h1>株式会社コンフィグ</h1>
+      <div class="sub">AI / LLM / SaaS ・ 東京都渋谷区</div>
+    </div>
+    <div class="b11-stats">
+      <div class="b11-stat"><div class="l">Open Positions</div><div class="n">3</div><div class="d">one awaiting review</div></div>
+      <div class="b11-stat"><div class="l">Applications</div><div class="n">12</div><div class="d">four new this week</div></div>
+      <div class="b11-stat"><div class="l">Total Views</div><div class="n">1,284</div><div class="d">up 24 percent</div></div>
+    </div>
+    <div class="b11-body">
+      <aside class="b11-side">
+        <div class="group">WORKSPACE</div>
+        <a class="active">求人管理</a>
+        <a>応募者</a>
+        <a>メッセージ</a>
+        <a>分析</a>
+        <div class="group" style="margin-top:14px;">SETTINGS</div>
+        <a>企業情報</a>
+        <a>プラン</a>
+      </aside>
+      <div class="b11-main">
+        <div class="b11-mh">
+          <h3>求人管理</h3>
+          <a class="b11-cta">+ 新規求人を作成</a>
+        </div>
+        <div class="b11-row">
+          <div><div class="t">LLM開発インターン</div><div class="m">engineer ・ shibuya ・ 閲覧 428 ・ 応募 5</div></div>
+          <div class="mt">エンジニア</div>
+          <div><span class="b11-st on">公開中</span></div>
+          <div class="b11-act"><a>編集</a><a>削除</a></div>
+        </div>
+        <div class="b11-row">
+          <div><div class="t">RAGエンジニア (学生)</div><div class="m">engineer ・ remote ・ 閲覧 512 ・ 応募 4</div></div>
+          <div class="mt">エンジニア</div>
+          <div><span class="b11-st on">公開中</span></div>
+          <div class="b11-act"><a>編集</a><a>削除</a></div>
+        </div>
+        <div class="b11-row">
+          <div><div class="t">AIエージェント PoC</div><div class="m">research ・ hybrid ・ 閲覧 344 ・ 応募 3</div></div>
+          <div class="mt">研究</div>
+          <div><span class="b11-st pe">審査中</span></div>
+          <div class="b11-act"><a>編集</a><a>削除</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 Mission Control ===== -->
+<section id="b12" class="proposal">
+  <span class="proposal-label">// 12</span>
+  <h2 class="proposal-title">Mission Control — 管制室風ゲージ＆ログ</h2>
+  <p class="proposal-desc">NASA/航空管制のようなダーク・シアン基調。ドーナツゲージと右カラムのイベントログでリアルタイム運用感を最大化。</p>
+  <div class="b12">
+    <div class="b12-top">
+      <b>AIME / CONFIG.INC / MISSION-CTRL</b>
+      <span class="st">SYSTEM ONLINE ・ 21:34 JST</span>
+    </div>
+    <div class="b12-head">
+      <div>
+        <div class="kicker">/ COMPANY</div>
+        <h1>株式会社コンフィグ</h1>
+        <div class="sub">industry=ai/llm/saas &nbsp; location=shibuya,jp &nbsp; plan=business</div>
+      </div>
+      <a class="b12-cta">+ DEPLOY JOB</a>
+    </div>
+    <div class="b12-grid">
+      <div class="b12-gauge">
+        <div>
+          <div class="l">OPEN JOBS</div>
+          <div class="n">03</div>
+          <div class="d">1 PENDING REVIEW</div>
+        </div>
+        <div class="b12-dial">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#0c1a2e" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#00ff9c" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="88" stroke-linecap="round"/>
+          </svg>
+          <div class="val">66%</div>
+        </div>
+      </div>
+      <div class="b12-gauge">
+        <div>
+          <div class="l">APPLICATIONS</div>
+          <div class="n">12</div>
+          <div class="d">+4 THIS WEEK</div>
+        </div>
+        <div class="b12-dial">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#0c1a2e" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#66ccff" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="53" stroke-linecap="round"/>
+          </svg>
+          <div class="val">80%</div>
+        </div>
+      </div>
+      <div class="b12-gauge">
+        <div>
+          <div class="l">TOTAL VIEWS</div>
+          <div class="n">1,284</div>
+          <div class="d">+24.3% WOW</div>
+        </div>
+        <div class="b12-dial">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#0c1a2e" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#ffcc00" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="26" stroke-linecap="round"/>
+          </svg>
+          <div class="val">90%</div>
+        </div>
+      </div>
+    </div>
+    <div class="b12-body">
+      <aside class="b12-side">
+        <div class="group">MODULES</div>
+        <a class="active">JOBS</a>
+        <a>APPLICANTS</a>
+        <a>MESSAGES</a>
+        <a>ANALYTICS</a>
+        <a>COMPANY</a>
+        <div class="group" style="margin-top:14px;">OPS</div>
+        <a>DEPLOY</a>
+        <a>HISTORY</a>
+      </aside>
+      <div class="b12-main">
+        <div class="b12-mh">
+          <span>// JOBS MODULE ・ 3 ACTIVE</span>
+          <span>SORT: VIEWS DESC</span>
+        </div>
+        <div class="b12-row">
+          <div><div class="t">LLM開発インターン</div><div class="m">job_id=jd_0001 cat=engineer loc=shibuya</div></div>
+          <div class="stat">VIEWS 428 / APPS 5</div>
+          <div><span class="b12-st on">LIVE</span></div>
+          <div class="b12-act"><a>EDIT</a><a>DEL</a></div>
+        </div>
+        <div class="b12-row">
+          <div><div class="t">RAGエンジニア (学生)</div><div class="m">job_id=jd_0002 cat=engineer loc=remote</div></div>
+          <div class="stat">VIEWS 512 / APPS 4</div>
+          <div><span class="b12-st on">LIVE</span></div>
+          <div class="b12-act"><a>EDIT</a><a>DEL</a></div>
+        </div>
+        <div class="b12-row">
+          <div><div class="t">AIエージェント PoC</div><div class="m">job_id=jd_0003 cat=research loc=hybrid</div></div>
+          <div class="stat">VIEWS 344 / APPS 3</div>
+          <div><span class="b12-st pe">REVIEW</span></div>
+          <div class="b12-act"><a>EDIT</a><a>DEL</a></div>
+        </div>
+      </div>
+      <aside class="b12-right">
+        <h4>// EVENT LOG</h4>
+        <div class="b12-log"><div class="ts">21:34:02</div><b>APPLY</b> user_e3a1 → LLM開発</div>
+        <div class="b12-log"><div class="ts">21:31:18</div><b>VIEW</b> user_b1c0 → RAG</div>
+        <div class="b12-log"><div class="ts">21:30:44</div><b>MSG</b> user_a2d3 → inbox+1</div>
+        <div class="b12-log"><div class="ts">21:29:02</div><b>VIEW</b> user_77ff → LLM開発</div>
+        <div class="b12-log"><div class="ts">21:27:51</div><b>APPROVE</b> admin → job_0002</div>
+        <div class="b12-log"><div class="ts">21:25:30</div><b>CREATE</b> you → job_0003</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer style="background: #050507; color: #666; padding: 40px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;">
+  — END / 企業ダッシュボード UI案 v2 × 6 —
+</footer>
+
+</body>
+</html>

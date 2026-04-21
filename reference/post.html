@@ -54,7 +54,7 @@
     <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
     <nav class="site-nav">
       <a href="search.html">インターンを探す</a>
-      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="companies.html">AI企業を探す</a>
       <a href="blog.html" class="current">AIコラム</a>
       <a href="mypage.html" id="nav-mypage" style="display:none;">マイページ</a>
       <a href="login.html" id="nav-login" class="login">ログイン</a>
@@ -80,8 +80,10 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-social.js"></script>
+<script src="js/mock-posts.js"></script>
 <script>
 (async function(){
   const id = new URLSearchParams(location.search).get('id');
@@ -95,8 +97,25 @@
     document.getElementById('nav-signup').style.display = 'none';
   }
 
-  const post = await window.AImeSocial.getPost(id);
-  if (!post) { main.innerHTML = '<div class="po-empty">投稿が見つかりませんでした</div>'; return; }
+  // モック記事の場合はSupabaseをスキップしてモックデータから生成
+  const isMock = id.startsWith('mock-');
+  let post;
+  if (isMock) {
+    const m = window.getMockPost(id);
+    if (!m) { main.innerHTML = '<div class="po-empty">投稿が見つかりませんでした</div>'; return; }
+    post = {
+      id: m.id,
+      title: m.title,
+      body: m.body,
+      tags: m.tags || [],
+      created_at: m.created_at,
+      profiles: { nickname: m.author_nickname, avatar_color: '#2e7d32' },
+      _mockLikeCount: m.like_count || 0,
+    };
+  } else {
+    post = await window.AImeSocial.getPost(id);
+    if (!post) { main.innerHTML = '<div class="po-empty">投稿が見つかりませんでした</div>'; return; }
+  }
 
   document.title = post.title + ' | AIme';
   document.getElementById('crumb').textContent = post.title.slice(0, 20);
@@ -104,11 +123,13 @@
   const nick = post.profiles?.nickname || '匿名';
   const initial = nick.charAt(0).toUpperCase();
 
-  const [liked, likeCount, comments] = await Promise.all([
-    window.AImeSocial.hasLiked('post', id),
-    window.AImeSocial.countLikes('post', id),
-    window.AImeSocial.listComments('post', id),
-  ]);
+  const [liked, likeCount, comments] = isMock
+    ? [false, post._mockLikeCount, []]
+    : await Promise.all([
+        window.AImeSocial.hasLiked('post', id),
+        window.AImeSocial.countLikes('post', id),
+        window.AImeSocial.listComments('post', id),
+      ]);
 
   function esc(s){return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
@@ -173,6 +194,7 @@
 
   // Like button
   document.getElementById('like-btn').addEventListener('click', async () => {
+    if (isMock) { alert('モック記事のためいいねできません'); return; }
     if (!user) { location.href = 'login.html'; return; }
     const btn = document.getElementById('like-btn');
     const countEl = document.getElementById('like-count');
@@ -192,6 +214,7 @@
   const cf = document.getElementById('comment-form');
   if (cf) cf.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (isMock) { alert('モック記事のためコメントできません'); return; }
     const body = document.getElementById('comment-body').value.trim();
     if (!body) return;
     try {
@@ -203,8 +226,8 @@
     } catch (err) { alert(err.message); }
   });
 
-  // Realtime: 他ユーザーのいいね/コメントを反映
-  window.AImeSocial.subscribeTargetUpdates('post', id, async (ev) => {
+  // Realtime: 他ユーザーのいいね/コメントを反映 (モック記事では無効)
+  if (!isMock) window.AImeSocial.subscribeTargetUpdates('post', id, async (ev) => {
     if (ev.kind === 'likes') {
       const c = await window.AImeSocial.countLikes('post', id);
       document.getElementById('like-count').textContent = c;

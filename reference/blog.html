@@ -59,7 +59,7 @@
     <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
     <nav class="site-nav">
       <a href="search.html">インターンを探す</a>
-      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="companies.html">AI企業を探す</a>
       <a href="blog.html" class="current">AIコラム</a>
       <a href="mypage.html" id="nav-mypage" style="display:none;">マイページ</a>
       <a href="login.html" id="nav-login" class="login">ログイン</a>
@@ -114,8 +114,12 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-social.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script src="js/mock-posts.js"></script>
 <script>
 (async function(){
   const { data: { user } } = await window.sb.auth.getUser();
@@ -136,6 +140,26 @@
       posts = await window.AImeSocial.searchPosts(currentKeyword);
     } else {
       posts = await window.AImeSocial.listPosts({ orderByLikes: currentSort === 'popular' });
+    }
+    // 投稿が無い場合はモックデータを表示 (UI確認用 / 検索中は除く)
+    if (!posts.length && !currentKeyword && window.AIME_MOCK_POSTS) {
+      const mocks = window.AIME_MOCK_POSTS.slice();
+      if (currentSort === 'popular') mocks.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
+      listEl.innerHTML = mocks.map(p => {
+        const nick = p.author_nickname || '匿名';
+        const initial = nick.charAt(0).toUpperCase();
+        return `
+          <a class="bl-card" href="post.html?id=${p.id}">
+            <h2>${escapeHtml(p.title)}</h2>
+            <div class="meta">
+              <span class="author"><span class="bl-avatar">${initial}</span>${escapeHtml(nick)}</span>
+              <span>${p.date}</span>
+              <span class="like-count">♥ ${p.like_count || 0}</span>
+            </div>
+            <div class="body">${escapeHtml(p.body)}</div>
+          </a>`;
+      }).join('');
+      return;
     }
     if (!posts.length) {
       listEl.innerHTML = '<div class="bl-empty">まだ投稿はありません。最初の1件を投稿しませんか？</div>';

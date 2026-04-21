@@ -61,6 +61,24 @@
       const { data } = await sb.from('companies').select('*').eq('is_approved', true).order('created_at', { ascending: false });
       return data || [];
     },
+    async getCompanyById(id) {
+      const { data } = await sb.from('companies').select('*').eq('id', id).maybeSingle();
+      return data;
+    },
+    async listCompaniesWithStats({ limit = 50, offset = 0, keyword, category } = {}) {
+      let q = sb.from('companies').select('*, job_postings(count)', { count: 'exact' })
+        .eq('is_approved', true);
+      if (keyword) q = q.or(`name.ilike.%${keyword}%,description.ilike.%${keyword}%`);
+      if (category) q = q.eq('industry', category);
+      q = q.order('is_verified', { ascending: false }).order('created_at', { ascending: false }).range(offset, offset + limit - 1);
+      const { data, count } = await q;
+      return { items: data || [], total: count || 0 };
+    },
+    async countJobsByCompany(companyId) {
+      const { count } = await sb.from('job_postings').select('id', { count: 'exact', head: true })
+        .eq('company_id', companyId).eq('is_public', true).eq('status', 'approved');
+      return count || 0;
+    },
 
     // ---- DB駆動の求人 ----
     async createJob(input) {
@@ -85,18 +103,34 @@
       const { data } = await sb.from('job_postings').select('*').eq('company_id', c.id).order('created_at', { ascending: false });
       return data || [];
     },
-    async listPublicJobs({ limit = 30, offset = 0, keyword, category, location, sort = 'new' } = {}) {
-      let q = sb.from('job_postings').select('*, companies(name, logo_url, industry)', { count: 'exact' })
-        .eq('is_public', true).eq('status', 'approved');
+    async listPublicJobs({ limit = 30, offset = 0, keyword, category, location, tag, feature, companyId, remoteType, sort = 'new' } = {}) {
+      let q = sb.from('job_postings').select('*, companies(id, name, logo_url, industry, is_verified)', { count: 'exact' })
+        .eq('is_public', true).eq('status', 'approved').eq('is_draft', false);
       if (keyword) q = q.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
       if (category) q = q.eq('category', category);
       if (location) q = q.ilike('location', `%${location}%`);
-      if (sort === 'new') q = q.order('created_at', { ascending: false });
-      if (sort === 'popular') q = q.order('view_count', { ascending: false });
-      if (sort === 'deadline') q = q.order('deadline', { ascending: true });
+      if (companyId) q = q.eq('company_id', companyId);
+      if (remoteType) q = q.eq('remote_type', remoteType);
+      if (tag)     q = q.contains('tags', [tag]);
+      if (feature) q = q.contains('tags', [feature]);
+      if (sort === 'new')      q = q.order('is_boosted', { ascending: false }).order('created_at', { ascending: false });
+      if (sort === 'popular')  q = q.order('is_boosted', { ascending: false }).order('view_count', { ascending: false });
+      if (sort === 'deadline') q = q.order('deadline', { ascending: true, nullsLast: true });
       q = q.range(offset, offset + limit - 1);
       const { data, count } = await q;
       return { items: data || [], total: count || 0 };
+    },
+    async listFeaturedJobs(limit = 8) {
+      const { data } = await sb.from('job_postings').select('*, companies(id, name, logo_url)')
+        .eq('is_public', true).eq('status', 'approved').eq('is_draft', false)
+        .eq('is_boosted', true).order('created_at', { ascending: false }).limit(limit);
+      return data || [];
+    },
+    async listTopCompanies(limit = 12) {
+      const { data } = await sb.from('companies').select('*')
+        .eq('is_approved', true).order('is_verified', { ascending: false })
+        .order('created_at', { ascending: false }).limit(limit);
+      return data || [];
     },
     async getJob(jobId) {
       const { data } = await sb.from('job_postings').select('*, companies(*)').eq('id', jobId).maybeSingle();

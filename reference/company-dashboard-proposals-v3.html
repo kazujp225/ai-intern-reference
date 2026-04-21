@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業ダッシュボード UI 案 (6案) | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f0f1f3; }
+
+  /* 案比較ページの共通骨組み */
+  .px-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+  .px-title { font-size: 2em; font-weight: 900; margin: 0 0 8px; letter-spacing: -.02em; }
+  .px-sub { color: #666; margin: 0 0 32px; }
+  .px-toc {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px;
+    position: sticky; top: 0; background: #f0f1f3;
+    padding: 14px 0; z-index: 50;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .px-toc a {
+    padding: 8px 14px; background: #fff; border: 1px solid #e0e0e0;
+    border-radius: 999px; font-size: .85em; font-weight: 700;
+    color: #333; text-decoration: none; transition: all .15s;
+  }
+  .px-toc a:hover { border-color: #2e7d32; color: #2e7d32; }
+
+  .px-case { margin-bottom: 60px; }
+  .px-case-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 2px solid #111;
+  }
+  .px-case-label {
+    font-family: 'Arial Black', sans-serif;
+    background: #111; color: #fff;
+    padding: 4px 12px; border-radius: 4px;
+    font-size: .78em; letter-spacing: 2px;
+  }
+  .px-case-name { font-size: 1.15em; font-weight: 900; color: #111; }
+  .px-case-desc { color: #666; font-size: .85em; margin-left: auto; }
+
+  .px-demo {
+    background: #f7f8fa; border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  }
+
+  /* ============================
+     [A] コンパクト (Notionライク)
+     ============================ */
+  .a-crumb {
+    font-size: .8em; color: #999; padding: 16px 28px 4px;
+  }
+  .a-crumb a { color: #999; }
+  .a-head { padding: 0 28px 18px; border-bottom: 1px solid #e8e8e8; }
+  .a-head h1 { margin: 0; font-size: 1.5em; font-weight: 900; letter-spacing: -.01em; }
+  .a-head-row { display: flex; align-items: center; gap: 16px; margin-top: 6px; }
+  .a-chip {
+    font-size: .82em; color: #555; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .a-chip .num { color: #1b5e20; font-weight: 900; font-size: 1em; font-family: 'Arial Black', sans-serif; }
+  .a-body { display: grid; grid-template-columns: 220px 1fr; gap: 0; }
+  .a-side { padding: 18px 18px 18px 28px; border-right: 1px solid #e8e8e8; }
+  .a-side button {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; padding: 8px 10px; border: none; background: transparent;
+    cursor: pointer; font-weight: 700; color: #333; font-size: .9em;
+    border-radius: 6px; margin-bottom: 2px;
+  }
+  .a-side button.active { background: #f0faf0; color: #1b5e20; }
+  .a-side .badge { background: #e8f5e9; color: #2e7d32; padding: 1px 8px; border-radius: 999px; font-size: .75em; font-weight: 800; }
+  .a-main { padding: 20px 28px; }
+  .a-main h2 { margin: 0 0 14px; font-size: 1em; font-weight: 900; color: #111; text-transform: uppercase; letter-spacing: .05em; }
+  .a-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .a-row-title { font-weight: 700; font-size: .95em; }
+  .a-row-meta { font-size: .78em; color: #888; margin-top: 2px; }
+  .a-row-actions { display: flex; gap: 4px; align-items: center; }
+  .a-mini-btn { padding: 3px 10px; border: 1px solid #e0e0e0; border-radius: 4px; background: #fff; font-size: .75em; font-weight: 700; cursor: pointer; color: #555; }
+  .a-status { padding: 2px 8px; border-radius: 4px; font-size: .7em; font-weight: 800; font-family: monospace; }
+  .a-status.ok { background: #e8f5e9; color: #1b5e20; }
+  .a-status.pending { background: #fff3e0; color: #ef6c00; }
+
+  /* ============================
+     [B] 統合カード型
+     ============================ */
+  .b-container { padding: 24px; }
+  .b-card {
+    background: #fff; border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center;
+  }
+  .b-left { display: flex; gap: 18px; align-items: center; }
+  .b-logo {
+    width: 80px; height: 80px; border-radius: 18px;
+    background: linear-gradient(135deg, #1b5e20, #4caf50);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 2em; font-family: 'Arial Black', sans-serif;
+    flex-shrink: 0;
+  }
+  .b-left h1 { margin: 0; font-size: 1.5em; font-weight: 900; letter-spacing: -.01em; }
+  .b-left .sub { color: #888; margin-top: 4px; font-size: .88em; }
+  .b-left .meta { color: #666; margin-top: 8px; font-size: .82em; }
+  .b-right { display: flex; gap: 20px; border-left: 1px solid #e8e8e8; padding-left: 28px; }
+  .b-stat { text-align: right; }
+  .b-stat .n { font-size: 1.7em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; line-height: 1; }
+  .b-stat .l { font-size: .75em; color: #666; font-weight: 700; margin-top: 4px; }
+  .b-alert {
+    background: #fff3e0; color: #e65100;
+    padding: 10px 16px; border-radius: 10px;
+    margin: 16px 24px 0; font-size: .85em; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .b-alert::before { content: '!'; display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: #e65100; color: #fff; align-items: center; justify-content: center; font-weight: 900; font-size: .78em; }
+  .b-content { padding: 24px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+  .b-side { background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .b-side button { display: block; width: 100%; text-align: left; padding: 9px 12px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; color: #333; font-size: .88em; margin-bottom: 2px; }
+  .b-side button.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+  .b-panel { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .b-panel h2 { margin: 0 0 14px; font-size: 1.1em; font-weight: 900; }
+  .b-item { padding: 12px 14px; background: #fafafa; border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .b-item-title { font-weight: 800; font-size: .95em; }
+  .b-item-meta { font-size: .78em; color: #666; margin-top: 2px; }
+
+  /* ============================
+     [C] トップタブ型 (フルワイド)
+     ============================ */
+  .c-hero {
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
+    padding: 28px 28px 0;
+  }
+  .c-hero-top { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .c-logo { width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5em; font-family: 'Arial Black', sans-serif; }
+  .c-hero h1 { margin: 0; font-size: 1.4em; font-weight: 900; letter-spacing: -.01em; }
+  .c-hero .sub { color: #555; font-size: .85em; font-weight: 600; margin-top: 2px; }
+  .c-stats { display: flex; gap: 24px; margin-bottom: 20px; padding-left: 76px; }
+  .c-stat { display: flex; align-items: baseline; gap: 6px; }
+  .c-stat .n { font-size: 1.5em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; }
+  .c-stat .l { font-size: .78em; color: #666; font-weight: 700; }
+  .c-tabs { display: flex; gap: 4px; padding: 0; border-bottom: 2px solid #111; }
+  .c-tab { padding: 12px 22px; background: transparent; border: none; cursor: pointer; font-weight: 800; color: #666; font-size: .95em; position: relative; font-family: inherit; }
+  .c-tab.active { color: #1b5e20; }
+  .c-tab.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #1b5e20, #4caf50); }
+  .c-body { padding: 24px 28px; }
+  .c-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .c-head-row h2 { margin: 0; font-size: 1.2em; font-weight: 900; }
+  .c-cta { padding: 10px 18px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-decoration: none; font-size: .88em; }
+  .c-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .c-card { background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04); }
+  .c-card-title { font-weight: 900; font-size: 1em; margin-bottom: 6px; }
+  .c-card-meta { font-size: .8em; color: #666; margin-bottom: 10px; }
+  .c-card-foot { display: flex; justify-content: space-between; align-items: center; }
+  .c-card-status { font-size: .72em; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+  .c-card-status.ok { background: #e8f5e9; color: #1b5e20; }
+  .c-card-status.pending { background: #fff3e0; color: #ef6c00; }
+  .c-card-actions { display: flex; gap: 6px; }
+  .c-mini { padding: 4px 10px; border: 1px solid #e0e0e0; background: #fff; border-radius: 6px; font-size: .78em; font-weight: 700; cursor: pointer; }
+
+  /* ============================
+     [D] ダーク・プレミアム
+     ============================ */
+  .d-hero {
+    background: linear-gradient(135deg, #0a0a0a, #1b5e20 80%);
+    color: #fff; padding: 36px 32px;
+  }
+  .d-hero-inner { display: flex; align-items: center; gap: 20px; }
+  .d-logo { width: 72px; height: 72px; border-radius: 14px; background: rgba(0,230,118,.15); border: 1px solid rgba(0,230,118,.35); color: #00e676; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.6em; font-family: 'Arial Black', sans-serif; }
+  .d-hero h1 { margin: 0; font-size: 1.6em; font-weight: 900; }
+  .d-hero .sub { color: #a5d6a7; font-size: .88em; margin-top: 4px; font-family: monospace; letter-spacing: 1px; }
+  .d-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 32px; background: #111; }
+  .d-stat { background: rgba(255,255,255,.04); border: 1px solid rgba(0,230,118,.15); border-radius: 12px; padding: 18px 22px; }
+  .d-stat .n { color: #00e676; font-size: 1.8em; font-weight: 900; font-family: 'Arial Black', sans-serif; line-height: 1; }
+  .d-stat .l { color: #888; font-size: .78em; font-weight: 700; margin-top: 6px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; }
+  .d-body { padding: 24px 32px; background: #fff; display: grid; grid-template-columns: 200px 1fr; gap: 24px; }
+  .d-side { background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.04); height: fit-content; }
+  .d-side button { display: block; width: 100%; text-align: left; padding: 10px 14px; background: transparent; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; color: #333; font-size: .9em; margin-bottom: 2px; font-family: inherit; }
+  .d-side button.active { background: #111; color: #00e676; font-family: monospace; letter-spacing: 1px; }
+  .d-panel { background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .d-panel h2 { margin: 0 0 14px; font-size: 1.1em; font-weight: 900; font-family: monospace; text-transform: uppercase; letter-spacing: 2px; color: #111; }
+  .d-row { background: #111; color: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .d-row-title { font-weight: 800; color: #fff; }
+  .d-row-meta { font-size: .78em; color: #888; font-family: monospace; margin-top: 3px; }
+  .d-row .d-status { font-size: .7em; font-weight: 900; padding: 3px 10px; border-radius: 4px; font-family: monospace; letter-spacing: 1px; }
+  .d-row .d-status.ok { background: #00e676; color: #111; }
+  .d-row .d-status.pending { background: #ff9800; color: #111; }
+  .d-row .d-mini { padding: 4px 10px; background: transparent; color: #00e676; border: 1px solid #00e676; border-radius: 4px; font-size: .75em; font-weight: 700; cursor: pointer; font-family: monospace; }
+
+  /* ============================
+     [E] サマリー・ダッシュボード
+     ============================ */
+  .e-wrap { padding: 28px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+  .e-main {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    border-radius: 20px; padding: 28px 32px;
+    position: relative; overflow: hidden;
+  }
+  .e-main::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,.06);
+  }
+  .e-main-label { font-family: monospace; font-size: .75em; letter-spacing: 3px; opacity: .85; text-transform: uppercase; }
+  .e-main-n { font-size: 4.5em; font-weight: 900; font-family: 'Arial Black', sans-serif; line-height: 1; margin: 6px 0 4px; }
+  .e-main-unit { font-size: .95em; opacity: .9; }
+  .e-spark { margin-top: 22px; }
+  .e-spark-svg { width: 100%; height: 60px; opacity: .9; }
+  .e-side-stats { display: grid; gap: 12px; }
+  .e-side-stat { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .e-side-stat .n { font-size: 1.5em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; line-height: 1; }
+  .e-side-stat .l { font-size: .78em; color: #666; font-weight: 700; margin-top: 4px; }
+  .e-side-stat .delta { font-size: .75em; color: #2e7d32; font-weight: 700; margin-top: 3px; }
+  .e-below { padding: 0 28px 28px; }
+  .e-company-row {
+    background: #fff; border-radius: 14px; padding: 18px 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .e-company-logo { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2em; font-family: 'Arial Black', sans-serif; }
+  .e-company-name { font-weight: 900; font-size: 1.05em; }
+  .e-company-sub { font-size: .82em; color: #666; }
+  .e-section { margin-top: 20px; background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .e-section h2 { margin: 0 0 14px; font-size: 1.05em; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .e-section h2::before { content: ''; width: 4px; height: 16px; background: #4caf50; border-radius: 2px; }
+  .e-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid #f0f0f0; }
+  .e-row:last-child { border-bottom: none; }
+  .e-row-title { font-weight: 800; }
+  .e-row-meta { font-size: .78em; color: #888; margin-top: 2px; }
+
+  /* ============================
+     [F] タイムライン＋アクション型
+     ============================ */
+  .f-hero { background: linear-gradient(135deg, #f1f8e9, #e8f5e9); padding: 28px 28px; }
+  .f-hero-inner { max-width: 100%; display: flex; align-items: center; gap: 18px; }
+  .f-logo { width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5em; font-family: 'Arial Black', sans-serif; }
+  .f-hero h1 { margin: 0; font-size: 1.5em; font-weight: 900; }
+  .f-hero .sub { color: #555; font-size: .88em; margin-top: 4px; font-weight: 600; }
+  .f-greeting {
+    margin-left: auto; text-align: right;
+    font-size: .85em; color: #555; font-weight: 700;
+  }
+  .f-body { padding: 20px 28px 28px; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+  .f-today { background: #fff; border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .f-today-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .f-today-label { font-family: monospace; font-size: .72em; font-weight: 800; letter-spacing: 2px; color: #e65100; text-transform: uppercase; }
+  .f-today h2 { margin: 0; font-size: 1.1em; font-weight: 900; }
+  .f-task {
+    padding: 12px 14px; background: #fff3e0; border-radius: 10px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 12px;
+    border-left: 3px solid #ff9800;
+  }
+  .f-task-count { background: #e65100; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .85em; flex-shrink: 0; font-family: 'Arial Black', sans-serif; }
+  .f-task-body { font-weight: 700; font-size: .88em; color: #111; }
+  .f-task-body small { color: #888; font-weight: 600; display: block; margin-top: 2px; font-size: .78em; }
+  .f-task.done { background: #f5f5f5; border-left-color: #bdbdbd; }
+  .f-task.done .f-task-count { background: #2e7d32; }
+  .f-task.done .f-task-body { color: #888; text-decoration: line-through; }
+  .f-right { display: grid; gap: 14px; }
+  .f-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .f-stat { background: #fff; border-radius: 12px; padding: 14px 18px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .f-stat .n { font-size: 1.5em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; line-height: 1; }
+  .f-stat .l { font-size: .75em; color: #666; font-weight: 700; margin-top: 4px; }
+  .f-jobs { background: #fff; border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .f-jobs h2 { margin: 0 0 12px; font-size: 1em; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .f-jobs h2::before { content: ''; width: 4px; height: 14px; background: #4caf50; border-radius: 2px; }
+  .f-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .f-row:last-child { border-bottom: none; }
+  .f-row-title { font-weight: 800; font-size: .92em; }
+  .f-row-meta { font-size: .75em; color: #888; margin-top: 2px; }
+  .f-row-status { font-size: .7em; font-weight: 800; padding: 2px 9px; border-radius: 999px; }
+  .f-row-status.ok { background: #e8f5e9; color: #1b5e20; }
+  .f-row-status.pending { background: #fff3e0; color: #ef6c00; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="company-dashboard.html">現行ダッシュボード</a>
+    </nav>
+  </div>
+</header>
+
+<div class="px-wrap">
+  <h1 class="px-title">企業ダッシュボード UI 案（6案）</h1>
+  <p class="px-sub">現行は <a href="company-dashboard.html?preview=1">company-dashboard.html?preview=1</a>。気に入った案を1つ（または組み合わせ）選んでください。</p>
+
+  <nav class="px-toc">
+    <a href="#case-a">案A コンパクト</a>
+    <a href="#case-b">案B 統合カード</a>
+    <a href="#case-c">案C トップタブ</a>
+    <a href="#case-d">案D ダーク・プレミアム</a>
+    <a href="#case-e">案E サマリー・ダッシュボード</a>
+    <a href="#case-f">案F タイムライン＋アクション</a>
+  </nav>
+
+  <!-- ============================ 案A ============================ -->
+  <section id="case-a" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">A</span>
+      <span class="px-case-name">コンパクト (Notionライク)</span>
+      <span class="px-case-desc">情報密度↑ / ヒーロー撤去 / スタッツを1行チップに</span>
+    </div>
+    <div class="px-demo">
+      <div style="background:#fff;">
+        <div class="a-crumb"><a href="#">企業</a> / 株式会社コンフィグ</div>
+        <div class="a-head">
+          <h1>株式会社コンフィグ</h1>
+          <div class="a-head-row">
+            <span class="a-chip"><span class="num">3</span>公開中</span>
+            <span class="a-chip"><span class="num">12</span>応募</span>
+            <span class="a-chip"><span class="num">1,284</span>閲覧</span>
+            <span style="margin-left:auto; color:#999; font-size:.82em; font-family:monospace;">AI / LLM / SaaS</span>
+          </div>
+        </div>
+        <div class="a-body">
+          <aside class="a-side">
+            <button class="active">求人管理<span class="badge">3</span></button>
+            <button>応募者<span class="badge">12</span></button>
+            <button>企業情報</button>
+          </aside>
+          <div class="a-main">
+            <h2>求人管理</h2>
+            <div class="a-row">
+              <div>
+                <div class="a-row-title">LLM開発インターン</div>
+                <div class="a-row-meta">エンジニア / 渋谷 / 閲覧 428</div>
+              </div>
+              <div class="a-row-actions">
+                <span class="a-status ok">PUBLISHED</span>
+                <button class="a-mini-btn">編集</button>
+                <button class="a-mini-btn">削除</button>
+              </div>
+            </div>
+            <div class="a-row">
+              <div>
+                <div class="a-row-title">RAGエンジニア (学生)</div>
+                <div class="a-row-meta">エンジニア / フルリモート / 閲覧 512</div>
+              </div>
+              <div class="a-row-actions">
+                <span class="a-status ok">PUBLISHED</span>
+                <button class="a-mini-btn">編集</button>
+                <button class="a-mini-btn">削除</button>
+              </div>
+            </div>
+            <div class="a-row">
+              <div>
+                <div class="a-row-title">AIエージェント PoC</div>
+                <div class="a-row-meta">研究 / 渋谷/ハイブリッド / 閲覧 344</div>
+              </div>
+              <div class="a-row-actions">
+                <span class="a-status pending">PENDING</span>
+                <button class="a-mini-btn">編集</button>
+                <button class="a-mini-btn">削除</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案B ============================ -->
+  <section id="case-b" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">B</span>
+      <span class="px-case-name">統合カード型</span>
+      <span class="px-case-desc">ヒーロー+スタッツを1枚カードに / アラート帯 / 一画面で全体把握</span>
+    </div>
+    <div class="px-demo">
+      <div class="b-container">
+        <div class="b-card">
+          <div class="b-left">
+            <div class="b-logo">コ</div>
+            <div>
+              <h1>株式会社コンフィグ</h1>
+              <div class="sub">AI / LLM / SaaS</div>
+              <div class="meta">所在地: 東京都渋谷区 · https://example.com</div>
+            </div>
+          </div>
+          <div class="b-right">
+            <div class="b-stat"><div class="n">3</div><div class="l">公開中の求人</div></div>
+            <div class="b-stat"><div class="n">12</div><div class="l">総応募数</div></div>
+            <div class="b-stat"><div class="n">1,284</div><div class="l">総閲覧数</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="b-alert">審査中の求人が <strong>1件</strong> あります。内容を確認してください。</div>
+      <div class="b-content">
+        <aside class="b-side">
+          <button class="active">求人管理</button>
+          <button>応募者</button>
+          <button>企業情報</button>
+        </aside>
+        <div class="b-panel">
+          <h2>求人管理</h2>
+          <div class="b-item">
+            <div>
+              <div class="b-item-title">LLM開発インターン</div>
+              <div class="b-item-meta">エンジニア / 渋谷 / 閲覧 428</div>
+            </div>
+            <span class="a-status ok" style="padding:3px 10px; border-radius:999px;">公開中</span>
+          </div>
+          <div class="b-item">
+            <div>
+              <div class="b-item-title">RAGエンジニア (学生)</div>
+              <div class="b-item-meta">エンジニア / フルリモート / 閲覧 512</div>
+            </div>
+            <span class="a-status ok" style="padding:3px 10px; border-radius:999px;">公開中</span>
+          </div>
+          <div class="b-item">
+            <div>
+              <div class="b-item-title">AIエージェント PoC</div>
+              <div class="b-item-meta">研究 / 渋谷/ハイブリッド / 閲覧 344</div>
+            </div>
+            <span class="a-status pending" style="padding:3px 10px; border-radius:999px;">審査中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案C ============================ -->
+  <section id="case-c" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">C</span>
+      <span class="px-case-name">トップタブ型 (フルワイド)</span>
+      <span class="px-case-desc">サイドバー撤去 / 横タブ / 求人カード2列 / モダンSaaS風</span>
+    </div>
+    <div class="px-demo">
+      <section class="c-hero">
+        <div class="c-hero-top">
+          <div class="c-logo">コ</div>
+          <div>
+            <h1>株式会社コンフィグ</h1>
+            <div class="sub">AI / LLM / SaaS</div>
+          </div>
+        </div>
+        <div class="c-stats">
+          <div class="c-stat"><span class="n">3</span><span class="l">公開中の求人</span></div>
+          <div class="c-stat"><span class="n">12</span><span class="l">総応募数</span></div>
+          <div class="c-stat"><span class="n">1,284</span><span class="l">総閲覧数</span></div>
+        </div>
+        <div class="c-tabs">
+          <button class="c-tab active">求人管理</button>
+          <button class="c-tab">応募者</button>
+          <button class="c-tab">企業情報</button>
+        </div>
+      </section>
+      <div class="c-body" style="background:#fff;">
+        <div class="c-head-row">
+          <h2>求人管理</h2>
+          <a href="#" class="c-cta">＋ 新規求人を作成</a>
+        </div>
+        <div class="c-grid">
+          <div class="c-card">
+            <div class="c-card-title">LLM開発インターン</div>
+            <div class="c-card-meta">エンジニア / 渋谷 / 閲覧 428</div>
+            <div class="c-card-foot">
+              <span class="c-card-status ok">公開中</span>
+              <div class="c-card-actions">
+                <button class="c-mini">編集</button>
+                <button class="c-mini">削除</button>
+              </div>
+            </div>
+          </div>
+          <div class="c-card">
+            <div class="c-card-title">RAGエンジニア (学生)</div>
+            <div class="c-card-meta">エンジニア / フルリモート / 閲覧 512</div>
+            <div class="c-card-foot">
+              <span class="c-card-status ok">公開中</span>
+              <div class="c-card-actions">
+                <button class="c-mini">編集</button>
+                <button class="c-mini">削除</button>
+              </div>
+            </div>
+          </div>
+          <div class="c-card">
+            <div class="c-card-title">AIエージェント PoC</div>
+            <div class="c-card-meta">研究 / 渋谷/ハイブリッド / 閲覧 344</div>
+            <div class="c-card-foot">
+              <span class="c-card-status pending">審査中</span>
+              <div class="c-card-actions">
+                <button class="c-mini">編集</button>
+                <button class="c-mini">削除</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案D ============================ -->
+  <section id="case-d" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">D</span>
+      <span class="px-case-name">ダーク・プレミアム</span>
+      <span class="px-case-desc">黒〜濃緑グラデ / ネオングリーン / ハイエンド管理画面</span>
+    </div>
+    <div class="px-demo">
+      <div class="d-hero">
+        <div class="d-hero-inner">
+          <div class="d-logo">コ</div>
+          <div>
+            <h1>株式会社コンフィグ</h1>
+            <div class="sub">/ AI / LLM / SaaS</div>
+          </div>
+        </div>
+      </div>
+      <div class="d-stats">
+        <div class="d-stat"><div class="n">3</div><div class="l">OPEN_JOBS</div></div>
+        <div class="d-stat"><div class="n">12</div><div class="l">APPLICATIONS</div></div>
+        <div class="d-stat"><div class="n">1,284</div><div class="l">TOTAL_VIEWS</div></div>
+      </div>
+      <div class="d-body">
+        <aside class="d-side">
+          <button class="active">求人管理</button>
+          <button>応募者</button>
+          <button>企業情報</button>
+        </aside>
+        <div class="d-panel">
+          <h2>JOBS</h2>
+          <div class="d-row">
+            <div>
+              <div class="d-row-title">LLM開発インターン</div>
+              <div class="d-row-meta">ENGINEER / SHIBUYA / 428_VIEWS</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span class="d-status ok">PUBLISHED</span>
+              <button class="d-mini">EDIT</button>
+            </div>
+          </div>
+          <div class="d-row">
+            <div>
+              <div class="d-row-title">RAGエンジニア (学生)</div>
+              <div class="d-row-meta">ENGINEER / REMOTE / 512_VIEWS</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span class="d-status ok">PUBLISHED</span>
+              <button class="d-mini">EDIT</button>
+            </div>
+          </div>
+          <div class="d-row">
+            <div>
+              <div class="d-row-title">AIエージェント PoC</div>
+              <div class="d-row-meta">RESEARCH / HYBRID / 344_VIEWS</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span class="d-status pending">PENDING</span>
+              <button class="d-mini">EDIT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案E ============================ -->
+  <section id="case-e" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">E</span>
+      <span class="px-case-name">サマリー・ダッシュボード</span>
+      <span class="px-case-desc">メイン指標1つ + スパークライン / 経営者が見て嬉しい</span>
+    </div>
+    <div class="px-demo">
+      <div class="e-wrap">
+        <div class="e-main">
+          <div class="e-main-label">総応募数 / 今月</div>
+          <div class="e-main-n">12</div>
+          <div class="e-main-unit">件 <span style="opacity:.8; font-size:.85em;">(前月比 +33%)</span></div>
+          <div class="e-spark">
+            <svg class="e-spark-svg" viewBox="0 0 300 60" preserveAspectRatio="none">
+              <path d="M0,50 L30,45 L60,46 L90,40 L120,30 L150,32 L180,20 L210,18 L240,14 L270,10 L300,8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M0,50 L30,45 L60,46 L90,40 L120,30 L150,32 L180,20 L210,18 L240,14 L270,10 L300,8 L300,60 L0,60 Z" fill="rgba(255,255,255,.15)"/>
+            </svg>
+          </div>
+        </div>
+        <div class="e-side-stats">
+          <div class="e-side-stat">
+            <div class="n">3</div>
+            <div class="l">公開中の求人</div>
+            <div class="delta">+1 this week</div>
+          </div>
+          <div class="e-side-stat">
+            <div class="n">1,284</div>
+            <div class="l">総閲覧数</div>
+            <div class="delta">+187 this week</div>
+          </div>
+          <div class="e-side-stat">
+            <div class="n">1</div>
+            <div class="l">審査中</div>
+            <div class="delta" style="color:#ef6c00;">承認待ち</div>
+          </div>
+        </div>
+      </div>
+      <div class="e-below">
+        <div class="e-company-row">
+          <div class="e-company-logo">コ</div>
+          <div>
+            <div class="e-company-name">株式会社コンフィグ</div>
+            <div class="e-company-sub">AI / LLM / SaaS · 東京都渋谷区</div>
+          </div>
+          <a href="#" style="margin-left:auto; color:#2e7d32; font-weight:800; font-size:.85em;">企業情報を編集 →</a>
+        </div>
+        <div class="e-section">
+          <h2>求人管理</h2>
+          <div class="e-row">
+            <div>
+              <div class="e-row-title">LLM開発インターン</div>
+              <div class="e-row-meta">エンジニア / 渋谷 / 閲覧 428</div>
+            </div>
+            <span class="a-status ok" style="padding:3px 10px; border-radius:999px;">公開中</span>
+          </div>
+          <div class="e-row">
+            <div>
+              <div class="e-row-title">RAGエンジニア (学生)</div>
+              <div class="e-row-meta">エンジニア / フルリモート / 閲覧 512</div>
+            </div>
+            <span class="a-status ok" style="padding:3px 10px; border-radius:999px;">公開中</span>
+          </div>
+          <div class="e-row">
+            <div>
+              <div class="e-row-title">AIエージェント PoC</div>
+              <div class="e-row-meta">研究 / 渋谷/ハイブリッド / 閲覧 344</div>
+            </div>
+            <span class="a-status pending" style="padding:3px 10px; border-radius:999px;">審査中</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 案F ============================ -->
+  <section id="case-f" class="px-case">
+    <div class="px-case-head">
+      <span class="px-case-label">F</span>
+      <span class="px-case-name">タイムライン＋アクション型</span>
+      <span class="px-case-desc">「今日のタスク」が先 / 採用担当が毎朝開く実務型</span>
+    </div>
+    <div class="px-demo">
+      <div class="f-hero">
+        <div class="f-hero-inner">
+          <div class="f-logo">コ</div>
+          <div>
+            <h1>株式会社コンフィグ</h1>
+            <div class="sub">AI / LLM / SaaS</div>
+          </div>
+          <div class="f-greeting">おかえりなさい、佐藤さん<br><small style="color:#888; font-weight:600;">2026/04/21 月曜</small></div>
+        </div>
+      </div>
+      <div class="f-body">
+        <div class="f-today">
+          <div class="f-today-head">
+            <span class="f-today-label">今日のタスク</span>
+            <h2>3件</h2>
+          </div>
+          <div class="f-task">
+            <div class="f-task-count">2</div>
+            <div class="f-task-body">新規応募を確認<small>LLM開発インターン / RAGエンジニア</small></div>
+          </div>
+          <div class="f-task">
+            <div class="f-task-count">1</div>
+            <div class="f-task-body">面談日程の返信<small>hanako さん (△△大学)</small></div>
+          </div>
+          <div class="f-task done">
+            <div class="f-task-count">✓</div>
+            <div class="f-task-body">AIエージェント PoC の求人を投稿</div>
+          </div>
+        </div>
+        <div class="f-right">
+          <div class="f-stats-row">
+            <div class="f-stat"><div class="n">3</div><div class="l">公開中</div></div>
+            <div class="f-stat"><div class="n">12</div><div class="l">総応募</div></div>
+            <div class="f-stat"><div class="n">1,284</div><div class="l">閲覧</div></div>
+          </div>
+          <div class="f-jobs">
+            <h2>求人管理</h2>
+            <div class="f-row">
+              <div>
+                <div class="f-row-title">LLM開発インターン</div>
+                <div class="f-row-meta">エンジニア / 渋谷 / 428閲覧</div>
+              </div>
+              <span class="f-row-status ok">公開中</span>
+            </div>
+            <div class="f-row">
+              <div>
+                <div class="f-row-title">RAGエンジニア (学生)</div>
+                <div class="f-row-meta">エンジニア / フルリモート / 512閲覧</div>
+              </div>
+              <span class="f-row-status ok">公開中</span>
+            </div>
+            <div class="f-row">
+              <div>
+                <div class="f-row-title">AIエージェント PoC</div>
+                <div class="f-row-meta">研究 / 渋谷/ハイブリッド / 344閲覧</div>
+              </div>
+              <span class="f-row-status pending">審査中</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="margin-top:60px; padding:24px; background:#fff; border-radius:14px; box-shadow:0 4px 14px rgba(0,0,0,.04); text-align:center;">
+    <p style="margin:0; color:#666;">気に入った案を教えてください（例: 「案C で」「案Bのヘッダー + 案Fのタスク」など組み合わせも可）</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div></div>
+    <div></div><div></div><div></div>
+  </div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+</body>
+</html>

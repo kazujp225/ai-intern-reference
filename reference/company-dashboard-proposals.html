@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業ダッシュボード UI案 | AIme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background: #0b0b0d; color: #fff;
+  }
+
+  .toc {
+    position: sticky; top: 0; z-index: 100;
+    background: #0b0b0d; padding: 14px 24px; border-bottom: 1px solid #222;
+    display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center;
+    font-size: 13px;
+  }
+  .toc b { margin-right: 10px; color: #7CFF7F; font-family: 'JetBrains Mono', monospace; }
+  .toc a { color: #ddd; text-decoration: none; padding: 4px 10px; border: 1px solid #333; border-radius: 999px; }
+  .toc a:hover { background: #1a1a1a; border-color: #7CFF7F; color: #7CFF7F; }
+
+  .proposal { padding: 60px 24px 100px; border-bottom: 2px dashed #222; }
+  .proposal-label { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; color: #7CFF7F; background: #000; padding: 6px 12px; border-radius: 4px; margin-bottom: 8px; }
+  .proposal-title { color: #fff; font-size: 28px; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.5px; }
+  .proposal-desc { color: #888; font-size: 14px; margin: 0 0 36px; max-width: 780px; }
+
+  /* ==============================================================
+     1. Minimal SaaS — Linear / Stripe風
+     ============================================================== */
+  .v1 { background: #fafafa; color: #111; border-radius: 16px; overflow: hidden; max-width: 1280px; margin: 0 auto; border: 1px solid #eaeaea; }
+  .v1-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid #eaeaea; background: #fff; font-size: 13px; }
+  .v1-top b { font-weight: 700; font-size: 15px; }
+  .v1-top nav a { margin-left: 20px; color: #555; text-decoration: none; }
+  .v1-top nav a.active { color: #111; font-weight: 700; }
+  .v1-body { display: grid; grid-template-columns: 220px 1fr; min-height: 620px; }
+  .v1-side { background: #fff; border-right: 1px solid #eaeaea; padding: 20px 12px; }
+  .v1-side .group { font-size: 11px; color: #999; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; padding: 0 10px 8px; }
+  .v1-side a { display: block; padding: 8px 10px; border-radius: 6px; font-size: 14px; color: #333; text-decoration: none; margin-bottom: 2px; }
+  .v1-side a.active { background: #f0f0f0; color: #111; font-weight: 600; }
+  .v1-side a:hover { background: #f5f5f5; }
+  .v1-main { padding: 28px 32px; }
+  .v1-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+  .v1-head h2 { margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .v1-head .meta { color: #777; font-size: 13px; }
+  .v1-cta { padding: 8px 14px; background: #111; color: #fff; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none; }
+  .v1-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .v1-stat { border: 1px solid #eaeaea; background: #fff; border-radius: 10px; padding: 16px 18px; }
+  .v1-stat .label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .v1-stat .value { font-size: 28px; font-weight: 700; letter-spacing: -1px; margin-top: 2px; font-family: 'Space Grotesk'; }
+  .v1-stat .delta { font-size: 12px; color: #059669; font-weight: 600; }
+  .v1-stat .delta.neg { color: #dc2626; }
+  .v1-table { background: #fff; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden; }
+  .v1-table-head { display: grid; grid-template-columns: 2fr 1fr 1fr 110px 120px; padding: 10px 18px; background: #fafafa; border-bottom: 1px solid #eaeaea; font-size: 11px; color: #777; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .v1-row { display: grid; grid-template-columns: 2fr 1fr 1fr 110px 120px; padding: 14px 18px; border-bottom: 1px solid #f3f3f3; align-items: center; font-size: 13px; }
+  .v1-row:last-child { border-bottom: none; }
+  .v1-row:hover { background: #fafafa; }
+  .v1-row .title { font-weight: 600; color: #111; font-size: 14px; }
+  .v1-row .subt { color: #888; font-size: 12px; margin-top: 2px; }
+  .v1-tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .v1-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  .v1-tag.approved { background: #ecfdf5; color: #059669; }
+  .v1-tag.approved::before { background: #059669; }
+  .v1-tag.pending { background: #fffbeb; color: #d97706; }
+  .v1-tag.pending::before { background: #d97706; }
+  .v1-actions { display: flex; gap: 6px; justify-content: flex-end; }
+  .v1-actions button { background: #fff; border: 1px solid #e5e5e5; color: #111; font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+  .v1-actions button:hover { border-color: #111; }
+
+  /* ==============================================================
+     2. Brutalist — トップページと同じ系譜
+     ============================================================== */
+  .v2 { background: #FFF7D6; max-width: 1280px; margin: 0 auto; border: 3px solid #111; padding: 0; box-shadow: 12px 12px 0 #111; }
+  .v2-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: #111; color: #F6FF3B; }
+  .v2-top b { font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+  .v2-top nav a { color: #F6FF3B; text-decoration: none; margin-left: 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; }
+  .v2-top nav a.active { text-decoration: underline; }
+  .v2-head { padding: 28px 32px; border-bottom: 3px solid #111; display: flex; justify-content: space-between; align-items: center; }
+  .v2-head h2 { font-size: 44px; font-weight: 900; margin: 0; letter-spacing: -2px; }
+  .v2-head .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-top: 4px; letter-spacing: 3px; }
+  .v2-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 3px solid #111; }
+  .v2-stat { padding: 24px 28px; border-right: 3px solid #111; }
+  .v2-stat:last-child { border-right: none; }
+  .v2-stat .l { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; font-weight: 700; }
+  .v2-stat .n { font-size: 56px; font-weight: 900; letter-spacing: -3px; line-height: 1; margin-top: 8px; font-family: 'Space Grotesk'; }
+  .v2-stat:nth-child(1) { background: #E7FFE7; }
+  .v2-stat:nth-child(2) { background: #FFE7C2; }
+  .v2-stat:nth-child(3) { background: #C2E5FF; }
+  .v2-body { display: grid; grid-template-columns: 220px 1fr; }
+  .v2-side { padding: 24px 20px; border-right: 3px solid #111; background: #fff; }
+  .v2-side a { display: block; padding: 12px 14px; border: 2px solid #111; background: #fff; margin-bottom: 8px; font-weight: 900; letter-spacing: 1px; text-decoration: none; color: #111; font-size: 13px; }
+  .v2-side a.active { background: #111; color: #F6FF3B; box-shadow: 5px 5px 0 #F6FF3B; }
+  .v2-main { padding: 28px 32px; }
+  .v2-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #111; padding-bottom: 14px; }
+  .v2-mh h3 { margin: 0; font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+  .v2-cta { background: #111; color: #F6FF3B; padding: 10px 16px; font-weight: 900; letter-spacing: 2px; text-decoration: none; font-size: 13px; }
+  .v2-row { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 2px solid #111; padding: 14px 18px; margin-bottom: 10px; }
+  .v2-row .title { font-weight: 900; font-size: 15px; }
+  .v2-row .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #555; letter-spacing: 1px; margin-top: 2px; }
+  .v2-status { padding: 4px 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 900; letter-spacing: 2px; }
+  .v2-status.on { background: #00E676; color: #111; }
+  .v2-status.pending { background: #FFD600; color: #111; }
+  .v2-btn { padding: 6px 12px; border: 2px solid #111; background: #fff; font-weight: 900; font-size: 11px; letter-spacing: 1px; }
+
+  /* ==============================================================
+     3. Dark Executive — 深紺×ゴールド
+     ============================================================== */
+  .v3 { background: #f4ede0; color: #0a1628; max-width: 1280px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  .v3-top { background: #0a1628; color: #fff; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #c9a24a; }
+  .v3-top b { font-family: 'Space Grotesk'; letter-spacing: 2px; font-size: 15px; color: #c9a24a; }
+  .v3-top nav a { color: #bbb; text-decoration: none; margin-left: 24px; font-size: 13px; letter-spacing: 1px; }
+  .v3-top nav a.active { color: #c9a24a; }
+  .v3-head { background: #0a1628; color: #fff; padding: 36px 32px 48px; position: relative; }
+  .v3-head::after { content: ''; position: absolute; bottom: -1px; left: 32px; width: 80px; height: 3px; background: #c9a24a; }
+  .v3-head .eyebrow { color: #c9a24a; font-family: 'JetBrains Mono', monospace; letter-spacing: 3px; font-size: 11px; }
+  .v3-head h2 { font-family: 'Space Grotesk'; font-size: 36px; font-weight: 700; margin: 6px 0 2px; letter-spacing: -0.5px; }
+  .v3-head .meta { color: #bbb; font-size: 14px; }
+  .v3-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #0a1628; }
+  .v3-stat { padding: 24px 28px; background: #fff; }
+  .v3-stat .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #555; font-weight: 700; }
+  .v3-stat .n { font-family: 'Space Grotesk'; font-size: 44px; font-weight: 700; letter-spacing: -1px; color: #0a1628; line-height: 1; margin-top: 8px; }
+  .v3-stat .d { font-size: 11px; color: #c9a24a; letter-spacing: 2px; margin-top: 4px; font-weight: 700; }
+  .v3-body { display: grid; grid-template-columns: 220px 1fr; min-height: 420px; }
+  .v3-side { background: #0a1628; padding: 24px 20px; }
+  .v3-side a { display: block; padding: 10px 14px; color: #bbb; text-decoration: none; font-size: 13px; letter-spacing: 2px; margin-bottom: 2px; border-left: 2px solid transparent; }
+  .v3-side a.active { color: #c9a24a; border-left-color: #c9a24a; background: rgba(201,162,74,.08); }
+  .v3-main { background: #fff; padding: 28px 32px; }
+  .v3-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #0a1628; }
+  .v3-mh h3 { margin: 0; font-family: 'Space Grotesk'; font-size: 20px; letter-spacing: -0.5px; font-weight: 700; }
+  .v3-cta { padding: 10px 18px; background: #0a1628; color: #c9a24a; border: 1px solid #c9a24a; font-size: 12px; letter-spacing: 2px; font-weight: 700; text-decoration: none; }
+  .v3-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #eee; }
+  .v3-row:last-child { border-bottom: none; }
+  .v3-row .title { font-family: 'Space Grotesk'; font-weight: 700; font-size: 16px; }
+  .v3-row .meta { font-size: 12px; color: #888; letter-spacing: 1px; margin-top: 2px; }
+  .v3-status { padding: 3px 10px; border-radius: 2px; font-size: 10px; letter-spacing: 2px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .v3-status.on { background: #c9a24a; color: #0a1628; }
+  .v3-status.pending { border: 1px solid #c9a24a; color: #c9a24a; }
+  .v3-btn { padding: 6px 12px; background: transparent; border: 1px solid #0a1628; color: #0a1628; font-size: 11px; letter-spacing: 1px; text-decoration: none; font-weight: 700; }
+
+  /* ==============================================================
+     4. Terminal / Console — ダークMonospace
+     ============================================================== */
+  .v4 { background: #0a0e14; color: #b8c2c6; max-width: 1280px; margin: 0 auto; border-radius: 12px; overflow: hidden; font-family: 'JetBrains Mono', monospace; border: 1px solid #1f2430; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .v4-top { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #0f141c; border-bottom: 1px solid #1f2430; font-size: 12px; color: #5c6370; }
+  .v4-top .dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+  .v4-top .dot.y { background: #febc2e; }
+  .v4-top .dot.g { background: #28c840; }
+  .v4-top .path { margin-left: auto; }
+  .v4-body { padding: 24px 28px; }
+  .v4-prompt { color: #7CFF7F; }
+  .v4-cmd { color: #fff; }
+  .v4-comment { color: #5c6370; }
+  .v4-head-line { margin-bottom: 4px; font-size: 13px; }
+  .v4-title { color: #fff; font-size: 28px; font-weight: 700; margin: 14px 0 4px; letter-spacing: -1px; font-family: 'Space Grotesk'; }
+  .v4-meta { color: #5c6370; font-size: 12px; margin-bottom: 24px; }
+  .v4-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+  .v4-stat { border: 1px solid #1f2430; border-radius: 8px; padding: 16px; background: #0f141c; }
+  .v4-stat .l { font-size: 11px; color: #5c6370; letter-spacing: 2px; }
+  .v4-stat .n { font-size: 32px; font-weight: 700; color: #7CFF7F; font-family: 'Space Grotesk'; margin-top: 4px; line-height: 1; }
+  .v4-stat .n2 { color: #F6FF3B; }
+  .v4-stat .n3 { color: #80d8ff; }
+  .v4-tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid #1f2430; }
+  .v4-tabs a { padding: 8px 14px; color: #5c6370; text-decoration: none; font-size: 12px; letter-spacing: 2px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .v4-tabs a.active { color: #7CFF7F; border-bottom-color: #7CFF7F; }
+  .v4-table { border: 1px solid #1f2430; border-radius: 8px; overflow: hidden; }
+  .v4-th, .v4-tr { display: grid; grid-template-columns: 2fr 1fr 1fr 100px 140px; padding: 10px 16px; gap: 10px; align-items: center; font-size: 12px; }
+  .v4-th { background: #0f141c; color: #5c6370; letter-spacing: 2px; border-bottom: 1px solid #1f2430; }
+  .v4-tr { border-bottom: 1px solid #14192a; }
+  .v4-tr:last-child { border-bottom: none; }
+  .v4-tr:hover { background: #11151f; }
+  .v4-tr .title { color: #fff; font-weight: 500; }
+  .v4-tr .meta { color: #5c6370; font-size: 11px; margin-top: 2px; }
+  .v4-status { font-size: 11px; letter-spacing: 1px; font-weight: 700; }
+  .v4-status.on { color: #7CFF7F; }
+  .v4-status.on::before { content: '●'; margin-right: 4px; }
+  .v4-status.pending { color: #F6FF3B; }
+  .v4-status.pending::before { content: '●'; margin-right: 4px; }
+  .v4-act { display: flex; gap: 6px; justify-content: flex-end; }
+  .v4-act button { background: transparent; color: #b8c2c6; border: 1px solid #1f2430; padding: 3px 10px; font-size: 11px; border-radius: 4px; cursor: pointer; font-family: inherit; letter-spacing: 1px; }
+  .v4-act button:hover { border-color: #7CFF7F; color: #7CFF7F; }
+
+  /* ==============================================================
+     5. Kanban Pipeline — カンバン型
+     ============================================================== */
+  .v5 { background: #f8f9fb; color: #111; max-width: 1280px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #e5e7eb; }
+  .v5-top { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+  .v5-head h2 { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+  .v5-head .meta { color: #666; font-size: 13px; margin-top: 2px; }
+  .v5-right { display: flex; gap: 10px; align-items: center; }
+  .v5-cta { padding: 10px 16px; background: #111; color: #fff; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none; }
+  .v5-stats { display: flex; gap: 24px; padding: 16px 28px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+  .v5-stat { font-size: 13px; color: #666; }
+  .v5-stat b { color: #111; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; font-family: 'Space Grotesk'; margin-right: 6px; }
+  .v5-board { padding: 24px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; min-height: 480px; }
+  .v5-col { background: #f1f3f6; border-radius: 12px; padding: 14px; border: 1px solid #e5e7eb; }
+  .v5-col-head { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 12px; }
+  .v5-col-head .label { font-size: 11px; letter-spacing: 2px; color: #555; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .v5-col-head .label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #666; }
+  .v5-col.approved .label::before { background: #059669; }
+  .v5-col.pending .label::before { background: #d97706; }
+  .v5-col.closed .label::before { background: #888; }
+  .v5-col-head .count { font-family: 'Space Grotesk'; font-size: 18px; font-weight: 800; }
+  .v5-card { background: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.04); cursor: grab; border: 1px solid transparent; }
+  .v5-card:hover { border-color: #d0d5dd; transform: translateY(-2px); }
+  .v5-card .title { font-weight: 700; font-size: 14px; }
+  .v5-card .meta { font-size: 12px; color: #777; margin-top: 4px; }
+  .v5-card .bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: 11px; color: #666; }
+  .v5-card .bottom b { color: #111; font-weight: 700; }
+  .v5-card .pills { display: flex; gap: 4px; margin-top: 8px; }
+  .v5-card .pills span { font-size: 10px; padding: 2px 6px; background: #f3f4f6; border-radius: 4px; color: #555; font-weight: 600; }
+
+  /* ==============================================================
+     6. Metric Focus — 指標可視化重視
+     ============================================================== */
+  .v6 { background: #0f1115; color: #fff; max-width: 1280px; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 1px solid #1f2430; }
+  .v6-top { padding: 18px 28px; border-bottom: 1px solid #1f2430; display: flex; justify-content: space-between; align-items: center; }
+  .v6-top b { font-weight: 700; font-family: 'Space Grotesk'; letter-spacing: 1px; font-size: 15px; }
+  .v6-top nav a { color: #8b92a1; margin-left: 22px; text-decoration: none; font-size: 13px; }
+  .v6-top nav a.active { color: #fff; }
+  .v6-head { padding: 28px 32px 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .v6-head .title { font-family: 'Space Grotesk'; font-size: 32px; font-weight: 700; letter-spacing: -1px; margin: 0; }
+  .v6-head .sub { color: #8b92a1; font-size: 13px; margin-top: 4px; }
+  .v6-cta { padding: 10px 18px; background: #fff; color: #0f1115; border-radius: 8px; font-weight: 700; font-size: 13px; text-decoration: none; }
+  .v6-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1px; background: #1f2430; }
+  .v6-cell { background: #0f1115; padding: 24px 28px; min-height: 180px; position: relative; }
+  .v6-cell .cl { font-size: 11px; color: #8b92a1; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+  .v6-cell .cn { font-family: 'Space Grotesk'; font-size: 56px; font-weight: 700; letter-spacing: -2px; line-height: 1; margin-top: 8px; }
+  .v6-cell .cd { font-size: 12px; color: #10b981; margin-top: 8px; font-weight: 600; }
+  .v6-spark { position: absolute; right: 20px; bottom: 20px; display: flex; gap: 3px; align-items: flex-end; height: 40px; }
+  .v6-spark span { width: 6px; background: #3b82f6; border-radius: 1px; opacity: .8; }
+  .v6-spark.g span { background: #10b981; }
+  .v6-spark.y span { background: #f59e0b; }
+  .v6-body { display: grid; grid-template-columns: 200px 1fr; }
+  .v6-side { border-right: 1px solid #1f2430; padding: 20px 16px; }
+  .v6-side a { display: block; padding: 9px 12px; color: #8b92a1; text-decoration: none; font-size: 13px; border-radius: 6px; margin-bottom: 2px; }
+  .v6-side a.active { background: #1f2430; color: #fff; }
+  .v6-main { padding: 24px 28px; }
+  .v6-mh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .v6-mh h3 { margin: 0; font-family: 'Space Grotesk'; font-size: 18px; font-weight: 700; }
+  .v6-filters { display: flex; gap: 6px; }
+  .v6-filters a { padding: 5px 12px; background: #1f2430; border-radius: 999px; font-size: 12px; color: #8b92a1; text-decoration: none; }
+  .v6-filters a.active { background: #fff; color: #0f1115; font-weight: 700; }
+  .v6-list .row { display: grid; grid-template-columns: 2fr 1fr 1fr 100px 120px; gap: 10px; padding: 14px 0; border-bottom: 1px solid #1f2430; align-items: center; font-size: 13px; }
+  .v6-list .row:last-child { border-bottom: none; }
+  .v6-list .title { font-weight: 600; font-family: 'Space Grotesk'; font-size: 15px; }
+  .v6-list .meta { color: #8b92a1; font-size: 12px; margin-top: 2px; }
+  .v6-list .mini-bar { height: 6px; border-radius: 3px; background: #1f2430; overflow: hidden; position: relative; }
+  .v6-list .mini-bar::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); }
+  .v6-list .r1 .mini-bar::after { width: 68%; } .v6-list .r2 .mini-bar::after { width: 82%; } .v6-list .r3 .mini-bar::after { width: 55%; }
+  .v6-list .status { font-size: 11px; letter-spacing: 2px; font-weight: 700; }
+  .v6-list .status.on { color: #10b981; }
+  .v6-list .status.pending { color: #f59e0b; }
+  .v6-list .act { display: flex; gap: 6px; justify-content: flex-end; }
+  .v6-list .act a { padding: 5px 10px; background: #1f2430; color: #fff; border-radius: 6px; font-size: 11px; text-decoration: none; letter-spacing: 1px; }
+  .v6-list .act a:hover { background: #fff; color: #0f1115; }
+
+  @media (max-width: 900px) {
+    .v1-body, .v2-body, .v3-body, .v6-body { grid-template-columns: 1fr; }
+    .v1-stats, .v2-stats, .v3-stats, .v4-stats, .v6-grid { grid-template-columns: 1fr 1fr; }
+    .v5-board { grid-template-columns: 1fr; }
+    .v4-th, .v4-tr, .v6-list .row { grid-template-columns: 2fr 100px; }
+    .v4-th .hide, .v4-tr .hide, .v6-list .hide { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <b>企業ダッシュボード案 /</b>
+  <a href="#v1">01 Minimal SaaS</a>
+  <a href="#v2">02 Brutalist</a>
+  <a href="#v3">03 Dark Executive</a>
+  <a href="#v4">04 Terminal Console</a>
+  <a href="#v5">05 Kanban Pipeline</a>
+  <a href="#v6">06 Metric Focus</a>
+</nav>
+
+<!-- ===== 1 Minimal SaaS ===== -->
+<section id="v1" class="proposal">
+  <span class="proposal-label">// 01</span>
+  <h2 class="proposal-title">Minimal SaaS — Linear / Stripe風</h2>
+  <p class="proposal-desc">装飾を削ったクリーンなSaaSダッシュボード。グレースケール基調に控えめなステータスドット。情報密度を上げつつ上品。</p>
+  <div class="v1">
+    <div class="v1-top">
+      <b>AIme / Company</b>
+      <nav>
+        <a class="active">ダッシュボード</a>
+        <a>メッセージ</a>
+        <a>ログアウト</a>
+      </nav>
+    </div>
+    <div class="v1-body">
+      <aside class="v1-side">
+        <div class="group">Workspace</div>
+        <a class="active">求人管理</a>
+        <a>応募者</a>
+        <a>メッセージ</a>
+        <a>分析</a>
+        <div class="group" style="margin-top:18px;">Settings</div>
+        <a>企業情報</a>
+        <a>プラン</a>
+        <a>メンバー</a>
+      </aside>
+      <div class="v1-main">
+        <div class="v1-head">
+          <div>
+            <h2>株式会社コンフィグ</h2>
+            <div class="meta">AI / LLM / SaaS ・ 東京都渋谷区</div>
+          </div>
+          <a class="v1-cta" href="#">+ 新規求人を作成</a>
+        </div>
+        <div class="v1-stats">
+          <div class="v1-stat"><div class="label">公開中の求人</div><div class="value">3</div><div class="delta">+1 from last week</div></div>
+          <div class="v1-stat"><div class="label">総応募数</div><div class="value">12</div><div class="delta">+4 this week</div></div>
+          <div class="v1-stat"><div class="label">総閲覧数</div><div class="value">1,284</div><div class="delta">+248 (24.3%)</div></div>
+          <div class="v1-stat"><div class="label">未読メッセージ</div><div class="value">2</div><div class="delta neg">要返信</div></div>
+        </div>
+        <div class="v1-table">
+          <div class="v1-table-head">
+            <div>求人タイトル</div>
+            <div>カテゴリ</div>
+            <div>勤務地</div>
+            <div>ステータス</div>
+            <div style="text-align:right;">操作</div>
+          </div>
+          <div class="v1-row">
+            <div><div class="title">LLM開発インターン</div><div class="subt">閲覧 428 ・ 応募 5</div></div>
+            <div>エンジニア</div>
+            <div>渋谷</div>
+            <div><span class="v1-tag approved">公開中</span></div>
+            <div class="v1-actions"><button>編集</button><button>削除</button></div>
+          </div>
+          <div class="v1-row">
+            <div><div class="title">RAGエンジニア (学生)</div><div class="subt">閲覧 512 ・ 応募 4</div></div>
+            <div>エンジニア</div>
+            <div>フルリモート</div>
+            <div><span class="v1-tag approved">公開中</span></div>
+            <div class="v1-actions"><button>編集</button><button>削除</button></div>
+          </div>
+          <div class="v1-row">
+            <div><div class="title">AIエージェント PoC</div><div class="subt">閲覧 344 ・ 応募 3</div></div>
+            <div>研究</div>
+            <div>渋谷/ハイブリッド</div>
+            <div><span class="v1-tag pending">審査中</span></div>
+            <div class="v1-actions"><button>編集</button><button>削除</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 Brutalist ===== -->
+<section id="v2" class="proposal" style="padding-top:120px;">
+  <span class="proposal-label">// 02</span>
+  <h2 class="proposal-title">Brutalist — トップと同じ硬派ブランド</h2>
+  <p class="proposal-desc">太枠×チャンキーシャドウ。トップページのCTAと世界観を統一する案。大胆に数字を見せる。</p>
+  <div class="v2">
+    <div class="v2-top">
+      <b>AIME / COMPANY</b>
+      <nav><a class="active">DASHBOARD</a><a>MESSAGES</a><a>LOGOUT</a></nav>
+    </div>
+    <div class="v2-head">
+      <div>
+        <div class="sub">/ COMPANY / CONFIG INC.</div>
+        <h2>株式会社コンフィグ</h2>
+      </div>
+      <div class="sub">AI / LLM / SAAS</div>
+    </div>
+    <div class="v2-stats">
+      <div class="v2-stat"><div class="l">OPEN JOBS</div><div class="n">3</div></div>
+      <div class="v2-stat"><div class="l">APPLICATIONS</div><div class="n">12</div></div>
+      <div class="v2-stat"><div class="l">TOTAL VIEWS</div><div class="n">1,284</div></div>
+    </div>
+    <div class="v2-body">
+      <aside class="v2-side">
+        <a class="active">求人管理</a>
+        <a>応募者</a>
+        <a>企業情報</a>
+        <a>分析</a>
+      </aside>
+      <div class="v2-main">
+        <div class="v2-mh">
+          <h3>求人管理</h3>
+          <a class="v2-cta">+ 新規求人</a>
+        </div>
+        <div class="v2-row">
+          <div><div class="title">LLM開発インターン</div><div class="meta">ENGINEER / SHIBUYA / VIEWS 428</div></div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="v2-status on">LIVE</span>
+            <button class="v2-btn">編集</button>
+            <button class="v2-btn">削除</button>
+          </div>
+        </div>
+        <div class="v2-row">
+          <div><div class="title">RAGエンジニア (学生)</div><div class="meta">ENGINEER / REMOTE / VIEWS 512</div></div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="v2-status on">LIVE</span>
+            <button class="v2-btn">編集</button>
+            <button class="v2-btn">削除</button>
+          </div>
+        </div>
+        <div class="v2-row">
+          <div><div class="title">AIエージェント PoC</div><div class="meta">RESEARCH / HYBRID / VIEWS 344</div></div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="v2-status pending">REVIEW</span>
+            <button class="v2-btn">編集</button>
+            <button class="v2-btn">削除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 Dark Executive ===== -->
+<section id="v3" class="proposal">
+  <span class="proposal-label">// 03</span>
+  <h2 class="proposal-title">Dark Executive — 深紺×ゴールドの上質</h2>
+  <p class="proposal-desc">プレミアム採用向け。深紺ヘッダー＋ゴールドアクセント＋Space Grotesk。金融・コンサルのような格を演出。</p>
+  <div class="v3">
+    <div class="v3-top">
+      <b>A I M E ・ C O M P A N Y</b>
+      <nav><a class="active">Dashboard</a><a>Messages</a><a>Logout</a></nav>
+    </div>
+    <div class="v3-head">
+      <div class="eyebrow">// COMPANY</div>
+      <h2>Config Inc. <span style="color:#c9a24a;">/</span> 株式会社コンフィグ</h2>
+      <div class="meta">AI / LLM / SaaS ・ Tokyo, Japan</div>
+    </div>
+    <div class="v3-stats">
+      <div class="v3-stat"><div class="l">OPEN POSITIONS</div><div class="n">03</div><div class="d">↑ +1 WOW</div></div>
+      <div class="v3-stat"><div class="l">APPLICATIONS</div><div class="n">12</div><div class="d">↑ +33%</div></div>
+      <div class="v3-stat"><div class="l">TOTAL VIEWS</div><div class="n">1,284</div><div class="d">↑ +24%</div></div>
+    </div>
+    <div class="v3-body">
+      <aside class="v3-side">
+        <a class="active">JOBS</a>
+        <a>APPLICANTS</a>
+        <a>COMPANY</a>
+        <a>ANALYTICS</a>
+        <a>BILLING</a>
+      </aside>
+      <div class="v3-main">
+        <div class="v3-mh">
+          <h3>求人管理</h3>
+          <a class="v3-cta">+ NEW POSTING</a>
+        </div>
+        <div class="v3-row">
+          <div><div class="title">LLM開発インターン</div><div class="meta">ENGINEER ・ SHIBUYA ・ 428 VIEWS</div></div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span class="v3-status on">LIVE</span>
+            <a class="v3-btn">編集</a><a class="v3-btn">削除</a>
+          </div>
+        </div>
+        <div class="v3-row">
+          <div><div class="title">RAGエンジニア (学生)</div><div class="meta">ENGINEER ・ REMOTE ・ 512 VIEWS</div></div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span class="v3-status on">LIVE</span>
+            <a class="v3-btn">編集</a><a class="v3-btn">削除</a>
+          </div>
+        </div>
+        <div class="v3-row">
+          <div><div class="title">AIエージェント PoC</div><div class="meta">RESEARCH ・ HYBRID ・ 344 VIEWS</div></div>
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span class="v3-status pending">REVIEW</span>
+            <a class="v3-btn">編集</a><a class="v3-btn">削除</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 Terminal Console ===== -->
+<section id="v4" class="proposal">
+  <span class="proposal-label">// 04</span>
+  <h2 class="proposal-title">Terminal Console — ダークMonospaceの管理画面</h2>
+  <p class="proposal-desc">エンジニアリング志向の企業に刺す。CLIライクで情報密度が高く、運用感が出る。</p>
+  <div class="v4">
+    <div class="v4-top">
+      <span class="dot"></span><span class="dot y"></span><span class="dot g"></span>
+      <span>aime-console — zsh — 132×40</span>
+      <span class="path">config-inc@aime:~$</span>
+    </div>
+    <div class="v4-body">
+      <div class="v4-head-line"><span class="v4-prompt">$</span> <span class="v4-cmd">aime company status --me</span></div>
+      <div class="v4-head-line v4-comment"># Loaded 3 jobs, 12 applications, 1284 views</div>
+      <h2 class="v4-title">株式会社コンフィグ</h2>
+      <div class="v4-meta">industry=AI/LLM/SaaS  location=Shibuya,JP  role=company</div>
+      <div class="v4-stats">
+        <div class="v4-stat"><div class="l">OPEN_JOBS</div><div class="n">3</div></div>
+        <div class="v4-stat"><div class="l">APPS_TOTAL</div><div class="n n2">12</div></div>
+        <div class="v4-stat"><div class="l">VIEWS_TOTAL</div><div class="n n3">1,284</div></div>
+      </div>
+      <div class="v4-head-line"><span class="v4-prompt">$</span> <span class="v4-cmd">aime job list --my</span></div>
+      <div class="v4-tabs">
+        <a class="active">jobs</a>
+        <a>applicants</a>
+        <a>messages</a>
+        <a>analytics</a>
+        <a>settings</a>
+      </div>
+      <div class="v4-table">
+        <div class="v4-th">
+          <div>TITLE</div>
+          <div class="hide">CATEGORY</div>
+          <div class="hide">LOC</div>
+          <div>STATUS</div>
+          <div style="text-align:right;">ACTIONS</div>
+        </div>
+        <div class="v4-tr">
+          <div><div class="title">LLM開発インターン</div><div class="meta">views=428 apps=5</div></div>
+          <div class="hide">engineer</div>
+          <div class="hide">shibuya</div>
+          <div class="v4-status on">LIVE</div>
+          <div class="v4-act"><button>edit</button><button>del</button></div>
+        </div>
+        <div class="v4-tr">
+          <div><div class="title">RAGエンジニア (学生)</div><div class="meta">views=512 apps=4</div></div>
+          <div class="hide">engineer</div>
+          <div class="hide">remote</div>
+          <div class="v4-status on">LIVE</div>
+          <div class="v4-act"><button>edit</button><button>del</button></div>
+        </div>
+        <div class="v4-tr">
+          <div><div class="title">AIエージェント PoC</div><div class="meta">views=344 apps=3</div></div>
+          <div class="hide">research</div>
+          <div class="hide">hybrid</div>
+          <div class="v4-status pending">REVIEW</div>
+          <div class="v4-act"><button>edit</button><button>del</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5 Kanban ===== -->
+<section id="v5" class="proposal">
+  <span class="proposal-label">// 05</span>
+  <h2 class="proposal-title">Kanban Pipeline — ステータス列で可視化</h2>
+  <p class="proposal-desc">求人をステータス列（審査中 / 公開中 / 終了）で見せる。ドラッグ操作的な運用感で「いまどこにあるか」を即把握。</p>
+  <div class="v5">
+    <div class="v5-top">
+      <div class="v5-head">
+        <h2>株式会社コンフィグ</h2>
+        <div class="meta">AI / LLM / SaaS ・ 渋谷区</div>
+      </div>
+      <div class="v5-right">
+        <a class="v5-cta">+ 新規求人を作成</a>
+      </div>
+    </div>
+    <div class="v5-stats">
+      <div class="v5-stat"><b>3</b>公開中</div>
+      <div class="v5-stat"><b>12</b>応募</div>
+      <div class="v5-stat"><b>1,284</b>閲覧</div>
+      <div class="v5-stat"><b>2</b>未読</div>
+    </div>
+    <div class="v5-board">
+      <div class="v5-col pending">
+        <div class="v5-col-head"><span class="label">審査中</span><span class="count">1</span></div>
+        <div class="v5-card">
+          <div class="title">AIエージェント PoC</div>
+          <div class="meta">研究 ・ 渋谷/ハイブリッド</div>
+          <div class="pills"><span>LLM</span><span>エージェント</span></div>
+          <div class="bottom"><span>閲覧 <b>344</b></span><span>応募 <b>3</b></span></div>
+        </div>
+      </div>
+      <div class="v5-col approved">
+        <div class="v5-col-head"><span class="label">公開中</span><span class="count">2</span></div>
+        <div class="v5-card">
+          <div class="title">LLM開発インターン</div>
+          <div class="meta">エンジニア ・ 渋谷</div>
+          <div class="pills"><span>Python</span><span>LLM</span><span>RAG</span></div>
+          <div class="bottom"><span>閲覧 <b>428</b></span><span>応募 <b>5</b></span></div>
+        </div>
+        <div class="v5-card">
+          <div class="title">RAGエンジニア (学生)</div>
+          <div class="meta">エンジニア ・ フルリモート</div>
+          <div class="pills"><span>RAG</span><span>Python</span></div>
+          <div class="bottom"><span>閲覧 <b>512</b></span><span>応募 <b>4</b></span></div>
+        </div>
+      </div>
+      <div class="v5-col closed">
+        <div class="v5-col-head"><span class="label">終了</span><span class="count">0</span></div>
+        <div style="color:#999; font-size:12px; text-align:center; padding:40px 0;">ここにドラッグで募集終了</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6 Metric Focus ===== -->
+<section id="v6" class="proposal">
+  <span class="proposal-label">// 06</span>
+  <h2 class="proposal-title">Metric Focus — 指標可視化を主役に</h2>
+  <p class="proposal-desc">各指標にスパークライン/推移バーを乗せ、データ駆動の経営判断を促す案。アナリティクス機能推しの打ち出し。</p>
+  <div class="v6">
+    <div class="v6-top">
+      <b>AIME / CONFIG INC.</b>
+      <nav><a class="active">Overview</a><a>Jobs</a><a>Applicants</a><a>Analytics</a><a>Settings</a></nav>
+    </div>
+    <div class="v6-head">
+      <div>
+        <h2 class="title">株式会社コンフィグ</h2>
+        <div class="sub">AI / LLM / SaaS ・ Tokyo, Shibuya</div>
+      </div>
+      <a class="v6-cta">+ 新規求人を作成</a>
+    </div>
+    <div class="v6-grid">
+      <div class="v6-cell">
+        <div class="cl">TOTAL VIEWS</div>
+        <div class="cn">1,284</div>
+        <div class="cd">↑ +24.3% vs last week</div>
+        <div class="v6-spark">
+          <span style="height:20%"></span><span style="height:35%"></span><span style="height:28%"></span>
+          <span style="height:50%"></span><span style="height:42%"></span><span style="height:65%"></span>
+          <span style="height:55%"></span><span style="height:78%"></span><span style="height:88%"></span>
+          <span style="height:70%"></span><span style="height:95%"></span><span style="height:100%"></span>
+        </div>
+      </div>
+      <div class="v6-cell">
+        <div class="cl">APPLICATIONS</div>
+        <div class="cn">12</div>
+        <div class="cd">↑ +4 this week</div>
+        <div class="v6-spark g">
+          <span style="height:30%"></span><span style="height:40%"></span><span style="height:45%"></span>
+          <span style="height:60%"></span><span style="height:55%"></span><span style="height:80%"></span>
+          <span style="height:90%"></span>
+        </div>
+      </div>
+      <div class="v6-cell">
+        <div class="cl">OPEN JOBS</div>
+        <div class="cn">3</div>
+        <div class="cd">1 pending review</div>
+        <div class="v6-spark y">
+          <span style="height:30%"></span><span style="height:30%"></span><span style="height:60%"></span>
+          <span style="height:60%"></span><span style="height:60%"></span><span style="height:100%"></span>
+          <span style="height:100%"></span>
+        </div>
+      </div>
+    </div>
+    <div class="v6-body">
+      <aside class="v6-side">
+        <a class="active">求人管理</a>
+        <a>応募者</a>
+        <a>分析</a>
+        <a>メッセージ</a>
+        <a>企業情報</a>
+      </aside>
+      <div class="v6-main">
+        <div class="v6-mh">
+          <h3>求人管理</h3>
+          <div class="v6-filters"><a class="active">すべて</a><a>公開中</a><a>審査中</a><a>終了</a></div>
+        </div>
+        <div class="v6-list">
+          <div class="row r1">
+            <div><div class="title">LLM開発インターン</div><div class="meta">エンジニア ・ 渋谷 ・ 応募 5件</div></div>
+            <div class="hide"><div class="mini-bar"></div><div class="meta" style="margin-top:4px;">Views 428</div></div>
+            <div class="hide"><div class="meta">CTR 3.2%</div></div>
+            <div class="status on">● LIVE</div>
+            <div class="act"><a>編集</a><a>削除</a></div>
+          </div>
+          <div class="row r2">
+            <div><div class="title">RAGエンジニア (学生)</div><div class="meta">エンジニア ・ リモート ・ 応募 4件</div></div>
+            <div class="hide"><div class="mini-bar"></div><div class="meta" style="margin-top:4px;">Views 512</div></div>
+            <div class="hide"><div class="meta">CTR 4.1%</div></div>
+            <div class="status on">● LIVE</div>
+            <div class="act"><a>編集</a><a>削除</a></div>
+          </div>
+          <div class="row r3">
+            <div><div class="title">AIエージェント PoC</div><div class="meta">研究 ・ ハイブリッド ・ 応募 3件</div></div>
+            <div class="hide"><div class="mini-bar"></div><div class="meta" style="margin-top:4px;">Views 344</div></div>
+            <div class="hide"><div class="meta">CTR 2.8%</div></div>
+            <div class="status pending">● REVIEW</div>
+            <div class="act"><a>編集</a><a>削除</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background: #050507; color: #666; padding: 40px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;">
+  — END / 企業ダッシュボード UI案 × 6 —
+</footer>
+
+</body>
+</html>

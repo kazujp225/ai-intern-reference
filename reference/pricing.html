@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>料金プラン | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .pr-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 56px 24px 36px; text-align: center; }
+  .pr-hero h1 { margin: 0; font-size: 2.2em; font-weight: 900; letter-spacing: -.02em; }
+  .pr-hero p { color: #555; margin: 8px 0 0; font-size: 1em; }
+  .pr-wrap { max-width: 1100px; margin: 32px auto 80px; padding: 0 24px; }
+  .pr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .pr-grid { grid-template-columns: 1fr; } }
+  .pr-card {
+    background: #fff; border-radius: 20px; padding: 32px 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    position: relative; transition: transform .2s;
+  }
+  .pr-card:hover { transform: translateY(-4px); }
+  .pr-card.featured { border: 2px solid #2e7d32; box-shadow: 0 14px 40px rgba(76,175,80,.15); }
+  .pr-badge { position: absolute; top: -12px; right: 24px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; padding: 4px 12px; border-radius: 999px; font-size: .72em; font-weight: 900; letter-spacing: 1px; }
+  .pr-name { font-size: .88em; font-weight: 800; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+  .pr-price { font-size: 3em; font-weight: 900; font-family: 'Arial Black', sans-serif; color: #111; margin: 8px 0 0; line-height: 1; }
+  .pr-price-unit { font-size: .32em; color: #888; font-weight: 800; }
+  .pr-desc { color: #666; margin: 8px 0 24px; font-size: .9em; min-height: 36px; }
+  .pr-features { list-style: none; padding: 0; margin: 0 0 24px; }
+  .pr-features li { padding: 8px 0; font-size: .9em; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px dashed #f0f0f0; }
+  .pr-features li::before { content: '✓'; color: #2e7d32; font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+  .pr-features li.dim { color: #bbb; }
+  .pr-features li.dim::before { content: '—'; color: #ccc; }
+  .pr-cta { display: block; padding: 12px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff !important; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%; text-align: center; text-decoration: none; font-size: .95em; }
+  .pr-cta.ghost { background: #fff; color: #111 !important; border: 2px solid #111; }
+  .pr-cta:hover { opacity: .92; }
+  .pr-faq { margin-top: 50px; background: #fff; border-radius: 14px; padding: 28px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .pr-faq h3 { margin: 0 0 14px; font-size: 1.1em; font-weight: 900; }
+  .pr-faq-row { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .pr-faq-row:last-child { border-bottom: none; }
+  .pr-faq-q { font-weight: 800; }
+  .pr-faq-a { font-size: .88em; color: #666; margin-top: 4px; line-height: 1.6; }
+</style></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="companies.html">AI企業を探す</a>
+    <a href="pricing.html" class="current">料金</a>
+    <a href="login.html">ログイン</a>
+  </nav>
+</div></header>
+
+<section class="pr-hero">
+  <h1>企業向け料金プラン</h1>
+  <p>AI人材に最速でリーチするための3つのプラン。いつでもアップグレード/キャンセル可能。</p>
+</section>
+
+<div class="pr-wrap">
+  <div class="pr-grid">
+    <!-- Free -->
+    <div class="pr-card">
+      <div class="pr-name">FREE</div>
+      <div class="pr-price">¥0<span class="pr-price-unit">/月</span></div>
+      <div class="pr-desc">まず試したい企業様へ</div>
+      <ul class="pr-features">
+        <li>求人投稿 3件まで</li>
+        <li>応募者とのメッセージ</li>
+        <li>基本アナリティクス</li>
+        <li class="dim">求人ブースト</li>
+        <li class="dim">スキル検索</li>
+        <li class="dim">チームメンバー</li>
+      </ul>
+      <a href="company-signup.html" class="pr-cta ghost">無料ではじめる</a>
+    </div>
+
+    <!-- Pro -->
+    <div class="pr-card featured">
+      <span class="pr-badge">人気</span>
+      <div class="pr-name">PRO</div>
+      <div class="pr-price">¥29,800<span class="pr-price-unit">/月</span></div>
+      <div class="pr-desc">本格的に採用を始めたい企業様へ</div>
+      <ul class="pr-features">
+        <li>求人投稿 <strong>無制限</strong></li>
+        <li>応募者とのメッセージ</li>
+        <li>詳細アナリティクス＋CSV出力</li>
+        <li><strong>求人ブースト 月3回</strong></li>
+        <li>スキル検索</li>
+        <li>チームメンバー 3名まで</li>
+      </ul>
+      <button class="pr-cta" data-plan="pro">Pro にアップグレード</button>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="pr-card">
+      <div class="pr-name">ENTERPRISE</div>
+      <div class="pr-price">お問合せ<span class="pr-price-unit"></span></div>
+      <div class="pr-desc">大量採用・カスタム連携が必要な企業様へ</div>
+      <ul class="pr-features">
+        <li>Pro の全機能</li>
+        <li><strong>求人ブースト 無制限</strong></li>
+        <li>専任カスタマーサクセス</li>
+        <li>ATS 連携 (Greenhouse/Lever)</li>
+        <li>SSO (SAML)</li>
+        <li>チームメンバー 無制限</li>
+      </ul>
+      <a href="contact.html" class="pr-cta ghost">問い合わせる</a>
+    </div>
+  </div>
+
+  <div class="pr-faq">
+    <h3>よくある質問</h3>
+    <div class="pr-faq-row">
+      <div class="pr-faq-q">いつでもキャンセルできますか？</div>
+      <div class="pr-faq-a">はい。月額プランはいつでもキャンセルでき、次回の請求は発生しません。</div>
+    </div>
+    <div class="pr-faq-row">
+      <div class="pr-faq-q">支払い方法は？</div>
+      <div class="pr-faq-a">クレジットカード (Stripe)、請求書払い (Enterprise のみ) に対応しています。</div>
+    </div>
+    <div class="pr-faq-row">
+      <div class="pr-faq-q">求人ブーストとは？</div>
+      <div class="pr-faq-a">検索結果の上位固定 + トップページの「注目求人」枠に掲載される機能です。掲載期間は7日間。</div>
+    </div>
+    <div class="pr-faq-row">
+      <div class="pr-faq-q">無料プランから始められますか？</div>
+      <div class="pr-faq-a">もちろんです。「無料ではじめる」から企業登録 → いつでも Pro にアップグレード可能です。</div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script>
+document.querySelectorAll('[data-plan]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    // Stripe Checkout セッションを Edge Function で作成する想定
+    const plan = btn.dataset.plan;
+    try {
+      const { data: { user } } = await window.sb.auth.getUser();
+      if (!user) { location.href = 'login.html?next=pricing.html'; return; }
+      // ↓ edge-functions/stripe-checkout のエンドポイントを叩く
+      const res = await fetch(`${window.SUPABASE_URL}/functions/v1/stripe-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${(await window.sb.auth.getSession()).data.session?.access_token}` },
+        body: JSON.stringify({ plan }),
+      });
+      const { url } = await res.json();
+      if (url) location.href = url;
+      else alert('Stripe Checkout エンドポイントがデプロイされていません。SETUP-V3.md を参照してください。');
+    } catch (err) {
+      alert('エラー: ' + err.message);
+    }
+  });
+});
+</script>
+</body>
+</html>

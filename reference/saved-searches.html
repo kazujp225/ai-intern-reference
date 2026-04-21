@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保存した検索 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .ss-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 40px 24px; }
+  .ss-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .ss-hero h1 { margin: 0; font-size: 1.8em; font-weight: 900; letter-spacing: -.02em; }
+  .ss-hero p { color: #555; margin: 6px 0 0; }
+  .ss-wrap { max-width: 1100px; margin: 28px auto 60px; padding: 0 24px; }
+  .ss-empty { background: #fff; border-radius: 14px; padding: 48px; text-align: center; color: #888; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
+  .ss-empty a { color: #2e7d32; font-weight: 800; }
+  .ss-item {
+    background: #fff; border-radius: 14px; padding: 20px 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ss-item-body { flex: 1; min-width: 0; }
+  .ss-item-label { font-weight: 900; font-size: 1.05em; margin-bottom: 4px; }
+  .ss-item-params { font-size: .82em; color: #666; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ss-chip { background: #e8f5e9; color: #1b5e20; padding: 2px 10px; border-radius: 999px; font-weight: 700; }
+  .ss-item-actions { display: flex; gap: 8px; align-items: center; }
+  .ss-toggle {
+    display: inline-flex; align-items: center; gap: 6px; font-size: .82em; font-weight: 700;
+    color: #666; cursor: pointer;
+  }
+  .ss-toggle input { accent-color: #2e7d32; width: 16px; height: 16px; }
+  .ss-mini { padding: 7px 14px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; font-weight: 700; font-size: .82em; cursor: pointer; color: #333; }
+  .ss-mini:hover { border-color: #2e7d32; color: #2e7d32; }
+  .ss-mini.delete:hover { border-color: #c62828; color: #c62828; }
+  .ss-cta { padding: 10px 20px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 900; text-decoration: none; font-size: .9em; display:inline-block; }
+</style></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="search.html">インターンを探す</a>
+    <a href="companies.html">AI企業を探す</a>
+    <a href="blog.html">AIコラム</a>
+    <a href="mypage.html">マイページ</a>
+  </nav>
+</div></header>
+
+<section class="ss-hero">
+  <div class="ss-hero-inner">
+    <h1>保存した検索</h1>
+    <p>気になる条件を保存しておくと、新着求人が出た時にメールと通知でお知らせします。</p>
+  </div>
+</section>
+
+<nav class="breadcrumb" style="max-width:1100px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <a href="mypage.html" style="color:#666;">マイページ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  保存した検索
+</nav>
+
+<div class="ss-wrap">
+  <div style="margin-bottom:18px; display:flex; justify-content:space-between; align-items:center;">
+    <div id="ss-count" style="font-weight:700; color:#666;"></div>
+    <a href="search.html" class="ss-cta">＋ 新しい検索を保存</a>
+  </div>
+  <div id="ss-list"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+  const listEl = document.getElementById('ss-list');
+  const countEl = document.getElementById('ss-count');
+
+  function renderItems(items) {
+    if (!items.length) {
+      listEl.innerHTML = `<div class="ss-empty">
+        まだ保存された検索はありません。<br>
+        <a href="search.html">求人検索ページ</a> から条件を保存できます。
+      </div>`;
+      countEl.textContent = '';
+      return;
+    }
+    countEl.textContent = `${items.length}件の保存検索`;
+    listEl.innerHTML = items.map(s => {
+      const chips = Object.entries(s.params || {})
+        .filter(([k,v]) => v)
+        .map(([k,v]) => `<span class="ss-chip">${k}: ${String(v).slice(0,30)}</span>`).join('');
+      const url = 'search.html?' + new URLSearchParams(s.params || {}).toString();
+      return `
+        <div class="ss-item" data-id="${s.id}">
+          <div class="ss-item-body">
+            <div class="ss-item-label">${s.label}</div>
+            <div class="ss-item-params">${chips || '<span style="color:#bbb;">条件なし</span>'}</div>
+          </div>
+          <label class="ss-toggle" title="新着通知">
+            <input type="checkbox" class="ss-alert" ${s.alert ? 'checked' : ''}>新着通知
+          </label>
+          <a href="${url}" class="ss-mini">検索を実行</a>
+          <button class="ss-mini delete" data-del>削除</button>
+        </div>`;
+    }).join('');
+    // bind
+    listEl.querySelectorAll('.ss-item').forEach(card => {
+      const id = card.dataset.id;
+      card.querySelector('.ss-alert').addEventListener('change', async (e) => {
+        try { await window.AImeV3.toggleSearchAlert(id, e.target.checked); }
+        catch (err) { alert('エラー: ' + err.message); }
+      });
+      card.querySelector('[data-del]').addEventListener('click', async () => {
+        if (!confirm('この保存検索を削除しますか？')) return;
+        try { await window.AImeV3.deleteSavedSearch(id); card.remove(); }
+        catch (err) { alert('エラー: ' + err.message); }
+      });
+    });
+  }
+
+  if (PREVIEW) {
+    renderItems([
+      { id: 'm1', label: 'リモートLLM求人', params: { q:'LLM', feature:'フルリモート可' }, alert: true },
+      { id: 'm2', label: '東京 × 未経験OK', params: { area:'東京都', feature:'未経験OK' }, alert: false },
+      { id: 'm3', label: '時給2,000円以上のAI', params: { feature:'時給2,000円以上', tag:'AIエージェント' }, alert: true },
+    ]);
+    return;
+  }
+
+  try {
+    const items = await window.AImeV3.listSavedSearches();
+    renderItems(items);
+  } catch (err) {
+    listEl.innerHTML = `<div class="ss-empty">読み込みエラー: ${err.message}<br>(<a href="login.html">ログイン</a>してください)</div>`;
+  }
+})();
+</script>
+</body>
+</html>

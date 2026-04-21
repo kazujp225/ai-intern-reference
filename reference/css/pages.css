@@ -65,6 +65,13 @@ a:hover { color: #1b5e20; }
   max-width: 1280px; margin: 32px auto 0; padding-top: 24px;
   border-top: 1px solid #333; font-size: .75em; text-align: center;
 }
+.site-footer .legal-links {
+  max-width: 1280px; margin: 18px auto 0; text-align: center;
+  display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+  font-size: .78em;
+}
+.site-footer .legal-links a { color: #888; }
+.site-footer .legal-links a:hover { color: #fff; }
 @media (max-width: 720px) {
   .site-footer-inner { grid-template-columns: 1fr 1fr; }
 }

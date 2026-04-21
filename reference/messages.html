@@ -61,10 +61,52 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-biz.js"></script>
 <script>
 (async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  if (PREVIEW) {
+    document.getElementById('ms-main').style.display = 'grid';
+    const demoConvs = [
+      {id:'c1', name:'株式会社コンフィグ', meta:'2026-04-20 17:42', active:true},
+      {id:'c2', name:'OpenLab株式会社', meta:'2026-04-19 11:08'},
+      {id:'c3', name:'AIスタジオ', meta:'2026-04-15 09:30'},
+    ];
+    document.getElementById('conv-list').innerHTML = demoConvs.map(c=>`
+      <div class="ms-conv ${c.active?'active':''}" data-cid="${c.id}">
+        <div class="ms-conv-avatar">${c.name.charAt(0).toUpperCase()}</div>
+        <div><div class="ms-conv-name">${c.name}</div><div class="ms-conv-meta">${c.meta}</div></div>
+      </div>`).join('');
+    document.getElementById('chat-head').textContent = '株式会社コンフィグ';
+    document.getElementById('chat-form').style.display = 'flex';
+    document.getElementById('chat-body').innerHTML = `
+      <div class="ms-msg other">はじめまして。LLM開発インターンに応募頂きありがとうございます。<div class="ms-msg-time">17:30</div></div>
+      <div class="ms-msg me">こちらこそよろしくお願いします！<div class="ms-msg-time">17:35</div></div>
+      <div class="ms-msg other">来週オンライン面談は可能でしょうか？<div class="ms-msg-time">17:40</div></div>
+      <div class="ms-msg me">はい、火曜日以降であれば調整可能です。<div class="ms-msg-time">17:42</div></div>`;
+    document.getElementById('conv-list').querySelectorAll('.ms-conv').forEach(c=>{
+      c.addEventListener('click', ()=>{
+        document.querySelectorAll('.ms-conv').forEach(x=>x.classList.remove('active'));
+        c.classList.add('active');
+        document.getElementById('chat-head').textContent = c.querySelector('.ms-conv-name').textContent;
+      });
+    });
+    document.getElementById('chat-form').addEventListener('submit', e=>{
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const body = input.value.trim(); if(!body) return;
+      const b = document.getElementById('chat-body');
+      const t = new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+      b.insertAdjacentHTML('beforeend', `<div class="ms-msg me">${body.replace(/</g,'&lt;')}<div class="ms-msg-time">${t}</div></div>`);
+      input.value = '';
+      b.scrollTop = b.scrollHeight;
+    });
+    return;
+  }
+
   const { data: { user } } = await window.sb.auth.getUser();
   if (!user) { document.getElementById('auth-req').style.display = 'block'; return; }
   document.getElementById('ms-main').style.display = 'grid';

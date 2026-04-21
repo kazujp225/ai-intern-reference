@@ -4,29 +4,135 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>新規登録 | AIme</title>
 <link rel="stylesheet" href="css/pages.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  .rs-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32 50%,#4caf50); color:#fff; padding: 60px 24px; text-align:center; }
-  .rs-hero h1 { margin:0; font-size: 2em; font-weight: 900; }
-  .rs-hero p { opacity:.9; margin: 8px 0 0; }
-  .rs-wrap { max-width: 880px; margin: -40px auto 60px; padding: 0 24px; position: relative; }
-  .rs-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 640px) { .rs-cards { grid-template-columns: 1fr; } }
-  .rs-card {
-    background: #fff; border-radius: 16px; padding: 32px 28px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.08); text-align: center;
-    transition: all .2s ease; cursor: pointer; display: block; color: inherit; text-decoration: none;
-    border: 3px solid transparent;
+  body { background: #ffffff; }
+
+  .rs-hero-bar {
+    background: #ffffff; color: #111;
+    padding: 48px 24px 28px; text-align: center;
+    border-bottom: 1px solid #ececec;
   }
-  .rs-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(0,0,0,.12); border-color: #4caf50; color: inherit; }
-  .rs-icon { width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2em; color: #fff; }
-  .rs-icon.student { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
-  .rs-icon.company { background: linear-gradient(135deg,#e65100,#ff9800); }
-  .rs-card h2 { margin: 0 0 8px; font-size: 1.3em; font-weight: 900; }
-  .rs-card p { margin: 0; color: #666; font-size: .9em; line-height: 1.6; }
-  .rs-features { text-align: left; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; font-size: .82em; color: #555; }
-  .rs-features li { margin-bottom: 4px; }
-  .rs-foot { text-align:center; margin-top: 28px; font-size: .9em; color: #666; }
-</style></head>
+  .rs-hero-bar .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 4px; color: #e53935;
+    margin-bottom: 8px;
+  }
+  .rs-hero-bar h1 { margin: 0; font-size: 2.2em; font-weight: 900; letter-spacing: -1px; color: #111; }
+  .rs-hero-bar p { margin: 8px 0 0; color: #666; font-size: .95em; }
+
+  .rs-split-wrap { max-width: 1200px; margin: 40px auto 60px; padding: 0 24px; }
+
+  .rs-split {
+    display: grid; grid-template-columns: 1fr 1fr;
+    height: 560px;
+    border-radius: 24px; overflow: hidden; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+  .rs-side {
+    position: relative; padding: 60px 48px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #fff; transition: filter .35s;
+    text-decoration: none; overflow: hidden;
+  }
+  .rs-side:hover { filter: brightness(1.08); }
+  .rs-side.student { background: linear-gradient(135deg, #0a0a0a, #1a1a1a 50%, #2a2a2a); color: #fff; }
+  .rs-side.company { background: linear-gradient(135deg, #f5f5f5, #e8e8e8 50%, #d0d0d0); color: #111; }
+
+  .rs-role-en {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 4px; opacity: .75; position: relative; z-index: 1;
+  }
+  .rs-side.company .rs-role-en { opacity: .55; }
+
+  .rs-side h2 {
+    font-size: 44px; font-weight: 900; margin: 6px 0 14px;
+    letter-spacing: -1px; position: relative; z-index: 1; line-height: 1;
+  }
+  .rs-lead {
+    font-size: 14px; opacity: .85; max-width: 320px;
+    line-height: 1.7; position: relative; z-index: 1; margin: 0 0 18px;
+  }
+  .rs-features {
+    list-style: none; margin: 0 0 24px; padding: 14px 0 0;
+    border-top: 1px solid currentColor; position: relative; z-index: 1;
+    font-size: 13px; max-width: 320px;
+  }
+  .rs-side.student .rs-features { border-top-color: rgba(255,255,255,.25); }
+  .rs-side.company .rs-features { border-top-color: rgba(0,0,0,.2); }
+  .rs-features li { padding: 5px 0; display: flex; gap: 10px; align-items: center; }
+  .rs-features li::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px;
+    background: #e53935;
+  }
+
+  .rs-btn {
+    position: relative; z-index: 1; align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 24px; border-radius: 999px;
+    font-weight: 700; letter-spacing: 2px; font-size: 13px;
+    transition: .2s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rs-side.student .rs-btn {
+    background: rgba(255,255,255,.08); color: #fff;
+    border: 1.5px solid rgba(255,255,255,.4);
+    backdrop-filter: blur(8px);
+  }
+  .rs-side.student:hover .rs-btn { background: #e53935; color: #fff; border-color: #e53935; }
+  .rs-side.company .rs-btn {
+    background: rgba(255,255,255,.6); color: #111;
+    border: 1.5px solid #111;
+  }
+  .rs-side.company:hover .rs-btn { background: #e53935; color: #fff; border-color: #e53935; }
+
+  .rs-giant {
+    position: absolute; top: 40px; right: 40px;
+    font-size: 200px; font-weight: 900; opacity: .08;
+    line-height: 1; z-index: 0; font-family: 'Inter', sans-serif;
+    letter-spacing: -8px;
+  }
+  .rs-side.student .rs-giant { color: #fff; }
+  .rs-side.company .rs-giant { color: #111; }
+
+  .rs-divider {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-family: 'JetBrains Mono', monospace;
+    z-index: 3; border: 4px solid #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,.5);
+    background: #e53935; color: #fff;
+    font-size: 14px; letter-spacing: 1px;
+  }
+  .rs-divider::before {
+    content: ''; position: absolute; inset: -10px;
+    border-radius: 50%; border: 1px dashed rgba(229,57,53,.5);
+    animation: rs-spin 8s linear infinite;
+  }
+  @keyframes rs-spin { to { transform: rotate(360deg); } }
+
+  .rs-foot {
+    text-align: center; margin-top: 32px; font-size: .9em;
+    color: #666; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+  }
+  .rs-foot a { color: #e53935; font-weight: 700; text-decoration: none; }
+  .rs-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .rs-split { display: block; height: auto; }
+    .rs-side { padding: 48px 32px; min-height: 280px; }
+    .rs-divider {
+      position: relative; top: auto; left: auto; transform: none;
+      margin: -36px auto -36px;
+    }
+    .rs-side h2 { font-size: 36px; }
+    .rs-giant { font-size: 140px; top: 20px; right: 24px; }
+  }
+</style>
+</head>
 <body>
 
 <header class="site-header">
@@ -34,44 +140,53 @@
     <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
     <nav class="site-nav">
       <a href="search.html">インターンを探す</a>
-      <a href="search.html?view=companies">AI企業を探す</a>
+      <a href="companies.html">AI企業を探す</a>
       <a href="blog.html">AIコラム</a>
       <a href="login.html" class="login">ログイン</a>
     </nav>
   </div>
 </header>
 
-<section class="rs-hero">
+<section class="rs-hero-bar">
+  <div class="kicker">/ CREATE YOUR ACCOUNT</div>
   <h1>新規登録</h1>
   <p>あなたの立場に合わせてアカウント種別を選択してください</p>
 </section>
 
-<div class="rs-wrap">
-  <div class="rs-cards">
-    <a href="signup.html" class="rs-card">
-      <div class="rs-icon student">👤</div>
-      <h2>学生として登録</h2>
-      <p>AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+<div class="rs-split-wrap">
+  <div class="rs-split">
+    <div class="rs-divider">OR</div>
+
+    <a href="signup.html" class="rs-side student">
+      <span class="rs-giant">01</span>
+      <div class="rs-role-en">I AM A STUDENT</div>
+      <h2>学生として<br>はじめる</h2>
+      <p class="rs-lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
       <ul class="rs-features">
-        <li>✓ 156件以上のAIインターンを検索</li>
-        <li>✓ ブックマーク・応募履歴管理</li>
-        <li>✓ 企業と直接メッセージ</li>
-        <li>✓ 履歴書アップロード</li>
+        <li>156件以上のAIインターンを検索</li>
+        <li>ブックマーク・応募履歴管理</li>
+        <li>企業と直接メッセージ</li>
+        <li>履歴書アップロード</li>
       </ul>
+      <span class="rs-btn">REGISTER AS STUDENT →</span>
     </a>
-    <a href="company-signup.html" class="rs-card">
-      <div class="rs-icon company">🏢</div>
-      <h2>企業として登録</h2>
-      <p>AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+
+    <a href="company-signup.html" class="rs-side company">
+      <span class="rs-giant">02</span>
+      <div class="rs-role-en">I AM A COMPANY</div>
+      <h2>企業として<br>はじめる</h2>
+      <p class="rs-lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
       <ul class="rs-features">
-        <li>✓ 求人の作成・編集・公開管理</li>
-        <li>✓ 応募者一覧と選考ステータス管理</li>
-        <li>✓ 学生と直接チャット</li>
-        <li>✓ 閲覧数・応募数の分析</li>
+        <li>求人の作成・編集・公開管理</li>
+        <li>応募者一覧と選考ステータス管理</li>
+        <li>学生と直接チャット</li>
+        <li>閲覧数・応募数の分析</li>
       </ul>
+      <span class="rs-btn">REGISTER AS COMPANY →</span>
     </a>
   </div>
-  <div class="rs-foot">すでに登録済み? <a href="login.html">ログイン</a></div>
+
+  <div class="rs-foot">すでに登録済み? &nbsp; <a href="login.html">LOGIN →</a></div>
 </div>
 
 <footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>

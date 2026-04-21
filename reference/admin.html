@@ -5,23 +5,97 @@
 <title>管理者パネル | AIme</title>
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  .ad-hero { background: linear-gradient(135deg,#212121,#424242); color:#fff; padding: 30px 24px; }
-  .ad-hero h1 { margin: 0; font-size: 1.6em; font-weight: 900; }
-  .ad-wrap { max-width: 1200px; margin: 24px auto 60px; padding: 0 24px; }
+  body { background: #f7f8fa; }
+
+  /* ===== ヒーロー (ソフト緑グラデ - 他ページと統一) ===== */
+  .ad-hero {
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
+    padding: 40px 24px 36px;
+  }
+  .ad-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .ad-hero h1 {
+    margin: 0; font-size: 1.6em; font-weight: 900; color: #111;
+    letter-spacing: -.01em;
+  }
+  .ad-hero p { color: #555; margin: 6px 0 0; font-size: .9em; font-weight: 600; }
+
+  /* ===== レイアウト ===== */
+  .ad-wrap { max-width: 1100px; margin: 24px auto 60px; padding: 0 24px; }
+
+  /* ===== スタッツ ===== */
   .ad-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
-  .ad-stat { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
-  .ad-stat .n { font-size: 2em; font-weight: 900; color: #111; }
-  .ad-stat .l { font-size: .85em; color: #666; }
-  .ad-tabs { display: flex; gap: 8px; background: #fff; padding: 6px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); flex-wrap: wrap; }
-  .ad-tab { flex: 1; padding: 10px; background: transparent; border: none; border-radius: 6px; cursor: pointer; font-weight: 800; color: #666; min-width: 100px; }
-  .ad-tab.active { background: #212121; color: #fff; }
-  .ad-panel { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
-  .ad-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px; }
+  .ad-stat {
+    background: #fff; border-radius: 14px; padding: 18px 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .ad-stat .n {
+    font-size: 1.9em; font-weight: 900; color: #1b5e20;
+    font-family: 'Arial Black', sans-serif; line-height: 1;
+  }
+  .ad-stat .l { font-size: .82em; color: #666; font-weight: 700; margin-top: 6px; }
+
+  /* ===== タブ ===== */
+  .ad-tabs {
+    display: flex; gap: 4px; background: #fff; padding: 6px;
+    border-radius: 12px; margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    flex-wrap: wrap;
+  }
+  .ad-tab {
+    flex: 1; min-width: 100px; padding: 10px 14px;
+    background: transparent; border: none; border-radius: 8px;
+    cursor: pointer; font-weight: 700; color: #666;
+    font-size: .88em; transition: all .15s;
+  }
+  .ad-tab:hover { background: #f0faf0; color: #2e7d32; }
+  .ad-tab.active {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    box-shadow: 0 4px 12px rgba(76,175,80,.3);
+  }
+
+  /* ===== パネル ===== */
+  .ad-panel {
+    background: #fff; border-radius: 14px; padding: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .ad-panel h2 {
+    margin: 0 0 16px; font-size: 1.2em; font-weight: 900; color: #111;
+    letter-spacing: -.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ad-panel h2::before {
+    content: ''; width: 4px; height: 18px; background: #4caf50; border-radius: 2px;
+  }
+
+  /* ===== 行 ===== */
+  .ad-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; background: #fafafa; border-radius: 10px;
+    margin-bottom: 8px; transition: background .15s;
+  }
+  .ad-row:hover { background: #f0faf0; }
   .ad-row .info { font-size: .9em; }
   .ad-row .actions { display: flex; gap: 6px; }
-  .ad-row .actions button { padding: 6px 12px; border: 1px solid #e0e0e0; background: #fff; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: .8em; }
-  .ad-row .actions button.approve { background: #2e7d32; color: #fff; border-color: #2e7d32; }
-  .ad-row .actions button.reject { background: #c62828; color: #fff; border-color: #c62828; }
+  .ad-row .actions button {
+    padding: 6px 14px; border: 1px solid #e0e0e0; background: #fff;
+    border-radius: 8px; cursor: pointer; font-weight: 700; font-size: .82em;
+    color: #333; transition: all .15s;
+  }
+  .ad-row .actions button:hover { border-color: #2e7d32; color: #2e7d32; }
+  .ad-row .actions button.approve { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border-color: transparent; }
+  .ad-row .actions button.approve:hover { opacity: .92; color: #fff; }
+  .ad-row .actions button.reject { background: #c62828; color: #fff; border-color: transparent; }
+  .ad-row .actions button.reject:hover { background: #b71c1c; color: #fff; }
+
+  /* ===== ゲート (権限不足) ===== */
+  .ad-gate {
+    max-width: 480px; margin: 80px auto; padding: 44px 36px;
+    background: #fff; border-radius: 20px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.08), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .ad-gate h2 { font-size: 1.35em; font-weight: 900; margin: 0 0 10px; color: #111; letter-spacing: -.01em; }
+  .ad-gate p { color: #666; font-size: .9em; line-height: 1.7; margin: 0 0 12px; }
+  .ad-gate code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-size: .88em; }
 </style></head>
 <body>
 
@@ -29,18 +103,27 @@
   <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
   <nav class="site-nav">
     <a href="admin.html" class="current">管理者</a>
+    <a href="reports-admin.html">通報</a>
     <a href="#" id="logout-link" class="login">ログアウト</a>
   </nav>
 </div></header>
 
-<div id="ad-gate" style="display:none; text-align:center; padding: 80px 24px;">
+<div id="ad-gate" class="ad-gate" style="display:none;">
   <h2>管理者権限が必要です</h2>
-  <p style="color:#666;">このページにアクセスするには admin ロールが必要です。</p>
-  <p style="font-size:.85em; color:#888;">ロール付与: Supabase SQL Editor で<br><code>update profiles set role='admin' where id='&lt;あなたのuid&gt;';</code></p>
+  <p>このページにアクセスするには admin ロールが必要です。</p>
+  <p style="font-size:.85em; color:#888;">
+    ロール付与: Supabase SQL Editor で<br>
+    <code>update profiles set role='admin' where id='&lt;あなたのuid&gt;';</code>
+  </p>
 </div>
 
 <div id="ad-main" style="display:none;">
-  <section class="ad-hero"><h1>🔧 管理者パネル</h1></section>
+  <section class="ad-hero">
+    <div class="ad-hero-inner">
+      <h1>管理者パネル</h1>
+      <p>サイト全体のユーザー・求人・応募を管理します。</p>
+    </div>
+  </section>
   <div class="ad-wrap">
     <div class="ad-stats">
       <div class="ad-stat"><div class="n" id="st-users">0</div><div class="l">総ユーザー数</div></div>
@@ -65,10 +148,73 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-biz.js"></script>
 <script>
 (async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  if (PREVIEW) {
+    document.getElementById('ad-main').style.display = 'block';
+    document.getElementById('st-users').textContent = '1,248';
+    document.getElementById('st-jobs').textContent = '156';
+    document.getElementById('st-apps').textContent = '892';
+    document.getElementById('p-users').innerHTML = [
+      {nick:'taro', id:'aabbccdd', role:'student'},
+      {nick:'hanako', id:'eeff0011', role:'student'},
+      {nick:'株式会社コンフィグ', id:'22334455', role:'company'},
+      {nick:'AIスタジオ', id:'66778899', role:'company'},
+      {nick:'admin_user', id:'deadbeef', role:'admin'},
+    ].map(u => `
+      <div class="ad-row">
+        <div class="info"><strong>${u.nick}</strong><br><small>${u.id.slice(0,8)}... / ${u.role}</small></div>
+        <div class="actions">
+          <select class="ad-role-sel">
+            <option ${u.role==='student'?'selected':''}>student</option>
+            <option ${u.role==='company'?'selected':''}>company</option>
+            <option ${u.role==='admin'?'selected':''}>admin</option>
+          </select>
+        </div>
+      </div>`).join('');
+    document.getElementById('p-pending-jobs').innerHTML = [
+      {title:'LLM開発インターン', company:'株式会社コンフィグ'},
+      {title:'RAGエンジニア (学生)', company:'AIスタジオ'},
+    ].map(j => `
+      <div class="ad-row">
+        <div class="info"><strong>${j.title}</strong><br><small>${j.company}</small></div>
+        <div class="actions">
+          <button class="approve">承認</button>
+          <button class="reject">却下</button>
+        </div>
+      </div>`).join('');
+    document.getElementById('p-reports').innerHTML = [
+      {target:'post:42', reason:'スパム', status:'open'},
+      {target:'comment:108', reason:'不適切な発言', status:'open'},
+    ].map(r => `
+      <div class="ad-row">
+        <div class="info"><strong>${r.target}</strong><br><small>${r.reason} / ${r.status}</small></div>
+        <div class="actions"><button>解決済みに</button></div>
+      </div>`).join('');
+    document.getElementById('p-logs').innerHTML = [
+      {page:'/search', who:'aabbccdd…', at:'2026-04-21 10:23'},
+      {page:'/job/llm-dev', who:'(匿名)', at:'2026-04-21 10:22'},
+      {page:'/mypage', who:'eeff0011…', at:'2026-04-21 10:21'},
+    ].map(l => `
+      <div class="ad-row"><div class="info"><strong>${l.page}</strong><br><small>${l.at} / ${l.who}</small></div></div>
+    `).join('');
+    document.querySelectorAll('.ad-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.ad-tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        ['users','pending-jobs','reports','logs'].forEach(p => {
+          document.getElementById('p-' + p).style.display = (p === t.dataset.p) ? 'block' : 'none';
+        });
+      });
+    });
+    return;
+  }
+
   const { data: { user } } = await window.sb.auth.getUser();
   if (!user) { location.href = 'login.html'; return; }
   const role = await window.AImeBiz.getRole();

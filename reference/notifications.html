@@ -11,11 +11,13 @@
   .nt-wrap { max-width: 800px; margin: 24px auto 60px; padding: 0 24px; }
   .nt-item { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 14px; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.04); text-decoration: none; color: inherit; }
   .nt-item.unread { border-left: 4px solid #2e7d32; }
-  .nt-item-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2em; flex-shrink: 0; color: #fff; }
+  .nt-item-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .95em; font-weight: 800; flex-shrink: 0; color: #fff; }
   .nt-item-icon.application { background: #2e7d32; }
   .nt-item-icon.message { background: #1976d2; }
   .nt-item-icon.result { background: #ef6c00; }
   .nt-item-icon.system { background: #757575; }
+  .nt-item-icon.post { background: #6a1b9a; }
+  .nt-item-icon.comment { background: #00838f; }
   .nt-item-title { font-weight: 800; margin-bottom: 2px; }
   .nt-item-body { font-size: .85em; color: #666; }
   .nt-item-time { font-size: .75em; color: #999; margin-top: 2px; }
@@ -42,10 +44,40 @@
 <div class="nt-wrap" id="nt-list"><div style="text-align:center; color:#888; padding:40px;">読み込み中...</div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/supabase-biz.js"></script>
 <script>
 (async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  if (PREVIEW) {
+    const demo = [
+      {id:1, kind:'application', title:'応募が受理されました', body:'LLM開発インターン (株式会社コンフィグ)', time:'2026-04-20 17:42', unread:true},
+      {id:2, kind:'message', title:'新着メッセージ', body:'株式会社コンフィグから「来週面談いかがですか？」', time:'2026-04-20 17:30', unread:true},
+      {id:3, kind:'result', title:'選考通過のお知らせ', body:'AIエージェント開発インターン (株式会社ニューラル)', time:'2026-04-19 14:20', unread:true},
+      {id:4, kind:'comment', title:'あなたの投稿にコメント', body:'「Claude Code 使い倒し記録」に新しいコメント', time:'2026-04-18 10:05'},
+      {id:5, kind:'post', title:'新しい記事がおすすめです', body:'「RAG 2026年の潮流」が公開されました', time:'2026-04-17 09:00'},
+      {id:6, kind:'system', title:'プロフィール完成度90%', body:'残りの項目を入力してマッチ率UP', time:'2026-04-15 12:00'},
+    ];
+    document.getElementById('nt-unread-count').textContent = '(3件未読)';
+    const iconMap = { application:'応', message:'メ', result:'結', system:'知', post:'投', comment:'コ' };
+    document.getElementById('nt-list').innerHTML = demo.map(n=>`
+      <a class="nt-item ${n.unread?'unread':''}" href="#" data-nid="${n.id}">
+        <div class="nt-item-icon ${n.kind}">${iconMap[n.kind]}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="nt-item-title">${n.title}</div>
+          <div class="nt-item-body">${n.body}</div>
+          <div class="nt-item-time">${n.time}</div>
+        </div>
+      </a>`).join('');
+    document.getElementById('nt-mark-all').addEventListener('click', ()=>{
+      document.querySelectorAll('.nt-item.unread').forEach(e=>e.classList.remove('unread'));
+      document.getElementById('nt-unread-count').textContent = '';
+    });
+    return;
+  }
+
   const { data: { user } } = await window.sb.auth.getUser();
   if (!user) { location.href = 'login.html'; return; }
 
@@ -55,10 +87,10 @@
     document.getElementById('nt-unread-count').textContent = unread ? `(${unread}件未読)` : '';
     const el = document.getElementById('nt-list');
     if (!notifs.length) { el.innerHTML = '<div style="text-align:center; color:#888; padding:60px;">通知はありません</div>'; return; }
-    const iconMap = { application:'📩', message:'💬', result:'🎯', system:'🔔', post:'📝', comment:'💭' };
+    const iconMap = { application:'応', message:'メ', result:'結', system:'知', post:'投', comment:'コ' };
     el.innerHTML = notifs.map(n => `
       <a class="nt-item ${n.is_read ? '' : 'unread'}" href="${n.link || '#'}" data-nid="${n.id}">
-        <div class="nt-item-icon ${n.kind}">${iconMap[n.kind] || '🔔'}</div>
+        <div class="nt-item-icon ${n.kind}">${iconMap[n.kind] || '知'}</div>
         <div style="flex:1; min-width:0;">
           <div class="nt-item-title">${n.title}</div>
           <div class="nt-item-body">${n.body || ''}</div>

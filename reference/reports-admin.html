@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通報キュー | AIme 管理</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .rp-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 40px 24px; }
+  .rp-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .rp-hero h1 { margin: 0; font-size: 1.8em; font-weight: 900; letter-spacing: -.02em; }
+  .rp-hero p { color: #555; margin: 6px 0 0; }
+  .rp-wrap { max-width: 1100px; margin: 28px auto 60px; padding: 0 24px; }
+  .rp-tabs { display: flex; gap: 6px; padding: 6px; background: #fff; border-radius: 12px; max-width: 400px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .rp-tab { flex: 1; padding: 8px 12px; border: none; background: transparent; border-radius: 8px; font-weight: 700; color: #666; cursor: pointer; font-size: .88em; }
+  .rp-tab.active { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; }
+  .rp-item {
+    background: #fff; border-radius: 14px; padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 12px;
+    display: grid; grid-template-columns: 100px 1fr auto; gap: 16px; align-items: start;
+  }
+  .rp-kind { display: inline-block; padding: 3px 10px; border-radius: 999px; background: #fff3e0; color: #ef6c00; font-size: .72em; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .rp-reason { font-weight: 900; font-size: .95em; margin-bottom: 4px; }
+  .rp-detail { color: #555; font-size: .88em; line-height: 1.6; }
+  .rp-meta { font-size: .75em; color: #999; font-family: monospace; margin-top: 6px; }
+  .rp-actions { display: flex; flex-direction: column; gap: 6px; }
+  .rp-mini { padding: 6px 14px; border: 1px solid #e0e0e0; background: #fff; border-radius: 6px; font-weight: 700; font-size: .78em; cursor: pointer; color: #333; white-space: nowrap; }
+  .rp-mini.resolve { border-color: #2e7d32; color: #2e7d32; }
+  .rp-mini.dismiss { border-color: #999; color: #666; }
+  .rp-mini.hide { border-color: #c62828; color: #c62828; }
+  .rp-empty { background: #fff; border-radius: 14px; padding: 60px; text-align: center; color: #888; }
+</style></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="admin.html">管理</a>
+    <a href="reports-admin.html" class="current">通報</a>
+  </nav>
+</div></header>
+
+<section class="rp-hero">
+  <div class="rp-hero-inner"><h1>通報キュー</h1><p>ユーザーからの通報を管理します。確認→対応→クローズ。</p></div>
+</section>
+
+<nav class="breadcrumb" style="max-width:1100px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <a href="admin.html" style="color:#666;">管理</a><span style="margin:0 6px;color:#ccc;">/</span>通報
+</nav>
+
+<div class="rp-wrap">
+  <div class="rp-tabs">
+    <button class="rp-tab active" data-status="open">未対応</button>
+    <button class="rp-tab" data-status="reviewing">確認中</button>
+    <button class="rp-tab" data-status="resolved">解決済</button>
+    <button class="rp-tab" data-status="dismissed">却下</button>
+  </div>
+  <div id="rp-list"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+  const listEl = document.getElementById('rp-list');
+  let currentStatus = 'open';
+
+  function render(items) {
+    if (!items.length) { listEl.innerHTML = '<div class="rp-empty">該当する通報はありません</div>'; return; }
+    listEl.innerHTML = items.map(r => `
+      <div class="rp-item" data-id="${r.id}">
+        <div><span class="rp-kind">${r.target_type}</span></div>
+        <div>
+          <div class="rp-reason">${reasonLabel(r.reason)}</div>
+          ${r.detail ? `<div class="rp-detail">${escapeHtml(r.detail)}</div>` : ''}
+          <div class="rp-meta">REPORT_ID: ${r.id.slice(0,8)} · TARGET: ${r.target_id.slice(0,8)} · ${new Date(r.created_at).toLocaleString('ja-JP')}</div>
+        </div>
+        <div class="rp-actions">
+          <button class="rp-mini resolve" data-act="resolved">解決済に</button>
+          <button class="rp-mini dismiss" data-act="dismissed">却下</button>
+          <button class="rp-mini" data-act="reviewing">確認中</button>
+        </div>
+      </div>
+    `).join('');
+    listEl.querySelectorAll('.rp-item').forEach(card => {
+      const id = card.dataset.id;
+      card.querySelectorAll('[data-act]').forEach(b => {
+        b.addEventListener('click', async () => {
+          try {
+            await window.AImeV3.resolveReport(id, b.dataset.act);
+            card.remove();
+          } catch (err) { alert('エラー: ' + err.message); }
+        });
+      });
+    });
+  }
+
+  function reasonLabel(r) {
+    return {
+      spam: 'スパム', harassment: '嫌がらせ・誹謗中傷',
+      inappropriate: '不適切なコンテンツ', misinformation: '虚偽の情報',
+      other: 'その他',
+    }[r] || r;
+  }
+  function escapeHtml(s) {
+    return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function load() {
+    if (PREVIEW) {
+      render([
+        { id:'r-1-xxxx', target_type:'post', target_id:'p-abc12345', reason:'spam', detail:'広告リンクが大量に貼られています', created_at: new Date().toISOString() },
+        { id:'r-2-xxxx', target_type:'comment', target_id:'c-def67890', reason:'harassment', detail:'他のユーザーへの誹謗中傷です', created_at: new Date(Date.now()-3600e3).toISOString() },
+        { id:'r-3-xxxx', target_type:'user', target_id:'u-abc99999', reason:'inappropriate', detail:'プロフィール画像が不適切', created_at: new Date(Date.now()-86400e3).toISOString() },
+      ]);
+      return;
+    }
+    try {
+      const items = await window.AImeV3.listReports(currentStatus);
+      render(items);
+    } catch (err) {
+      listEl.innerHTML = `<div class="rp-empty">読み込みエラー: ${err.message}<br>(adminロールが必要です)</div>`;
+    }
+  }
+
+  document.querySelectorAll('.rp-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.rp-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentStatus = t.dataset.status;
+    load();
+  }));
+
+  load();
+})();
+</script>
+</body>
+</html>
