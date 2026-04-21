@@ -1,0 +1,20 @@
+.git
+.gitignore
+.env
+.env.local
+.env.example
+.DS_Store
+node_modules/
+*.md
+sql/
+edge-functions/
+# proposal / preview / backup 系は本番Dockerイメージに不要
+reference/*-proposals*.html
+reference/*-variants*.html
+reference/*-preview.html
+reference/original_backup.html
+reference/*_showcase.html
+reference/generate_svgs.py
+reference/remove_bg.py
+reference/restore_layout.py
+reference/update_map_logos.py
