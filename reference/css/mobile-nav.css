@@ -566,24 +566,31 @@ body {
     font-size: 0.78em !important;
   }
 
-  /* ページネーション: コンパクト + 折り返し */
+  /* ページネーション: 1行に収め、縦スクロール禁止・必要なら横スクロール */
   .compact-pagination {
     margin-top: 14px !important;
     padding: 8px 10px 20px !important;
     gap: 3px !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     justify-content: center !important;
     max-width: 100% !important;
+    overflow-y: hidden !important;
+    overflow-x: auto !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
   }
+  .compact-pagination::-webkit-scrollbar { display: none; }
   .compact-pagination a {
     width: 28px !important;
     min-width: 28px !important;
     height: 28px !important;
     font-size: 0.72em !important;
     padding: 0 !important;
+    flex-shrink: 0 !important;
   }
   .compact-pagination .page-dots {
     font-size: 0.75em !important;
+    flex-shrink: 0 !important;
   }
 
   /* ----------------------------------------------------------
@@ -879,13 +886,13 @@ body {
     max-width: 100%;
   }
 
-  /* --- ページネーション --- */
-  .pagination, .compact-pagination {
+  /* --- ページネーション (.pagination の方は折り返しOK、.compact-paginationは上で1行固定済み) --- */
+  .pagination {
     flex-wrap: wrap !important;
     gap: 4px !important;
     font-size: 0.85em !important;
   }
-  .pagination a, .compact-pagination a {
+  .pagination a {
     padding: 6px 10px !important;
     min-width: 32px !important;
   }
