@@ -606,11 +606,11 @@ body {
     overflow-y: hidden !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    /* 最初のカードを画面中央に:
-       親.container-wrapに左右16pxのpaddingが入るので、
-       (100vw-82vw)/2=9vw から16pxを引いた値をカルーセルのpaddingにする */
-    padding: 4px calc(9vw - 16px) 14px !important;
-    scroll-padding-inline: calc(9vw - 16px) !important;
+    /* 祖先の padding (container-wrap + cs-contents + pull-left-inner = 42px) に依存せず
+       キャリアソル自身の幅を基準に中央配置する。
+       カードを flex: 0 0 90% にして、padding 5% で左右対称→真ん中に来る。 */
+    padding: 4px 5% 14px !important;
+    scroll-padding-inline: 5% !important;
     margin: 0 !important;
     touch-action: pan-x !important;
   }
@@ -629,7 +629,7 @@ body {
   }
   .student-voice-carousel::-webkit-scrollbar { display: none; }
   .student-voice-carousel .sns-voice-card {
-    flex: 0 0 82vw !important;
+    flex: 0 0 90% !important;
     scroll-snap-align: center !important;
     margin: 0 !important;
     padding: 18px 16px !important;
