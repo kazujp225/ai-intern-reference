@@ -140,14 +140,28 @@ body {
      ---------------------------------------------------------- */
   .cover-area {
     height: auto !important;
-    min-height: 420px;
-    padding: 24px 16px 40px;
-    overflow-x: clip !important;
-    overflow-y: visible !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 20px 16px 28px !important;
+    overflow: visible !important;
     max-width: 100% !important;
     width: 100% !important;
     touch-action: pan-y !important;
     box-sizing: border-box;
+  }
+  .cover-inner {
+    height: auto !important;
+    overflow: visible !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .top-catch {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    max-width: 100% !important;
+    width: 100% !important;
   }
   .cover-area *,
   .cover-inner,
@@ -155,10 +169,6 @@ body {
   .top-catch * {
     max-width: 100% !important;
     touch-action: pan-y !important;
-  }
-  .top-catch {
-    overflow-x: hidden !important;
-    width: 100% !important;
   }
   /* hero-popular-tagsは必ず折り返し */
   .hero-popular-tags {
