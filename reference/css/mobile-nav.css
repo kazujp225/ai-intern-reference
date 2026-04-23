@@ -142,6 +142,39 @@ body {
     height: auto !important;
     min-height: 420px;
     padding: 24px 16px 40px;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    touch-action: pan-y !important;
+    box-sizing: border-box;
+  }
+  .cover-area *,
+  .cover-inner,
+  .top-catch,
+  .top-catch * {
+    max-width: 100% !important;
+    touch-action: pan-y !important;
+  }
+  .top-catch {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+  /* hero-popular-tagsは必ず折り返し */
+  .hero-popular-tags {
+    flex-wrap: wrap !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    justify-content: center !important;
+  }
+  .hero-popular-tags a {
+    max-width: 100%;
+  }
+  /* hero-searchも完全固定 */
+  .hero-search {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
   }
   .cover-area::before {
     width: 100% !important;
