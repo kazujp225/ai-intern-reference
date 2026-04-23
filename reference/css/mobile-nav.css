@@ -1,36 +1,191 @@
 /* ==========================================================================
-   mobile-nav.css — モバイル用フロスト風ボトムナビ + モバイルヘッダー簡略化
+   mobile-nav.css — モバイル用レイアウト修正 + フロスト風ボトムナビ
    モバイル(<=768px)のみ有効。PCレイアウトには一切影響しない。
    ========================================================================== */
+
+/* 横スクロール防止 (あらゆるページで) */
+html, body { max-width: 100%; overflow-x: hidden; }
 
 @media (max-width: 768px) {
 
   /* ----------------------------------------------------------
      ヘッダー: ロゴ + ログイン/新規登録 以外を非表示
      ---------------------------------------------------------- */
-  /* original.html / index.html 系: .header-category-item */
   .header-category-item { display: none !important; }
-
-  /* 他ページ系: .site-nav 内の通常リンクを非表示、.login / .register は残す */
   .site-nav > a:not(.login):not(.register):not(.neo-login):not(.neo-register) {
     display: none !important;
   }
 
+  /* ヘッダーのパディングを狭く (originalスタイルのpadding: 0 40px対策) */
+  #vue-header,
+  .header-inner {
+    padding: 0 14px !important;
+    height: 60px !important;
+  }
+  .site-header-inner {
+    padding: 0 14px !important;
+  }
+  .site-logo img,
+  .neo-nav img {
+    height: 28px;
+  }
+
+  /* ヘッダーのログイン/新規登録ボタンを少しコンパクトに */
+  .neo-login, .site-nav .login {
+    font-size: 0.82em !important;
+    padding: 6px 10px !important;
+  }
+  .neo-register, .site-nav .register {
+    font-size: 0.82em !important;
+    padding: 6px 14px !important;
+  }
+
   /* コンテンツが下ナビに隠れないよう余白を確保 */
-  body { padding-bottom: 88px; }
+  body { padding-bottom: 90px !important; }
   footer, .site-footer { margin-bottom: 0; }
+
+  /* ----------------------------------------------------------
+     トップページ: ヒーロー領域のモバイル調整
+     ---------------------------------------------------------- */
+  .cover-area {
+    height: auto !important;
+    min-height: 420px;
+    padding: 24px 16px 40px;
+  }
+  .cover-area::before {
+    width: 100% !important;
+    opacity: 0.35;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%) !important;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%) !important;
+  }
+  .top-catch {
+    margin-left: 0 !important;
+    padding: 8px 4px 0;
+  }
+  .top-catch-tag {
+    width: 60px;
+    height: auto;
+  }
+  .top-catch-title {
+    font-size: 1.7em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff !important;
+  }
+  .top-catch-sub-title {
+    font-size: 1.5em !important;
+    line-height: 1.3 !important;
+    margin-bottom: 12px !important;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff !important;
+  }
+  .top-catch p {
+    font-size: 0.95em !important;
+    line-height: 1.5 !important;
+    text-shadow: 0 0 10px #fff, 0 0 16px #fff !important;
+  }
+  .top-catch-action {
+    margin-top: 24px !important;
+  }
+  .top-catch-action-wrapper {
+    margin-bottom: 14px !important;
+  }
+  .cta-brutal-btn {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+  .seika-text-img {
+    max-width: 80%;
+    height: auto;
+  }
+  .hero-search {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 24px 0 0 !important;
+  }
+  .hero-popular-tags {
+    position: static !important;
+    left: auto !important;
+    margin: 14px 0 0 !important;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  /* ----------------------------------------------------------
+     特集・セクション系の余白圧縮
+     ---------------------------------------------------------- */
+  .featured-companies,
+  .container-wrap,
+  section,
+  .top-page > section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .featured-companies {
+    padding: 30px 16px !important;
+    margin: 20px auto !important;
+  }
+  .featured-companies-title {
+    font-size: 1.3em !important;
+  }
+  .featured-companies-sub {
+    font-size: 0.85em !important;
+    margin-bottom: 24px !important;
+  }
+  .companies-grid {
+    gap: 16px !important;
+  }
+  .company-card {
+    width: calc(50% - 8px) !important;
+    padding: 18px 12px !important;
+  }
+
+  /* カード・グリッドが横スクロールしないよう最大幅を画面内に */
+  .container-wrap, .content-wrapper {
+    max-width: 100vw;
+  }
+
+  /* ----------------------------------------------------------
+     フォーム/認証系ページ (login/signup/mypage等)
+     ---------------------------------------------------------- */
+  .auth-wrap {
+    padding: 24px 16px !important;
+    margin: 12px !important;
+  }
+  .auth-title {
+    font-size: 1.5em !important;
+  }
+  .form-field input,
+  .form-field textarea {
+    font-size: 16px !important; /* iOSでズームさせない */
+  }
+
+  /* ----------------------------------------------------------
+     フッター: モバイルで縦積み
+     ---------------------------------------------------------- */
+  .site-footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding: 24px 16px !important;
+  }
+  .site-footer-inner h4 { font-size: 1em; }
+  .site-footer-inner ul { padding-left: 0; list-style: none; }
 
   /* ----------------------------------------------------------
      ボトムナビ本体 (フロスト / ガラス風)
      ---------------------------------------------------------- */
   .mobile-bottom-nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 999;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    z-index: 2147483647 !important; /* 最大z-index、他のfixed要素にも負けない */
     padding: 6px 12px max(10px, env(safe-area-inset-bottom, 10px));
     pointer-events: none;
+    display: block !important;
   }
   .mobile-bottom-nav .mbn-inner {
     display: flex;
