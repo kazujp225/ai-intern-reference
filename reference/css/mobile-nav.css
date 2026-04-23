@@ -6,7 +6,7 @@
 /* 横スクロール防止 (あらゆるページで) */
 html, body { max-width: 100%; overflow-x: hidden; }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   /* ----------------------------------------------------------
      ヘッダー: ロゴ + ログイン/新規登録 以外を非表示
@@ -232,6 +232,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
 }
 
 /* PCでは完全に隠す */
-@media (min-width: 769px) {
+@media (min-width: 901px) {
   .mobile-bottom-nav { display: none !important; }
 }

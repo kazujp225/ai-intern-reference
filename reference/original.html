@@ -65,6 +65,23 @@
     }
     .neo-nav .neo-register:hover { opacity: 0.9; }
 
+    /* Top catch ヒーロー文言 (デスクトップ) */
+    .top-catch { margin-left: -80px; }
+    .top-catch-title {
+      font-size: 4em; margin-bottom: 24px;
+      text-shadow: 0 0 20px #fff, 0 0 40px #fff;
+    }
+    .top-catch-sub-title {
+      font-size: 4em; margin-top: 0; margin-bottom: 24px;
+      text-shadow: 0 0 20px #fff, 0 0 40px #fff;
+    }
+    .top-catch-desc {
+      font-size: 1.9em; font-weight: 600; margin-top: 0;
+      text-shadow: 0 0 15px #fff, 0 0 30px #fff;
+    }
+    .top-catch-action { margin-top: 90px; }
+    .top-catch-action-wrapper { text-align: left; margin-bottom: 20px; }
+
     /* Hero background image - right side, fading to left */
     .cover-area { position: relative; overflow: hidden; height: 720px; }
     .cover-area::before {
@@ -906,8 +923,8 @@
       pointer-events: none;
     }
   </style>
-  <link rel="stylesheet" href="css/mobile-nav.css?v=2">
-  <script src="js/mobile-nav.js?v=2" defer></script>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=3">
+  <script src="js/mobile-nav.js?v=3" defer></script>
 </head>
 
 <body class="top-page modal-open">
@@ -940,20 +957,20 @@
 <div class="container-wrap top-page">
   <div class="cover-area">
   <div class="cover-inner">
-    <div class="top-catch" style="margin-left: -80px;">
+    <div class="top-catch">
       <img class="top-catch-tag" src="images/top/crown.svg" alt="crown.svg">
-      <h2 class="top-catch-title" style="font-size: 4em; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AIと共創し、未来を切り開く。</h2>
-      <h1 class="top-catch-sub-title" style="font-size: 4em; margin-top: 0; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AIme</h1>
-      <p style="font-size: 1.9em; font-weight: 600; margin-top: 0; text-shadow: 0 0 15px #fff, 0 0 30px #fff;">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
-              <div class="top-catch-action" style="margin-top: 90px;">
-          <div class="top-catch-action-wrapper" style="text-align: left; margin-bottom: 20px;">
-            <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
-            <br>
-            <a href="signup.html" class="cta-brutal-btn">
-              <span class="cta-brutal-tag">無料</span>新規登録する
-            </a>
-          </div>
+      <h2 class="top-catch-title">AIと共創し、未来を切り開く。</h2>
+      <h1 class="top-catch-sub-title">AI特化インターンなら、AIme</h1>
+      <p class="top-catch-desc">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
+      <div class="top-catch-action">
+        <div class="top-catch-action-wrapper">
+          <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
+          <br>
+          <a href="signup.html" class="cta-brutal-btn">
+            <span class="cta-brutal-tag">無料</span>新規登録する
+          </a>
         </div>
+      </div>
         <img src="images/top/seika-text.png" alt="真の成果を、その手に" class="seika-text-img">
         <div class="hero-popular-tags">
           <span class="popular-label">人気:</span>
