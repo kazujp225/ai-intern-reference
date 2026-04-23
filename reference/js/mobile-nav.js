@@ -53,30 +53,64 @@
   function clampOverflow() {
     if (window.innerWidth > 900) return;
     const vw = document.documentElement.clientWidth;
-    document.querySelectorAll('body, body *').forEach(el => {
-      // 横スクロール許可エリアの子孫はスキップ
-      if (el.closest('.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll]')) return;
+    const SKIP_SEL = '.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll], .mobile-bottom-nav';
+    const violators = [];
+    // --- Pass 1: 全要素の寸法チェック、違反者を記録 ---
+    document.querySelectorAll('body *').forEach(el => {
+      if (el.closest(SKIP_SEL)) return;
       const r = el.getBoundingClientRect();
-      // 右端がviewport外に飛び出ている要素
-      if (r.right > vw + 1 || r.width > vw + 1 || r.left < -1) {
-        el.style.setProperty('max-width', '100%', 'important');
-        el.style.setProperty('width', 'auto', 'important');
-        el.style.setProperty('overflow-x', 'hidden', 'important');
-        el.style.setProperty('box-sizing', 'border-box', 'important');
-        // transform/margin で外に出ている場合の応急処置
-        if (r.left < 0) {
-          el.style.setProperty('margin-left', '0', 'important');
-          el.style.setProperty('transform', 'none', 'important');
-          el.style.setProperty('left', 'auto', 'important');
-          el.style.setProperty('right', 'auto', 'important');
-        }
-        // console.log('[mobile-nav] clamped:', el.tagName + (el.className ? '.'+el.className : ''), 'width:', r.width, 'left:', r.left, 'right:', r.right);
+      const cs = getComputedStyle(el);
+      const cssW = parseFloat(cs.width);
+      const cssMinW = parseFloat(cs.minWidth);
+      const over = (r.width > vw + 1) || (r.right > vw + 1) || (r.left < -1)
+                 || (cssW > vw + 10) || (cssMinW > vw + 10);
+      if (over) {
+        violators.push({ el, r, cssW, cssMinW });
       }
     });
-    // bodyのscrollWidthがviewportより大きい場合、最上位にoverflow-clip適用
+    // --- Pass 2: 違反者を全部矯正 ---
+    violators.forEach(({ el, r }) => {
+      el.style.setProperty('max-width', '100%', 'important');
+      el.style.setProperty('width', 'auto', 'important');
+      el.style.setProperty('min-width', '0', 'important');
+      el.style.setProperty('overflow-x', 'hidden', 'important');
+      el.style.setProperty('box-sizing', 'border-box', 'important');
+      if (r.left < 0 || r.right > vw + 1) {
+        el.style.setProperty('margin-left', '0', 'important');
+        el.style.setProperty('margin-right', '0', 'important');
+        el.style.setProperty('transform', 'none', 'important');
+        el.style.setProperty('left', 'auto', 'important');
+        el.style.setProperty('right', 'auto', 'important');
+        const pos = getComputedStyle(el).position;
+        if (pos === 'absolute' || pos === 'fixed') {
+          el.style.setProperty('position', 'static', 'important');
+        }
+      }
+    });
+    // --- Pass 3: ルートレベルの保険 ---
+    document.documentElement.style.setProperty('overflow-x', 'clip', 'important');
+    document.body.style.setProperty('overflow-x', 'clip', 'important');
+    document.documentElement.style.setProperty('max-width', '100vw', 'important');
+    document.body.style.setProperty('max-width', '100vw', 'important');
+    // --- デバッグ: bodyがまだviewportを超えてたらwarnを出す ---
     if (document.body.scrollWidth > vw + 1) {
-      document.documentElement.style.setProperty('overflow-x', 'clip', 'important');
-      document.body.style.setProperty('overflow-x', 'clip', 'important');
+      // 残留している最大幅の子孫を特定
+      let worst = null, maxW = vw;
+      document.querySelectorAll('body *').forEach(el => {
+        if (el.closest(SKIP_SEL)) return;
+        const r = el.getBoundingClientRect();
+        if (r.right > maxW) { maxW = r.right; worst = el; }
+      });
+      if (worst) {
+        console.warn('[mobile-nav] still overflowing:',
+          worst.tagName + (worst.className ? '.' + String(worst.className).replace(/\s/g,'.') : '') + (worst.id ? '#'+worst.id : ''),
+          'right:', maxW, 'vw:', vw);
+        // 最後の手段: 違反者に width: 100vw; position: relative; left: 0
+        worst.style.setProperty('width', '100vw', 'important');
+        worst.style.setProperty('max-width', '100vw', 'important');
+        worst.style.setProperty('position', 'relative', 'important');
+        worst.style.setProperty('left', '0', 'important');
+      }
     }
   }
   function runClamp() {
@@ -84,8 +118,24 @@
     // レンダリング後・画像読込後にも再実行
     setTimeout(clampOverflow, 200);
     setTimeout(clampOverflow, 800);
+    setTimeout(clampOverflow, 2000);
   }
   window.addEventListener('load', runClamp);
   window.addEventListener('resize', runClamp);
   if (document.readyState === 'complete') runClamp();
+
+  // DOM変化を監視して後挿入要素にも対応 (Vue / slick等の遅延描画対策)
+  let debounce = null;
+  const mo = new MutationObserver(() => {
+    if (window.innerWidth > 900) return;
+    clearTimeout(debounce);
+    debounce = setTimeout(clampOverflow, 200);
+  });
+  if (document.body) {
+    mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+    });
+  }
 })();
