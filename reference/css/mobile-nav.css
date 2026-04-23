@@ -89,10 +89,32 @@ html, body { max-width: 100%; overflow-x: hidden; }
   .top-catch-action-wrapper {
     margin-bottom: 14px !important;
   }
+  .cta-brutal-microcopy {
+    font-size: 0.75em !important;
+    padding: 4px 12px !important;
+    top: 10px !important;
+    left: -6px !important;
+    transform: rotate(-1.5deg) !important;
+  }
   .cta-brutal-btn {
     display: inline-block;
     max-width: 100%;
     white-space: nowrap;
+    padding: 14px 26px !important;
+    font-size: 1em !important;
+    border-width: 3px !important;
+    box-shadow: 5px 5px 0 #111 !important;
+    border-radius: 6px !important;
+  }
+  .cta-brutal-btn:active {
+    transform: translate(3px, 3px) !important;
+    box-shadow: 2px 2px 0 #111 !important;
+  }
+  .cta-brutal-tag {
+    font-size: 0.65em !important;
+    padding: 1px 6px !important;
+    margin-right: 8px !important;
+    border-width: 2px !important;
   }
   .seika-text-img {
     max-width: 80%;
