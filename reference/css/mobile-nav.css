@@ -703,6 +703,103 @@ body {
   .sns-vc-avatar { width: 40px !important; height: 40px !important; font-size: 14px !important; }
   .sns-vc-name { font-size: 0.88em !important; }
   .sns-vc-role { font-size: 0.7em !important; }
+
+  /* ============================================================
+     モバイル: 全体を中央寄せ
+     ============================================================ */
+
+  /* ヒーロー全体 */
+  .top-catch,
+  .top-catch-title,
+  .top-catch-sub-title,
+  .top-catch p,
+  .top-catch-desc,
+  .top-catch-action,
+  .top-catch-action-wrapper {
+    text-align: center !important;
+  }
+  .top-catch-tag,
+  .seika-text-img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  /* CTAを中央に寄せたときマイクロコピーがズレないよう */
+  .cta-brutal-microcopy {
+    left: 0 !important;
+    margin: 0 auto !important;
+  }
+  .hero-popular-tags {
+    justify-content: center !important;
+  }
+
+  /* セクション見出し (sect_01/02/03 pictogram) */
+  .section-title-e {
+    justify-content: center !important;
+    text-align: center;
+  }
+
+  /* 特集企業セクション */
+  .featured-companies {
+    text-align: center;
+  }
+  .companies-grid {
+    justify-content: center !important;
+  }
+
+  /* 体験者の声セクションの見出し */
+  .student-voice-area .section-title-e {
+    justify-content: center !important;
+  }
+
+  /* AImeシップを探す の小見出し */
+  .search-interns-new .search-category-label {
+    text-align: center !important;
+    padding-left: 0 !important;
+    border-left: none !important;
+    position: relative;
+  }
+  .search-interns-new .search-category-label::before,
+  .search-interns-new .search-category-label::after {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: #2e7d32;
+    vertical-align: middle;
+    margin: 0 8px;
+  }
+  .search-interns-new .brutal-row {
+    justify-content: center !important;
+  }
+
+  /* AImeシップ一覧 */
+  .intern-list .compact-header {
+    text-align: center;
+  }
+  .compact-toolbar {
+    justify-content: center !important;
+  }
+
+  /* ページ共通 */
+  .page-title, .page-sub { text-align: center !important; }
+  .auth-title, .auth-sub { text-align: center !important; }
+
+  /* 検索ページ・企業一覧ページの上部バー */
+  .co-hero, .search-hero, .bl-hero { text-align: center !important; }
+
+  /* ボタンを中央に (親要素がblockのinline-block buttonが左寄せの場合) */
+  .top-catch-action-wrapper .cta-brutal-btn {
+    display: inline-block;
+  }
+
+  /* 関東マップと県チップを中央に */
+  .search-interns-new .kanto-map-wrap {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .search-interns-new #kantoPrefButtons {
+    justify-content: center !important;
+  }
 }
 
 /* PCでは完全に隠す */
