@@ -773,7 +773,7 @@ body {
   }
 
   /* ---------------------------------------------------------------
-     特集トップAI企業紹介 (usa-map-wrap スポットライト→横スクロール)
+     特集トップAI企業紹介 (usa-map-wrap 自動ティッカー横流れ)
      --------------------------------------------------------------- */
   .usa-map-wrap {
     position: relative !important;
@@ -782,19 +782,46 @@ body {
     max-width: 100% !important;
     cursor: auto !important;
     display: flex !important;
-    gap: 20px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scroll-snap-type: x mandatory !important;
-    padding: 12px 16px !important;
+    gap: 28px !important;
+    overflow: hidden !important;
+    padding: 20px 0 !important;
     margin: 16px 0 0 !important;
-    -webkit-overflow-scrolling: touch;
+    width: max-content !important;
+    animation: usa-ticker 35s linear infinite;
+    will-change: transform;
+    -webkit-overflow-scrolling: auto !important;
+    scroll-snap-type: none !important;
   }
+  /* ラッパで画面幅に制限 */
+  .search-interns-new > div:has(> .usa-map-wrap),
+  .usa-map-wrap-outer {
+    max-width: 100vw !important;
+    overflow: hidden !important;
+  }
+  @keyframes usa-ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  /* タップで一時停止 */
+  .usa-map-wrap:active,
+  .usa-map-wrap.paused { animation-play-state: paused !important; }
   .usa-map-wrap::-webkit-scrollbar { display: none; }
   .usa-map-wrap::before, .usa-map-wrap::after {
     display: none !important;
   }
-  .usa-map-hint { display: none !important; }
+  .usa-map-hint {
+    position: static !important;
+    display: block !important;
+    transform: none !important;
+    left: auto !important;
+    top: auto !important;
+    text-align: center !important;
+    margin: 4px auto 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 0.7em !important;
+    color: #aaa !important;
+  }
   .usa-pin,
   .usa-pin.is-active,
   .usa-pin.is-prev, .usa-pin.is-next,
@@ -806,34 +833,37 @@ body {
     top: auto !important;
     left: auto !important;
     flex: 0 0 auto !important;
-    scroll-snap-align: center !important;
     pointer-events: auto !important;
     z-index: 1 !important;
-    width: 100px !important;
-    max-width: 100px !important;
+    width: auto !important;
+    max-width: none !important;
     visibility: visible !important;
+    transition: none !important;
   }
   .usa-pin-label {
     position: static !important;
     transform: none !important;
     padding: 0 !important;
-    width: 100px !important;
-    max-width: 100px !important;
+    width: auto !important;
+    max-width: none !important;
     font-size: 0.72em !important;
     gap: 6px !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     text-align: center;
     background: transparent !important;
     box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
   }
   .usa-pin-label img,
   .usa-pin-label svg {
-    width: 52px !important;
-    height: 52px !important;
+    width: 56px !important;
+    height: 56px !important;
     object-fit: contain !important;
   }
   .usa-pin-label img[alt="OpenAI"] {
-    width: 100px !important;
+    width: 96px !important;
     height: auto !important;
   }
 

@@ -292,4 +292,50 @@
   document.addEventListener('DOMContentLoaded', initPhoneDemo3D);
   setTimeout(initPhoneDemo3D, 200);
   setTimeout(initPhoneDemo3D, 800);
+
+  // =======================================================
+  // モバイル: 特集トップAI企業紹介を自動ティッカー化
+  // - seamlessループのためpin要素を複製
+  // - タップで一時停止
+  // =======================================================
+  function initCompanyTicker() {
+    if (window.innerWidth > 900) return;
+    const wrap = document.querySelector('.usa-map-wrap');
+    if (!wrap || wrap.dataset.tickerReady === '1') return;
+    const pins = wrap.querySelectorAll('.usa-pin');
+    if (pins.length === 0) return;
+
+    // .usa-pin 以外の子要素 (hint等) は別の場所へ移動 or 末尾に退避
+    // まずusa-pin達のみを2セットに
+    const originalPins = Array.from(pins);
+
+    // 既存の usa-pin をクリア
+    originalPins.forEach(p => p.remove());
+
+    // 1セット目
+    originalPins.forEach(p => wrap.appendChild(p.cloneNode(true)));
+    // 2セット目 (seamlessループ用)
+    originalPins.forEach(p => wrap.appendChild(p.cloneNode(true)));
+
+    // 親ラッパにoverflow:hiddenを確実に付ける (画面幅制限)
+    const parent = wrap.parentElement;
+    if (parent) {
+      parent.style.setProperty('max-width', '100vw', 'important');
+      parent.style.setProperty('overflow', 'hidden', 'important');
+    }
+
+    // タップで一時停止/再開
+    let paused = false;
+    wrap.addEventListener('click', (e) => {
+      paused = !paused;
+      wrap.classList.toggle('paused', paused);
+      e.preventDefault();
+    });
+
+    wrap.dataset.tickerReady = '1';
+  }
+  window.addEventListener('load', initCompanyTicker);
+  document.addEventListener('DOMContentLoaded', initCompanyTicker);
+  setTimeout(initCompanyTicker, 200);
+  setTimeout(initCompanyTicker, 800);
 })();

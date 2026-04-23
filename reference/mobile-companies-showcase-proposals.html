@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>特集トップAI企業紹介 モバイル5案</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 16px 120px;
+    background: #f5f5f7;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    color: #111;
+  }
+  h1 { font-size: 1.3em; margin: 0 0 8px; text-align: center; }
+  .lead { text-align: center; color: #666; margin: 0 0 32px; font-size: 0.85em; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .case { background: #fff; border-radius: 20px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .case-title { font-size: 1em; font-weight: 800; margin: 0 0 4px; color: #1b5e20; }
+  .case-desc { font-size: 0.78em; color: #666; margin: 0 0 14px; line-height: 1.5; }
+  .phone {
+    width: 100%; max-width: 340px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .phone-scroll { max-height: 620px; overflow-y: auto; padding: 20px 14px; }
+  .sec-title { text-align: center; font-size: 1.1em; font-weight: 900; margin: 0 0 4px; }
+  .sec-sub { text-align: center; font-size: 0.78em; color: #888; margin: 0 0 20px; }
+
+  /* =================================================================
+     案1: 横スクロール カード（ロゴ+企業名+求人数）
+     ================================================================= */
+  .c1-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 4px 2px 16px;
+    margin: 0 -14px;
+    padding-left: 14px; padding-right: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .c1-scroll::-webkit-scrollbar { display: none; }
+  .c1-card {
+    flex: 0 0 130px;
+    scroll-snap-align: start;
+    background: #fff;
+    border: 1.5px solid #e5efe5;
+    border-radius: 14px;
+    padding: 16px 10px 12px;
+    text-align: center;
+    text-decoration: none;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s;
+  }
+  .c1-card:active { transform: scale(0.96); background: #f9fbf9; }
+  .c1-logo {
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5em; font-weight: 900;
+    color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .c1-name { font-size: 0.88em; font-weight: 800; line-height: 1.2; }
+  .c1-meta { font-size: 0.68em; color: #2e7d32; font-weight: 800; }
+
+  /* =================================================================
+     案2: 3×N グリッド（整然）
+     ================================================================= */
+  .c2-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .c2-item {
+    text-decoration: none;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 4px;
+    border-radius: 12px;
+    background: #fafafa;
+    transition: all 0.15s;
+  }
+  .c2-item:active { background: #e8f5e9; transform: scale(0.95); }
+  .c2-logo {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2em; font-weight: 900;
+    color: #fff;
+    border-radius: 10px;
+  }
+  .c2-name { font-size: 0.65em; font-weight: 700; text-align: center; line-height: 1.2; }
+
+  /* =================================================================
+     案3: ヒーロースポットライト + 小カード一覧
+     ================================================================= */
+  .c3-hero {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .c3-hero::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+  }
+  .c3-hero .badge { font-size: 0.7em; font-weight: 800; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 999px; display: inline-block; margin-bottom: 8px; }
+  .c3-hero-logo { width: 64px; height: 64px; background: #fff; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px; color: #1b5e20; font-weight: 900; font-size: 1.8em; position: relative; z-index: 1; }
+  .c3-hero-name { font-size: 1.1em; font-weight: 900; margin: 0; }
+  .c3-hero-meta { font-size: 0.82em; opacity: 0.9; margin: 4px 0 10px; }
+  .c3-hero-cta { display: inline-block; padding: 8px 18px; background: #fff; color: #1b5e20; border-radius: 999px; font-size: 0.78em; font-weight: 800; text-decoration: none; }
+  .c3-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .c3-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    text-decoration: none;
+    color: #111;
+  }
+  .c3-row-logo {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.9em; font-weight: 900;
+    flex-shrink: 0;
+  }
+  .c3-row-name { font-size: 0.7em; font-weight: 800; line-height: 1.2; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* =================================================================
+     案4: タグクラウド風（大小ミックス）
+     ================================================================= */
+  .c4-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 10px 4px;
+  }
+  .c4-bubble {
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .c4-bubble:active { transform: scale(0.94); }
+  .c4-bubble.hot { font-size: 1.1em; padding: 12px 22px; }
+  .c4-bubble.mid { font-size: 0.9em; padding: 9px 16px; }
+  .c4-bubble.small { font-size: 0.75em; padding: 6px 12px; }
+
+  /* =================================================================
+     案5: 自動ティッカー (横流れ) + タップで停止
+     ================================================================= */
+  .c5-wrap { overflow: hidden; margin: 0 -14px; }
+  .c5-track {
+    display: flex;
+    gap: 14px;
+    padding: 8px 14px;
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .c5-wrap:active .c5-track { animation-play-state: paused; }
+  .c5-card {
+    flex: 0 0 120px;
+    background: #fff;
+    border: 1.5px solid #e5efe5;
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .c5-card .c1-logo { width: 44px; height: 44px; font-size: 1.1em; border-radius: 10px; }
+  .c5-card .c1-name { font-size: 0.78em; font-weight: 800; }
+  .c5-hint { text-align: center; font-size: 0.7em; color: #aaa; margin-top: 6px; }
+
+  /* ロゴカラー */
+  .lg-openai { background: linear-gradient(135deg, #10a37f, #0d8a68); }
+  .lg-google { background: linear-gradient(135deg, #4285f4, #34a853); }
+  .lg-anthropic { background: linear-gradient(135deg, #d97757, #b25a3e); }
+  .lg-meta { background: linear-gradient(135deg, #0668e1, #0a4fc1); }
+  .lg-apple { background: linear-gradient(135deg, #1a1a1a, #333); }
+  .lg-salesforce { background: linear-gradient(135deg, #00a1e0, #006dae); }
+  .lg-tesla { background: linear-gradient(135deg, #cc0000, #990000); }
+  .lg-microsoft { background: linear-gradient(135deg, #00bcf2, #0078d4); }
+  .lg-amazon { background: linear-gradient(135deg, #ff9900, #cc7a00); }
+  .lg-nvidia { background: linear-gradient(135deg, #76b900, #568500); }
+  .lg-oracle { background: linear-gradient(135deg, #f80000, #b30000); }
+  .lg-adobe { background: linear-gradient(135deg, #fa0f00, #a30000); }
+  .lg-intel { background: linear-gradient(135deg, #0071c5, #00518f); }
+</style>
+</head>
+<body>
+
+<h1>特集トップAI企業紹介 モバイル 5案</h1>
+<p class="lead">13社のロゴ配置をどう見せるか。</p>
+
+<div class="grid">
+
+  <!-- ============ 案1 横スクロールカード ============ -->
+  <div class="case">
+    <div class="case-title">案1 横スクロール カード</div>
+    <p class="case-desc">ロゴ+企業名+求人数。スワイプで全部見れる。現在のUIの正常版。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title">特集：トップAI企業紹介</div>
+      <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+      <div class="c1-scroll">
+        <a class="c1-card" href="#"><div class="c1-logo lg-openai">O</div><div class="c1-name">OpenAI</div><div class="c1-meta">12件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-anthropic">A</div><div class="c1-name">Anthropic</div><div class="c1-meta">8件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-google">G</div><div class="c1-name">Google</div><div class="c1-meta">15件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-meta">M</div><div class="c1-name">Meta AI</div><div class="c1-meta">9件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-apple">A</div><div class="c1-name">Apple</div><div class="c1-meta">6件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-tesla">T</div><div class="c1-name">Tesla</div><div class="c1-meta">4件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-microsoft">M</div><div class="c1-name">Microsoft</div><div class="c1-meta">11件</div></a>
+        <a class="c1-card" href="#"><div class="c1-logo lg-nvidia">N</div><div class="c1-name">NVIDIA</div><div class="c1-meta">7件</div></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案2 3列グリッド ============ -->
+  <div class="case">
+    <div class="case-title">案2 3×Nグリッド</div>
+    <p class="case-desc">3列で整然と並ぶ。全社一度に見える。一覧性重視。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title">特集：トップAI企業紹介</div>
+      <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+      <div class="c2-grid">
+        <a class="c2-item" href="#"><div class="c2-logo lg-openai">O</div><div class="c2-name">OpenAI</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-anthropic">A</div><div class="c2-name">Anthropic</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-google">G</div><div class="c2-name">Google</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-meta">M</div><div class="c2-name">Meta AI</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-apple">A</div><div class="c2-name">Apple</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-salesforce">S</div><div class="c2-name">Salesforce</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-tesla">T</div><div class="c2-name">Tesla</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-microsoft">M</div><div class="c2-name">Microsoft</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-amazon">A</div><div class="c2-name">Amazon</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-nvidia">N</div><div class="c2-name">NVIDIA</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-oracle">O</div><div class="c2-name">Oracle</div></a>
+        <a class="c2-item" href="#"><div class="c2-logo lg-intel">I</div><div class="c2-name">Intel</div></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案3 ヒーロー+リスト ============ -->
+  <div class="case">
+    <div class="case-title">案3 ヒーロー+一覧</div>
+    <p class="case-desc">トップ1社をスポットライト表示、残りは2列コンパクト。注目企業をアピール。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title">特集：トップAI企業紹介</div>
+      <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+      <div class="c3-hero">
+        <div class="badge">🔥 今月の注目</div>
+        <div class="c3-hero-logo">O</div>
+        <div class="c3-hero-name">OpenAI</div>
+        <div class="c3-hero-meta">GPT-4 / Claude競合 · インターン 12件募集中</div>
+        <a class="c3-hero-cta" href="#">求人を見る →</a>
+      </div>
+      <div class="c3-list">
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-anthropic">A</div><div class="c3-row-name">Anthropic</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-google">G</div><div class="c3-row-name">Google</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-meta">M</div><div class="c3-row-name">Meta AI</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-apple">A</div><div class="c3-row-name">Apple</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-microsoft">M</div><div class="c3-row-name">Microsoft</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-nvidia">N</div><div class="c3-row-name">NVIDIA</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-tesla">T</div><div class="c3-row-name">Tesla</div></a>
+        <a class="c3-row" href="#"><div class="c3-row-logo lg-amazon">A</div><div class="c3-row-name">Amazon</div></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案4 タグクラウド ============ -->
+  <div class="case">
+    <div class="case-title">案4 タグクラウド（大小ミックス）</div>
+    <p class="case-desc">求人数が多い企業ほど大きく。視覚的に「勢い」が伝わる。動的で目を引く。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title">特集：トップAI企業紹介</div>
+      <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+      <div class="c4-cloud">
+        <a class="c4-bubble hot lg-openai" href="#">OpenAI</a>
+        <a class="c4-bubble hot lg-google" href="#">Google</a>
+        <a class="c4-bubble mid lg-microsoft" href="#">Microsoft</a>
+        <a class="c4-bubble mid lg-anthropic" href="#">Anthropic</a>
+        <a class="c4-bubble mid lg-meta" href="#">Meta AI</a>
+        <a class="c4-bubble small lg-nvidia" href="#">NVIDIA</a>
+        <a class="c4-bubble small lg-apple" href="#">Apple</a>
+        <a class="c4-bubble small lg-amazon" href="#">Amazon</a>
+        <a class="c4-bubble small lg-salesforce" href="#">Salesforce</a>
+        <a class="c4-bubble small lg-tesla" href="#">Tesla</a>
+        <a class="c4-bubble small lg-oracle" href="#">Oracle</a>
+        <a class="c4-bubble small lg-adobe" href="#">Adobe</a>
+        <a class="c4-bubble small lg-intel" href="#">Intel</a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案5 自動ティッカー ============ -->
+  <div class="case">
+    <div class="case-title">案5 自動ティッカー（横流れ）</div>
+    <p class="case-desc">30秒で一周する自動スクロール。タップで一時停止。動きがあって目を引く。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title">特集：トップAI企業紹介</div>
+      <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+      <div class="c5-wrap">
+        <div class="c5-track">
+          <a class="c5-card" href="#"><div class="c1-logo lg-openai">O</div><div class="c1-name">OpenAI</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-anthropic">A</div><div class="c1-name">Anthropic</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-google">G</div><div class="c1-name">Google</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-meta">M</div><div class="c1-name">Meta AI</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-apple">A</div><div class="c1-name">Apple</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-microsoft">M</div><div class="c1-name">Microsoft</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-nvidia">N</div><div class="c1-name">NVIDIA</div></a>
+          <!-- 複製(seamlessループ用) -->
+          <a class="c5-card" href="#"><div class="c1-logo lg-openai">O</div><div class="c1-name">OpenAI</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-anthropic">A</div><div class="c1-name">Anthropic</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-google">G</div><div class="c1-name">Google</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-meta">M</div><div class="c1-name">Meta AI</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-apple">A</div><div class="c1-name">Apple</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-microsoft">M</div><div class="c1-name">Microsoft</div></a>
+          <a class="c5-card" href="#"><div class="c1-logo lg-nvidia">N</div><div class="c1-name">NVIDIA</div></a>
+        </div>
+      </div>
+      <div class="c5-hint">タップで一時停止</div>
+    </div></div>
+  </div>
+
+</div>
+</body>
+</html>
