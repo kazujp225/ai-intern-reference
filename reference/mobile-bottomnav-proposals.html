@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>モバイル・ボトムナビ案比較</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #f5f5f7;
+    font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin: 28px 0 8px;
+  }
+  .note {
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin: 0 16px 24px;
+  }
+
+  /* ============ モックフレーム (モバイル想定 390px) ============ */
+  .mock {
+    position: relative;
+    width: 390px;
+    max-width: 95vw;
+    height: 240px;
+    margin: 0 auto 16px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .mock-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #d4e3ff 0%, #ffe4f0 50%, #e4f0e6 100%);
+    opacity: 0.7;
+  }
+  .mock-label {
+    position: absolute;
+    top: 14px; left: 0; right: 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.03em;
+  }
+  .mock-desc {
+    position: absolute;
+    top: 38px; left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+    padding: 0 16px;
+  }
+
+  .proposal-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
+    gap: 16px;
+  }
+
+  /* ============ 共通 nav ============ */
+  .nav {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 6px 12px 14px;
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .nav a {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 2px;
+    text-decoration: none;
+    color: #444;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav a svg {
+    width: 22px; height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ============================================================
+     案A: フロスト丸みピル (画像と同系)
+     ============================================================ */
+  .navA .nav-inner {
+    background: rgba(255,255,255,0.78);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 36px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .navA a { color: #222; }
+  .navA a.active {
+    color: #1b5e20;
+  }
+  .navA a.active::before {
+    content: '';
+    position: absolute;
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    z-index: -1;
+    margin-top: -6px;
+  }
+  .navA a { position: relative; z-index: 1; }
+
+  /* ============================================================
+     案B: ブランドグリーン浮遊バー
+     ============================================================ */
+  .navB .nav-inner {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    border-radius: 36px;
+    box-shadow: 0 16px 36px rgba(46,125,50,0.38), 0 2px 8px rgba(46,125,50,0.25);
+  }
+  .navB a { color: rgba(255,255,255,0.78); }
+  .navB a.active { color: #1b5e20; }
+  .navB a.active::before {
+    content: '';
+    position: absolute;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    z-index: -1;
+    margin-top: -4px;
+  }
+  .navB a { position: relative; z-index: 1; }
+
+  /* ============================================================
+     案C: フラット白 + 緑インジケータ
+     ============================================================ */
+  .navC .nav-inner {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 -1px 0 rgba(0,0,0,0.06), 0 -8px 24px rgba(0,0,0,0.06);
+  }
+  .navC a { color: #666; position: relative; }
+  .navC a.active { color: #2e7d32; }
+  .navC a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 3px;
+    background: #2e7d32;
+    border-radius: 2px;
+  }
+
+  /* ============================================================
+     案D: 黒ガラス (ダーク)
+     ============================================================ */
+  .navD .nav-inner {
+    background: rgba(20,20,24,0.82);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .navD a { color: rgba(255,255,255,0.7); }
+  .navD a.active { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.5); }
+
+  /* ============================================================
+     案E: 5個の浮島 (island style)
+     ============================================================ */
+  .navE .nav-inner {
+    background: transparent;
+    gap: 6px;
+    padding: 0 4px;
+  }
+  .navE a {
+    flex: 1;
+    background: rgba(255,255,255,0.92);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+    padding: 10px 2px;
+    transition: transform 0.2s;
+  }
+  .navE a.active {
+    background: #2e7d32;
+    color: #fff;
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 12px 24px rgba(46,125,50,0.4);
+  }
+
+  /* ============================================================
+     案F: ニューモーフィズム
+     ============================================================ */
+  .navF .nav-inner {
+    background: #edf0f3;
+    border-radius: 32px;
+    box-shadow:
+      8px 8px 20px rgba(163,177,198,0.5),
+      -8px -8px 20px rgba(255,255,255,0.9);
+  }
+  .navF a { color: #556; padding: 10px 2px; border-radius: 20px; }
+  .navF a.active {
+    color: #2e7d32;
+    box-shadow:
+      inset 4px 4px 8px rgba(163,177,198,0.5),
+      inset -4px -4px 8px rgba(255,255,255,0.9);
+  }
+
+  .variant-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1b5e20;
+    margin: 0 16px 4px;
+  }
+  .variant-hint {
+    font-size: 11px;
+    color: #777;
+    margin: 0 16px 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>モバイル・ボトムナビ UI 案</h1>
+<p class="note">390px 幅のモックで6案並べ表示。アクティブ項目は「さがす」(1番目)。</p>
+
+<div class="proposal-wrap">
+  <div class="grid">
+
+    <!-- 案A -->
+    <div>
+      <div class="variant-title">案A: フロスト丸みピル</div>
+      <div class="variant-hint">白80%+blur。画像とほぼ同系。Apple風。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案A</div>
+        <div class="mock-desc">frosted glass · pill · soft shadow</div>
+        <nav class="nav navA">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 案B -->
+    <div>
+      <div class="variant-title">案B: ブランドグリーン浮遊バー</div>
+      <div class="variant-hint">深緑グラデ。AImeブランド感・目立つ。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案B</div>
+        <div class="mock-desc">brand green gradient · glow shadow</div>
+        <nav class="nav navB">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 案C -->
+    <div>
+      <div class="variant-title">案C: フラット白 + 緑インジケータ</div>
+      <div class="variant-hint">Material系。シンプル実用。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案C</div>
+        <div class="mock-desc">flat white · hairline · green underline</div>
+        <nav class="nav navC">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 案D -->
+    <div>
+      <div class="variant-title">案D: 黒ガラス (ダーク)</div>
+      <div class="variant-hint">蛍光グリーン。Z世代・ゲーミング系。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案D</div>
+        <div class="mock-desc">dark glass · neon green active</div>
+        <nav class="nav navD">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 案E -->
+    <div>
+      <div class="variant-title">案E: 5個の浮島 (island style)</div>
+      <div class="variant-hint">アクティブだけ飛び出る。遊び心。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案E</div>
+        <div class="mock-desc">separate floating islands · pop up</div>
+        <nav class="nav navE">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 案F -->
+    <div>
+      <div class="variant-title">案F: ニューモーフィズム</div>
+      <div class="variant-hint">やわらかい内外影。質感重視。</div>
+      <div class="mock">
+        <div class="mock-bg"></div>
+        <div class="mock-label">案F</div>
+        <div class="mock-desc">neumorphic · soft inner/outer shadow</div>
+        <nav class="nav navF">
+          <div class="nav-inner">
+            <a href="#" class="active"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>さがす</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>おきにいり</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>はたらく</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>メッセージ</span></a>
+            <a href="#"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>マイページ</span></a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
