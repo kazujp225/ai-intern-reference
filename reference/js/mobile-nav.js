@@ -138,4 +138,83 @@
       mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
     });
   }
+
+  // =======================================================
+  // AImeシップを探す: モバイル専用アコーディオン化
+  // =======================================================
+  function initSearchAccordion() {
+    if (window.innerWidth > 900) return;
+    const section = document.querySelector('.search-interns-new');
+    if (!section || section.dataset.accordionReady === '1') return;
+    const labels = section.querySelectorAll('.search-category-label');
+    if (labels.length === 0) return;
+
+    let first = true;
+    labels.forEach(label => {
+      // 次の兄弟 (brutal-row か エリアflex div) を body として使う
+      const body = label.nextElementSibling;
+      if (!body) return;
+
+      // すでにアコーディオン化済みならスキップ
+      if (label.parentElement.classList.contains('aime-acc')) return;
+
+      // 件数を計算
+      let count = 0;
+      const chips = body.querySelectorAll('a');
+      count = chips.length;
+      // 動的populationに備え、0なら後で更新
+      const countText = count > 0 ? `${count}件` : '';
+
+      // ラッパを作成
+      const wrap = document.createElement('div');
+      wrap.className = 'aime-acc' + (first ? ' open' : '');
+      first = false;
+
+      // 元の位置を保持してwrap内に移動
+      label.parentNode.insertBefore(wrap, label);
+      // ヘッダー作成
+      const head = document.createElement('div');
+      head.className = 'aime-acc-head';
+      head.appendChild(label);
+      const badge = document.createElement('span');
+      badge.className = 'aime-acc-count';
+      badge.textContent = countText;
+      head.appendChild(badge);
+      // 矢印
+      const arrow = document.createElement('span');
+      arrow.className = 'aime-acc-arrow';
+      arrow.setAttribute('aria-hidden', 'true');
+      head.appendChild(arrow);
+      wrap.appendChild(head);
+
+      // ボディ作成
+      const bodyWrap = document.createElement('div');
+      bodyWrap.className = 'aime-acc-body';
+      bodyWrap.appendChild(body);
+      wrap.appendChild(bodyWrap);
+
+      // クリックでトグル
+      head.addEventListener('click', () => {
+        wrap.classList.toggle('open');
+      });
+      head.style.cursor = 'pointer';
+    });
+
+    section.dataset.accordionReady = '1';
+
+    // 後から動的に chip が追加された場合の count 更新監視
+    const updateCounts = () => {
+      section.querySelectorAll('.aime-acc').forEach(wrap => {
+        const cnt = wrap.querySelectorAll('.aime-acc-body a').length;
+        const b = wrap.querySelector('.aime-acc-count');
+        if (b && cnt > 0) b.textContent = cnt + '件';
+      });
+    };
+    setTimeout(updateCounts, 500);
+    setTimeout(updateCounts, 1500);
+  }
+  window.addEventListener('load', initSearchAccordion);
+  document.addEventListener('DOMContentLoaded', initSearchAccordion);
+  setTimeout(initSearchAccordion, 100);
+  setTimeout(initSearchAccordion, 800);
 })();
