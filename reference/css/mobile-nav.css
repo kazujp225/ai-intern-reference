@@ -53,6 +53,7 @@ body {
   .student-voice-carousel,
   .compact-tabs,
   .bl-toolbar,
+  .usa-map-wrap,
   table,
   [data-allow-x-scroll] {
     overflow-x: auto !important;
@@ -76,6 +77,7 @@ body {
   .student-voice-carousel, .student-voice-carousel *,
   .compact-tabs, .compact-tabs *,
   .bl-toolbar, .bl-toolbar *,
+  .usa-map-wrap, .usa-map-wrap *,
   table, table * {
     max-width: none;
   }
@@ -710,6 +712,71 @@ body {
   .pagination a, .compact-pagination a {
     padding: 6px 10px !important;
     min-width: 32px !important;
+  }
+
+  /* ---------------------------------------------------------------
+     特集トップAI企業紹介 (usa-map-wrap スポットライト→横スクロール)
+     --------------------------------------------------------------- */
+  .usa-map-wrap {
+    position: relative !important;
+    height: auto !important;
+    max-height: none !important;
+    max-width: 100% !important;
+    cursor: auto !important;
+    display: flex !important;
+    gap: 20px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    padding: 12px 16px !important;
+    margin: 16px 0 0 !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .usa-map-wrap::-webkit-scrollbar { display: none; }
+  .usa-map-wrap::before, .usa-map-wrap::after {
+    display: none !important;
+  }
+  .usa-map-hint { display: none !important; }
+  .usa-pin,
+  .usa-pin.is-active,
+  .usa-pin.is-prev, .usa-pin.is-next,
+  .usa-pin.is-far-prev, .usa-pin.is-far-next,
+  .usa-pin.is-hidden {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    top: auto !important;
+    left: auto !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: center !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    visibility: visible !important;
+  }
+  .usa-pin-label {
+    position: static !important;
+    transform: none !important;
+    padding: 0 !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    font-size: 0.72em !important;
+    gap: 6px !important;
+    white-space: normal !important;
+    text-align: center;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .usa-pin-label img,
+  .usa-pin-label svg {
+    width: 52px !important;
+    height: 52px !important;
+    object-fit: contain !important;
+  }
+  .usa-pin-label img[alt="OpenAI"] {
+    width: 100px !important;
+    height: auto !important;
   }
 
   /* --- slick全般: モバイルではunslick前提でも念のため強制制約 --- */
