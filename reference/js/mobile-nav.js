@@ -217,4 +217,18 @@
   document.addEventListener('DOMContentLoaded', initSearchAccordion);
   setTimeout(initSearchAccordion, 100);
   setTimeout(initSearchAccordion, 800);
+
+  // =======================================================
+  // モバイル時、スマホ型デモ (.phone-filter-row) の親ラッパごと非表示
+  // =======================================================
+  function hidePhoneDemo() {
+    if (window.innerWidth > 900) return;
+    const pf = document.querySelector('.phone-filter-row');
+    if (pf && pf.parentElement) {
+      pf.parentElement.style.setProperty('display', 'none', 'important');
+    }
+  }
+  window.addEventListener('load', hidePhoneDemo);
+  document.addEventListener('DOMContentLoaded', hidePhoneDemo);
+  setTimeout(hidePhoneDemo, 200);
 })();
