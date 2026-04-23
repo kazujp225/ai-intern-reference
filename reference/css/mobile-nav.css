@@ -1331,4 +1331,5 @@ body {
 /* PCでは完全に隠す */
 @media (min-width: 901px) {
   .mobile-bottom-nav { display: none !important; }
+  .sp-only { display: none !important; }
 }
