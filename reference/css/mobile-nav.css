@@ -4,7 +4,57 @@
    ========================================================================== */
 
 /* 横スクロール防止 (あらゆるページで) */
-html, body { max-width: 100%; overflow-x: hidden; }
+html, body {
+  max-width: 100%;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+/* モバイルで横ずれを作りがちな親要素全てにoverflow-x:hidden */
+@media (max-width: 900px) {
+  main, header, footer, section, article, aside, nav,
+  .container, .container-wrap, .main-inner, .page-wrap,
+  .cs-contents, .pull-left, .pull-left-inner,
+  .content-wrapper, .cover-area, .cover-inner,
+  .top-page, .top-catch, .top-catch-action,
+  .featured-companies, .companies-grid, .kanto-map-wrap,
+  .student-voice-area, .student-voice-container,
+  .intern-list, .compact-header, .compact-grid,
+  .site-header, .site-header-inner, .page-footer {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+  /* 例外: 明示的に横スクロールさせたいセクション */
+  .student-voice-carousel,
+  .compact-tabs,
+  .bl-toolbar,
+  table,
+  [data-allow-x-scroll] {
+    overflow-x: auto !important;
+  }
+  /* 横スクロールするセクションはviewport内で自己完結させる
+     (負マージンで外に出ないように) */
+  .student-voice-carousel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  /* 全要素のmax-widthを保証 (絶対配置・transform等で外に出るのを防ぐ) */
+  *, *::before, *::after {
+    max-width: 100vw;
+  }
+  /* ただしボトムナビは画面端まで必要なので例外 */
+  .mobile-bottom-nav, .mobile-bottom-nav * {
+    max-width: none;
+  }
+  /* 透明な::before等で右にはみ出すやつ対策 */
+  .cover-area::before {
+    right: 0 !important;
+    left: auto !important;
+  }
+}
 
 @media (max-width: 900px) {
 
