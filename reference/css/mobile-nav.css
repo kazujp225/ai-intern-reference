@@ -124,22 +124,36 @@ html, body { max-width: 100%; overflow-x: hidden; }
     padding-right: 16px !important;
   }
   .featured-companies {
-    padding: 30px 16px !important;
-    margin: 20px auto !important;
+    padding: 24px 14px !important;
+    margin: 16px 24px !important;
+    max-width: calc(100% - 48px) !important;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
   }
   .featured-companies-title {
-    font-size: 1.3em !important;
+    font-size: 1.2em !important;
+    margin-bottom: 4px !important;
   }
   .featured-companies-sub {
-    font-size: 0.85em !important;
-    margin-bottom: 24px !important;
+    font-size: 0.8em !important;
+    margin-bottom: 20px !important;
   }
   .companies-grid {
-    gap: 16px !important;
+    gap: 12px !important;
   }
   .company-card {
-    width: calc(50% - 8px) !important;
-    padding: 18px 12px !important;
+    width: calc(50% - 6px) !important;
+    padding: 14px 10px !important;
+  }
+  .company-logo {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  .company-card .company-name,
+  .company-card h3,
+  .company-card p {
+    font-size: 0.78em !important;
   }
 
   /* カード・グリッドが横スクロールしないよう最大幅を画面内に */
