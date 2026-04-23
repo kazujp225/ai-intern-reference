@@ -909,11 +909,14 @@ body {
   .top-catch-action-wrapper {
     text-align: center !important;
   }
-  .top-catch-tag,
-  .seika-text-img {
+  .top-catch-tag {
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+  /* seika-text-img はモバイルで完全非表示 */
+  .seika-text-img {
+    display: none !important;
   }
   /* CTAを中央に寄せたときマイクロコピーがズレないよう */
   .cta-brutal-microcopy {
