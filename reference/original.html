@@ -923,8 +923,8 @@
       pointer-events: none;
     }
   </style>
-  <link rel="stylesheet" href="css/mobile-nav.css?v=11">
-  <script src="js/mobile-nav.js?v=11" defer></script>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=12">
+  <script src="js/mobile-nav.js?v=12" defer></script>
 </head>
 
 <body class="top-page modal-open">
@@ -1489,6 +1489,7 @@
         slidesToScroll: 1,
         variableWidth: true,
         centerMode: true,
+        responsive: [{ breakpoint: 900, settings: 'unslick' }],
       });
 
       $('.catch-image-carousel-pc, .catch-image-carousel-sp, .catch-text-carousel').slick({
@@ -1501,6 +1502,7 @@
         pauseOnFocus: false,
         pauseOnHover: false,
         pauseOnDotsHover: false,
+        responsive: [{ breakpoint: 900, settings: 'unslick' }],
       });
 
       const commonOptions = {

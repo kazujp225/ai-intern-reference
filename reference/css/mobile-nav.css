@@ -122,9 +122,16 @@ body {
     padding: 6px 14px !important;
   }
 
-  /* コンテンツが下ナビに隠れないよう余白を確保 */
-  body { padding-bottom: 90px !important; }
+  /* コンテンツが下ナビに隠れないよう余白を確保
+     (iPhoneホームバーのsafe-areaも加算) */
+  body {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
   footer, .site-footer { margin-bottom: 0; }
+  /* 末尾コンテンツとナビの間に視覚的バッファ (footer下端) */
+  .page-footer {
+    margin-bottom: 12px !important;
+  }
 
   /* ----------------------------------------------------------
      トップページ: ヒーロー領域のモバイル調整
@@ -263,6 +270,59 @@ body {
   /* カード・グリッドが横スクロールしないよう最大幅を画面内に */
   .container-wrap, .content-wrapper {
     max-width: 100vw;
+  }
+
+  /* ----------------------------------------------------------
+     特集企業: USA地図カルーセル (ロゴが下/隣と重ならないよう調整)
+     ---------------------------------------------------------- */
+  .featured-companies {
+    padding-bottom: 20px !important;
+  }
+  .featured-companies .usa-map-wrap {
+    height: 280px !important;
+    margin: 10px auto 0 !important;
+    max-width: 100% !important;
+  }
+  .featured-companies .usa-pin-label {
+    padding: 14px 16px !important;
+    width: 150px !important;
+    font-size: 0.88em !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
+  }
+  .featured-companies .usa-pin-label img,
+  .featured-companies .usa-pin-label svg {
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .featured-companies .usa-pin-label img[alt="OpenAI"] {
+    width: 110px !important;
+  }
+  /* カルーセル位置をモバイル幅に合わせて詰める
+     (±280px/±500px のまま だと画面外に大きくはみ出す) */
+  .featured-companies .usa-pin.is-active {
+    transform: translate(-50%, -50%) scale(1.15) !important;
+  }
+  .featured-companies .usa-pin.is-prev {
+    transform: translate(calc(-50% - 150px), -50%) scale(0.75) !important;
+    opacity: 0.4 !important;
+  }
+  .featured-companies .usa-pin.is-next {
+    transform: translate(calc(-50% + 150px), -50%) scale(0.75) !important;
+    opacity: 0.4 !important;
+  }
+  .featured-companies .usa-pin.is-far-prev {
+    transform: translate(calc(-50% - 260px), -50%) scale(0.55) !important;
+    opacity: 0.15 !important;
+  }
+  .featured-companies .usa-pin.is-far-next {
+    transform: translate(calc(-50% + 260px), -50%) scale(0.55) !important;
+    opacity: 0.15 !important;
+  }
+  .featured-companies .usa-map-hint {
+    font-size: 0.68em !important;
+    padding: 3px 10px !important;
+    top: 8px !important;
   }
 
   /* ----------------------------------------------------------
@@ -652,9 +712,30 @@ body {
     min-width: 32px !important;
   }
 
-  /* --- スラック / カルーセル系: 矢印を隠してスワイプ主体に --- */
+  /* --- slick全般: モバイルではunslick前提でも念のため強制制約 --- */
   .slick-prev, .slick-next {
     display: none !important;
+  }
+  .slick-slider, .slick-list, .slick-track {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    transform: none !important;
+    display: block !important;
+  }
+  .slick-slide {
+    max-width: 100% !important;
+    width: auto !important;
+  }
+  /* banners-carousel / catch-image-carousel は unslick 後の残骸があれば縦積み */
+  .banners-carousel, .catch-image-carousel-pc,
+  .catch-image-carousel-sp, .catch-text-carousel {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .banners-carousel > *, .catch-image-carousel-pc > *,
+  .catch-image-carousel-sp > *, .catch-text-carousel > * {
+    max-width: 100% !important;
   }
 
   /* --- PC専用ブロックを非表示 (地図の細かい装飾等) --- */

@@ -58,18 +58,26 @@
       if (el.closest('.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll]')) return;
       const r = el.getBoundingClientRect();
       // 右端がviewport外に飛び出ている要素
-      if (r.right > vw + 1 || r.width > vw + 1) {
-        el.style.maxWidth = '100%';
-        el.style.overflowX = 'hidden';
+      if (r.right > vw + 1 || r.width > vw + 1 || r.left < -1) {
+        el.style.setProperty('max-width', '100%', 'important');
+        el.style.setProperty('width', 'auto', 'important');
+        el.style.setProperty('overflow-x', 'hidden', 'important');
+        el.style.setProperty('box-sizing', 'border-box', 'important');
         // transform/margin で外に出ている場合の応急処置
         if (r.left < 0) {
-          el.style.marginLeft = '0';
-          el.style.transform = 'none';
-          el.style.left = 'auto';
-          el.style.position = (el.style.position === 'absolute' || el.style.position === 'fixed') ? 'static' : el.style.position;
+          el.style.setProperty('margin-left', '0', 'important');
+          el.style.setProperty('transform', 'none', 'important');
+          el.style.setProperty('left', 'auto', 'important');
+          el.style.setProperty('right', 'auto', 'important');
         }
+        // console.log('[mobile-nav] clamped:', el.tagName + (el.className ? '.'+el.className : ''), 'width:', r.width, 'left:', r.left, 'right:', r.right);
       }
     });
+    // bodyのscrollWidthがviewportより大きい場合、最上位にoverflow-clip適用
+    if (document.body.scrollWidth > vw + 1) {
+      document.documentElement.style.setProperty('overflow-x', 'clip', 'important');
+      document.body.style.setProperty('overflow-x', 'clip', 'important');
+    }
   }
   function runClamp() {
     clampOverflow();
