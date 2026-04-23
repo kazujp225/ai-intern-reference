@@ -482,10 +482,25 @@ body {
     display: flex !important;
     gap: 12px !important;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 4px 16px 14px !important;
     margin: 0 -16px !important;
+    touch-action: pan-x !important;
+  }
+  .student-voice-carousel * {
+    touch-action: pan-x !important;
+  }
+  .student-voice-container {
+    overflow: hidden !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+  .student-voice-area {
+    overflow: hidden !important;
+    max-height: none !important;
+    height: auto !important;
   }
   .student-voice-carousel::-webkit-scrollbar { display: none; }
   .student-voice-carousel .sns-voice-card {
