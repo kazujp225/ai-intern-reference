@@ -923,8 +923,8 @@
       pointer-events: none;
     }
   </style>
-  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
-  <script src="js/mobile-nav.js?v=27" defer></script>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=36">
+  <script src="js/mobile-nav.js?v=36" defer></script>
 </head>
 
 <body class="top-page modal-open">
@@ -1077,6 +1077,8 @@
 
   <script>
   (function () {
+    // モバイルではティッカー方式 (mobile-nav.js) に任せる
+    if (window.matchMedia('(max-width: 900px)').matches) return;
     const wrap = document.querySelector('.featured-companies .usa-map-wrap');
     if (!wrap) return;
     const pins = Array.from(wrap.querySelectorAll('.usa-pin'));

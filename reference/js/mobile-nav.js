@@ -305,8 +305,10 @@
     const pins = wrap.querySelectorAll('.usa-pin');
     if (pins.length === 0) return;
 
-    // .usa-pin 以外の子要素 (hint等) は別の場所へ移動 or 末尾に退避
-    // まずusa-pin達のみを2セットに
+    // ヒント/ツールチップ/地図画像はティッカーのflex行に混ざると
+    // レイアウトが崩れるので DOM ごと削除する
+    wrap.querySelectorAll('.usa-map-hint, .usa-pin-tooltip, .usa-map-img').forEach(el => el.remove());
+
     const originalPins = Array.from(pins);
 
     // 既存の usa-pin をクリア

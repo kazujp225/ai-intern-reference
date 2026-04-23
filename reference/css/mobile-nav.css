@@ -269,13 +269,14 @@ body {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
+  /* モバイルではカード枠(白背景・角丸・影)を消してページに溶け込ませる */
   .featured-companies {
     padding: 24px 14px !important;
-    margin: 16px 24px !important;
-    max-width: calc(100% - 48px) !important;
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    margin: 8px 0 !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
   .featured-companies-title {
     font-size: 1.2em !important;
@@ -305,59 +306,6 @@ body {
   /* カード・グリッドが横スクロールしないよう最大幅を画面内に */
   .container-wrap, .content-wrapper {
     max-width: 100vw;
-  }
-
-  /* ----------------------------------------------------------
-     特集企業: USA地図カルーセル (ロゴが下/隣と重ならないよう調整)
-     ---------------------------------------------------------- */
-  .featured-companies {
-    padding-bottom: 20px !important;
-  }
-  .featured-companies .usa-map-wrap {
-    height: 280px !important;
-    margin: 10px auto 0 !important;
-    max-width: 100% !important;
-  }
-  .featured-companies .usa-pin-label {
-    padding: 14px 16px !important;
-    width: 150px !important;
-    font-size: 0.88em !important;
-    gap: 8px !important;
-    border-radius: 14px !important;
-  }
-  .featured-companies .usa-pin-label img,
-  .featured-companies .usa-pin-label svg {
-    width: 44px !important;
-    height: 44px !important;
-  }
-  .featured-companies .usa-pin-label img[alt="OpenAI"] {
-    width: 110px !important;
-  }
-  /* カルーセル位置をモバイル幅に合わせて詰める
-     (±280px/±500px のまま だと画面外に大きくはみ出す) */
-  .featured-companies .usa-pin.is-active {
-    transform: translate(-50%, -50%) scale(1.15) !important;
-  }
-  .featured-companies .usa-pin.is-prev {
-    transform: translate(calc(-50% - 150px), -50%) scale(0.75) !important;
-    opacity: 0.4 !important;
-  }
-  .featured-companies .usa-pin.is-next {
-    transform: translate(calc(-50% + 150px), -50%) scale(0.75) !important;
-    opacity: 0.4 !important;
-  }
-  .featured-companies .usa-pin.is-far-prev {
-    transform: translate(calc(-50% - 260px), -50%) scale(0.55) !important;
-    opacity: 0.15 !important;
-  }
-  .featured-companies .usa-pin.is-far-next {
-    transform: translate(calc(-50% + 260px), -50%) scale(0.55) !important;
-    opacity: 0.15 !important;
-  }
-  .featured-companies .usa-map-hint {
-    font-size: 0.68em !important;
-    padding: 3px 10px !important;
-    top: 8px !important;
   }
 
   /* ----------------------------------------------------------
@@ -464,16 +412,27 @@ body {
 
   /* ----------------------------------------------------------
      AImeシップ一覧 — 1行リスト化 (モバイル)
+     背景・枠は消してページに溶け込ませる (両サイド/下の切れ目を消す)
      ---------------------------------------------------------- */
+  .intern-list,
+  section.intern-list {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
   .compact-grid {
     display: block !important;
     grid-template-columns: 1fr !important;
     gap: 0 !important;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #eee;
-    margin: 8px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .intern-list #compact-grid .compact-card,
   section.intern-list a.compact-card {
@@ -484,15 +443,12 @@ body {
     align-items: center !important;
     padding: 12px 14px !important;
     border: none !important;
-    border-bottom: 1px solid #f3f3f3 !important;
     border-radius: 0 !important;
     animation: none !important;
-    background: #fff !important;
+    background: transparent !important;
     margin: 0 !important;
     box-shadow: none !important;
-  }
-  .intern-list #compact-grid .compact-card:last-child {
-    border-bottom: none !important;
+    outline: none !important;
   }
   .intern-list #compact-grid .compact-card:active {
     background: #f9fbfa !important;
@@ -624,8 +580,12 @@ body {
     overflow-y: hidden !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    padding: 4px 16px 14px !important;
-    margin: 0 -16px !important;
+    /* 最初のカードを画面中央に:
+       親.container-wrapに左右16pxのpaddingが入るので、
+       (100vw-82vw)/2=9vw から16pxを引いた値をカルーセルのpaddingにする */
+    padding: 4px calc(9vw - 16px) 14px !important;
+    scroll-padding-inline: calc(9vw - 16px) !important;
+    margin: 0 !important;
     touch-action: pan-x !important;
   }
   .student-voice-carousel * {
@@ -643,8 +603,8 @@ body {
   }
   .student-voice-carousel::-webkit-scrollbar { display: none; }
   .student-voice-carousel .sns-voice-card {
-    flex: 0 0 86% !important;
-    scroll-snap-align: start !important;
+    flex: 0 0 82vw !important;
+    scroll-snap-align: center !important;
     margin: 0 !important;
     padding: 18px 16px !important;
     background: linear-gradient(135deg, #f8fdf8 0%, #ffffff 60%) !important;
@@ -916,25 +876,35 @@ body {
      --------------------------------------------------------------- */
   .usa-map-wrap {
     position: relative !important;
-    height: auto !important;
-    max-height: none !important;
-    max-width: 100% !important;
+    /* 元の .usa-map-wrap には height:440px が付いているので明示的に打ち消す。
+       OpenAIロゴ(96px幅・アスペクト比次第で高さ増)+テキスト+padding を収める余裕 */
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    max-width: none !important;
     cursor: auto !important;
     display: flex !important;
     gap: 28px !important;
-    overflow: hidden !important;
-    padding: 20px 0 !important;
-    margin: 16px 0 0 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 8px 0 0 !important;
     width: max-content !important;
+    align-items: center !important;
     animation: usa-ticker 35s linear infinite;
     will-change: transform;
     -webkit-overflow-scrolling: auto !important;
     scroll-snap-type: none !important;
   }
-  /* ラッパで画面幅に制限 */
-  .search-interns-new > div:has(> .usa-map-wrap),
+  /* ラッパで画面幅に制限 (usa-map-wrapは .featured-companies 直下)
+     ※max-width: 100vw はカードの margin: 16px 24px と衝突して
+       右にはみ出す & 白カードのデザインが崩れるのでやらない。
+       overflow:hidden だけでティッカーは綺麗にクリップされる。 */
+  .featured-companies {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+  }
   .usa-map-wrap-outer {
-    max-width: 100vw !important;
+    max-width: 100% !important;
     overflow: hidden !important;
   }
   @keyframes usa-ticker {
@@ -948,18 +918,14 @@ body {
   .usa-map-wrap::before, .usa-map-wrap::after {
     display: none !important;
   }
+  /* モバイルでは "カーソル..." ヒントは不要 (自動ティッカー&文言がPC向け)。
+     ティッカーのflex行に入ると左端に混ざってレイアウトが崩れるので完全非表示 */
   .usa-map-hint {
-    position: static !important;
-    display: block !important;
-    transform: none !important;
-    left: auto !important;
-    top: auto !important;
-    text-align: center !important;
-    margin: 4px auto 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    font-size: 0.7em !important;
-    color: #aaa !important;
+    display: none !important;
+  }
+  /* ツールチップもティッカー中は表示しない (クローン時にflex子要素扱いされる) */
+  .featured-companies .usa-pin-tooltip {
+    display: none !important;
   }
   .usa-pin,
   .usa-pin.is-active,
