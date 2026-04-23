@@ -923,8 +923,8 @@
       pointer-events: none;
     }
   </style>
-  <link rel="stylesheet" href="css/mobile-nav.css?v=4">
-  <script src="js/mobile-nav.js?v=4" defer></script>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=5">
+  <script src="js/mobile-nav.js?v=5" defer></script>
 </head>
 
 <body class="top-page modal-open">
@@ -1518,12 +1518,41 @@
           slidesToShow: 2,
           centerPadding: "0",
           centerMode: false,
+          responsive: [{ breakpoint: 900, settings: 'unslick' }],
       }});
       // 万が一矢印が重複生成された場合、先頭1組だけ残して削除
       setTimeout(function(){
         $('.student-voice-carousel .slick-prev').slice(1).remove();
         $('.student-voice-carousel .slick-next').slice(1).remove();
       }, 100);
+
+      // モバイル: scroll-snap ドットインジケータ
+      (function initVoiceDots(){
+        if (window.innerWidth >= 901) return;
+        var track = document.querySelector('.student-voice-carousel');
+        if (!track) return;
+        var cards = track.querySelectorAll('.sns-voice-card');
+        if (!cards.length) return;
+        var wrap = document.createElement('div');
+        wrap.className = 'voice-dots';
+        cards.forEach(function(_, i){
+          var d = document.createElement('span');
+          d.className = 'voice-dot' + (i===0?' active':'');
+          wrap.appendChild(d);
+        });
+        track.parentNode.insertBefore(wrap, track.nextSibling);
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if (e.isIntersecting) {
+              var idx = Array.prototype.indexOf.call(cards, e.target);
+              wrap.querySelectorAll('.voice-dot').forEach(function(d, i){
+                d.classList.toggle('active', i === idx);
+              });
+            }
+          });
+        }, { root: track, threshold: 0.6 });
+        cards.forEach(function(c){ io.observe(c); });
+      })();
     });
   </script>
 

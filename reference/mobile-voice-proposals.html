@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIme経験者の声 モバイル5案</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 16px 120px;
+    background: #f5f5f7;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    color: #111;
+  }
+  h1 { font-size: 1.3em; margin: 0 0 8px; text-align: center; }
+  .lead { text-align: center; color: #666; margin: 0 0 32px; font-size: 0.85em; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .case { background: #fff; border-radius: 20px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .case-title { font-size: 1em; font-weight: 800; margin: 0 0 4px; color: #1b5e20; }
+  .case-desc { font-size: 0.78em; color: #666; margin: 0 0 14px; line-height: 1.5; }
+  .phone {
+    width: 100%; max-width: 360px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .phone-scroll { max-height: 600px; overflow-y: auto; padding: 20px 14px; background: #fff; }
+
+  /* 共通 */
+  .sec-title {
+    display: flex; align-items: center; gap: 10px; margin: 0 0 4px;
+  }
+  .sec-title .num { font-size: 1.6em; font-weight: 900; color: #2e7d32; font-family: "Helvetica Neue", sans-serif; }
+  .sec-title h2 { font-size: 1.05em; margin: 0; font-weight: 900; }
+  .sec-sub { font-size: 0.76em; color: #888; margin: 0 0 18px; }
+  .verify { color: #1da1f2; font-size: 0.9em; }
+  .star { color: #f59e0b; letter-spacing: -1px; }
+
+  /* ================================================================
+     案1: Twitter/X 風フィード
+     ================================================================ */
+  .tw-card {
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    display: flex; gap: 10px;
+  }
+  .tw-card:last-child { border-bottom: none; }
+  .tw-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1em;
+  }
+  .tw-body { flex: 1; min-width: 0; }
+  .tw-head { display: flex; align-items: center; gap: 4px; font-size: 0.85em; font-weight: 800; }
+  .tw-role { font-size: 0.72em; color: #666; margin: 1px 0 6px; }
+  .tw-text { font-size: 0.83em; line-height: 1.5; color: #111; }
+  .tw-foot { display: flex; gap: 12px; align-items: center; margin-top: 8px; font-size: 0.7em; color: #888; }
+
+  /* ================================================================
+     案2: 縦1カラム大型カード
+     ================================================================ */
+  .stk-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid #f0f0f0;
+  }
+  .stk-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .stk-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .stk-info { flex: 1; min-width: 0; }
+  .stk-name { display: flex; align-items: center; gap: 4px; font-size: 0.9em; font-weight: 800; }
+  .stk-role { font-size: 0.72em; color: #666; }
+  .stk-text { font-size: 0.86em; line-height: 1.55; margin: 6px 0 10px; }
+  .stk-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px; border-top: 1px solid #f0f0f0;
+    font-size: 0.72em; color: #888;
+  }
+
+  /* ================================================================
+     案3: 横スクロール 1枚ずつ（snap）
+     ================================================================ */
+  .car-track {
+    display: flex; gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0 14px;
+    margin: 0 -14px;
+    padding-left: 14px; padding-right: 14px;
+  }
+  .car-track::-webkit-scrollbar { display: none; }
+  .car-item {
+    flex: 0 0 86%;
+    scroll-snap-align: start;
+    background: linear-gradient(135deg, #f8fdf8 0%, #ffffff 60%);
+    border: 1.5px solid #c8e6c9;
+    border-radius: 18px;
+    padding: 18px 16px;
+    min-height: 230px;
+    display: flex; flex-direction: column;
+  }
+  .car-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .car-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    color: #fff; font-weight: 800; font-size: 1.1em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .car-name { display: flex; align-items: center; gap: 4px; font-size: 0.95em; font-weight: 800; }
+  .car-role { font-size: 0.72em; color: #666; margin-top: 2px; }
+  .car-text { font-size: 0.85em; line-height: 1.6; flex: 1; }
+  .car-foot { display: flex; align-items: center; gap: 8px; font-size: 0.75em; color: #666; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
+  .car-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+  .car-dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
+  .car-dot.active { background: #2e7d32; width: 18px; border-radius: 3px; }
+
+  /* ================================================================
+     案4: 引用風ミニマル
+     ================================================================ */
+  .qt-block {
+    background: #fafafa;
+    border-left: 4px solid #2e7d32;
+    padding: 20px 16px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .qt-block::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 3em;
+    color: #2e7d32;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .qt-text {
+    font-size: 0.9em; line-height: 1.65;
+    font-style: italic;
+    margin: 10px 0 14px;
+    padding-left: 6px;
+  }
+  .qt-foot { display: flex; align-items: center; gap: 10px; }
+  .qt-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9em;
+  }
+  .qt-info { flex: 1; min-width: 0; font-size: 0.8em; }
+  .qt-name { font-weight: 800; }
+  .qt-role { color: #666; font-size: 0.9em; }
+
+  /* ================================================================
+     案5: チャット風ミニマル
+     ================================================================ */
+  .ch-row {
+    display: flex; align-items: flex-end; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .ch-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    color: #fff; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.85em;
+  }
+  .ch-bubble {
+    background: #f0faf0;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    padding: 10px 14px;
+    max-width: 82%;
+    position: relative;
+  }
+  .ch-name { font-size: 0.72em; font-weight: 800; color: #1b5e20; margin-bottom: 4px; display: flex; align-items: center; gap: 3px; }
+  .ch-text { font-size: 0.8em; line-height: 1.45; }
+  .ch-foot { font-size: 0.65em; color: #999; margin-top: 6px; display: flex; gap: 6px; align-items: center; }
+</style>
+</head>
+<body>
+
+<h1>「AIme経験者のヤバい声」モバイル 5案</h1>
+<p class="lead">6件の声カードのモバイル表示案。絵文字なし。</p>
+
+<div class="grid">
+
+  <!-- ============ 案1 Twitter/X 風 ============ -->
+  <div class="case">
+    <div class="case-title">案1 Twitter / X 風フィード</div>
+    <p class="case-desc">SNSタイムラインそっくり。アバター左・名前+本文右の縦積み。最も馴染みがある。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title"><span class="num">02</span><h2>AIme経験者の声</h2></div>
+      <p class="sec-sub">先輩インターン生のリアルな体験談</p>
+
+      <div class="tw-card">
+        <div class="tw-avatar" style="background:linear-gradient(135deg,#1da1f2,#0d8bd9);">M</div>
+        <div class="tw-body">
+          <div class="tw-head">Mさん<span class="verify">✓</span></div>
+          <div class="tw-role">東京大学 工学部 3年</div>
+          <div class="tw-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。</div>
+          <div class="tw-foot"><span class="star">★★★★★</span><span>5.0 満足度</span></div>
+        </div>
+      </div>
+      <div class="tw-card">
+        <div class="tw-avatar" style="background:linear-gradient(135deg,#f5a623,#f76b1c);">A</div>
+        <div class="tw-body">
+          <div class="tw-head">Aさん<span class="verify">✓</span></div>
+          <div class="tw-role">慶應義塾大学 SFC 2年</div>
+          <div class="tw-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div>
+          <div class="tw-foot"><span class="star">★★★★★</span><span>5.0 満足度</span></div>
+        </div>
+      </div>
+      <div class="tw-card">
+        <div class="tw-avatar" style="background:linear-gradient(135deg,#4caf50,#2e7d32);">S</div>
+        <div class="tw-body">
+          <div class="tw-head">Sさん<span class="verify">✓</span></div>
+          <div class="tw-role">東京工業大学 M1 / Kaggle金</div>
+          <div class="tw-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。</div>
+          <div class="tw-foot"><span class="star">★★★★★</span><span>5.0 満足度</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案2 縦1カラム大型カード ============ -->
+  <div class="case">
+    <div class="case-title">案2 縦1カラム大型カード</div>
+    <p class="case-desc">全幅カードを縦に積む。情報整理されていて読みやすい。現状の構造に最も近く実装が楽。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title"><span class="num">02</span><h2>AIme経験者の声</h2></div>
+      <p class="sec-sub">先輩インターン生のリアルな体験談</p>
+
+      <div class="stk-card">
+        <div class="stk-head">
+          <div class="stk-avatar" style="background:linear-gradient(135deg,#1da1f2,#0d8bd9);">M</div>
+          <div class="stk-info">
+            <div class="stk-name">Mさん<span class="verify">✓</span></div>
+            <div class="stk-role">東京大学 工学部 3年 / AIユニコーンへ</div>
+          </div>
+        </div>
+        <div class="stk-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div>
+        <div class="stk-foot"><span><span class="star">★★★★★</span> 5.0</span><span>満足度</span></div>
+      </div>
+      <div class="stk-card">
+        <div class="stk-head">
+          <div class="stk-avatar" style="background:linear-gradient(135deg,#f5a623,#f76b1c);">A</div>
+          <div class="stk-info">
+            <div class="stk-name">Aさん<span class="verify">✓</span></div>
+            <div class="stk-role">慶應義塾大学 SFC 2年</div>
+          </div>
+        </div>
+        <div class="stk-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。</div>
+        <div class="stk-foot"><span><span class="star">★★★★★</span> 5.0</span><span>満足度</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案3 横スクロール 1枚ずつ ============ -->
+  <div class="case">
+    <div class="case-title">案3 横スクロール（snap + dots）</div>
+    <p class="case-desc">1枚ずつスナップ、ドットで位置表示。縦スペース最小。Instagramのストーリー感。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title"><span class="num">02</span><h2>AIme経験者の声</h2></div>
+      <p class="sec-sub">先輩インターン生のリアルな体験談</p>
+
+      <div class="car-track">
+        <div class="car-item">
+          <div class="car-head">
+            <div class="car-avatar" style="background:linear-gradient(135deg,#1da1f2,#0d8bd9);">M</div>
+            <div>
+              <div class="car-name">Mさん<span class="verify">✓</span></div>
+              <div class="car-role">東京大学 工学部 3年</div>
+            </div>
+          </div>
+          <div class="car-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。</div>
+          <div class="car-foot"><span class="star">★★★★★</span> 5.0 満足度</div>
+        </div>
+        <div class="car-item">
+          <div class="car-head">
+            <div class="car-avatar" style="background:linear-gradient(135deg,#f5a623,#f76b1c);">A</div>
+            <div>
+              <div class="car-name">Aさん<span class="verify">✓</span></div>
+              <div class="car-role">慶應義塾大学 SFC 2年</div>
+            </div>
+          </div>
+          <div class="car-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。就活？AIスタートアップから3社オファー来てます。</div>
+          <div class="car-foot"><span class="star">★★★★★</span> 5.0 満足度</div>
+        </div>
+        <div class="car-item">
+          <div class="car-head">
+            <div class="car-avatar" style="background:linear-gradient(135deg,#4caf50,#2e7d32);">S</div>
+            <div>
+              <div class="car-name">Sさん<span class="verify">✓</span></div>
+              <div class="car-role">東工大 M1 / Kaggle金</div>
+            </div>
+          </div>
+          <div class="car-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AImeは神。</div>
+          <div class="car-foot"><span class="star">★★★★★</span> 5.0 満足度</div>
+        </div>
+      </div>
+      <div class="car-dots">
+        <span class="car-dot active"></span>
+        <span class="car-dot"></span>
+        <span class="car-dot"></span>
+        <span class="car-dot"></span>
+        <span class="car-dot"></span>
+        <span class="car-dot"></span>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案4 引用風ミニマル ============ -->
+  <div class="case">
+    <div class="case-title">案4 引用風ミニマル</div>
+    <p class="case-desc">大きな引用符でアクセント。本文をイタリックで目立たせる。書籍・雑誌の読者レビュー風、高級感。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title"><span class="num">02</span><h2>AIme経験者の声</h2></div>
+      <p class="sec-sub">先輩インターン生のリアルな体験談</p>
+
+      <div class="qt-block">
+        <div class="qt-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。</div>
+        <div class="qt-foot">
+          <div class="qt-avatar" style="background:linear-gradient(135deg,#1da1f2,#0d8bd9);">M</div>
+          <div class="qt-info">
+            <div class="qt-name">Mさん<span class="verify">✓</span></div>
+            <div class="qt-role">東京大学 工学部 3年</div>
+          </div>
+          <div class="star" style="font-size:0.85em;">★★★★★</div>
+        </div>
+      </div>
+      <div class="qt-block">
+        <div class="qt-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。AIスタートアップから3社オファー来てます。</div>
+        <div class="qt-foot">
+          <div class="qt-avatar" style="background:linear-gradient(135deg,#f5a623,#f76b1c);">A</div>
+          <div class="qt-info">
+            <div class="qt-name">Aさん<span class="verify">✓</span></div>
+            <div class="qt-role">慶應義塾大学 SFC 2年</div>
+          </div>
+          <div class="star" style="font-size:0.85em;">★★★★★</div>
+        </div>
+      </div>
+      <div class="qt-block">
+        <div class="qt-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。GPUは正義、AImeは神。</div>
+        <div class="qt-foot">
+          <div class="qt-avatar" style="background:linear-gradient(135deg,#4caf50,#2e7d32);">S</div>
+          <div class="qt-info">
+            <div class="qt-name">Sさん<span class="verify">✓</span></div>
+            <div class="qt-role">東工大 M1</div>
+          </div>
+          <div class="star" style="font-size:0.85em;">★★★★★</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案5 チャット風 ============ -->
+  <div class="case">
+    <div class="case-title">案5 チャット風（LINE/Slack風）</div>
+    <p class="case-desc">吹き出しでテンポ感。名前・評価をコンパクトに。若者向け・軽快なトーン。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-title"><span class="num">02</span><h2>AIme経験者の声</h2></div>
+      <p class="sec-sub">先輩インターン生のリアルな体験談</p>
+
+      <div class="ch-row">
+        <div class="ch-avatar" style="background:linear-gradient(135deg,#1da1f2,#0d8bd9);">M</div>
+        <div class="ch-bubble">
+          <div class="ch-name">Mさん<span class="verify">✓</span></div>
+          <div class="ch-text">インターン初日に「loss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度バグってる。</div>
+          <div class="ch-foot"><span class="star">★★★★★</span>東大 工3</div>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-avatar" style="background:linear-gradient(135deg,#f5a623,#f76b1c);">A</div>
+        <div class="ch-bubble">
+          <div class="ch-name">Aさん<span class="verify">✓</span></div>
+          <div class="ch-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。オファー3社来てて選ぶ側です。</div>
+          <div class="ch-foot"><span class="star">★★★★★</span>慶應SFC 2年</div>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-avatar" style="background:linear-gradient(135deg,#4caf50,#2e7d32);">S</div>
+        <div class="ch-bubble">
+          <div class="ch-name">Sさん<span class="verify">✓</span></div>
+          <div class="ch-text">H100を8枚自由に使わせてもらった。Kaggleでも金メダル。GPUは正義、AImeは神。</div>
+          <div class="ch-foot"><span class="star">★★★★★</span>東工大M1</div>
+        </div>
+      </div>
+      <div class="ch-row">
+        <div class="ch-avatar" style="background:linear-gradient(135deg,#ab47bc,#7b1fa2);">K</div>
+        <div class="ch-bubble">
+          <div class="ch-name">Kさん<span class="verify">✓</span></div>
+          <div class="ch-text">完全文系・プログラミング未経験から、個人でLLMアプリ開発のフリーランス案件受けてます。</div>
+          <div class="ch-foot"><span class="star">★★★★★</span>早稲田 商3</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>検索セクション モバイル5案</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 16px 120px;
+    background: #f5f5f7;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    color: #111;
+  }
+  h1 {
+    font-size: 1.3em;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  .lead { text-align: center; color: #666; margin: 0 0 32px; font-size: 0.85em; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .case { background: #fff; border-radius: 20px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .case-title { font-size: 1em; font-weight: 800; margin: 0 0 4px; color: #1b5e20; }
+  .case-desc { font-size: 0.78em; color: #666; margin: 0 0 14px; line-height: 1.5; }
+  .phone {
+    width: 100%; max-width: 340px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .phone-scroll { max-height: 600px; overflow-y: auto; padding: 20px 14px; }
+
+  /* 共通: セクション見出し */
+  .sec-num {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin: 0 0 6px;
+  }
+  .sec-num .num {
+    font-size: 1.6em; font-weight: 900; color: #2e7d32; font-family: "Helvetica Neue",sans-serif;
+  }
+  .sec-num h2 { font-size: 1.1em; margin: 0; font-weight: 900; }
+  .sec-sub { font-size: 0.78em; color: #888; margin: 0 0 18px; }
+  .sub-label {
+    font-size: 0.82em; font-weight: 800; color: #111;
+    margin: 18px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid #2e7d32;
+  }
+
+  /* ================================================================
+     案1: タグチップ (flow-wrap)
+     ================================================================ */
+  .s1-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .s1-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 7px 12px;
+    background: #f0faf0;
+    border: 1px solid #c8e6c9;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #222;
+    font-size: 0.76em;
+    font-weight: 700;
+  }
+  .s1-chip .n {
+    background: #2e7d32; color: #fff;
+    font-size: 0.85em; font-weight: 800;
+    padding: 1px 6px; border-radius: 999px;
+    min-width: 18px; text-align: center;
+  }
+
+  /* ================================================================
+     案2: 2列カード
+     ================================================================ */
+  .s2-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .s2-card {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 14px 8px;
+    background: #fff;
+    border: 1.5px solid #e5efe5;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #111;
+    transition: all 0.15s;
+  }
+  .s2-card:hover { border-color: #2e7d32; }
+  .s2-card .label { font-size: 0.78em; font-weight: 700; margin: 0 0 4px; text-align: center; }
+  .s2-card .count { font-size: 1.1em; font-weight: 900; color: #2e7d32; }
+  .s2-card .count small { font-size: 0.55em; color: #888; font-weight: 700; margin-left: 2px; }
+
+  /* ================================================================
+     案3: 横スクロール (swipe)
+     ================================================================ */
+  .s3-scroll {
+    display: flex; gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px;
+    margin: 0 -14px;
+    padding-left: 14px; padding-right: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .s3-scroll::-webkit-scrollbar { display: none; }
+  .s3-card {
+    flex: 0 0 auto;
+    min-width: 130px;
+    padding: 14px 12px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff;
+    border-radius: 14px;
+    text-decoration: none;
+    scroll-snap-align: start;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 78px;
+  }
+  .s3-card .label { font-size: 0.85em; font-weight: 800; }
+  .s3-card .count { font-size: 1em; font-weight: 700; opacity: 0.85; margin-top: 6px; }
+  .s3-hint { font-size: 0.7em; color: #aaa; text-align: right; margin-bottom: 4px; }
+
+  /* ================================================================
+     案4: リスト型 (左ラベル・右カウント)
+     ================================================================ */
+  .s4-list {
+    background: #fff; border-radius: 12px;
+    border: 1px solid #eee;
+    overflow: hidden;
+  }
+  .s4-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    text-decoration: none; color: #111;
+    font-size: 0.88em; font-weight: 600;
+  }
+  .s4-row:last-child { border-bottom: none; }
+  .s4-row:active { background: #f8f8f8; }
+  .s4-row .n { font-size: 0.82em; font-weight: 700; color: #2e7d32; }
+  .s4-row .chevron { color: #ccc; margin-left: 8px; }
+
+  /* ================================================================
+     案5: タブ切替型
+     ================================================================ */
+  .s5-tabs {
+    display: flex; background: #f0f0f0; border-radius: 10px; padding: 3px;
+    margin: 0 0 14px;
+  }
+  .s5-tab {
+    flex: 1; text-align: center;
+    padding: 8px 4px;
+    font-size: 0.82em; font-weight: 800; color: #666;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .s5-tab.active { background: #fff; color: #1b5e20; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+  .s5-panel { display: none; }
+  .s5-panel.active { display: block; }
+
+</style>
+</head>
+<body>
+
+<h1>検索セクション モバイル 5案</h1>
+<p class="lead">01. AImeシップを探す 「職種 / 特徴 / エリア」 のモバイル表示案。絵文字なしSVG。</p>
+
+<!-- SVGアイコン -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="grid">
+
+  <!-- ========== 案1 タグチップ ========== -->
+  <div class="case">
+    <div class="case-title">案1 タグチップ（flow-wrap）</div>
+    <p class="case-desc">小さく丸いピルで敷き詰める。8件なら2〜3行で収まり、情報密度が高い。色は緑系で統一。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-num"><span class="num">01</span><h2>AImeシップを探す</h2></div>
+      <p class="sec-sub">職種・特徴・エリアから検索</p>
+
+      <div class="sub-label">AI職種から探す</div>
+      <div class="s1-chips">
+        <a class="s1-chip" href="#">LLMアプリ開発<span class="n">56</span></a>
+        <a class="s1-chip" href="#">プロンプトエンジニア<span class="n">42</span></a>
+        <a class="s1-chip" href="#">MLエンジニア<span class="n">38</span></a>
+        <a class="s1-chip" href="#">データサイエンティスト<span class="n">31</span></a>
+        <a class="s1-chip" href="#">AI PMM / BizDev<span class="n">27</span></a>
+        <a class="s1-chip" href="#">AIリサーチャー<span class="n">24</span></a>
+        <a class="s1-chip" href="#">AIエージェント開発<span class="n">19</span></a>
+        <a class="s1-chip" href="#">AI × クリエイティブ<span class="n">15</span></a>
+      </div>
+
+      <div class="sub-label">尖った特徴から探す</div>
+      <div class="s1-chips">
+        <a class="s1-chip" href="#">フルリモート可<span class="n">89</span></a>
+        <a class="s1-chip" href="#">未経験OK<span class="n">67</span></a>
+        <a class="s1-chip" href="#">時給2,000円以上<span class="n">52</span></a>
+        <a class="s1-chip" href="#">文系歓迎<span class="n">45</span></a>
+        <a class="s1-chip" href="#">CEO/CTO直下<span class="n">38</span></a>
+        <a class="s1-chip" href="#">論文読み会あり<span class="n">34</span></a>
+        <a class="s1-chip" href="#">GPU使い放題<span class="n">23</span></a>
+        <a class="s1-chip" href="#">Kaggle推奨<span class="n">21</span></a>
+      </div>
+
+      <div class="sub-label">エリアから探す</div>
+      <div class="s1-chips">
+        <a class="s1-chip" href="#">東京都<span class="n">89</span></a>
+        <a class="s1-chip" href="#">神奈川県<span class="n">22</span></a>
+        <a class="s1-chip" href="#">埼玉県<span class="n">18</span></a>
+        <a class="s1-chip" href="#">千葉県<span class="n">15</span></a>
+        <a class="s1-chip" href="#">茨城県<span class="n">10</span></a>
+        <a class="s1-chip" href="#">栃木県<span class="n">8</span></a>
+        <a class="s1-chip" href="#">群馬県<span class="n">12</span></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ========== 案2 2列カード ========== -->
+  <div class="case">
+    <div class="case-title">案2 2列カードグリッド</div>
+    <p class="case-desc">各項目をカードに。カウント数を大きく目立たせる。タップエリアが広く押しやすい。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-num"><span class="num">01</span><h2>AImeシップを探す</h2></div>
+      <p class="sec-sub">職種・特徴・エリアから検索</p>
+
+      <div class="sub-label">AI職種から探す</div>
+      <div class="s2-grid">
+        <a class="s2-card" href="#"><div class="label">LLMアプリ開発</div><div class="count">56<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">プロンプトエンジニア</div><div class="count">42<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">MLエンジニア</div><div class="count">38<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">データサイエンティスト</div><div class="count">31<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">AI PMM / BizDev</div><div class="count">27<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">AIリサーチャー</div><div class="count">24<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">AIエージェント</div><div class="count">19<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">AI×クリエイティブ</div><div class="count">15<small>件</small></div></a>
+      </div>
+
+      <div class="sub-label">エリアから探す</div>
+      <div class="s2-grid">
+        <a class="s2-card" href="#"><div class="label">東京都</div><div class="count">89<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">神奈川県</div><div class="count">22<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">埼玉県</div><div class="count">18<small>件</small></div></a>
+        <a class="s2-card" href="#"><div class="label">千葉県</div><div class="count">15<small>件</small></div></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ========== 案3 横スクロール ========== -->
+  <div class="case">
+    <div class="case-title">案3 横スクロール（swipe）</div>
+    <p class="case-desc">各サブセクションが横スワイプカルーセル。縦に短くなり、カードが目立つ。緑グラデでブランド感強め。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-num"><span class="num">01</span><h2>AImeシップを探す</h2></div>
+      <p class="sec-sub">職種・特徴・エリアから検索</p>
+
+      <div class="sub-label">AI職種から探す</div>
+      <div class="s3-hint">← スワイプ →</div>
+      <div class="s3-scroll">
+        <a class="s3-card" href="#"><div class="label">LLMアプリ開発</div><div class="count">56 件</div></a>
+        <a class="s3-card" href="#"><div class="label">プロンプトエンジニア</div><div class="count">42 件</div></a>
+        <a class="s3-card" href="#"><div class="label">MLエンジニア</div><div class="count">38 件</div></a>
+        <a class="s3-card" href="#"><div class="label">データサイエンス</div><div class="count">31 件</div></a>
+        <a class="s3-card" href="#"><div class="label">AI PMM / BizDev</div><div class="count">27 件</div></a>
+      </div>
+
+      <div class="sub-label">尖った特徴から探す</div>
+      <div class="s3-scroll">
+        <a class="s3-card" href="#"><div class="label">フルリモート可</div><div class="count">89 件</div></a>
+        <a class="s3-card" href="#"><div class="label">未経験OK</div><div class="count">67 件</div></a>
+        <a class="s3-card" href="#"><div class="label">時給2,000円以上</div><div class="count">52 件</div></a>
+        <a class="s3-card" href="#"><div class="label">文系歓迎</div><div class="count">45 件</div></a>
+      </div>
+
+      <div class="sub-label">エリアから探す</div>
+      <div class="s3-scroll">
+        <a class="s3-card" href="#"><div class="label">東京都</div><div class="count">89 件</div></a>
+        <a class="s3-card" href="#"><div class="label">神奈川県</div><div class="count">22 件</div></a>
+        <a class="s3-card" href="#"><div class="label">埼玉県</div><div class="count">18 件</div></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ========== 案4 リスト型 ========== -->
+  <div class="case">
+    <div class="case-title">案4 リスト型（左右対称）</div>
+    <p class="case-desc">iPhoneの設定アプリ風。左にラベル、右にカウント＋矢印。視線が一方向で最も読みやすい。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-num"><span class="num">01</span><h2>AImeシップを探す</h2></div>
+      <p class="sec-sub">職種・特徴・エリアから検索</p>
+
+      <div class="sub-label">AI職種から探す</div>
+      <div class="s4-list">
+        <a class="s4-row" href="#"><span>LLMアプリ開発</span><span><span class="n">56件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>プロンプトエンジニア</span><span><span class="n">42件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>MLエンジニア</span><span><span class="n">38件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>データサイエンティスト</span><span><span class="n">31件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>AI PMM / BizDev</span><span><span class="n">27件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>AIリサーチャー</span><span><span class="n">24件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>AIエージェント開発</span><span><span class="n">19件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>AI × クリエイティブ</span><span><span class="n">15件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+      </div>
+
+      <div class="sub-label">エリアから探す</div>
+      <div class="s4-list">
+        <a class="s4-row" href="#"><span>東京都</span><span><span class="n">89件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>神奈川県</span><span><span class="n">22件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+        <a class="s4-row" href="#"><span>埼玉県</span><span><span class="n">18件</span><svg class="chevron" width="14" height="14"><use href="#chev"/></svg></span></a>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ========== 案5 タブ切替 ========== -->
+  <div class="case">
+    <div class="case-title">案5 タブ切替（省スペース）</div>
+    <p class="case-desc">画面最上部に3タブ「職種/特徴/エリア」。選んだ内容だけ表示。縦スクロール最短。</p>
+    <div class="phone"><div class="phone-scroll">
+      <div class="sec-num"><span class="num">01</span><h2>AImeシップを探す</h2></div>
+      <p class="sec-sub">職種・特徴・エリアから検索</p>
+
+      <div class="s5-tabs">
+        <a class="s5-tab active" href="#" onclick="s5('job');return false;">職種</a>
+        <a class="s5-tab" href="#" onclick="s5('feat');return false;">特徴</a>
+        <a class="s5-tab" href="#" onclick="s5('area');return false;">エリア</a>
+      </div>
+
+      <div class="s5-panel active" data-panel="job">
+        <div class="s1-chips">
+          <a class="s1-chip" href="#">LLMアプリ開発<span class="n">56</span></a>
+          <a class="s1-chip" href="#">プロンプトエンジニア<span class="n">42</span></a>
+          <a class="s1-chip" href="#">MLエンジニア<span class="n">38</span></a>
+          <a class="s1-chip" href="#">データサイエンティスト<span class="n">31</span></a>
+          <a class="s1-chip" href="#">AI PMM / BizDev<span class="n">27</span></a>
+          <a class="s1-chip" href="#">AIリサーチャー<span class="n">24</span></a>
+          <a class="s1-chip" href="#">AIエージェント開発<span class="n">19</span></a>
+          <a class="s1-chip" href="#">AI × クリエイティブ<span class="n">15</span></a>
+        </div>
+      </div>
+      <div class="s5-panel" data-panel="feat">
+        <div class="s1-chips">
+          <a class="s1-chip" href="#">フルリモート可<span class="n">89</span></a>
+          <a class="s1-chip" href="#">未経験OK<span class="n">67</span></a>
+          <a class="s1-chip" href="#">時給2,000円以上<span class="n">52</span></a>
+          <a class="s1-chip" href="#">文系歓迎<span class="n">45</span></a>
+          <a class="s1-chip" href="#">CEO/CTO直下<span class="n">38</span></a>
+          <a class="s1-chip" href="#">論文読み会あり<span class="n">34</span></a>
+          <a class="s1-chip" href="#">GPU使い放題<span class="n">23</span></a>
+          <a class="s1-chip" href="#">Kaggle推奨<span class="n">21</span></a>
+        </div>
+      </div>
+      <div class="s5-panel" data-panel="area">
+        <div class="s1-chips">
+          <a class="s1-chip" href="#">東京都<span class="n">89</span></a>
+          <a class="s1-chip" href="#">神奈川県<span class="n">22</span></a>
+          <a class="s1-chip" href="#">埼玉県<span class="n">18</span></a>
+          <a class="s1-chip" href="#">千葉県<span class="n">15</span></a>
+          <a class="s1-chip" href="#">茨城県<span class="n">10</span></a>
+          <a class="s1-chip" href="#">栃木県<span class="n">8</span></a>
+          <a class="s1-chip" href="#">群馬県<span class="n">12</span></a>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+
+<script>
+function s5(key) {
+  document.querySelectorAll('.case:last-child .s5-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.case:last-child .s5-panel').forEach(p => {
+    p.classList.toggle('active', p.dataset.panel === key);
+  });
+}
+</script>
+
+</body>
+</html>
