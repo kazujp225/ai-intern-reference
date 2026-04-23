@@ -172,13 +172,7 @@ body {
   }
   /* hero-popular-tagsは必ず折り返し */
   .hero-popular-tags {
-    flex-wrap: wrap !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-    justify-content: center !important;
-  }
-  .hero-popular-tags a {
-    max-width: 100%;
+    display: none !important;
   }
   /* hero-searchも完全固定 */
   .hero-search {
@@ -262,11 +256,7 @@ body {
     margin: 24px 0 0 !important;
   }
   .hero-popular-tags {
-    position: static !important;
-    left: auto !important;
-    margin: 14px 0 0 !important;
-    flex-wrap: wrap;
-    gap: 10px 14px;
+    display: none !important;
   }
 
   /* ----------------------------------------------------------
@@ -1212,7 +1202,7 @@ body {
     margin: 0 auto !important;
   }
   .hero-popular-tags {
-    justify-content: center !important;
+    display: none !important;
   }
 
   /* セクション見出し (sect_01/02/03 pictogram) */
