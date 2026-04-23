@@ -46,4 +46,38 @@
   } else {
     insert();
   }
+
+  // =======================================================
+  // 横幅オーバー要素を自動検知して強制クランプ (モバイルのみ)
+  // =======================================================
+  function clampOverflow() {
+    if (window.innerWidth > 900) return;
+    const vw = document.documentElement.clientWidth;
+    document.querySelectorAll('body, body *').forEach(el => {
+      // 横スクロール許可エリアの子孫はスキップ
+      if (el.closest('.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll]')) return;
+      const r = el.getBoundingClientRect();
+      // 右端がviewport外に飛び出ている要素
+      if (r.right > vw + 1 || r.width > vw + 1) {
+        el.style.maxWidth = '100%';
+        el.style.overflowX = 'hidden';
+        // transform/margin で外に出ている場合の応急処置
+        if (r.left < 0) {
+          el.style.marginLeft = '0';
+          el.style.transform = 'none';
+          el.style.left = 'auto';
+          el.style.position = (el.style.position === 'absolute' || el.style.position === 'fixed') ? 'static' : el.style.position;
+        }
+      }
+    });
+  }
+  function runClamp() {
+    clampOverflow();
+    // レンダリング後・画像読込後にも再実行
+    setTimeout(clampOverflow, 200);
+    setTimeout(clampOverflow, 800);
+  }
+  window.addEventListener('load', runClamp);
+  window.addEventListener('resize', runClamp);
+  if (document.readyState === 'complete') runClamp();
 })();
