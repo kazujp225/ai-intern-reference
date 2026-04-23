@@ -219,16 +219,77 @@
   setTimeout(initSearchAccordion, 800);
 
   // =======================================================
-  // モバイル時、スマホ型デモ (.phone-filter-row) の親ラッパごと非表示
+  // モバイル: スマホ型デモ(.phone-filter-row)を3D重ね表示に
   // =======================================================
-  function hidePhoneDemo() {
+  function initPhoneDemo3D() {
     if (window.innerWidth > 900) return;
-    const pf = document.querySelector('.phone-filter-row');
-    if (pf && pf.parentElement) {
-      pf.parentElement.style.setProperty('display', 'none', 'important');
+    const row = document.querySelector('.phone-filter-row');
+    if (!row || row.dataset.mobileReady === '1') return;
+    const phones = row.querySelectorAll('.pf-phone');
+    if (phones.length < 2) return;
+
+    // 親ラッパの巨大paddingをリセット
+    if (row.parentElement && row.parentElement.matches('div[style*="max-width"]')) {
+      row.parentElement.style.setProperty('padding', '10px 0 20px', 'important');
+      row.parentElement.style.setProperty('display', 'block', 'important');
+      row.parentElement.style.setProperty('max-width', '100%', 'important');
     }
+
+    let active = 1; // 中央デフォルト = 2番目(尖った特徴)
+    const n = phones.length;
+
+    function update() {
+      phones.forEach((p, i) => {
+        p.classList.remove('is-left', 'is-center', 'is-right');
+        if (i === active) p.classList.add('is-center');
+        else if (i === (active - 1 + n) % n) p.classList.add('is-left');
+        else if (i === (active + 1) % n) p.classList.add('is-right');
+      });
+      nav.querySelectorAll('.pf-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === active);
+      });
+    }
+
+    // 左右ナビボタン + ドット作成
+    const nav = document.createElement('div');
+    nav.className = 'pf-mobile-nav';
+    nav.innerHTML = `
+      <button type="button" aria-label="前" data-dir="-1">‹</button>
+      <div class="pf-dots">${phones.length ? Array.from(phones).map((_,i)=>`<span class="pf-dot${i===active?' active':''}"></span>`).join('') : ''}</div>
+      <button type="button" aria-label="次" data-dir="1">›</button>
+    `;
+    row.parentNode.insertBefore(nav, row.nextSibling);
+    nav.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        active = (active + parseInt(btn.dataset.dir) + n) % n;
+        update();
+      });
+    });
+    // 中央以外のスマホをクリックでそれをcenterに
+    phones.forEach((p, i) => {
+      p.addEventListener('click', () => {
+        if (i !== active) { active = i; update(); }
+      });
+    });
+
+    // スワイプ対応
+    let startX = null;
+    row.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    row.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) {
+        active = (active + (dx < 0 ? 1 : -1) + n) % n;
+        update();
+      }
+      startX = null;
+    }, { passive: true });
+
+    update();
+    row.dataset.mobileReady = '1';
   }
-  window.addEventListener('load', hidePhoneDemo);
-  document.addEventListener('DOMContentLoaded', hidePhoneDemo);
-  setTimeout(hidePhoneDemo, 200);
+  window.addEventListener('load', initPhoneDemo3D);
+  document.addEventListener('DOMContentLoaded', initPhoneDemo3D);
+  setTimeout(initPhoneDemo3D, 200);
+  setTimeout(initPhoneDemo3D, 800);
 })();
