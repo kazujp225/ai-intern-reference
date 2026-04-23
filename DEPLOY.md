@@ -13,7 +13,7 @@
 過去の Git 履歴に anon key がコミットされているため、必ず再生成してください。
 
 1. Supabase Dashboard → **Settings → API**
-   - https://supabase.com/dashboard/project/seidpqaehbzopdsoafkm/settings/api
+   - https://supabase.com/dashboard/project/onqhwinvdaokspdsovzc/settings/api
 2. `anon` `public` の行の **↻ Reset** をクリック
 3. 新しい anon key をコピー（後で Render に登録）
 4. **古いキーは即座に無効化** される
@@ -72,7 +72,7 @@ git push origin main
 
 | Key | Value |
 |---|---|
-| `SUPABASE_URL` | `https://seidpqaehbzopdsoafkm.supabase.co` |
+| `SUPABASE_URL` | `https://onqhwinvdaokspdsovzc.supabase.co` |
 | `SUPABASE_ANON_KEY` | **Phase 1 で再生成した新しいキー** |
 
 5. **Create Web Service** をクリック
@@ -97,12 +97,12 @@ git push origin main
 ## Phase 6. 動作確認
 
 1. `https://ai-intern-reference.onrender.com/original.html` を開く
-2. DevTools Network タブで `seidpqaehbzopdsoafkm.supabase.co` へのリクエストが成功していること
+2. DevTools Network タブで `onqhwinvdaokspdsovzc.supabase.co` へのリクエストが成功していること
 3. 新規登録 → ログイン → マイページ遷移まで通ること
 4. RLS が効いていることを curl で確認：
 
 ```bash
-curl -s "https://seidpqaehbzopdsoafkm.supabase.co/rest/v1/profiles?select=*&limit=1" \
+curl -s "https://onqhwinvdaokspdsovzc.supabase.co/rest/v1/profiles?select=*&limit=1" \
   -H "apikey: <新しいANON_KEY>" \
   -H "Authorization: Bearer <新しいANON_KEY>"
 # → 未ログインでは自分のprofilesのみ or 空レスポンスになるのが期待値
