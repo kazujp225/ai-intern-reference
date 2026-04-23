@@ -302,9 +302,25 @@
     if (window.innerWidth > 900) return;
     const wrap = document.querySelector('.usa-map-wrap');
     if (!wrap || wrap.dataset.tickerReady === '1') return;
+    const pins = wrap.querySelectorAll('.usa-pin');
+    if (pins.length === 0) return;
 
     // ヒント/ツールチップ/地図画像はflex行に混ざるとレイアウトが崩れるのでDOMごと削除
     wrap.querySelectorAll('.usa-map-hint, .usa-pin-tooltip, .usa-map-img').forEach(el => el.remove());
+
+    // シームレスループのため pin を 2 セットに複製
+    const originalPins = Array.from(pins);
+    originalPins.forEach(p => p.remove());
+    originalPins.forEach(p => wrap.appendChild(p.cloneNode(true))); // 1セット目
+    originalPins.forEach(p => wrap.appendChild(p.cloneNode(true))); // 2セット目
+
+    // タップで一時停止/再開
+    let paused = false;
+    wrap.addEventListener('click', (e) => {
+      paused = !paused;
+      wrap.classList.toggle('paused', paused);
+      e.preventDefault();
+    });
 
     wrap.dataset.tickerReady = '1';
   }
