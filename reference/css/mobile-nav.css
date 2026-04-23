@@ -3,11 +3,33 @@
    モバイル(<=768px)のみ有効。PCレイアウトには一切影響しない。
    ========================================================================== */
 
-/* 横スクロール防止 (あらゆるページで) */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden !important;
-  width: 100%;
+/* 横スクロール完全ロック (デバイス全体) */
+html {
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+  overscroll-behavior-x: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+}
+body {
+  overflow-x: clip !important;
+  overscroll-behavior-x: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  position: relative;
+}
+/* モバイルだけスワイプ横ジェスチャーを縦のみに制限 */
+@media (max-width: 900px) {
+  html, body {
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* body直下のあらゆる要素を100%幅にクランプ */
+  body > * {
+    max-width: 100% !important;
+  }
 }
 /* モバイルで横ずれを作りがちな親要素全てにoverflow-x:hidden */
 @media (max-width: 900px) {
@@ -43,12 +65,18 @@ html, body {
   }
   /* 全要素のmax-widthを保証 (絶対配置・transform等で外に出るのを防ぐ) */
   *, *::before, *::after {
-    max-width: 100vw;
+    max-width: 100%;
   }
-  /* ただしボトムナビは画面端まで必要なので例外 */
-  .mobile-bottom-nav, .mobile-bottom-nav * {
+  /* ただしボトムナビ・横スクロール許可エリアは例外 */
+  .mobile-bottom-nav, .mobile-bottom-nav *,
+  .student-voice-carousel, .student-voice-carousel *,
+  .compact-tabs, .compact-tabs *,
+  .bl-toolbar, .bl-toolbar *,
+  table, table * {
     max-width: none;
   }
+  /* 横スクロール許可セクションの直接の子は必要な幅を持てる */
+  .student-voice-carousel > * { max-width: none; }
   /* 透明な::before等で右にはみ出すやつ対策 */
   .cover-area::before {
     right: 0 !important;
