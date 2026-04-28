@@ -2,6 +2,3 @@
 .env.local
 .DS_Store
 node_modules/
-
-# 本番キーが入る生成ファイル。コミット禁止。
-reference/js/config.js
