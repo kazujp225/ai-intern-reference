@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+
+  /* ===== LinkedIn風プロフィールヒーロー ===== */
+  .mp-cover {
+    height: 180px;
+    background-color: #d1d5db;
+    background-size: cover; background-position: center;
+    position: relative; cursor: pointer; overflow: hidden;
+    transition: filter .2s;
+  }
+  .mp-cover::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.15), transparent 60%);
+    pointer-events: none;
+  }
+  .mp-cover:hover { filter: brightness(.95); }
+  .mp-cover-hint {
+    position: absolute; top: 16px; right: 20px;
+    background: rgba(0,0,0,.5); color: #fff;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: .78em; font-weight: 700;
+    opacity: 0; transition: opacity .2s;
+    pointer-events: none;
+  }
+  .mp-cover:hover .mp-cover-hint { opacity: 1; }
+
+  .mp-prof-card {
+    background: #fff; max-width: 1100px;
+    margin: -56px auto 0; padding: 24px 32px 28px;
+    border-radius: 20px; position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+
+  .mp-avatar-wrap { position: relative; display: inline-block; margin-top: -70px; }
+  .mp-avatar {
+    width: 112px; height: 112px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #9ca3af;
+    background: #e5e7eb;
+    border: 5px solid #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    cursor: pointer; overflow: hidden;
+    transition: filter .2s;
+  }
+  .mp-avatar:hover { filter: brightness(.95); }
+  .mp-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .mp-avatar svg { width: 70%; height: 70%; display: block; }
+  .mp-avatar-edit {
+    position: absolute; bottom: 4px; right: 4px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #fff; color: #2e7d32;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1.1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    pointer-events: none;
+    border: 1px solid #e8f5e9;
+  }
+
+  .mp-name { font-size: 1.75em; font-weight: 900; margin: 14px 0 4px; letter-spacing: -.01em; color: #111; }
+  .mp-sub { color: #666; font-size: .92em; margin-bottom: 4px; }
+  .mp-email { color: #999; font-size: .82em; font-family: monospace; margin-bottom: 12px; }
+  .mp-bio { color: #333; font-size: .95em; line-height: 1.7; margin: 10px 0 14px; max-width: 720px; }
+  .mp-bio[data-empty="1"] { color: #aaa; font-style: italic; }
+
+  .mp-skills { margin-bottom: 14px; }
+  .mp-skill {
+    display: inline-block; background: #e8f5e9; color: #1b5e20;
+    padding: 4px 12px; border-radius: 999px;
+    font-size: .78em; font-weight: 800;
+    margin-right: 6px; margin-bottom: 6px;
+  }
+
+  .mp-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  .mp-actions .primary {
+    padding: 10px 20px; background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff !important; border: none; border-radius: 8px;
+    font-weight: 800; font-size: .9em; cursor: pointer;
+    text-decoration: none; box-shadow: 0 4px 12px rgba(76,175,80,.3);
+    transition: all .15s;
+  }
+  .mp-actions .primary:hover { opacity: .92; transform: translateY(-1px); }
+  .mp-actions .ghost {
+    padding: 10px 20px; background: #fff; color: #333 !important;
+    border: 1px solid #e0e0e0; border-radius: 8px;
+    font-weight: 700; font-size: .88em; cursor: pointer;
+    text-decoration: none; transition: all .15s;
+  }
+  .mp-actions .ghost:hover { border-color: #2e7d32; color: #2e7d32 !important; }
+
+  .mp-logout-btn {
+    padding: 10px 20px; background: #fff; color: #c62828 !important;
+    border: 1px solid #ffcdd2; border-radius: 8px;
+    font-weight: 700; font-size: .88em; cursor: pointer;
+    text-decoration: none; transition: all .15s;
+  }
+  .mp-logout-btn:hover { background: #ffebee; border-color: #c62828; }
+
+  /* ===== コンテナ ===== */
+  .mp-container { max-width: 1100px; margin: 20px auto 60px; padding: 0 24px; }
+
+  /* ===== タブ ===== */
+  .mp-tabs {
+    display: flex; gap: 4px; padding: 6px;
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .mp-tab {
+    flex: 1; min-width: 110px; padding: 10px 14px;
+    background: transparent; border: none; border-radius: 8px;
+    cursor: pointer; font-weight: 700; color: #666;
+    font-size: .88em; font-family: inherit; white-space: nowrap;
+    transition: all .15s;
+  }
+  .mp-tab:hover { background: #f0faf0; color: #2e7d32; }
+  .mp-tab.active {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    box-shadow: 0 4px 12px rgba(76,175,80,.3);
+  }
+
+  /* ===== パネル ===== */
+  .mp-panel {
+    background: #fff; border-radius: 14px;
+    padding: 24px 26px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .mp-panel h2 {
+    margin: 0 0 18px; font-size: 1.2em; font-weight: 900;
+    color: #111; letter-spacing: -.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mp-panel h2::before {
+    content: ''; width: 4px; height: 18px; background: #4caf50; border-radius: 2px;
+  }
+  .mp-empty {
+    text-align: center; padding: 48px 20px; color: #888;
+    background: #fafafa; border-radius: 10px;
+  }
+  .mp-empty a { color: #2e7d32; font-weight: 800; }
+
+  /* ===== リスト項目 ===== */
+  .mp-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; margin-bottom: 8px;
+    background: #fafafa; border-radius: 10px;
+    transition: background .15s;
+  }
+  .mp-item:hover { background: #f0faf0; }
+  .mp-item-title {
+    font-weight: 800; color: #111; margin-bottom: 4px;
+    font-size: 1em;
+  }
+  .mp-item-meta { font-size: .8em; color: #666; }
+
+  /* ===== ステータスバッジ ===== */
+  .mp-item-status {
+    padding: 4px 12px; font-size: .72em; font-weight: 800;
+    border-radius: 999px;
+  }
+  .mp-item-status.pending { background: #fff3e0; color: #ef6c00; }
+  .mp-item-status.reviewing { background: #e3f2fd; color: #1565c0; }
+  .mp-item-status.accepted { background: #e8f5e9; color: #1b5e20; }
+  .mp-item-status.rejected { background: #ffebee; color: #c62828; }
+
+  .mp-item-actions { display: flex; gap: 8px; }
+  .mp-item-btn {
+    padding: 6px 14px; background: #fff;
+    border: 1px solid #e0e0e0; border-radius: 8px; cursor: pointer;
+    font-size: .82em; font-weight: 700;
+    color: #333; text-decoration: none;
+    transition: all .15s;
+  }
+  .mp-item-btn:hover { border-color: #2e7d32; color: #2e7d32; }
+
+  /* ===== ファイルアップロードブロック ===== */
+  .mp-upload-block {
+    border: 1.5px dashed #4caf50; background: #f1f8e9;
+    padding: 20px 24px; margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  .mp-upload-block .mp-upload-title {
+    font-weight: 800; margin-bottom: 10px; color: #1b5e20;
+    font-size: 1em;
+  }
+  .mp-upload-block input[type="file"] { font-family: inherit; font-size: .88em; }
+  .mp-upload-block .mp-upload-status {
+    margin-left: 10px; font-size: .82em; color: #1b5e20;
+    font-weight: 700;
+  }
+
+  /* ===== プロフィールフォーム ===== */
+  .mp-form-field { margin-bottom: 16px; }
+  .mp-form-field label {
+    display: block; font-size: .85em; font-weight: 800;
+    margin-bottom: 6px; color: #222;
+  }
+  .mp-form-field input {
+    width: 100%; padding: 12px 14px;
+    border: 2px solid #e1e4e8; background: #fafbfc;
+    border-radius: 8px;
+    font-size: 1em; font-family: inherit;
+    transition: border-color .15s, background .15s;
+  }
+  .mp-form-field input:focus {
+    outline: none; border-color: #4caf50; background: #fff;
+  }
+  .mp-save-btn {
+    display: inline-block; padding: 11px 26px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff !important; border: none; border-radius: 8px;
+    font-weight: 900; font-size: .95em; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(76,175,80,.3);
+    transition: all .15s; font-family: inherit;
+    text-decoration: none;
+  }
+  .mp-save-btn:hover { opacity: .92; transform: translateY(-1px); }
+
+  /* ===== 認証要求 ===== */
+  .mp-auth-required {
+    max-width: 480px; margin: 80px auto; padding: 44px 36px;
+    background: #fff; border-radius: 20px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.08), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .mp-auth-required h2 {
+    font-size: 1.35em; font-weight: 900; letter-spacing: -.01em;
+    margin: 0 0 10px; color: #111;
+  }
+  .mp-auth-required p { color: #666; margin: 0 0 20px; }
+
+  @media (max-width: 700px) {
+    .mp-hero-right { margin-left: 0; width: 100%; }
+    .mp-hero h1 { font-size: 1.35em; }
+  }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
+      <a href="mypage.html" class="current">マイページ</a>
+      <a href="#" id="logout-link" style="display:none;" class="login">ログアウト</a>
+    </nav>
+  </div>
+</header>
+
+<div id="mypage-auth-required" class="mp-auth-required" style="display:none;">
+  <h2>マイページはログインが必要です</h2>
+  <p>ログインまたは新規登録してください。</p>
+  <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+    <a href="login.html" class="btn btn-primary" style="flex:1; min-width:140px;">ログイン</a>
+    <a href="signup.html" class="btn btn-ghost" style="flex:1; min-width:140px;">新規登録</a>
+  </div>
+</div>
+
+<div id="mypage-content" style="display:none;">
+  <!-- ===== LinkedIn風プロフィールヘッダー ===== -->
+  <section class="mp-cover" id="mp-cover" role="button" tabindex="0" aria-label="カバー画像を変更" title="クリックしてカバー画像を変更">
+    <span class="mp-cover-hint">📷 カバーを変更</span>
+  </section>
+
+  <div class="mp-prof-card">
+    <div class="mp-avatar-wrap">
+      <div class="mp-avatar" id="mp-avatar" role="button" tabindex="0" aria-label="アバターを変更" title="クリックしてアバターを変更">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/>
+          <path d="M4 21c0-4.418 3.582-7 8-7s8 2.582 8 7v1H4v-1Z"/>
+        </svg>
+      </div>
+      <span class="mp-avatar-edit">+</span>
+    </div>
+    <h1 class="mp-name" id="mp-nickname">—</h1>
+    <div class="mp-sub" id="mp-school">—</div>
+    <div class="mp-email" id="mp-email">—</div>
+    <div class="mp-bio" id="mp-bio" data-empty="1">自己紹介が未設定です。プロフィール編集から追加できます。</div>
+    <div class="mp-skills" id="mp-skills"></div>
+    <div class="mp-actions">
+      <a href="#" class="primary" id="mp-open-profile">プロフィール編集</a>
+      <a href="#" class="ghost" id="mp-open-files">履歴書・ファイル</a>
+      <a href="#" id="logout-link" class="mp-logout-btn" style="display:none;">ログアウト</a>
+    </div>
+  </div>
+
+  <!-- アップロード用 hidden input -->
+  <input type="file" id="mp-avatar-input" accept="image/*" style="display:none;">
+  <input type="file" id="mp-cover-input" accept="image/*" style="display:none;">
+
+  <div class="mp-container">
+    <div class="mp-tabs">
+      <button class="mp-tab active" data-panel="apps">応募履歴</button>
+      <button class="mp-tab" data-panel="bookmarks">ブックマーク</button>
+      <button class="mp-tab" data-panel="history">閲覧履歴</button>
+      <button class="mp-tab" data-panel="posts">自分の投稿</button>
+      <button class="mp-tab" data-panel="files">ファイル</button>
+      <button class="mp-tab" data-panel="profile">プロフィール</button>
+    </div>
+
+    <div class="mp-panel" id="panel-apps">
+      <h2>応募履歴</h2>
+      <div id="apps-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-bookmarks" style="display:none;">
+      <h2>ブックマーク</h2>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-history" style="display:none;">
+      <h2>閲覧履歴</h2>
+      <div id="history-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-posts" style="display:none;">
+      <h2>自分の投稿</h2>
+      <div id="posts-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-files" style="display:none;">
+      <h2>ファイル管理</h2>
+      <div class="mp-upload-block">
+        <div class="mp-upload-title">履歴書をアップロード</div>
+        <input type="file" id="upload-resume" accept=".pdf,.doc,.docx">
+        <span id="upload-status" class="mp-upload-status"></span>
+      </div>
+      <div class="mp-upload-block">
+        <div class="mp-upload-title">ポートフォリオをアップロード</div>
+        <input type="file" id="upload-portfolio" accept=".pdf,.zip,image/*">
+        <span id="upload-portfolio-status" class="mp-upload-status"></span>
+      </div>
+      <div id="files-list"></div>
+    </div>
+    <div class="mp-panel" id="panel-profile" style="display:none;">
+      <h2>プロフィール編集</h2>
+      <form id="profile-form">
+        <div class="mp-form-field">
+          <label>ニックネーム</label>
+          <input type="text" id="pf-nickname" required>
+        </div>
+        <div class="mp-form-field">
+          <label>大学・学部</label>
+          <input type="text" id="pf-school" placeholder="例: ○○大学 情報学部">
+        </div>
+        <div class="mp-form-field">
+          <label>自己紹介</label>
+          <textarea id="pf-bio" placeholder="興味のある領域、スキル、ポートフォリオなど" style="width:100%; padding:12px 14px; border:2px solid #e1e4e8; background:#fafbfc; border-radius:8px; font-size:1em; font-family:inherit; min-height:110px; resize:vertical;"></textarea>
+        </div>
+        <div class="mp-form-field">
+          <label>スキル（カンマ区切り）</label>
+          <input type="text" id="pf-skills" placeholder="例: Python, LLM, FastAPI, React">
+        </div>
+        <div class="mp-form-field">
+          <label>所在地</label>
+          <input type="text" id="pf-location" placeholder="例: 東京都">
+        </div>
+        <button type="submit" class="mp-save-btn">保存する</button>
+        <span id="pf-status" style="margin-left:12px; font-size:.85em; color:#2e7d32; font-weight:700;"></span>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div><p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p></div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="mypage.html">マイページ</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-social.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  // ===== アバター / カバー画像 ヘルパー =====
+  const PERSON_SVG = `
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/>
+      <path d="M4 21c0-4.418 3.582-7 8-7s8 2.582 8 7v1H4v-1Z"/>
+    </svg>`;
+  function renderAvatar(initial, imgUrl) {
+    const el = document.getElementById('mp-avatar');
+    if (imgUrl) {
+      el.innerHTML = `<img src="${imgUrl}" alt="avatar">`;
+    } else {
+      el.innerHTML = PERSON_SVG;
+    }
+  }
+  function renderCover(imgUrl) {
+    const el = document.getElementById('mp-cover');
+    el.style.backgroundImage = imgUrl ? `url("${imgUrl}")` : '';
+  }
+  function renderSkills(list) {
+    const el = document.getElementById('mp-skills');
+    if (!list || !list.length) { el.innerHTML = ''; return; }
+    el.innerHTML = list.map(s => `<span class="mp-skill">${String(s).replace(/[<>]/g,'')}</span>`).join('');
+  }
+  function renderBio(text) {
+    const el = document.getElementById('mp-bio');
+    if (text && text.trim()) {
+      el.textContent = text;
+      el.removeAttribute('data-empty');
+    } else {
+      el.textContent = '自己紹介が未設定です。プロフィール編集から追加できます。';
+      el.setAttribute('data-empty', '1');
+    }
+  }
+
+  // アバター/カバーのクリック → ファイル選択
+  document.getElementById('mp-avatar').addEventListener('click', () => {
+    document.getElementById('mp-avatar-input').click();
+  });
+  document.getElementById('mp-cover').addEventListener('click', () => {
+    document.getElementById('mp-cover-input').click();
+  });
+
+  // ファイル → DataURL 読み込み + 永続化
+  function readAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  // プレビュー用: localStorage に保存
+  function saveLocal(key, value) { try { localStorage.setItem(key, value); } catch(e) {} }
+  function loadLocal(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
+
+  // 本番用: Supabase アップロード → profiles に URL 保存
+  async function uploadToStorage(file, kind) {
+    try {
+      const up = await window.AImeBiz.uploadFile('logos', file, kind); // 'logos' バケットは公開URL
+      const patch = kind === 'avatar' ? { avatar_url: up.url } : { cover_url: up.url };
+      await window.AImeSocial.updateProfile(patch);
+      return up.url;
+    } catch (err) {
+      console.warn('Storage upload failed, falling back to local:', err);
+      return null;
+    }
+  }
+
+  // ===== プロフィール編集のモーダル直開き =====
+  const openProfile = document.getElementById('mp-open-profile');
+  if (openProfile) openProfile.addEventListener('click', e => {
+    e.preventDefault();
+    const tab = document.querySelector('.mp-tab[data-panel="profile"]');
+    if (tab) tab.click();
+    document.querySelector('.mp-container').scrollIntoView({ behavior: 'smooth' });
+  });
+  const openFiles = document.getElementById('mp-open-files');
+  if (openFiles) openFiles.addEventListener('click', e => {
+    e.preventDefault();
+    const tab = document.querySelector('.mp-tab[data-panel="files"]');
+    if (tab) tab.click();
+    document.querySelector('.mp-container').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  if (PREVIEW) {
+    // --- プレビューモード: デモデータで画面表示 ---
+    document.getElementById('mypage-content').style.display = 'block';
+    document.getElementById('mp-nickname').textContent = 'taro (プレビュー)';
+    document.getElementById('mp-email').textContent = 'preview@example.com';
+    document.getElementById('mp-school').textContent = '○○大学 情報学部 B3 · 東京都';
+    renderAvatar(null, loadLocal('aime_preview_avatar'));
+    renderCover(loadLocal('aime_preview_cover'));
+    renderBio('LLMアプリ開発に興味がある情報系B3。Python/FastAPI/React経験。Kaggle参加中、Zennで学習記録を発信中。AIエージェント開発のインターンを探しています。');
+    renderSkills(['Python', 'LLM', 'FastAPI', 'React', 'LangChain', '未経験OK歓迎']);
+
+    // プレビュー用: アバター変更 → localStorage
+    document.getElementById('mp-avatar-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const dataUrl = await readAsDataURL(file);
+      saveLocal('aime_preview_avatar', dataUrl);
+      renderAvatar(null, dataUrl);
+    });
+    document.getElementById('mp-cover-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const dataUrl = await readAsDataURL(file);
+      saveLocal('aime_preview_cover', dataUrl);
+      renderCover(dataUrl);
+    });
+
+    const pfNick = document.getElementById('pf-nickname'); if (pfNick) pfNick.value = 'taro';
+    const pfSchool = document.getElementById('pf-school'); if (pfSchool) pfSchool.value = '○○大学 情報学部';
+    const pfBio = document.getElementById('pf-bio'); if (pfBio) pfBio.value = 'LLMアプリ開発に興味がある情報系B3。Python/FastAPI/React経験。Kaggle参加中、Zennで学習記録を発信中。AIエージェント開発のインターンを探しています。';
+    const pfSkills = document.getElementById('pf-skills'); if (pfSkills) pfSkills.value = 'Python, LLM, FastAPI, React, LangChain, 未経験OK歓迎';
+    const pfLoc = document.getElementById('pf-location'); if (pfLoc) pfLoc.value = '東京都';
+    document.querySelectorAll('.mp-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.mp-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        ['apps','bookmarks','history','posts','files','profile'].forEach(name => {
+          const el = document.getElementById('panel-'+name);
+          if (el) el.style.display = (name === tab.dataset.panel) ? 'block' : 'none';
+        });
+      });
+    });
+    const demoApps = [
+      {title:'LLM開発インターン', company:'OpenLab株式会社', date:'2026-04-15', status:'reviewing'},
+      {title:'RAGエンジニア (学生)', company:'Anthropic Japan', date:'2026-04-10', status:'pending'},
+      {title:'AIエージェント開発', company:'株式会社ニューラル', date:'2026-04-02', status:'accepted'},
+    ];
+    const statusLabel = {pending:'審査中', reviewing:'選考中', accepted:'合格', rejected:'不採用'};
+    document.getElementById('apps-list').innerHTML = demoApps.map(a=>`
+      <div class="mp-item">
+        <div><div class="mp-item-title">${a.title}</div>
+        <div class="mp-item-meta">${a.company} / ${a.date}</div></div>
+        <span class="mp-item-status ${a.status}">${statusLabel[a.status]}</span>
+      </div>`).join('');
+    const demoBms = [
+      {id:'j-1', title:'生成AI PoC開発インターン', company:'株式会社コンフィグ'},
+      {id:'j-2', title:'LLMファインチューニング', company:'株式会社AIスタジオ'},
+    ];
+    document.getElementById('bookmarks-list').innerHTML = demoBms.map(b=>`
+      <div class="mp-item">
+        <div><div class="mp-item-title">${b.title}</div>
+        <div class="mp-item-meta">${b.company}</div></div>
+        <div class="mp-item-actions">
+          <a href="job.html?id=${b.id}" class="mp-item-btn">開く</a>
+          <button class="mp-item-btn">削除</button>
+        </div>
+      </div>`).join('');
+    const demoPosts = [
+      {id:1, title:'Claude Code 使い倒し記録', date:'2026-04-18'},
+      {id:2, title:'RAG vs Fine-tuning どう選ぶか', date:'2026-04-10'},
+    ];
+    document.getElementById('posts-list').innerHTML = demoPosts.map(p=>`
+      <div class="mp-item">
+        <div><div class="mp-item-title">${p.title}</div>
+        <div class="mp-item-meta">${p.date}</div></div>
+        <a href="post.html?id=${p.id}" class="mp-item-btn">開く</a>
+      </div>`).join('');
+    const hl = document.getElementById('history-list');
+    if (hl) hl.innerHTML = `
+      <div class="mp-item"><div><div class="mp-item-title">マルチモーダルAI研究インターン</div><div class="mp-item-meta">株式会社ニューロ・2026-04-20</div></div><a href="#" class="mp-item-btn">再表示</a></div>
+      <div class="mp-item"><div><div class="mp-item-title">LangChainアプリ開発</div><div class="mp-item-meta">AIスタジオ・2026-04-19</div></div><a href="#" class="mp-item-btn">再表示</a></div>`;
+    const fl = document.getElementById('files-list');
+    if (fl) fl.innerHTML = `
+      <div class="mp-item"><div><div class="mp-item-title">resume_taro_2026.pdf</div><div class="mp-item-meta">RESUME ・ 128 KB ・ 2026-04-18</div></div><a href="#" class="mp-item-btn">ダウンロード</a></div>
+      <div class="mp-item"><div><div class="mp-item-title">portfolio_2026.pdf</div><div class="mp-item-meta">PORTFOLIO ・ 2.1 MB ・ 2026-04-15</div></div><a href="#" class="mp-item-btn">ダウンロード</a></div>`;
+    return;
+  }
+
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) {
+    document.getElementById('mypage-auth-required').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('mypage-content').style.display = 'block';
+  document.getElementById('logout-link').style.display = 'inline-block';
+  document.getElementById('logout-link').addEventListener('click', async (e) => {
+    e.preventDefault(); await window.sb.auth.signOut(); location.href = 'original.html';
+  });
+
+  const profile = await window.AImeSocial.getProfile(user.id);
+  const nickname = profile?.nickname || user.email.split('@')[0];
+  const initial = nickname.charAt(0).toUpperCase();
+
+  // プロフィール表示 (LinkedIn風ヘッダー)
+  document.getElementById('mp-nickname').textContent = nickname;
+  document.getElementById('mp-email').textContent = user.email;
+  const schoolLoc = [profile?.school, profile?.location].filter(Boolean).join(' · ');
+  document.getElementById('mp-school').textContent = schoolLoc || '—';
+
+  // アバター: profile.avatar_url → localStorage の順に fallback
+  const userAvatarKey = `aime_user_${user.id}_avatar`;
+  const userCoverKey  = `aime_user_${user.id}_cover`;
+  renderAvatar(null, profile?.avatar_url || loadLocal(userAvatarKey));
+  renderCover(profile?.cover_url || loadLocal(userCoverKey));
+  renderBio(profile?.bio || '');
+  renderSkills(Array.isArray(profile?.skills) ? profile.skills : (profile?.skills ? String(profile.skills).split(',').map(s=>s.trim()).filter(Boolean) : []));
+
+  // プロフィール編集フォーム初期値
+  document.getElementById('pf-nickname').value = nickname;
+  document.getElementById('pf-school').value = profile?.school || '';
+  const pfBio = document.getElementById('pf-bio'); if (pfBio) pfBio.value = profile?.bio || '';
+  const pfSkills = document.getElementById('pf-skills');
+  if (pfSkills) pfSkills.value = Array.isArray(profile?.skills) ? profile.skills.join(', ') : (profile?.skills || '');
+  const pfLoc = document.getElementById('pf-location'); if (pfLoc) pfLoc.value = profile?.location || '';
+
+  // アバターアップロード
+  document.getElementById('mp-avatar-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const dataUrl = await readAsDataURL(file);
+    renderAvatar(null, dataUrl);         // 即時反映
+    saveLocal(userAvatarKey, dataUrl);   // ローカル保存
+    const remoteUrl = await uploadToStorage(file, 'avatar'); // 本番保存 (失敗しても ok)
+    if (remoteUrl) renderAvatar(null, remoteUrl);
+  });
+  document.getElementById('mp-cover-input').addEventListener('change', async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const dataUrl = await readAsDataURL(file);
+    renderCover(dataUrl);
+    saveLocal(userCoverKey, dataUrl);
+    const remoteUrl = await uploadToStorage(file, 'cover');
+    if (remoteUrl) renderCover(remoteUrl);
+  });
+
+  // タブ切替
+  document.querySelectorAll('.mp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.mp-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      ['apps','bookmarks','history','posts','files','profile'].forEach(name => {
+        document.getElementById('panel-'+name).style.display = (name === tab.dataset.panel) ? 'block' : 'none';
+      });
+    });
+  });
+
+  // 応募履歴
+  const apps = await window.AImeSocial.listApplications();
+  const appsList = document.getElementById('apps-list');
+  if (!apps.length) {
+    appsList.innerHTML = '<div class="mp-empty">まだ応募はありません</div>';
+  } else {
+    appsList.innerHTML = apps.map(a => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${a.job_title || '求人'}</div>
+          <div class="mp-item-meta">${a.job_company || ''} / ${new Date(a.created_at).toLocaleDateString('ja-JP')}</div>
+        </div>
+        <span class="mp-item-status ${a.status}">${ {pending:'審査中', reviewing:'選考中', accepted:'合格', rejected:'不採用'}[a.status] || a.status }</span>
+      </div>
+    `).join('');
+  }
+
+  // ブックマーク
+  const bms = await window.AImeSocial.listBookmarks();
+  const bmList = document.getElementById('bookmarks-list');
+  if (!bms.length) {
+    bmList.innerHTML = '<div class="mp-empty">まだブックマークはありません</div>';
+  } else {
+    bmList.innerHTML = bms.map(b => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${b.job_title || '求人'}</div>
+          <div class="mp-item-meta">${b.job_company || ''}</div>
+        </div>
+        <div class="mp-item-actions">
+          <a href="job.html?id=${encodeURIComponent(b.job_id)}" class="mp-item-btn">開く</a>
+          <button class="mp-item-btn" data-unbm="${b.job_id}">削除</button>
+        </div>
+      </div>
+    `).join('');
+    bmList.querySelectorAll('[data-unbm]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        await window.AImeSocial.unbookmark(btn.dataset.unbm);
+        location.reload();
+      });
+    });
+  }
+
+  // 自分の投稿
+  const { data: myPosts } = await window.sb.from('posts').select('*').eq('author_id', user.id).order('created_at', { ascending: false });
+  const postsList = document.getElementById('posts-list');
+  if (!myPosts || !myPosts.length) {
+    postsList.innerHTML = '<div class="mp-empty">まだ投稿はありません <a href="blog.html">投稿する</a></div>';
+  } else {
+    postsList.innerHTML = myPosts.map(p => `
+      <div class="mp-item">
+        <div>
+          <div class="mp-item-title">${p.title}</div>
+          <div class="mp-item-meta">${new Date(p.created_at).toLocaleDateString('ja-JP')}</div>
+        </div>
+        <a href="post.html?id=${p.id}" class="mp-item-btn">開く</a>
+      </div>
+    `).join('');
+  }
+
+  // 閲覧履歴
+  if (window.AImeBiz) {
+    const history = await window.AImeBiz.listBrowseHistory(30);
+    const hl = document.getElementById('history-list');
+    if (!history.length) hl.innerHTML = '<div class="mp-empty">まだ閲覧履歴はありません</div>';
+    else {
+      const seen = new Set();
+      const unique = history.filter(h => { if (seen.has(h.job_id)) return false; seen.add(h.job_id); return true; });
+      hl.innerHTML = unique.map(h => {
+        const job = (window.JOBS_GET && window.JOBS_GET(h.job_id)) || { title: h.job_id, company: '' };
+        return `<div class="mp-item">
+          <div><div class="mp-item-title">${job.title}</div><div class="mp-item-meta">${job.company} ・ ${new Date(h.viewed_at).toLocaleDateString('ja-JP')}</div></div>
+          <a href="job.html?id=${encodeURIComponent(h.job_id)}" class="mp-item-btn">再表示</a>
+        </div>`;
+      }).join('');
+    }
+
+    // ファイル管理
+    async function renderFiles() {
+      const files = await window.AImeBiz.listFiles();
+      const fl = document.getElementById('files-list');
+      if (!files.length) { fl.innerHTML = '<div class="mp-empty">ファイルなし</div>'; return; }
+      fl.innerHTML = files.map(f => {
+        const kindLabel = f.kind === 'resume' ? 'RESUME' : f.kind === 'portfolio' ? 'PORTFOLIO' : 'FILE';
+        return `
+        <div class="mp-item">
+          <div><div class="mp-item-title">${f.original_name || 'ファイル'}</div>
+          <div class="mp-item-meta">${kindLabel} ・ ${Math.round((f.size_bytes || 0) / 1024)} KB ・ ${new Date(f.created_at).toLocaleDateString('ja-JP')}</div></div>
+          <a href="${f.url}" target="_blank" class="mp-item-btn">ダウンロード</a>
+        </div>`;
+      }).join('');
+    }
+    renderFiles();
+
+    document.getElementById('upload-resume').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      document.getElementById('upload-status').textContent = 'アップロード中...';
+      try {
+        await window.AImeBiz.uploadFile('resumes', file, 'resume');
+        document.getElementById('upload-status').textContent = '✓ アップロード完了';
+        renderFiles();
+      } catch (err) {
+        document.getElementById('upload-status').textContent = 'エラー: ' + err.message;
+        document.getElementById('upload-status').style.color = '#c62828';
+      }
+    });
+    document.getElementById('upload-portfolio').addEventListener('change', async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      document.getElementById('upload-portfolio-status').textContent = 'アップロード中...';
+      try {
+        await window.AImeBiz.uploadFile('portfolios', file, 'portfolio');
+        document.getElementById('upload-portfolio-status').textContent = '✓ アップロード完了';
+        renderFiles();
+      } catch (err) {
+        document.getElementById('upload-portfolio-status').textContent = 'エラー: ' + err.message;
+        document.getElementById('upload-portfolio-status').style.color = '#c62828';
+      }
+    });
+  }
+
+  // プロフィール編集
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const skillsStr = document.getElementById('pf-skills').value.trim();
+    const skillsArr = skillsStr ? skillsStr.split(',').map(s => s.trim()).filter(Boolean) : null;
+    const patch = {
+      nickname: document.getElementById('pf-nickname').value.trim(),
+      school: document.getElementById('pf-school').value.trim() || null,
+      bio: document.getElementById('pf-bio').value.trim() || null,
+      skills: skillsArr,
+      location: document.getElementById('pf-location').value.trim() || null,
+    };
+    // DBに bio/skills/location カラムが未追加だと失敗するので、失敗時は段階的にフォールバック
+    try {
+      await window.AImeSocial.updateProfile(patch);
+      document.getElementById('pf-status').textContent = '✓ 保存しました';
+      setTimeout(() => location.reload(), 800);
+    } catch (err) {
+      console.warn('full profile save failed, retrying with core fields:', err);
+      try {
+        await window.AImeSocial.updateProfile({ nickname: patch.nickname, school: patch.school });
+        document.getElementById('pf-status').textContent = '✓ 基本情報のみ保存 (DB拡張カラム未追加)';
+        document.getElementById('pf-status').style.color = '#ef6c00';
+        setTimeout(() => location.reload(), 1500);
+      } catch (err2) {
+        document.getElementById('pf-status').textContent = 'エラー: ' + err2.message;
+        document.getElementById('pf-status').style.color = '#c62828';
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

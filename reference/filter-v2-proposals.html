@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フィルターセクション 見やすさ改善案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 36px; }
+
+  /* ========================================= */
+  /*  案A: カード区切り + 大きめチップ + バッジ    */
+  /* ========================================= */
+  .va-section {
+    background: #fafafa; border-radius: 14px; padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .va-section:last-child { margin-bottom: 0; }
+  .va-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .va-label { font-size: 1.05em; font-weight: 800; color: #222; }
+  .va-count { font-size: 0.75em; color: #999; font-weight: 600; }
+  .va-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .va-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 10px; font-size: 0.9em; font-weight: 700;
+    background: #fff; color: #333; border: 1.5px solid #e8e8e8;
+    text-decoration: none; transition: all 0.15s; cursor: pointer;
+  }
+  .va-chip:hover { border-color: #4caf50; color: #2e7d32; background: #f0faf0; }
+  .va-chip .va-badge {
+    background: #e8f5e9; color: #2e7d32; padding: 2px 8px;
+    border-radius: 6px; font-size: 0.78em; font-weight: 800;
+  }
+  .va-chip.va-hot { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+  .va-chip.va-hot .va-badge { background: rgba(255,255,255,0.2); color: #fff; }
+  .va-chip.va-hot:hover { background: #1b5e20; }
+  /* キーワード */
+  .va-kw {
+    display: inline-block; padding: 10px 22px; border-radius: 24px;
+    font-size: 0.9em; font-weight: 700; background: #fff; color: #333;
+    border: 1.5px solid #e8e8e8; text-decoration: none; transition: all 0.15s;
+  }
+  .va-kw:hover { border-color: #4caf50; color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案B: 2カラム + 左ラベル付きバー             */
+  /* ========================================= */
+  .vb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .vb-block { }
+  .vb-label {
+    font-size: 1em; font-weight: 800; color: #1b5e20; margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 2px solid #e8f5e9;
+  }
+  .vb-items { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .vb-item {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    color: #333; padding: 8px 12px; border-radius: 8px; transition: all 0.12s;
+  }
+  .vb-item:hover { background: #f0faf0; }
+  .vb-name { font-size: 0.9em; font-weight: 700; width: 180px; flex-shrink: 0; }
+  .vb-bar-wrap { flex: 1; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+  .vb-bar { height: 100%; background: linear-gradient(90deg, #4caf50, #81c784); border-radius: 4px; transition: width 0.6s; }
+  .vb-num {
+    font-size: 0.82em; font-weight: 800; color: #2e7d32;
+    background: #e8f5e9; padding: 2px 10px; border-radius: 8px;
+    min-width: 36px; text-align: center;
+  }
+  .vb-kw-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .vb-kw {
+    padding: 8px 18px; border-radius: 20px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.12s;
+  }
+  .vb-kw:hover { background: #e8f5e9; color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案C: アイコン付き大カード3列                 */
+  /* ========================================= */
+  .vc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+  .vc-card {
+    border: 1.5px solid #eee; border-radius: 14px; padding: 22px;
+    transition: all 0.2s;
+  }
+  .vc-card:hover { border-color: #4caf50; box-shadow: 0 4px 16px rgba(76,175,80,0.08); }
+  .vc-card-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;
+  }
+  .vc-card-icon {
+    width: 36px; height: 36px; border-radius: 10px; background: #e8f5e9;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1em; color: #2e7d32; font-weight: 900;
+  }
+  .vc-card-title { font-size: 0.95em; font-weight: 800; color: #222; }
+  .vc-card-count { font-size: 0.72em; color: #999; margin-left: auto; }
+  .vc-card-items { display: flex; flex-direction: column; gap: 6px; }
+  .vc-card-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 8px; border-radius: 6px; text-decoration: none;
+    color: #444; font-size: 0.88em; font-weight: 600; transition: all 0.1s;
+  }
+  .vc-card-item:hover { background: #f0faf0; color: #2e7d32; }
+  .vc-card-item span {
+    font-size: 0.8em; color: #aaa; font-weight: 700;
+    background: #f5f5f5; padding: 1px 8px; border-radius: 4px;
+  }
+  .vc-card-item:hover span { background: #e8f5e9; color: #2e7d32; }
+  /* キーワード用カード */
+  .vc-kw-card { border: 1.5px solid #eee; border-radius: 14px; padding: 22px; }
+  .vc-kw-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .vc-kw-chip {
+    padding: 8px 18px; border-radius: 20px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.12s;
+  }
+  .vc-kw-chip:hover { background: #2e7d32; color: #fff; }
+
+  /* ========================================= */
+  /*  案D: フルワイド横並びセクション              */
+  /* ========================================= */
+  .vd-sections { display: flex; flex-direction: column; gap: 0; }
+  .vd-section {
+    padding: 28px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .vd-section:last-child { border-bottom: none; }
+  .vd-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .vd-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2em; font-weight: 900; color: #fff; flex-shrink: 0;
+  }
+  .vd-icon-1 { background: #2e7d32; }
+  .vd-icon-2 { background: #1565c0; }
+  .vd-icon-3 { background: #6a1b9a; }
+  .vd-icon-4 { background: #e65100; }
+  .vd-info { }
+  .vd-label { font-size: 1em; font-weight: 800; color: #222; }
+  .vd-sublabel { font-size: 0.75em; color: #999; }
+  .vd-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vd-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 8px; font-size: 0.88em; font-weight: 700;
+    background: #f8f8f8; color: #444; text-decoration: none; transition: all 0.12s;
+  }
+  .vd-tag:hover { background: #e8f5e9; color: #2e7d32; }
+  .vd-tag .vd-n {
+    background: #e8e8e8; padding: 1px 7px; border-radius: 6px;
+    font-size: 0.78em; color: #888; font-weight: 800;
+  }
+  .vd-tag:hover .vd-n { background: #c8e6c9; color: #2e7d32; }
+  .vd-tag.vd-hot { background: #2e7d32; color: #fff; }
+  .vd-tag.vd-hot .vd-n { background: rgba(255,255,255,0.2); color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>フィルターセクション 見やすさ改善案</h1>
+<p class="desc">チップの大きさ・間隔・構造を改善した4パターン</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : カード区切り + 大きめチップ + バッジ</div>
+  <div class="proposal-body">
+    <div class="va-section">
+      <div class="va-header"><span class="va-label">AI職種から探す</span><span class="va-count">8件</span></div>
+      <div class="va-chips">
+        <a class="va-chip va-hot" href="#">LLMアプリ開発 <span class="va-badge">56</span></a>
+        <a class="va-chip" href="#">プロンプトエンジニア <span class="va-badge">42</span></a>
+        <a class="va-chip" href="#">MLエンジニア <span class="va-badge">38</span></a>
+        <a class="va-chip" href="#">データサイエンティスト <span class="va-badge">31</span></a>
+        <a class="va-chip" href="#">AI PMM / BizDev <span class="va-badge">27</span></a>
+        <a class="va-chip" href="#">AIリサーチャー <span class="va-badge">24</span></a>
+        <a class="va-chip" href="#">AIエージェント開発 <span class="va-badge">19</span></a>
+        <a class="va-chip" href="#">AI x クリエイティブ <span class="va-badge">15</span></a>
+      </div>
+    </div>
+    <div class="va-section">
+      <div class="va-header"><span class="va-label">尖った特徴から探す</span><span class="va-count">12件</span></div>
+      <div class="va-chips">
+        <a class="va-chip va-hot" href="#">フルリモート可 <span class="va-badge">89</span></a>
+        <a class="va-chip va-hot" href="#">未経験OK <span class="va-badge">67</span></a>
+        <a class="va-chip" href="#">時給2,000円以上 <span class="va-badge">52</span></a>
+        <a class="va-chip" href="#">文系歓迎 <span class="va-badge">45</span></a>
+        <a class="va-chip" href="#">CEO / CTO直下 <span class="va-badge">38</span></a>
+        <a class="va-chip" href="#">論文読み会あり <span class="va-badge">34</span></a>
+        <a class="va-chip" href="#">GPU使い放題 <span class="va-badge">23</span></a>
+        <a class="va-chip" href="#">Kaggle推奨 <span class="va-badge">21</span></a>
+      </div>
+    </div>
+    <div class="va-section">
+      <div class="va-header"><span class="va-label">AI領域から探す</span><span class="va-count">10件</span></div>
+      <div class="va-chips">
+        <a class="va-chip va-hot" href="#">LLM / 大規模言語モデル <span class="va-badge">78</span></a>
+        <a class="va-chip" href="#">AI SaaS <span class="va-badge">56</span></a>
+        <a class="va-chip" href="#">AIエージェント <span class="va-badge">34</span></a>
+        <a class="va-chip" href="#">画像生成 / Diffusion <span class="va-badge">23</span></a>
+        <a class="va-chip" href="#">AI x 教育 <span class="va-badge">21</span></a>
+        <a class="va-chip" href="#">ヘルスケアAI <span class="va-badge">18</span></a>
+      </div>
+    </div>
+    <div class="va-section">
+      <div class="va-header"><span class="va-label">人気のAIキーワード</span><span class="va-count">8件</span></div>
+      <div class="va-chips">
+        <a class="va-kw" href="#">RAG</a><a class="va-kw" href="#">ファインチューニング</a><a class="va-kw" href="#">Claude</a><a class="va-kw" href="#">LangChain</a><a class="va-kw" href="#">Stable Diffusion</a><a class="va-kw" href="#">Kaggle</a><a class="va-kw" href="#">Transformer</a><a class="va-kw" href="#">強化学習</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : 2カラム + プログレスバー + バッジ数字</div>
+  <div class="proposal-body">
+    <div class="vb-grid">
+      <div class="vb-block">
+        <div class="vb-label">AI職種から探す</div>
+        <div class="vb-items">
+          <a class="vb-item" href="#"><span class="vb-name">LLMアプリ開発</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:100%"></div></div><span class="vb-num">56</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">プロンプトエンジニア</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:75%"></div></div><span class="vb-num">42</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">MLエンジニア</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:68%"></div></div><span class="vb-num">38</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">データサイエンティスト</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:55%"></div></div><span class="vb-num">31</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AI PMM / BizDev</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:48%"></div></div><span class="vb-num">27</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AIリサーチャー</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:43%"></div></div><span class="vb-num">24</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AIエージェント開発</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:34%"></div></div><span class="vb-num">19</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AI x クリエイティブ</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:27%"></div></div><span class="vb-num">15</span></a>
+        </div>
+      </div>
+      <div class="vb-block">
+        <div class="vb-label">尖った特徴から探す</div>
+        <div class="vb-items">
+          <a class="vb-item" href="#"><span class="vb-name">フルリモート可</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:100%"></div></div><span class="vb-num">89</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">未経験OK</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:75%"></div></div><span class="vb-num">67</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">時給2,000円以上</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:58%"></div></div><span class="vb-num">52</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">文系歓迎</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:51%"></div></div><span class="vb-num">45</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">CEO / CTO直下</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:43%"></div></div><span class="vb-num">38</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">論文読み会あり</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:38%"></div></div><span class="vb-num">34</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">GPU使い放題</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:26%"></div></div><span class="vb-num">23</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">Kaggle推奨</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:24%"></div></div><span class="vb-num">21</span></a>
+        </div>
+      </div>
+      <div class="vb-block">
+        <div class="vb-label">AI領域から探す</div>
+        <div class="vb-items">
+          <a class="vb-item" href="#"><span class="vb-name">LLM / 大規模言語モデル</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:100%"></div></div><span class="vb-num">78</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AI SaaS</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:72%"></div></div><span class="vb-num">56</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">AIエージェント</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:44%"></div></div><span class="vb-num">34</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">画像生成 / Diffusion</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:29%"></div></div><span class="vb-num">23</span></a>
+          <a class="vb-item" href="#"><span class="vb-name">ヘルスケアAI</span><div class="vb-bar-wrap"><div class="vb-bar" style="width:23%"></div></div><span class="vb-num">18</span></a>
+        </div>
+      </div>
+      <div class="vb-block">
+        <div class="vb-label">人気のAIキーワード</div>
+        <div class="vb-kw-chips">
+          <a class="vb-kw" href="#">RAG</a><a class="vb-kw" href="#">ファインチューニング</a><a class="vb-kw" href="#">Claude</a><a class="vb-kw" href="#">LangChain</a><a class="vb-kw" href="#">Stable Diffusion</a><a class="vb-kw" href="#">Kaggle</a><a class="vb-kw" href="#">Transformer</a><a class="vb-kw" href="#">強化学習</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : アイコン付きカード3列</div>
+  <div class="proposal-body">
+    <div class="vc-grid">
+      <div class="vc-card">
+        <div class="vc-card-header"><div class="vc-card-icon">&#x1F4BC;</div><div class="vc-card-title">AI職種から探す</div><span class="vc-card-count">8件</span></div>
+        <div class="vc-card-items">
+          <a class="vc-card-item" href="#">LLMアプリ開発<span>56</span></a>
+          <a class="vc-card-item" href="#">プロンプトエンジニア<span>42</span></a>
+          <a class="vc-card-item" href="#">MLエンジニア<span>38</span></a>
+          <a class="vc-card-item" href="#">データサイエンティスト<span>31</span></a>
+          <a class="vc-card-item" href="#">AI PMM / BizDev<span>27</span></a>
+          <a class="vc-card-item" href="#">AIリサーチャー<span>24</span></a>
+          <a class="vc-card-item" href="#">AIエージェント開発<span>19</span></a>
+          <a class="vc-card-item" href="#">AI x クリエイティブ<span>15</span></a>
+        </div>
+      </div>
+      <div class="vc-card">
+        <div class="vc-card-header"><div class="vc-card-icon">&#x26A1;</div><div class="vc-card-title">尖った特徴から探す</div><span class="vc-card-count">12件</span></div>
+        <div class="vc-card-items">
+          <a class="vc-card-item" href="#">フルリモート可<span>89</span></a>
+          <a class="vc-card-item" href="#">未経験OK<span>67</span></a>
+          <a class="vc-card-item" href="#">時給2,000円以上<span>52</span></a>
+          <a class="vc-card-item" href="#">文系歓迎<span>45</span></a>
+          <a class="vc-card-item" href="#">CEO / CTO直下<span>38</span></a>
+          <a class="vc-card-item" href="#">論文読み会あり<span>34</span></a>
+          <a class="vc-card-item" href="#">GPU使い放題<span>23</span></a>
+          <a class="vc-card-item" href="#">Kaggle推奨<span>21</span></a>
+        </div>
+      </div>
+      <div class="vc-card">
+        <div class="vc-card-header"><div class="vc-card-icon">&#x1F52C;</div><div class="vc-card-title">AI領域から探す</div><span class="vc-card-count">10件</span></div>
+        <div class="vc-card-items">
+          <a class="vc-card-item" href="#">LLM / 大規模言語モデル<span>78</span></a>
+          <a class="vc-card-item" href="#">AI SaaS<span>56</span></a>
+          <a class="vc-card-item" href="#">AIエージェント<span>34</span></a>
+          <a class="vc-card-item" href="#">画像生成 / Diffusion<span>23</span></a>
+          <a class="vc-card-item" href="#">AI x 教育<span>21</span></a>
+          <a class="vc-card-item" href="#">ヘルスケアAI<span>18</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="vc-kw-card">
+      <div class="vc-card-header"><div class="vc-card-icon">&#x1F525;</div><div class="vc-card-title">人気のAIキーワード</div><span class="vc-card-count">8件</span></div>
+      <div class="vc-kw-chips">
+        <a class="vc-kw-chip" href="#">RAG</a><a class="vc-kw-chip" href="#">ファインチューニング</a><a class="vc-kw-chip" href="#">Claude</a><a class="vc-kw-chip" href="#">LangChain</a><a class="vc-kw-chip" href="#">Stable Diffusion</a><a class="vc-kw-chip" href="#">Kaggle</a><a class="vc-kw-chip" href="#">Transformer</a><a class="vc-kw-chip" href="#">強化学習</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : アイコン付き横セクション + 大タグ</div>
+  <div class="proposal-body">
+    <div class="vd-sections">
+      <div class="vd-section">
+        <div class="vd-top"><div class="vd-icon vd-icon-1">&#x1F4BC;</div><div class="vd-info"><div class="vd-label">AI職種から探す</div><div class="vd-sublabel">8つの職種カテゴリ</div></div></div>
+        <div class="vd-tags">
+          <a class="vd-tag vd-hot" href="#">LLMアプリ開発 <span class="vd-n">56</span></a>
+          <a class="vd-tag" href="#">プロンプトエンジニア <span class="vd-n">42</span></a>
+          <a class="vd-tag" href="#">MLエンジニア <span class="vd-n">38</span></a>
+          <a class="vd-tag" href="#">データサイエンティスト <span class="vd-n">31</span></a>
+          <a class="vd-tag" href="#">AI PMM / BizDev <span class="vd-n">27</span></a>
+          <a class="vd-tag" href="#">AIリサーチャー <span class="vd-n">24</span></a>
+          <a class="vd-tag" href="#">AIエージェント開発 <span class="vd-n">19</span></a>
+          <a class="vd-tag" href="#">AI x クリエイティブ <span class="vd-n">15</span></a>
+        </div>
+      </div>
+      <div class="vd-section">
+        <div class="vd-top"><div class="vd-icon vd-icon-2">&#x26A1;</div><div class="vd-info"><div class="vd-label">尖った特徴から探す</div><div class="vd-sublabel">12の特徴で絞り込み</div></div></div>
+        <div class="vd-tags">
+          <a class="vd-tag vd-hot" href="#">フルリモート可 <span class="vd-n">89</span></a>
+          <a class="vd-tag vd-hot" href="#">未経験OK <span class="vd-n">67</span></a>
+          <a class="vd-tag" href="#">時給2,000円以上 <span class="vd-n">52</span></a>
+          <a class="vd-tag" href="#">文系歓迎 <span class="vd-n">45</span></a>
+          <a class="vd-tag" href="#">CEO / CTO直下 <span class="vd-n">38</span></a>
+          <a class="vd-tag" href="#">論文読み会あり <span class="vd-n">34</span></a>
+          <a class="vd-tag" href="#">GPU使い放題 <span class="vd-n">23</span></a>
+          <a class="vd-tag" href="#">Kaggle推奨 <span class="vd-n">21</span></a>
+        </div>
+      </div>
+      <div class="vd-section">
+        <div class="vd-top"><div class="vd-icon vd-icon-3">&#x1F52C;</div><div class="vd-info"><div class="vd-label">AI領域から探す</div><div class="vd-sublabel">10のAI分野</div></div></div>
+        <div class="vd-tags">
+          <a class="vd-tag vd-hot" href="#">LLM / 大規模言語モデル <span class="vd-n">78</span></a>
+          <a class="vd-tag" href="#">AI SaaS <span class="vd-n">56</span></a>
+          <a class="vd-tag" href="#">AIエージェント <span class="vd-n">34</span></a>
+          <a class="vd-tag" href="#">画像生成 <span class="vd-n">23</span></a>
+          <a class="vd-tag" href="#">AI x 教育 <span class="vd-n">21</span></a>
+          <a class="vd-tag" href="#">ヘルスケアAI <span class="vd-n">18</span></a>
+        </div>
+      </div>
+      <div class="vd-section">
+        <div class="vd-top"><div class="vd-icon vd-icon-4">&#x1F525;</div><div class="vd-info"><div class="vd-label">人気のAIキーワード</div><div class="vd-sublabel">トレンドキーワード8選</div></div></div>
+        <div class="vd-tags">
+          <a class="vd-tag" href="#">RAG</a><a class="vd-tag" href="#">ファインチューニング</a><a class="vd-tag" href="#">Claude</a><a class="vd-tag" href="#">LangChain</a><a class="vd-tag" href="#">Stable Diffusion</a><a class="vd-tag" href="#">Kaggle</a><a class="vd-tag" href="#">Transformer</a><a class="vd-tag" href="#">強化学習</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Region Map – Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f1f8e9;
+      font-family: "Noto Sans JP", sans-serif;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: #2e7d32;
+      margin-bottom: 24px;
+      letter-spacing: .05em;
+    }
+
+    .map-wrapper {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10);
+      padding: 24px;
+      display: inline-block;
+    }
+
+    .map-wrapper svg {
+      display: block;
+    }
+
+    /* Inline SVG: override label colour on sibling hover
+       (works when the SVG is embedded directly in HTML). */
+    .map-wrapper svg .region:hover ~ .region-label { fill: #fff; }
+
+    .note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #777;
+    }
+
+    /* ── Region selection demo ── */
+    #selected {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #2e7d32;
+      font-weight: 700;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>地域から求人を探す</h1>
+
+  <div class="map-wrapper">
+    <!-- Inline SVG (copy-paste of japan-map.svg) so JS runs in page context -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580" role="img" aria-label="日本地図 地域別">
+
+      <defs>
+        <style>
+          .region {
+            fill: #e8f5e9;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            cursor: pointer;
+            transition: fill 0.2s ease;
+          }
+          .region:hover { fill: #4caf50; }
+          .region.selected { fill: #388e3c; }
+          .region-label {
+            font-family: "Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            fill: #1b5e20;
+            text-anchor: middle;
+            pointer-events: none;
+            user-select: none;
+          }
+          #tooltip { pointer-events: none; }
+        </style>
+      </defs>
+
+      <rect width="400" height="580" fill="#e3f2fd" rx="8"/>
+
+      <text x="200" y="26" text-anchor="middle"
+            font-family="'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif"
+            font-size="13" font-weight="700" fill="#2e7d32">
+        地域から探す
+      </text>
+
+      <!-- 北海道 -->
+      <path class="region" data-region="北海道"
+            d="M 195 42 C 200 38,215 36,228 40 L 270 48 C 285 52,292 58,290 68
+               L 284 80 C 282 88,275 92,268 90 L 250 88 L 240 96
+               C 235 102,226 104,218 100 L 210 94 L 200 96
+               C 192 98,186 94,184 86 L 182 72 C 180 60,186 46,195 42 Z"/>
+
+      <!-- 東北 -->
+      <path class="region" data-region="東北"
+            d="M 208 104 C 216 102,226 106,232 114 L 244 134
+               C 250 144,252 158,248 170 L 242 188
+               C 240 196,234 202,226 202 L 214 202
+               C 206 202,199 196,197 188 L 193 172
+               C 189 160,190 146,196 136 L 202 118
+               C 204 110,206 106,208 104 Z"/>
+
+      <!-- 関東 -->
+      <path class="region" data-region="関東"
+            d="M 200 208 C 210 206,224 210,232 218 L 248 234
+               C 256 244,258 258,252 268 L 244 280
+               C 238 288,228 292,218 290 L 204 288
+               C 194 286,186 278,184 268 L 180 252
+               C 178 240,182 226,190 218 L 196 210 Z"/>
+
+      <!-- 中部 -->
+      <path class="region" data-region="中部"
+            d="M 178 272 C 186 268,198 270,206 278 L 216 290 L 230 296
+               C 242 302,250 314,248 326 L 244 342
+               C 242 352,234 358,224 358 L 208 358
+               C 196 358,186 350,182 340 L 174 316
+               C 170 302,172 284,178 272 Z"/>
+
+      <!-- 関西 -->
+      <path class="region" data-region="関西"
+            d="M 172 346 C 180 340,194 340,204 348 L 218 362
+               C 228 372,232 386,226 398 L 218 412
+               C 212 422,200 428,188 424 L 174 418
+               C 162 412,156 398,158 386 L 160 368
+               C 162 356,166 350,172 346 Z"/>
+
+      <!-- 九州・沖縄 -->
+      <path class="region" data-region="九州・沖縄"
+            d="M 134 386 C 146 378,162 380,170 392 L 176 406
+               C 182 418,180 434,170 442 L 158 452
+               C 148 460,134 460,126 450 L 118 436
+               C 110 422,112 406,122 396 Z
+               M 86 498 C 90 492,98 490,104 494 L 108 500
+               C 112 506,110 514,104 518 L 96 520
+               C 90 520,84 514,84 508 Z"/>
+
+      <!-- Labels -->
+      <text class="region-label" x="236" y="72">北海道</text>
+      <text class="region-label" x="220" y="156">東北</text>
+      <text class="region-label" x="216" y="252">関東</text>
+      <text class="region-label" x="210" y="316">中部</text>
+      <text class="region-label" x="193" y="386">関西</text>
+      <text class="region-label" x="147" y="426">九州・沖縄</text>
+      <text class="region-label" x="96" y="508" font-size="8">沖縄</text>
+
+      <line x1="126" y1="462" x2="104" y2="492"
+            stroke="#81c784" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+      <!-- Tooltip -->
+      <g id="map-tooltip" visibility="hidden">
+        <rect id="tip-bg" x="0" y="0" width="90" height="24" rx="4" fill="#1b5e20"/>
+        <text id="tip-text" x="45" y="16" text-anchor="middle" fill="#fff"
+              font-family="'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif"
+              font-size="12" font-weight="700"></text>
+      </g>
+
+      <script type="text/javascript"><![CDATA[
+        (function () {
+          var svg     = document.getElementById('map-tooltip').closest('svg');
+          var tooltip = document.getElementById('map-tooltip');
+          var tipBg   = document.getElementById('tip-bg');
+          var tipText = document.getElementById('tip-text');
+          var PADY    = 8;
+
+          function getSVGPoint(evt) {
+            var pt  = svg.createSVGPoint();
+            pt.x    = evt.clientX;
+            pt.y    = evt.clientY;
+            var ctm = svg.getScreenCTM();
+            if (ctm) pt = pt.matrixTransform(ctm.inverse());
+            return pt;
+          }
+
+          function placeTooltip(evt) {
+            var w  = parseFloat(tipBg.getAttribute('width'));
+            var h  = 24;
+            var pt = getSVGPoint(evt);
+            var tx = Math.max(4, Math.min(pt.x - w / 2, 396 - w));
+            var ty = pt.y - h - PADY;
+            if (ty < 4) ty = pt.y + PADY + 4;
+            tooltip.setAttribute('transform', 'translate(' + tx + ',' + ty + ')');
+          }
+
+          svg.querySelectorAll('.region').forEach(function (path) {
+            var label = path.getAttribute('data-region') || '';
+
+            path.addEventListener('mouseenter', function (evt) {
+              tipText.textContent = label;
+              var bbox = tipText.getBBox();
+              var w    = Math.max(bbox.width + 20, 60);
+              tipBg.setAttribute('width', w);
+              tipText.setAttribute('x', w / 2);
+              tooltip.setAttribute('visibility', 'visible');
+              placeTooltip(evt);
+            });
+
+            path.addEventListener('mousemove', placeTooltip);
+
+            path.addEventListener('mouseleave', function () {
+              tooltip.setAttribute('visibility', 'hidden');
+            });
+
+            path.addEventListener('click', function () {
+              svg.querySelectorAll('.region').forEach(function (p) {
+                p.classList.remove('selected');
+              });
+              path.classList.add('selected');
+              var out = document.getElementById('selected');
+              if (out) out.textContent = '選択中: ' + label;
+            });
+
+            path.setAttribute('tabindex', '0');
+            path.setAttribute('role', 'button');
+            path.setAttribute('aria-label', label + 'の求人を見る');
+          });
+        })();
+      ]]></script>
+    </svg>
+  </div>
+
+  <div id="selected"></div>
+  <p class="note">地域をクリックすると選択できます。ホバーでツールチップが表示されます。</p>
+</body>
+</html>

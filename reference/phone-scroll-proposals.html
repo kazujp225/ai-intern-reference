@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スマホスクロール風フィルター UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 40px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+
+  /* ========================================= */
+  /*  共通: スマホフレーム                        */
+  /* ========================================= */
+  .phone {
+    width: 280px; flex-shrink: 0;
+    background: #111; border-radius: 36px; padding: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2), inset 0 0 0 2px #333;
+    position: relative;
+  }
+  .phone-notch {
+    width: 100px; height: 24px; background: #111; border-radius: 0 0 14px 14px;
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 10;
+  }
+  .phone-screen {
+    background: #fff; border-radius: 26px; overflow: hidden;
+    height: 480px; position: relative;
+  }
+  .phone-statusbar {
+    height: 36px; background: #fff; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; font-size: 0.6em;
+    color: #333; font-weight: 700;
+  }
+  .phone-home {
+    height: 20px; display: flex; align-items: center; justify-content: center;
+  }
+  .phone-home-bar { width: 100px; height: 4px; background: #ddd; border-radius: 2px; }
+
+  /* ========================================= */
+  /*  案A: 1台スマホ・自動スクロール              */
+  /* ========================================= */
+  .pa-content {
+    height: 424px; overflow: hidden; position: relative;
+  }
+  .pa-scroll {
+    animation: pa-up 25s linear infinite;
+    padding: 16px;
+  }
+  .pa-scroll:hover { animation-play-state: paused; }
+  .pa-section { margin-bottom: 20px; }
+  .pa-label { font-size: 0.72em; font-weight: 800; color: #999; margin-bottom: 8px; letter-spacing: 0.03em; }
+  .pa-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pa-chip {
+    padding: 6px 12px; border-radius: 8px; font-size: 0.7em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.15s;
+  }
+  .pa-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .pa-chip.pa-hot { background: #2e7d32; color: #fff; }
+  .pa-chip .pa-n { font-size: 0.85em; color: #bbb; margin-left: 2px; }
+  .pa-chip.pa-hot .pa-n { color: rgba(255,255,255,0.6); }
+  .pa-fade-top, .pa-fade-bottom { position: absolute; left: 0; right: 0; height: 40px; z-index: 3; pointer-events: none; }
+  .pa-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+  .pa-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+  @keyframes pa-up { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+  /* ========================================= */
+  /*  案B: 2台スマホ・逆方向スクロール            */
+  /* ========================================= */
+  .pb-content { height: 424px; overflow: hidden; position: relative; }
+  .pb-scroll { padding: 16px; }
+  .pb-up { animation: pb-scroll-up 20s linear infinite; }
+  .pb-down { animation: pb-scroll-down 22s linear infinite; }
+  .pb-scroll:hover { animation-play-state: paused; }
+  .pb-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px; margin-bottom: 8px; border-radius: 12px;
+    background: #f8f8f8; text-decoration: none; color: #333;
+    transition: all 0.15s;
+  }
+  .pb-item:hover { background: #e8f5e9; }
+  .pb-icon { font-size: 1.4em; width: 36px; height: 36px; background: #e8f5e9; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pb-name { font-size: 0.78em; font-weight: 700; }
+  .pb-num { font-size: 0.65em; color: #999; }
+  .pb-fade-top, .pb-fade-bottom { position: absolute; left: 0; right: 0; height: 40px; z-index: 3; pointer-events: none; }
+  .pb-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+  .pb-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+  @keyframes pb-scroll-up { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+  @keyframes pb-scroll-down { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
+
+  /* ========================================= */
+  /*  案C: 3台スマホ・カテゴリ別                  */
+  /* ========================================= */
+  .pc-header {
+    padding: 10px 16px; font-size: 0.75em; font-weight: 800;
+    color: #fff; text-align: center;
+  }
+  .pc-h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+  .pc-h2 { background: linear-gradient(135deg, #0d47a1, #1565c0); }
+  .pc-h3 { background: linear-gradient(135deg, #4a148c, #6a1b9a); }
+  .pc-content { height: 390px; overflow: hidden; position: relative; }
+  .pc-scroll { padding: 12px; }
+  .pc-s1 { animation: pa-up 18s linear infinite; }
+  .pc-s2 { animation: pb-scroll-down 20s linear infinite; }
+  .pc-s3 { animation: pa-up 22s linear infinite; }
+  .pc-scroll:hover { animation-play-state: paused; }
+  .pc-card {
+    padding: 12px; margin-bottom: 8px; border-radius: 10px;
+    border: 1px solid #f0f0f0; text-decoration: none; display: block;
+    color: #333; transition: all 0.12s;
+  }
+  .pc-card:hover { border-color: #4caf50; background: #fafffe; }
+  .pc-card-name { font-size: 0.78em; font-weight: 800; margin-bottom: 2px; }
+  .pc-card-num { font-size: 0.65em; color: #4caf50; font-weight: 700; }
+  .pc-fade-top, .pc-fade-bottom { position: absolute; left: 0; right: 0; height: 30px; z-index: 3; pointer-events: none; }
+  .pc-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+  .pc-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+
+  /* ========================================= */
+  /*  案D: 1台スマホ・アプリ風 + タブ切り替え      */
+  /* ========================================= */
+  .pd-tabs {
+    display: flex; border-bottom: 1px solid #eee;
+  }
+  .pd-tab {
+    flex: 1; padding: 8px 0; font-size: 0.62em; font-weight: 700;
+    color: #aaa; text-align: center; cursor: pointer; transition: all 0.15s;
+    border-bottom: 2px solid transparent;
+  }
+  .pd-tab.active { color: #2e7d32; border-bottom-color: #4caf50; }
+  .pd-content { height: 370px; overflow: hidden; position: relative; }
+  .pd-scroll { padding: 12px; animation: pa-up 22s linear infinite; }
+  .pd-scroll:hover { animation-play-state: paused; }
+  .pd-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-bottom: 1px solid #f5f5f5;
+    text-decoration: none; color: #333; transition: all 0.12s;
+  }
+  .pd-row:hover { background: #f0faf0; }
+  .pd-row-left { display: flex; align-items: center; gap: 8px; }
+  .pd-row-icon { font-size: 1.2em; }
+  .pd-row-name { font-size: 0.78em; font-weight: 700; }
+  .pd-row-num { font-size: 0.7em; color: #4caf50; font-weight: 800; background: #e8f5e9; padding: 2px 8px; border-radius: 8px; }
+  .pd-fade-top, .pd-fade-bottom { position: absolute; left: 0; right: 0; height: 30px; z-index: 3; pointer-events: none; }
+  .pd-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+  .pd-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+</style>
+</head>
+<body>
+
+<h1>スマホスクロール風フィルター UI案</h1>
+<p class="desc">スマホの画面内でフィルターが自動スクロール</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : 1台スマホ・全カテゴリ自動スクロール</div>
+  <div class="proposal-body">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>AIme</span><span>100%</span></div>
+        <div class="pa-content">
+          <div class="pa-fade-top"></div>
+          <div class="pa-scroll" id="paScroll"></div>
+          <div class="pa-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : 2台スマホ・逆方向スクロール</div>
+  <div class="proposal-body">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>AI職種</span><span>100%</span></div>
+        <div class="pb-content">
+          <div class="pb-fade-top"></div>
+          <div class="pb-scroll pb-up" id="pbScroll1"></div>
+          <div class="pb-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>尖った特徴</span><span>100%</span></div>
+        <div class="pb-content">
+          <div class="pb-fade-top"></div>
+          <div class="pb-scroll pb-down" id="pbScroll2"></div>
+          <div class="pb-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 3台スマホ・カテゴリ別カラーヘッダー</div>
+  <div class="proposal-body">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+        <div class="pc-header pc-h1">AI職種から探す</div>
+        <div class="pc-content">
+          <div class="pc-fade-top"></div>
+          <div class="pc-scroll pc-s1" id="pcScroll1"></div>
+          <div class="pc-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+        <div class="pc-header pc-h2">尖った特徴から探す</div>
+        <div class="pc-content">
+          <div class="pc-fade-top"></div>
+          <div class="pc-scroll pc-s2" id="pcScroll2"></div>
+          <div class="pc-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+        <div class="pc-header pc-h3">AI領域 + キーワード</div>
+        <div class="pc-content">
+          <div class="pc-fade-top"></div>
+          <div class="pc-scroll pc-s3" id="pcScroll3"></div>
+          <div class="pc-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : 1台スマホ・アプリ風タブ + リスト</div>
+  <div class="proposal-body">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-statusbar"><span>9:41</span><span>AIme</span><span>100%</span></div>
+        <div class="pd-tabs">
+          <div class="pd-tab active">職種</div>
+          <div class="pd-tab">特徴</div>
+          <div class="pd-tab">領域</div>
+          <div class="pd-tab">KW</div>
+        </div>
+        <div class="pd-content">
+          <div class="pd-fade-top"></div>
+          <div class="pd-scroll" id="pdScroll"></div>
+          <div class="pd-fade-bottom"></div>
+        </div>
+        <div class="phone-home"><div class="phone-home-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var jobs=[{i:'💬',n:'LLMアプリ開発',c:'56'},{i:'🧠',n:'プロンプトエンジニア',c:'42'},{i:'🔬',n:'MLエンジニア',c:'38'},{i:'💻',n:'データサイエンティスト',c:'31'},{i:'📊',n:'AI PMM / BizDev',c:'27'},{i:'🤖',n:'AIリサーチャー',c:'24'},{i:'⚡',n:'AIエージェント開発',c:'19'},{i:'🎨',n:'AI x クリエイティブ',c:'15'}];
+var feat=[{i:'🏠',n:'フルリモート可',c:'89'},{i:'🌱',n:'未経験OK',c:'67'},{i:'💰',n:'時給2,000円以上',c:'52'},{i:'📝',n:'文系歓迎',c:'45'},{i:'👔',n:'CEO / CTO直下',c:'38'},{i:'📖',n:'論文読み会あり',c:'34'},{i:'🖥️',n:'GPU使い放題',c:'23'},{i:'🏆',n:'Kaggle推奨',c:'21'},{i:'📄',n:'論文共著チャンス',c:'15'},{i:'🚀',n:'自社LLM開発中',c:'12'},{i:'🌐',n:'国際学会発表',c:'11'},{i:'📈',n:'ストックオプション',c:'8'}];
+var areas=[{i:'🧠',n:'LLM / 大規模言語モデル',c:'78'},{i:'☁️',n:'AI SaaS',c:'56'},{i:'🤖',n:'AIエージェント',c:'34'},{i:'🎨',n:'画像生成 / Diffusion',c:'23'},{i:'📚',n:'AI x 教育',c:'21'},{i:'🏥',n:'ヘルスケアAI',c:'18'},{i:'💹',n:'AI x 金融',c:'14'},{i:'🎤',n:'音声AI / TTS',c:'12'},{i:'🦾',n:'ロボティクス',c:'9'},{i:'🎮',n:'AI x ゲーム',c:'8'}];
+var kw=[{i:'',n:'RAG',c:''},{i:'',n:'ファインチューニング',c:''},{i:'',n:'Claude',c:''},{i:'',n:'LangChain',c:''},{i:'',n:'Stable Diffusion',c:''},{i:'',n:'Kaggle',c:''},{i:'',n:'Transformer',c:''},{i:'',n:'強化学習',c:''}];
+
+// 案A
+(function(){
+  var el=document.getElementById('paScroll');
+  function makeChips(label,items,hot){
+    var h='<div class="pa-section"><div class="pa-label">'+label+'</div><div class="pa-chips">';
+    items.forEach(function(d,i){
+      var cls=(i<hot)?'pa-chip pa-hot':'pa-chip';
+      var nH=d.c?'<span class="pa-n">'+d.c+'</span>':'';
+      h+='<a class="'+cls+'" href="#">'+(d.i||'')+d.n+nH+'</a>';
+    });
+    h+='</div></div>';return h;
+  }
+  var html=makeChips('AI職種から探す',jobs,1)+makeChips('尖った特徴から探す',feat,2)+makeChips('AI領域から探す',areas,1)+makeChips('人気のAIキーワード',kw,0);
+  el.innerHTML=html+html;
+})();
+
+// 案B
+(function(){
+  var s1=document.getElementById('pbScroll1');
+  var s2=document.getElementById('pbScroll2');
+  function makeItems(items){
+    var h='';items.forEach(function(d){
+      h+='<a class="pb-item" href="#"><div class="pb-icon">'+d.i+'</div><div><div class="pb-name">'+d.n+'</div>'+(d.c?'<div class="pb-num">'+d.c+'件</div>':'')+'</div></a>';
+    });return h;
+  }
+  var h1=makeItems(jobs);s1.innerHTML=h1+h1;
+  var h2=makeItems(feat);s2.innerHTML=h2+h2;
+})();
+
+// 案C
+(function(){
+  function makeCards(items){var h='';items.forEach(function(d){h+='<a class="pc-card" href="#"><div class="pc-card-name">'+(d.i?d.i+' ':'')+d.n+'</div>'+(d.c?'<div class="pc-card-num">'+d.c+'件</div>':'')+'</a>';});return h;}
+  var s1=document.getElementById('pcScroll1');s1.innerHTML=makeCards(jobs)+makeCards(jobs);
+  var s2=document.getElementById('pcScroll2');s2.innerHTML=makeCards(feat)+makeCards(feat);
+  var s3=document.getElementById('pcScroll3');s3.innerHTML=makeCards(areas.concat(kw))+makeCards(areas.concat(kw));
+})();
+
+// 案D
+(function(){
+  var el=document.getElementById('pdScroll');
+  var all=jobs.concat(feat.slice(0,6)).concat(areas.slice(0,5)).concat(kw.slice(0,4));
+  function makeRows(items){var h='';items.forEach(function(d){
+    h+='<a class="pd-row" href="#"><div class="pd-row-left"><span class="pd-row-icon">'+(d.i||'#')+'</span><span class="pd-row-name">'+d.n+'</span></div>'+(d.c?'<span class="pd-row-num">'+d.c+'</span>':'')+'</a>';
+  });return h;}
+  el.innerHTML=makeRows(all)+makeRows(all);
+})();
+</script>
+
+</body>
+</html>

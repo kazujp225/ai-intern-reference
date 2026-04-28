@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スクロール連動フィルター UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #fff; color: #222; }
+  h1 { text-align: center; font-size: 2em; padding: 40px 20px 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 20px; }
+  .spacer { height: 300px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 1.2em; }
+  .proposal-banner { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 16px; font-size: 1.2em; font-weight: 900; position: sticky; top: 0; z-index: 100; }
+
+  /* ========================================= */
+  /*  案A: スティッキー縮小バー                   */
+  /*  スクロールで全体表示→上部に縮小固定          */
+  /* ========================================= */
+  .sa-wrap {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff; transition: all 0.3s;
+    padding: 30px 40px;
+    border-bottom: 1px solid transparent;
+  }
+  .sa-wrap.sa-compact {
+    padding: 10px 40px;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .sa-section { margin-bottom: 20px; transition: all 0.3s; }
+  .sa-wrap.sa-compact .sa-section { margin-bottom: 8px; }
+  .sa-label { font-size: 0.95em; font-weight: 800; color: #222; margin-bottom: 10px; padding-left: 12px; border-left: 4px solid #4caf50; transition: all 0.3s; }
+  .sa-wrap.sa-compact .sa-label { font-size: 0.75em; margin-bottom: 4px; }
+  .sa-chips { display: flex; flex-wrap: wrap; gap: 8px; transition: all 0.3s; }
+  .sa-chip {
+    padding: 8px 18px; border-radius: 8px; font-size: 0.85em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.2s;
+  }
+  .sa-wrap.sa-compact .sa-chip { padding: 4px 12px; font-size: 0.72em; border-radius: 12px; }
+  .sa-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .sa-chip .sa-n { font-size: 0.8em; color: #bbb; margin-left: 3px; }
+  .sa-chip.sa-hot { background: #2e7d32; color: #fff; }
+  .sa-chip.sa-hot .sa-n { color: rgba(255,255,255,0.6); }
+
+  /* ========================================= */
+  /*  案B: フェードイン順次表示                    */
+  /* ========================================= */
+  .sb-section { margin-bottom: 40px; padding: 0 40px; }
+  .sb-label { font-size: 1em; font-weight: 800; color: #222; margin-bottom: 14px; padding-left: 12px; border-left: 4px solid #4caf50; }
+  .sb-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sb-chip {
+    padding: 10px 20px; border-radius: 10px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.15s, color 0.15s;
+  }
+  .sb-chip.sb-visible { opacity: 1; transform: translateY(0); }
+  .sb-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .sb-chip .sb-n { font-size: 0.8em; color: #bbb; margin-left: 3px; }
+  .sb-chip.sb-hot { background: #2e7d32; color: #fff; }
+  .sb-chip.sb-hot .sb-n { color: rgba(255,255,255,0.6); }
+
+  /* ========================================= */
+  /*  案C: パララックス + スケール変化             */
+  /* ========================================= */
+  .sc-section {
+    margin-bottom: 50px; padding: 0 40px;
+    transform: scale(0.95); opacity: 0.3;
+    transition: all 0.5s ease;
+  }
+  .sc-section.sc-active { transform: scale(1); opacity: 1; }
+  .sc-label { font-size: 1.1em; font-weight: 800; color: #222; margin-bottom: 14px; }
+  .sc-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sc-chip {
+    padding: 10px 20px; border-radius: 10px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none; transition: all 0.15s;
+  }
+  .sc-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .sc-chip .sc-n { font-size: 0.8em; color: #bbb; margin-left: 3px; }
+  .sc-chip.sc-hot { background: #2e7d32; color: #fff; }
+  .sc-chip.sc-hot .sc-n { color: rgba(255,255,255,0.6); }
+
+  /* ========================================= */
+  /*  案D: 横スライドイン                         */
+  /* ========================================= */
+  .sd-section { margin-bottom: 40px; padding: 0 40px; overflow: hidden; }
+  .sd-label { font-size: 1em; font-weight: 800; color: #222; margin-bottom: 14px; padding-left: 12px; border-left: 4px solid #4caf50; }
+  .sd-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sd-chip {
+    padding: 10px 20px; border-radius: 10px; font-size: 0.88em; font-weight: 700;
+    background: #f5f5f5; color: #444; text-decoration: none;
+    opacity: 0; transform: translateX(-40px);
+    transition: opacity 0.4s ease, transform 0.4s ease, background 0.15s, color 0.15s;
+  }
+  .sd-chip.sd-visible { opacity: 1; transform: translateX(0); }
+  .sd-chip:hover { background: #e8f5e9; color: #2e7d32; }
+  .sd-chip .sd-n { font-size: 0.8em; color: #bbb; margin-left: 3px; }
+  .sd-chip.sd-hot { background: #2e7d32; color: #fff; }
+  .sd-chip.sd-hot .sd-n { color: rgba(255,255,255,0.6); }
+  .sd-section:nth-child(even) .sd-chip { transform: translateX(40px); }
+  .sd-section:nth-child(even) .sd-chip.sd-visible { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<h1>スクロール連動フィルター UI案</h1>
+<p class="desc">下にスクロールして各案の動きを確認してください</p>
+
+<!-- ============================================================ -->
+<!--  案A: スティッキー縮小バー                                     -->
+<!-- ============================================================ -->
+<div class="proposal-banner">案A : スティッキー縮小バー（スクロールで上部に縮小固定）</div>
+<div style="position: relative;">
+  <div class="sa-wrap" id="saWrap">
+    <div class="sa-section">
+      <div class="sa-label">AI職種から探す</div>
+      <div class="sa-chips">
+        <a class="sa-chip sa-hot" href="#">LLMアプリ開発 <span class="sa-n">56</span></a>
+        <a class="sa-chip" href="#">プロンプトエンジニア <span class="sa-n">42</span></a>
+        <a class="sa-chip" href="#">MLエンジニア <span class="sa-n">38</span></a>
+        <a class="sa-chip" href="#">データサイエンティスト <span class="sa-n">31</span></a>
+        <a class="sa-chip" href="#">AIエージェント開発 <span class="sa-n">19</span></a>
+      </div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">尖った特徴から探す</div>
+      <div class="sa-chips">
+        <a class="sa-chip sa-hot" href="#">フルリモート可 <span class="sa-n">89</span></a>
+        <a class="sa-chip" href="#">未経験OK <span class="sa-n">67</span></a>
+        <a class="sa-chip" href="#">時給2,000円以上 <span class="sa-n">52</span></a>
+        <a class="sa-chip" href="#">GPU使い放題 <span class="sa-n">23</span></a>
+      </div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">人気のAIキーワード</div>
+      <div class="sa-chips">
+        <a class="sa-chip" href="#">RAG</a><a class="sa-chip" href="#">Claude</a><a class="sa-chip" href="#">LangChain</a><a class="sa-chip" href="#">Kaggle</a>
+      </div>
+    </div>
+  </div>
+  <div class="spacer">↓ スクロールすると上部に縮小固定されます</div>
+  <div class="spacer">コンテンツエリア</div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案B: フェードイン順次表示                                     -->
+<!-- ============================================================ -->
+<div class="proposal-banner">案B : フェードイン順次表示（スクロールでチップが順に現れる）</div>
+<div class="spacer">↓ スクロールしてください</div>
+<div class="sb-section">
+  <div class="sb-label">AI職種から探す</div>
+  <div class="sb-chips" id="sbJobs">
+    <a class="sb-chip sb-hot" href="#">LLMアプリ開発 <span class="sb-n">56</span></a>
+    <a class="sb-chip" href="#">プロンプトエンジニア <span class="sb-n">42</span></a>
+    <a class="sb-chip" href="#">MLエンジニア <span class="sb-n">38</span></a>
+    <a class="sb-chip" href="#">データサイエンティスト <span class="sb-n">31</span></a>
+    <a class="sb-chip" href="#">AI PMM / BizDev <span class="sb-n">27</span></a>
+    <a class="sb-chip" href="#">AIリサーチャー <span class="sb-n">24</span></a>
+    <a class="sb-chip" href="#">AIエージェント開発 <span class="sb-n">19</span></a>
+  </div>
+</div>
+<div class="sb-section">
+  <div class="sb-label">尖った特徴から探す</div>
+  <div class="sb-chips" id="sbFeatures">
+    <a class="sb-chip sb-hot" href="#">フルリモート可 <span class="sb-n">89</span></a>
+    <a class="sb-chip sb-hot" href="#">未経験OK <span class="sb-n">67</span></a>
+    <a class="sb-chip" href="#">時給2,000円以上 <span class="sb-n">52</span></a>
+    <a class="sb-chip" href="#">文系歓迎 <span class="sb-n">45</span></a>
+    <a class="sb-chip" href="#">CEO / CTO直下 <span class="sb-n">38</span></a>
+    <a class="sb-chip" href="#">GPU使い放題 <span class="sb-n">23</span></a>
+  </div>
+</div>
+<div class="sb-section">
+  <div class="sb-label">人気のAIキーワード</div>
+  <div class="sb-chips" id="sbKeywords">
+    <a class="sb-chip" href="#">RAG</a><a class="sb-chip" href="#">ファインチューニング</a><a class="sb-chip" href="#">Claude</a><a class="sb-chip" href="#">LangChain</a><a class="sb-chip" href="#">Stable Diffusion</a><a class="sb-chip" href="#">Kaggle</a>
+  </div>
+</div>
+<div class="spacer"></div>
+
+<!-- ============================================================ -->
+<!--  案C: パララックス + スケール変化                               -->
+<!-- ============================================================ -->
+<div class="proposal-banner">案C : パララックス + スケール変化（近づくと拡大・鮮明化）</div>
+<div class="spacer">↓ スクロールしてください</div>
+<div class="sc-section" id="sc1">
+  <div class="sc-label">AI職種から探す</div>
+  <div class="sc-chips">
+    <a class="sc-chip sc-hot" href="#">LLMアプリ開発 <span class="sc-n">56</span></a>
+    <a class="sc-chip" href="#">プロンプトエンジニア <span class="sc-n">42</span></a>
+    <a class="sc-chip" href="#">MLエンジニア <span class="sc-n">38</span></a>
+    <a class="sc-chip" href="#">データサイエンティスト <span class="sc-n">31</span></a>
+    <a class="sc-chip" href="#">AIエージェント開発 <span class="sc-n">19</span></a>
+  </div>
+</div>
+<div class="sc-section" id="sc2">
+  <div class="sc-label">尖った特徴から探す</div>
+  <div class="sc-chips">
+    <a class="sc-chip sc-hot" href="#">フルリモート可 <span class="sc-n">89</span></a>
+    <a class="sc-chip sc-hot" href="#">未経験OK <span class="sc-n">67</span></a>
+    <a class="sc-chip" href="#">時給2,000円以上 <span class="sc-n">52</span></a>
+    <a class="sc-chip" href="#">文系歓迎 <span class="sc-n">45</span></a>
+    <a class="sc-chip" href="#">GPU使い放題 <span class="sc-n">23</span></a>
+  </div>
+</div>
+<div class="sc-section" id="sc3">
+  <div class="sc-label">AI領域から探す</div>
+  <div class="sc-chips">
+    <a class="sc-chip sc-hot" href="#">LLM <span class="sc-n">78</span></a>
+    <a class="sc-chip" href="#">AI SaaS <span class="sc-n">56</span></a>
+    <a class="sc-chip" href="#">AIエージェント <span class="sc-n">34</span></a>
+    <a class="sc-chip" href="#">画像生成 <span class="sc-n">23</span></a>
+  </div>
+</div>
+<div class="sc-section" id="sc4">
+  <div class="sc-label">人気のAIキーワード</div>
+  <div class="sc-chips">
+    <a class="sc-chip" href="#">RAG</a><a class="sc-chip" href="#">Claude</a><a class="sc-chip" href="#">LangChain</a><a class="sc-chip" href="#">Kaggle</a>
+  </div>
+</div>
+<div class="spacer"></div>
+
+<!-- ============================================================ -->
+<!--  案D: 横スライドイン（左右交互）                                -->
+<!-- ============================================================ -->
+<div class="proposal-banner">案D : 横スライドイン（セクションごとに左右交互にスライド）</div>
+<div class="spacer">↓ スクロールしてください</div>
+<div class="sd-section" id="sd1">
+  <div class="sd-label">AI職種から探す</div>
+  <div class="sd-chips">
+    <a class="sd-chip sd-hot" href="#">LLMアプリ開発 <span class="sd-n">56</span></a>
+    <a class="sd-chip" href="#">プロンプトエンジニア <span class="sd-n">42</span></a>
+    <a class="sd-chip" href="#">MLエンジニア <span class="sd-n">38</span></a>
+    <a class="sd-chip" href="#">データサイエンティスト <span class="sd-n">31</span></a>
+    <a class="sd-chip" href="#">AIエージェント開発 <span class="sd-n">19</span></a>
+  </div>
+</div>
+<div class="sd-section" id="sd2">
+  <div class="sd-label">尖った特徴から探す</div>
+  <div class="sd-chips">
+    <a class="sd-chip sd-hot" href="#">フルリモート可 <span class="sd-n">89</span></a>
+    <a class="sd-chip sd-hot" href="#">未経験OK <span class="sd-n">67</span></a>
+    <a class="sd-chip" href="#">時給2,000円以上 <span class="sd-n">52</span></a>
+    <a class="sd-chip" href="#">文系歓迎 <span class="sd-n">45</span></a>
+    <a class="sd-chip" href="#">GPU使い放題 <span class="sd-n">23</span></a>
+  </div>
+</div>
+<div class="sd-section" id="sd3">
+  <div class="sd-label">AI領域から探す</div>
+  <div class="sd-chips">
+    <a class="sd-chip sd-hot" href="#">LLM <span class="sd-n">78</span></a>
+    <a class="sd-chip" href="#">AI SaaS <span class="sd-n">56</span></a>
+    <a class="sd-chip" href="#">AIエージェント <span class="sd-n">34</span></a>
+    <a class="sd-chip" href="#">画像生成 <span class="sd-n">23</span></a>
+  </div>
+</div>
+<div class="sd-section" id="sd4">
+  <div class="sd-label">人気のAIキーワード</div>
+  <div class="sd-chips">
+    <a class="sd-chip" href="#">RAG</a><a class="sd-chip" href="#">Claude</a><a class="sd-chip" href="#">LangChain</a><a class="sd-chip" href="#">Kaggle</a><a class="sd-chip" href="#">Transformer</a>
+  </div>
+</div>
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+<script>
+// 案A: スティッキー縮小
+var saWrap = document.getElementById('saWrap');
+if (saWrap) {
+  var saTop = saWrap.offsetTop;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > saTop + 100) {
+      saWrap.classList.add('sa-compact');
+    } else {
+      saWrap.classList.remove('sa-compact');
+    }
+  });
+}
+
+// 案B: フェードイン順次表示
+function observeFadeIn(selector, cls) {
+  document.querySelectorAll(selector).forEach(function(container) {
+    var chips = container.querySelectorAll('a');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          chips.forEach(function(chip, i) {
+            setTimeout(function() { chip.classList.add(cls); }, i * 80);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(container);
+  });
+}
+observeFadeIn('.sb-chips', 'sb-visible');
+
+// 案C: パララックス + スケール
+var scSections = document.querySelectorAll('.sc-section');
+var scObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('sc-active');
+    }
+  });
+}, { threshold: 0.3 });
+scSections.forEach(function(s) { scObserver.observe(s); });
+
+// 案D: 横スライドイン
+function observeSlideIn(selector, cls) {
+  document.querySelectorAll(selector).forEach(function(section) {
+    var chips = section.querySelectorAll('a');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          chips.forEach(function(chip, i) {
+            setTimeout(function() { chip.classList.add(cls); }, i * 100);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(section);
+  });
+}
+observeSlideIn('.sd-section', 'sd-visible');
+</script>
+
+</body>
+</html>

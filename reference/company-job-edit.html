@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>求人編集 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .je-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; padding: 32px 24px; }
+  .je-hero h1 { margin: 0; font-size: 1.4em; font-weight: 900; }
+  .je-wrap { max-width: 760px; margin: 30px auto 60px; padding: 0 24px; }
+  .je-card { background: #fff; border-radius: 14px; padding: 28px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .je-field { margin-bottom: 16px; }
+  .je-field label { display: block; font-size: .85em; font-weight: 800; margin-bottom: 6px; }
+  .je-field input, .je-field textarea, .je-field select { width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: .95em; font-family: inherit; }
+  .je-field textarea { min-height: 120px; resize: vertical; }
+  .je-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .je-row { grid-template-columns: 1fr; } }
+  .je-toggle { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+  .je-btn { padding: 12px 28px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; }
+  .je-btn-ghost { padding: 12px 28px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; font-weight: 700; cursor: pointer; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="company-dashboard.html">企業ダッシュボード</a>
+    <a href="messages.html">メッセージ</a>
+  </nav>
+</div></header>
+
+<section class="je-hero"><h1 id="je-title">新規求人の作成</h1></section>
+
+<div class="je-wrap">
+  <div class="je-card">
+    <form id="je-form">
+      <div class="je-field"><label>タイトル <span style="color:#f44336;">*</span></label><input id="j-title" required placeholder="例: 【GPT-4超え】自社LLMファインチューニングエンジニア"></div>
+      <div class="je-field"><label>説明</label><textarea id="j-description" placeholder="求人の詳細・仕事内容"></textarea></div>
+      <div class="je-row">
+        <div class="je-field"><label>時給（最小）</label><input type="number" id="j-salary-min" placeholder="2000"></div>
+        <div class="je-field"><label>時給（最大）</label><input type="number" id="j-salary-max" placeholder="5000"></div>
+      </div>
+      <div class="je-row">
+        <div class="je-field"><label>勤務地</label><input id="j-location" placeholder="渋谷駅 徒歩5分 / フルリモート"></div>
+        <div class="je-field"><label>カテゴリ</label>
+          <select id="j-category">
+            <option value="">選択</option>
+            <option value="llm">LLM / 言語AI</option><option value="prompt">プロンプト</option>
+            <option value="image">画像生成</option><option value="agent">エージェント</option>
+            <option value="medical">医療AI</option><option value="robotics">ロボティクス</option>
+            <option value="data">データ分析</option><option value="business">ビジネス</option>
+          </select>
+        </div>
+      </div>
+      <div class="je-field"><label>勤務日数</label><input id="j-workdays" placeholder="週3〜"></div>
+      <div class="je-field"><label>タグ（カンマ区切り）</label><input id="j-tags" placeholder="LLM, RAG, Python"></div>
+      <div class="je-field"><label>応募要件（改行区切り）</label><textarea id="j-skills" placeholder="Python基礎&#10;LLMの基本理解"></textarea></div>
+      <div class="je-field"><label>歓迎スキル（改行区切り）</label><textarea id="j-welcome" placeholder="Hugging Face経験&#10;Kaggle入賞"></textarea></div>
+      <div class="je-field"><label>福利厚生（改行区切り）</label><textarea id="j-benefits" placeholder="GPU使い放題&#10;論文読み会"></textarea></div>
+      <div class="je-field"><label>応募締切</label><input type="date" id="j-deadline"></div>
+      <div class="je-toggle"><label><input type="checkbox" id="j-public" checked> 公開する</label></div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button type="submit" class="je-btn">保存</button>
+        <a href="company-dashboard.html" class="je-btn-ghost">キャンセル</a>
+      </div>
+      <div id="je-msg" style="margin-top:10px; font-size:.9em;"></div>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  if (PREVIEW) {
+    document.getElementById('je-title').textContent = '求人の編集 (プレビュー)';
+    document.getElementById('j-title').value = 'LLM開発インターン';
+    document.getElementById('j-description').value = 'LLMを活用したエンタープライズ向けAIアシスタントの開発に携わる学生インターンを募集します。プロンプトエンジニアリング、RAG実装、評価パイプライン構築を担当いただきます。';
+    document.getElementById('j-salary-min').value = '2000';
+    document.getElementById('j-salary-max').value = '3500';
+    document.getElementById('j-location').value = '東京都渋谷区 / フルリモート可';
+    const catEl = document.getElementById('j-category'); if (catEl) catEl.value = 'エンジニア';
+    document.getElementById('j-workdays').value = '週3日〜 / 平日10-19時';
+    document.getElementById('j-tags').value = 'LLM, RAG, Python, GPT, プロンプトエンジニアリング';
+    document.getElementById('j-skills').value = 'Python基礎\nGit / GitHub\nLLM APIの利用経験';
+    document.getElementById('j-welcome').value = 'LangChain / LlamaIndex経験\nベクトルDB (pgvector / Pinecone)の経験\n英語ドキュメント読解';
+    document.getElementById('j-benefits').value = '交通費支給\n書籍購入補助\nフルリモートOK\nメンター制度';
+    document.getElementById('j-deadline').value = '2026-06-30';
+    document.getElementById('j-public').checked = true;
+    document.getElementById('je-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('je-msg');
+      msg.style.color = '#1b5e20';
+      msg.textContent = '✓ (プレビューモード) 保存はスキップされました';
+    });
+    return;
+  }
+
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (!user) { location.href = 'login.html'; return; }
+  const company = await window.AImeBiz.getMyCompany();
+  if (!company) { location.href = 'company-signup.html'; return; }
+
+  const id = new URLSearchParams(location.search).get('id');
+  const msg = document.getElementById('je-msg');
+
+  function toLines(v) { return v.split(/\r?\n/).map(s => s.trim()).filter(Boolean); }
+  function toTags(v) { return v.split(',').map(s => s.trim()).filter(Boolean); }
+
+  if (id) {
+    document.getElementById('je-title').textContent = '求人の編集';
+    const job = await window.AImeBiz.getJob(id);
+    if (!job) { msg.textContent = '求人が見つかりません'; return; }
+    document.getElementById('j-title').value = job.title || '';
+    document.getElementById('j-description').value = job.description || '';
+    document.getElementById('j-salary-min').value = job.salary_min || '';
+    document.getElementById('j-salary-max').value = job.salary_max || '';
+    document.getElementById('j-location').value = job.location || '';
+    document.getElementById('j-category').value = job.category || '';
+    document.getElementById('j-workdays').value = job.workdays || '';
+    document.getElementById('j-tags').value = (job.tags || []).join(', ');
+    document.getElementById('j-skills').value = (job.skills || []).join('\n');
+    document.getElementById('j-welcome').value = (job.welcome_skills || []).join('\n');
+    document.getElementById('j-benefits').value = (job.benefits || []).join('\n');
+    document.getElementById('j-deadline').value = job.deadline ? job.deadline.slice(0, 10) : '';
+    document.getElementById('j-public').checked = !!job.is_public;
+  }
+
+  document.getElementById('je-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.style.color = '#666';
+    msg.textContent = '保存中...';
+    const payload = {
+      title: document.getElementById('j-title').value.trim(),
+      description: document.getElementById('j-description').value.trim(),
+      salary_min: parseInt(document.getElementById('j-salary-min').value) || null,
+      salary_max: parseInt(document.getElementById('j-salary-max').value) || null,
+      location: document.getElementById('j-location').value.trim(),
+      category: document.getElementById('j-category').value || null,
+      workdays: document.getElementById('j-workdays').value.trim(),
+      tags: toTags(document.getElementById('j-tags').value),
+      skills: toLines(document.getElementById('j-skills').value),
+      welcome_skills: toLines(document.getElementById('j-welcome').value),
+      benefits: toLines(document.getElementById('j-benefits').value),
+      deadline: document.getElementById('j-deadline').value || null,
+      is_public: document.getElementById('j-public').checked,
+    };
+    try {
+      if (id) await window.AImeBiz.updateJob(id, payload);
+      else await window.AImeBiz.createJob(payload);
+      msg.style.color = '#1b5e20';
+      msg.textContent = '✓ 保存しました。管理画面へ戻ります...';
+      setTimeout(() => location.href = 'company-dashboard.html', 800);
+    } catch (err) {
+      msg.style.color = '#c62828';
+      msg.textContent = 'エラー: ' + err.message;
+    }
+  });
+})();
+</script>
+</body></html>

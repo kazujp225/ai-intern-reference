@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カードロゴ UI案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+  .proposal-label { background: linear-gradient(135deg, #1b5e20, #4caf50); color: #fff; text-align: center; padding: 14px; font-size: 1.2em; font-weight: 900; }
+  .proposal-body { padding: 30px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  /* ========================================= */
+  /*  案A: イニシャルアイコン（カラー丸）          */
+  /* ========================================= */
+  .ca-card { background: #fff; border: 1.5px solid #eee; border-radius: 12px; overflow: hidden; transition: all 0.2s; text-decoration: none; color: #222; display: block; }
+  .ca-card:hover { border-color: #4caf50; box-shadow: 0 6px 20px rgba(76,175,80,0.12); transform: translateY(-3px); }
+  .ca-band { background: linear-gradient(90deg, #4caf50, #81c784); color: #fff; padding: 5px 12px; font-size: 0.72em; font-weight: 700; }
+  .ca-body { padding: 16px; }
+  .ca-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .ca-avatar {
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: 0.85em;
+  }
+  .ca-company-info { flex: 1; min-width: 0; }
+  .ca-company { font-size: 0.78em; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ca-badge { display: inline-block; background: #4caf50; color: #fff; padding: 1px 6px; border-radius: 3px; font-size: 0.7em; font-weight: 700; margin-left: 4px; }
+  .ca-title { font-size: 0.88em; font-weight: 800; line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ca-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .ca-tags span { background: #f0faf0; color: #388e3c; border: 1px solid #c8e6c9; border-radius: 12px; padding: 2px 8px; font-size: 0.67em; font-weight: 600; }
+  .ca-meta { font-size: 0.78em; color: #666; display: flex; flex-direction: column; gap: 3px; }
+  .ca-meta strong { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案B: 企業頭文字バー（左サイドライン）        */
+  /* ========================================= */
+  .cb-card { background: #fff; border: 1.5px solid #eee; border-radius: 12px; overflow: hidden; transition: all 0.2s; text-decoration: none; color: #222; display: flex; }
+  .cb-card:hover { border-color: #4caf50; box-shadow: 0 6px 20px rgba(76,175,80,0.12); }
+  .cb-side {
+    width: 48px; flex-shrink: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 4px;
+    padding: 12px 0;
+  }
+  .cb-initial { font-size: 1.2em; font-weight: 900; color: #fff; }
+  .cb-body { padding: 14px 16px 14px 0; flex: 1; }
+  .cb-company { font-size: 0.75em; color: #888; margin-bottom: 4px; }
+  .cb-title { font-size: 0.85em; font-weight: 800; line-height: 1.5; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cb-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .cb-tags span { background: #f5f5f5; color: #555; border-radius: 10px; padding: 2px 8px; font-size: 0.65em; font-weight: 600; }
+  .cb-meta { font-size: 0.75em; color: #666; }
+  .cb-meta strong { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案C: ロゴスペース + 枠なしフラット            */
+  /* ========================================= */
+  .cc-card { background: #fff; border-radius: 12px; padding: 20px; transition: all 0.2s; text-decoration: none; color: #222; display: block; border: 1.5px solid #eee; }
+  .cc-card:hover { background: #fafffe; border-color: #4caf50; }
+  .cc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .cc-logo {
+    width: 48px; height: 48px; border-radius: 12px; background: #f5f5f5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4em; font-weight: 900; color: #888; flex-shrink: 0;
+    overflow: hidden;
+  }
+  .cc-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .cc-company-wrap { flex: 1; }
+  .cc-company { font-size: 0.82em; font-weight: 800; color: #222; }
+  .cc-date { font-size: 0.68em; color: #bbb; }
+  .cc-title { font-size: 0.88em; font-weight: 700; line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #333; }
+  .cc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .cc-tags span { background: #e8f5e9; color: #2e7d32; border-radius: 4px; padding: 3px 8px; font-size: 0.68em; font-weight: 700; }
+  .cc-footer { display: flex; justify-content: space-between; font-size: 0.78em; color: #888; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+  .cc-footer strong { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案D: グラデーションヘッダー + 企業名大きく     */
+  /* ========================================= */
+  .cd-card { background: #fff; border: 1.5px solid #eee; border-radius: 14px; overflow: hidden; transition: all 0.2s; text-decoration: none; color: #222; display: block; }
+  .cd-card:hover { border-color: #4caf50; box-shadow: 0 6px 20px rgba(76,175,80,0.12); transform: translateY(-3px); }
+  .cd-header {
+    padding: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .cd-logo {
+    width: 44px; height: 44px; border-radius: 50%; background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1em; font-weight: 900; color: #666; flex-shrink: 0;
+    overflow: hidden;
+  }
+  .cd-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .cd-header-info { flex: 1; }
+  .cd-company { font-size: 0.95em; font-weight: 800; color: #222; }
+  .cd-sub { font-size: 0.7em; color: #999; display: flex; gap: 8px; margin-top: 2px; }
+  .cd-body { padding: 0 16px 16px; }
+  .cd-title { font-size: 0.85em; font-weight: 700; line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #444; }
+  .cd-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .cd-tags span { background: #f0faf0; color: #388e3c; border: 1px solid #c8e6c9; border-radius: 12px; padding: 2px 8px; font-size: 0.65em; font-weight: 600; }
+  .cd-meta { font-size: 0.78em; color: #666; }
+  .cd-meta strong { color: #2e7d32; }
+
+  /* 色パレット */
+  .bg-green { background: #2e7d32; } .bg-blue { background: #1565c0; }
+  .bg-purple { background: #6a1b9a; } .bg-orange { background: #e65100; }
+  .bg-teal { background: #00695c; } .bg-pink { background: #ad1457; }
+</style>
+</head>
+<body>
+
+<h1>カードロゴ UI案 比較</h1>
+<p class="desc">インターンカードのロゴ/アイコン部分のデザイン4パターン</p>
+
+<!-- 案A -->
+<div class="proposal">
+  <div class="proposal-label">案A : イニシャルアイコン（カラー角丸）</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="ca-card" href="#">
+        <div class="ca-band">Pickup</div>
+        <div class="ca-body">
+          <div class="ca-top"><div class="ca-avatar bg-green">NC</div><div class="ca-company-info"><div class="ca-company">株式会社ニューロンクラフト <span class="ca-badge">Pickup</span></div></div></div>
+          <div class="ca-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+          <div class="ca-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+          <div class="ca-meta"><span>時給 <strong>2,000〜4,000円</strong></span><span>渋谷駅 徒歩5分</span></div>
+        </div>
+      </a>
+      <a class="ca-card" href="#">
+        <div class="ca-band">激レア枠 - 急募</div>
+        <div class="ca-body">
+          <div class="ca-top"><div class="ca-avatar bg-blue">PL</div><div class="ca-company-info"><div class="ca-company">合同会社プロンプト・ラボ</div></div></div>
+          <div class="ca-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+          <div class="ca-tags"><span>文系歓迎</span><span>プログラミング不要</span><span>CEO直下</span></div>
+          <div class="ca-meta"><span>時給 <strong>1,800〜3,000円</strong></span><span>完全フルリモート</span></div>
+        </div>
+      </a>
+      <a class="ca-card" href="#">
+        <div class="ca-body">
+          <div class="ca-top"><div class="ca-avatar bg-purple">DW</div><div class="ca-company-info"><div class="ca-company">株式会社ディフュージョン・ワークス <span class="ca-badge" style="background:#ff9800">new</span></div></div></div>
+          <div class="ca-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。</div>
+          <div class="ca-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著チャンス</span></div>
+          <div class="ca-meta"><span>時給 <strong>2,500〜5,000円</strong></span><span>六本木一丁目駅 徒歩3分</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案B -->
+<div class="proposal">
+  <div class="proposal-label">案B : 左サイドカラーバー + イニシャル</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="cb-card" href="#">
+        <div class="cb-side bg-green"><span class="cb-initial">N</span></div>
+        <div class="cb-body">
+          <div class="cb-company">株式会社ニューロンクラフト</div>
+          <div class="cb-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div>
+          <div class="cb-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+          <div class="cb-meta">時給 <strong>2,000〜4,000円</strong> / 渋谷</div>
+        </div>
+      </a>
+      <a class="cb-card" href="#">
+        <div class="cb-side bg-blue"><span class="cb-initial">P</span></div>
+        <div class="cb-body">
+          <div class="cb-company">合同会社プロンプト・ラボ</div>
+          <div class="cb-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。</div>
+          <div class="cb-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+          <div class="cb-meta">時給 <strong>1,800〜3,000円</strong> / フルリモート</div>
+        </div>
+      </a>
+      <a class="cb-card" href="#">
+        <div class="cb-side bg-purple"><span class="cb-initial">D</span></div>
+        <div class="cb-body">
+          <div class="cb-company">株式会社ディフュージョン・ワークス</div>
+          <div class="cb-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion 時代のクリエイティブAI。</div>
+          <div class="cb-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+          <div class="cb-meta">時給 <strong>2,500〜5,000円</strong> / 六本木</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案C -->
+<div class="proposal">
+  <div class="proposal-label">案C : 角丸ロゴスペース + フラットレイアウト</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="cc-card" href="#">
+        <div class="cc-top">
+          <div class="cc-logo" style="background:#e8f5e9; color:#2e7d32;">NC</div>
+          <div class="cc-company-wrap"><div class="cc-company">株式会社ニューロンクラフト</div><div class="cc-date">2日前 ・ Pickup</div></div>
+        </div>
+        <div class="cc-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+        <div class="cc-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+        <div class="cc-footer"><span>時給 <strong>2,000〜4,000円</strong></span><span>渋谷駅 徒歩5分</span></div>
+      </a>
+      <a class="cc-card" href="#">
+        <div class="cc-top">
+          <div class="cc-logo" style="background:#e3f2fd; color:#1565c0;">PL</div>
+          <div class="cc-company-wrap"><div class="cc-company">合同会社プロンプト・ラボ</div><div class="cc-date">3日前 ・ 急募</div></div>
+        </div>
+        <div class="cc-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+        <div class="cc-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+        <div class="cc-footer"><span>時給 <strong>1,800〜3,000円</strong></span><span>完全フルリモート</span></div>
+      </a>
+      <a class="cc-card" href="#">
+        <div class="cc-top">
+          <div class="cc-logo" style="background:#f3e5f5; color:#6a1b9a;">DW</div>
+          <div class="cc-company-wrap"><div class="cc-company">株式会社ディフュージョン・ワークス</div><div class="cc-date">1日前 ・ new</div></div>
+        </div>
+        <div class="cc-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。</div>
+        <div class="cc-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+        <div class="cc-footer"><span>時給 <strong>2,500〜5,000円</strong></span><span>六本木一丁目駅</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 案D -->
+<div class="proposal">
+  <div class="proposal-label">案D : 丸型ロゴ + 企業名強調ヘッダー</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="cd-card" href="#">
+        <div class="cd-header">
+          <div class="cd-logo" style="background:#e8f5e9; color:#2e7d32;">NC</div>
+          <div class="cd-header-info"><div class="cd-company">株式会社ニューロンクラフト</div><div class="cd-sub"><span>Pickup</span><span>2日前</span></div></div>
+        </div>
+        <div class="cd-body">
+          <div class="cd-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+          <div class="cd-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+          <div class="cd-meta">時給 <strong>2,000〜4,000円</strong> / 渋谷駅 徒歩5分</div>
+        </div>
+      </a>
+      <a class="cd-card" href="#">
+        <div class="cd-header">
+          <div class="cd-logo" style="background:#e3f2fd; color:#1565c0;">PL</div>
+          <div class="cd-header-info"><div class="cd-company">合同会社プロンプト・ラボ</div><div class="cd-sub"><span>急募</span><span>3日前</span></div></div>
+        </div>
+        <div class="cd-body">
+          <div class="cd-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+          <div class="cd-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+          <div class="cd-meta">時給 <strong>1,800〜3,000円</strong> / フルリモート</div>
+        </div>
+      </a>
+      <a class="cd-card" href="#">
+        <div class="cd-header">
+          <div class="cd-logo" style="background:#f3e5f5; color:#6a1b9a;">DW</div>
+          <div class="cd-header-info"><div class="cd-company">株式会社ディフュージョン・ワークス</div><div class="cd-sub"><span>new</span><span>1日前</span></div></div>
+        </div>
+        <div class="cd-body">
+          <div class="cd-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI。</div>
+          <div class="cd-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+          <div class="cd-meta">時給 <strong>2,500〜5,000円</strong> / 六本木一丁目駅</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案E: サムネイル画像風 + グラデーションオーバーレイ              -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案E : グラデーションヘッダー + 企業名オーバーレイ</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="ce-card" href="#">
+        <div class="ce-header" style="background: linear-gradient(135deg, #1b5e20, #4caf50);">
+          <span class="ce-label">Pickup</span>
+          <div class="ce-company-name">株式会社ニューロンクラフト</div>
+        </div>
+        <div class="ce-body">
+          <div class="ce-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+          <div class="ce-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+          <div class="ce-meta"><span>時給 <strong>2,000〜4,000円</strong></span><span>渋谷駅 徒歩5分</span></div>
+        </div>
+      </a>
+      <a class="ce-card" href="#">
+        <div class="ce-header" style="background: linear-gradient(135deg, #0d47a1, #42a5f5);">
+          <span class="ce-label">急募</span>
+          <div class="ce-company-name">合同会社プロンプト・ラボ</div>
+        </div>
+        <div class="ce-body">
+          <div class="ce-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+          <div class="ce-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+          <div class="ce-meta"><span>時給 <strong>1,800〜3,000円</strong></span><span>完全フルリモート</span></div>
+        </div>
+      </a>
+      <a class="ce-card" href="#">
+        <div class="ce-header" style="background: linear-gradient(135deg, #4a148c, #ab47bc);">
+          <span class="ce-label">new</span>
+          <div class="ce-company-name">株式会社ディフュージョン・ワークス</div>
+        </div>
+        <div class="ce-body">
+          <div class="ce-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。</div>
+          <div class="ce-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+          <div class="ce-meta"><span>時給 <strong>2,500〜5,000円</strong></span><span>六本木一丁目駅</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案F: ボーダーレス + 大きなタイトル重視                         -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案F : ボーダーレス + タイトル重視（ミニマル）</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="cf-card" href="#">
+        <div class="cf-top"><span class="cf-tag">Pickup</span><span class="cf-date">2日前</span></div>
+        <div class="cf-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+        <div class="cf-company">株式会社ニューロンクラフト</div>
+        <div class="cf-chips"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+        <div class="cf-bottom"><span>時給 <strong>2,000〜4,000円</strong></span><span>渋谷</span></div>
+      </a>
+      <a class="cf-card" href="#">
+        <div class="cf-top"><span class="cf-tag cf-urgent">急募</span><span class="cf-date">3日前</span></div>
+        <div class="cf-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+        <div class="cf-company">合同会社プロンプト・ラボ</div>
+        <div class="cf-chips"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+        <div class="cf-bottom"><span>時給 <strong>1,800〜3,000円</strong></span><span>フルリモート</span></div>
+      </a>
+      <a class="cf-card" href="#">
+        <div class="cf-top"><span class="cf-tag cf-new">new</span><span class="cf-date">1日前</span></div>
+        <div class="cf-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。</div>
+        <div class="cf-company">株式会社ディフュージョン・ワークス</div>
+        <div class="cf-chips"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+        <div class="cf-bottom"><span>時給 <strong>2,500〜5,000円</strong></span><span>六本木</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案G: カード上部に画像バナー風                                  -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案G : カテゴリカラーバナー + コンパクト情報</div>
+  <div class="proposal-body">
+    <div class="grid3">
+      <a class="cg-card" href="#">
+        <div class="cg-banner" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9);">
+          <span class="cg-category">LLM</span>
+          <span class="cg-salary">2,000〜4,000円/h</span>
+        </div>
+        <div class="cg-body">
+          <div class="cg-company">株式会社ニューロンクラフト <span class="cg-badge">Pickup</span></div>
+          <div class="cg-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで全部やる。</div>
+          <div class="cg-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span></div>
+          <div class="cg-location">渋谷駅 徒歩5分</div>
+        </div>
+      </a>
+      <a class="cg-card" href="#">
+        <div class="cg-banner" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
+          <span class="cg-category">プロンプト</span>
+          <span class="cg-salary">1,800〜3,000円/h</span>
+        </div>
+        <div class="cg-body">
+          <div class="cg-company">合同会社プロンプト・ラボ <span class="cg-badge" style="background:#e65100">急募</span></div>
+          <div class="cg-title">【日本語力、最強の武器になる】プロンプトエンジニアに殴り込み。文系こそ来い。</div>
+          <div class="cg-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span></div>
+          <div class="cg-location">完全フルリモート</div>
+        </div>
+      </a>
+      <a class="cg-card" href="#">
+        <div class="cg-banner" style="background: linear-gradient(135deg, #f3e5f5, #e1bee7);">
+          <span class="cg-category">画像生成</span>
+          <span class="cg-salary">2,500〜5,000円/h</span>
+        </div>
+        <div class="cg-body">
+          <div class="cg-company">株式会社ディフュージョン・ワークス <span class="cg-badge" style="background:#ff9800">new</span></div>
+          <div class="cg-title">【イラストレーターを敵に回す覚悟はあるか？】クリエイティブAI開発。</div>
+          <div class="cg-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>論文共著</span></div>
+          <div class="cg-location">六本木一丁目駅 徒歩3分</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  案H: 横長カード1列表示                                        -->
+<!-- ============================================================ -->
+<div class="proposal">
+  <div class="proposal-label">案H : 横長カード1列表示（Indeed風）</div>
+  <div class="proposal-body">
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <a class="ch-card" href="#">
+        <div class="ch-left">
+          <div class="ch-logo bg-green">NC</div>
+        </div>
+        <div class="ch-center">
+          <div class="ch-company">株式会社ニューロンクラフト <span class="ch-badge">Pickup</span></div>
+          <div class="ch-title">【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。</div>
+          <div class="ch-tags"><span>GPU使い放題</span><span>自社LLM開発</span><span>フルリモート可</span><span>未経験OK</span></div>
+        </div>
+        <div class="ch-right">
+          <div class="ch-salary">2,000〜4,000円/h</div>
+          <div class="ch-location">渋谷駅 徒歩5分</div>
+          <div class="ch-date">2日前</div>
+        </div>
+      </a>
+      <a class="ch-card" href="#">
+        <div class="ch-left">
+          <div class="ch-logo bg-blue">PL</div>
+        </div>
+        <div class="ch-center">
+          <div class="ch-company">合同会社プロンプト・ラボ <span class="ch-badge" style="background:#e65100">急募</span></div>
+          <div class="ch-title">【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。</div>
+          <div class="ch-tags"><span>文系歓迎</span><span>CEO直下</span><span>フルリモート</span><span>副業OK</span></div>
+        </div>
+        <div class="ch-right">
+          <div class="ch-salary">1,800〜3,000円/h</div>
+          <div class="ch-location">完全フルリモート</div>
+          <div class="ch-date">3日前</div>
+        </div>
+      </a>
+      <a class="ch-card" href="#">
+        <div class="ch-left">
+          <div class="ch-logo bg-purple">DW</div>
+        </div>
+        <div class="ch-center">
+          <div class="ch-company">株式会社ディフュージョン・ワークス <span class="ch-badge" style="background:#ff9800">new</span></div>
+          <div class="ch-title">【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。</div>
+          <div class="ch-tags"><span>A100使い放題</span><span>美大生歓迎</span><span>一部リモート可</span><span>論文共著</span></div>
+        </div>
+        <div class="ch-right">
+          <div class="ch-salary">2,500〜5,000円/h</div>
+          <div class="ch-location">六本木一丁目駅</div>
+          <div class="ch-date">1日前</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================= */
+  /*  案E: グラデーションヘッダー                 */
+  /* ========================================= */
+  .ce-card { background: #fff; border: 1.5px solid #eee; border-radius: 14px; overflow: hidden; transition: all 0.2s; text-decoration: none; color: #222; display: block; }
+  .ce-card:hover { border-color: #4caf50; box-shadow: 0 6px 20px rgba(76,175,80,0.12); transform: translateY(-3px); }
+  .ce-header { padding: 18px 16px; color: #fff; position: relative; }
+  .ce-label { font-size: 0.68em; font-weight: 700; background: rgba(255,255,255,0.25); padding: 2px 10px; border-radius: 4px; }
+  .ce-company-name { font-size: 1.05em; font-weight: 800; margin-top: 8px; }
+  .ce-body { padding: 16px; }
+  .ce-title { font-size: 0.85em; font-weight: 700; line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ce-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .ce-tags span { background: #f0faf0; color: #388e3c; border: 1px solid #c8e6c9; border-radius: 12px; padding: 2px 8px; font-size: 0.67em; font-weight: 600; }
+  .ce-meta { font-size: 0.78em; color: #666; display: flex; flex-direction: column; gap: 3px; }
+  .ce-meta strong { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案F: ボーダーレス + タイトル重視             */
+  /* ========================================= */
+  .cf-card {
+    display: block; text-decoration: none; color: #222; padding: 20px;
+    border-radius: 12px; transition: all 0.2s; background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .cf-card:hover { background: #fafffe; }
+  .cf-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .cf-tag { background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 4px; font-size: 0.7em; font-weight: 800; }
+  .cf-tag.cf-urgent { background: #fbe9e7; color: #e65100; }
+  .cf-tag.cf-new { background: #fff3e0; color: #ff9800; }
+  .cf-date { font-size: 0.7em; color: #bbb; }
+  .cf-title { font-size: 1em; font-weight: 800; line-height: 1.6; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cf-company { font-size: 0.8em; color: #999; margin-bottom: 8px; }
+  .cf-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .cf-chips span { background: #f5f5f5; color: #555; border-radius: 10px; padding: 3px 10px; font-size: 0.7em; font-weight: 600; }
+  .cf-bottom { font-size: 0.8em; color: #888; display: flex; justify-content: space-between; }
+  .cf-bottom strong { color: #2e7d32; }
+
+  /* ========================================= */
+  /*  案G: カテゴリカラーバナー                    */
+  /* ========================================= */
+  .cg-card { background: #fff; border: 1.5px solid #eee; border-radius: 14px; overflow: hidden; transition: all 0.2s; text-decoration: none; color: #222; display: block; }
+  .cg-card:hover { border-color: #4caf50; box-shadow: 0 6px 20px rgba(76,175,80,0.12); transform: translateY(-3px); }
+  .cg-banner { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .cg-category { font-size: 0.8em; font-weight: 800; color: #333; }
+  .cg-salary { font-size: 0.82em; font-weight: 900; color: #2e7d32; }
+  .cg-body { padding: 14px 16px; }
+  .cg-company { font-size: 0.75em; color: #888; margin-bottom: 6px; }
+  .cg-badge { display: inline-block; background: #4caf50; color: #fff; padding: 1px 6px; border-radius: 3px; font-size: 0.85em; font-weight: 700; }
+  .cg-title { font-size: 0.85em; font-weight: 800; line-height: 1.55; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .cg-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .cg-tags span { background: #f0faf0; color: #388e3c; border: 1px solid #c8e6c9; border-radius: 12px; padding: 2px 8px; font-size: 0.65em; font-weight: 600; }
+  .cg-location { font-size: 0.75em; color: #999; }
+
+  /* ========================================= */
+  /*  案H: 横長カード1列表示                      */
+  /* ========================================= */
+  .ch-card {
+    display: flex; align-items: flex-start; gap: 16px; padding: 20px;
+    background: #fff; border: 1.5px solid #eee; border-radius: 12px;
+    text-decoration: none; color: #222; transition: all 0.2s;
+  }
+  .ch-card:hover { border-color: #4caf50; box-shadow: 0 4px 16px rgba(76,175,80,0.08); }
+  .ch-left { flex-shrink: 0; }
+  .ch-logo {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 900; font-size: 0.9em;
+  }
+  .ch-center { flex: 1; min-width: 0; }
+  .ch-company { font-size: 0.78em; color: #888; margin-bottom: 4px; }
+  .ch-badge { display: inline-block; background: #4caf50; color: #fff; padding: 1px 6px; border-radius: 3px; font-size: 0.85em; font-weight: 700; }
+  .ch-title { font-size: 0.92em; font-weight: 800; line-height: 1.5; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ch-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .ch-tags span { background: #f0faf0; color: #388e3c; border: 1px solid #c8e6c9; border-radius: 12px; padding: 2px 8px; font-size: 0.67em; font-weight: 600; }
+  .ch-right { flex-shrink: 0; text-align: right; width: 140px; }
+  .ch-salary { font-size: 0.95em; font-weight: 900; color: #2e7d32; margin-bottom: 4px; }
+  .ch-location { font-size: 0.75em; color: #888; }
+  .ch-date { font-size: 0.7em; color: #bbb; margin-top: 4px; }
+</style>
+
+</body>
+</html>

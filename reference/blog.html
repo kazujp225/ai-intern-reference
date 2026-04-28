@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIコラム | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .bl-hero { background: linear-gradient(135deg, #f1f8e9, #e8f5e9); padding: 40px 24px; }
+  .bl-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .bl-hero h1 { margin: 0; font-size: 2em; font-weight: 900; letter-spacing: -.02em; }
+  .bl-hero p { color: #555; margin: 6px 0 0; }
+
+  .bl-toolbar {
+    max-width: 1100px; margin: 24px auto; padding: 0 24px;
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .bl-search { flex: 1; display: flex; gap: 8px; background: #fff; border-radius: 999px; padding: 4px 4px 4px 20px; box-shadow: 0 4px 14px rgba(0,0,0,.06); min-width: 260px; }
+  .bl-search input { flex: 1; border: none; outline: none; font-size: .95em; background: transparent; }
+  .bl-search button { width: 40px; height: 40px; border-radius: 50%; border: none; background: #4caf50; color: #fff; cursor: pointer; font-weight: 900; }
+  .bl-sort { display: inline-flex; gap: 4px; background: #fff; padding: 4px; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+  .bl-sort button { padding: 8px 14px; background: transparent; border: none; border-radius: 6px; cursor: pointer; font-weight: 800; color: #666; font-size: .85em; }
+  .bl-sort button.active { background: #2e7d32; color: #fff; }
+  .bl-new { padding: 10px 20px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-decoration: none; font-size: .9em; }
+
+  .bl-list { max-width: 1100px; margin: 0 auto 60px; padding: 0 24px; display: grid; gap: 14px; }
+  .bl-card {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    transition: all .15s; color: inherit; display: block;
+  }
+  .bl-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.08); color: inherit; }
+  .bl-card h2 { margin: 0 0 8px; font-size: 1.2em; font-weight: 900; color: #111; line-height: 1.4; }
+  .bl-card .meta { font-size: .8em; color: #666; display: flex; gap: 12px; align-items: center; }
+  .bl-card .author { display: inline-flex; align-items: center; gap: 6px; }
+  .bl-avatar { width: 22px; height: 22px; border-radius: 50%; background: #2e7d32; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: .7em; font-weight: 900; }
+  .bl-card .body { color: #444; margin: 10px 0 0; font-size: .9em; line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .bl-card .like-count { color: #e65100; font-weight: 800; }
+
+  .bl-modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .bl-modal.open { display: flex; }
+  .bl-modal-box { background: #fff; border-radius: 16px; padding: 28px; max-width: 560px; width: 100%; max-height: 90vh; overflow: auto; }
+  .bl-modal h3 { margin: 0 0 14px; font-size: 1.3em; font-weight: 900; }
+  .bl-modal input, .bl-modal textarea { width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 1em; margin-bottom: 12px; font-family: inherit; }
+  .bl-modal textarea { min-height: 180px; resize: vertical; }
+  .bl-modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .bl-modal-actions button { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+  .bl-modal-actions .cancel { background: #eee; color: #333; }
+  .bl-modal-actions .submit { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; }
+  .bl-empty { text-align: center; padding: 60px 20px; color: #888; }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html" class="current">AIコラム</a>
+      <a href="mypage.html" id="nav-mypage" style="display:none;">マイページ</a>
+      <a href="login.html" id="nav-login" class="login">ログイン</a>
+      <a href="signup.html" id="nav-signup" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<section class="bl-hero">
+  <div class="bl-hero-inner">
+    <h1>AIコラム</h1>
+    <p>AIインターン・技術トレンド・体験記をコミュニティで共有</p>
+  </div>
+</section>
+
+<div class="bl-toolbar">
+  <div class="bl-search">
+    <input id="bl-search-input" placeholder="キーワードで検索">
+    <button id="bl-search-btn">→</button>
+  </div>
+  <div class="bl-sort">
+    <button class="active" data-sort="new">新着順</button>
+    <button data-sort="popular">人気順</button>
+  </div>
+  <a href="#" id="bl-new-btn" class="bl-new">＋ 投稿する</a>
+</div>
+
+<div class="bl-list" id="bl-list"></div>
+
+<div class="bl-modal" id="bl-modal">
+  <div class="bl-modal-box">
+    <h3>新規投稿</h3>
+    <input id="bl-title" placeholder="タイトル" maxlength="100">
+    <textarea id="bl-body" placeholder="本文（Markdownは未対応）"></textarea>
+    <input id="bl-tags" placeholder="タグ（カンマ区切り: LLM, Claude, Python）">
+    <div id="bl-msg" style="color:#c62828; font-size:.85em; margin-bottom:10px;"></div>
+    <div class="bl-modal-actions">
+      <button class="cancel" type="button" id="bl-cancel">キャンセル</button>
+      <button class="submit" type="button" id="bl-submit">投稿する</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div><p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p></div>
+    <div><h4>コンテンツ</h4><ul><li><a href="blog.html">AIコラム</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="mypage.html">マイページ</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-social.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script src="js/mock-posts.js"></script>
+<script>
+(async function(){
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (user) {
+    document.getElementById('nav-mypage').style.display = 'inline-block';
+    document.getElementById('nav-login').style.display = 'none';
+    document.getElementById('nav-signup').style.display = 'none';
+  }
+
+  let currentSort = 'new';
+  let currentKeyword = '';
+
+  async function renderList() {
+    const listEl = document.getElementById('bl-list');
+    listEl.innerHTML = '<div class="bl-empty">読み込み中...</div>';
+    let posts;
+    if (currentKeyword) {
+      posts = await window.AImeSocial.searchPosts(currentKeyword);
+    } else {
+      posts = await window.AImeSocial.listPosts({ orderByLikes: currentSort === 'popular' });
+    }
+    // 投稿が無い場合はモックデータを表示 (UI確認用 / 検索中は除く)
+    if (!posts.length && !currentKeyword && window.AIME_MOCK_POSTS) {
+      const mocks = window.AIME_MOCK_POSTS.slice();
+      if (currentSort === 'popular') mocks.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
+      listEl.innerHTML = mocks.map(p => {
+        const nick = p.author_nickname || '匿名';
+        const initial = nick.charAt(0).toUpperCase();
+        return `
+          <a class="bl-card" href="post.html?id=${p.id}">
+            <h2>${escapeHtml(p.title)}</h2>
+            <div class="meta">
+              <span class="author"><span class="bl-avatar">${initial}</span>${escapeHtml(nick)}</span>
+              <span>${p.date}</span>
+              <span class="like-count">♥ ${p.like_count || 0}</span>
+            </div>
+            <div class="body">${escapeHtml(p.body)}</div>
+          </a>`;
+      }).join('');
+      return;
+    }
+    if (!posts.length) {
+      listEl.innerHTML = '<div class="bl-empty">まだ投稿はありません。最初の1件を投稿しませんか？</div>';
+      return;
+    }
+    // いいね数をまとめて取得
+    const ids = posts.map(p => p.id);
+    const { data: likes } = await window.sb.from('likes').select('target_id').eq('target_type','post').in('target_id', ids);
+    const cnt = {};
+    (likes||[]).forEach(l => { cnt[l.target_id] = (cnt[l.target_id] || 0) + 1; });
+
+    listEl.innerHTML = posts.map(p => {
+      const nick = p.profiles?.nickname || '匿名';
+      const initial = nick.charAt(0).toUpperCase();
+      return `
+        <a class="bl-card" href="post.html?id=${p.id}">
+          <h2>${escapeHtml(p.title)}</h2>
+          <div class="meta">
+            <span class="author"><span class="bl-avatar">${initial}</span>${escapeHtml(nick)}</span>
+            <span>${new Date(p.created_at).toLocaleDateString('ja-JP')}</span>
+            <span class="like-count">♥ ${cnt[p.id] || 0}</span>
+          </div>
+          <div class="body">${escapeHtml(p.body)}</div>
+        </a>`;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  renderList();
+
+  // Sort toggle
+  document.querySelectorAll('.bl-sort button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.bl-sort button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); currentSort = b.dataset.sort; renderList();
+    });
+  });
+
+  // Search
+  document.getElementById('bl-search-btn').addEventListener('click', () => {
+    currentKeyword = document.getElementById('bl-search-input').value.trim();
+    renderList();
+  });
+  document.getElementById('bl-search-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('bl-search-btn').click(); }
+  });
+
+  // New post modal
+  const modal = document.getElementById('bl-modal');
+  document.getElementById('bl-new-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!user) { location.href = 'login.html'; return; }
+    modal.classList.add('open');
+  });
+  document.getElementById('bl-cancel').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+  document.getElementById('bl-submit').addEventListener('click', async () => {
+    const title = document.getElementById('bl-title').value.trim();
+    const body = document.getElementById('bl-body').value.trim();
+    const tags = document.getElementById('bl-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const msg = document.getElementById('bl-msg');
+    msg.textContent = '';
+    if (!title || !body) { msg.textContent = 'タイトルと本文は必須です'; return; }
+    try {
+      await window.AImeSocial.createPost({ title, body, tags });
+      modal.classList.remove('open');
+      document.getElementById('bl-title').value = '';
+      document.getElementById('bl-body').value = '';
+      document.getElementById('bl-tags').value = '';
+      renderList();
+    } catch (err) {
+      msg.textContent = '投稿失敗: ' + err.message;
+    }
+  });
+
+  // Realtime: 新着投稿で自動更新
+  window.AImeSocial.subscribeNewPosts(() => { if (!currentKeyword) renderList(); });
+})();
+</script>
+</body>
+</html>

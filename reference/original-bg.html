@@ -1,0 +1,2275 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>AIme | 人類最後の就活、始めませんか？</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0">
+  <meta name="description" content="【AI特化インターン掲載数 日本一（自称）】ChatGPTに仕事を奪われる前に、奪う側に回れ。プロンプトエンジニア、MLエンジニア、AIリサーチャーなど尖りまくったAImeだけを厳選掲載。">
+  <meta property="og:title" content="AIme | 人類最後の就活、始めませんか？">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="AIに仕事を奪われるのが怖い？なら奪う側に回れ。AI特化型インターンだけを集めた、日本で一番尖ったインターンサイト。">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AIme | 人類最後の就活">
+  <link href="css/vendor.css" rel="stylesheet">
+  <link href="css/top.css" rel="stylesheet">
+  <style>
+    .ai-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .ai-glow { text-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+    .ai-badge { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold; }
+    .ai-hot { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
+    .edgy-tag { display: inline-block; background: #1a1a2e; color: #00ff88; padding: 3px 8px; border-radius: 4px; font-size: 0.8em; margin: 2px; font-family: monospace; }
+    .skull-divider { text-align: center; padding: 10px 0; font-size: 1.2em; letter-spacing: 8px; color: #764ba2; }
+
+    /* ページ全体の背景を白に統一（ヒーローセクション除く） */
+    body, .content-wrapper, .main-container, .main-inner {
+      background: #fff !important;
+    }
+
+    /* ヘッダー: ホワイト + グリーンテキスト */
+    .header {
+      background: #fff !important;
+      position: relative; overflow: hidden;
+      box-shadow: 0 1px 0 #e0e0e0 !important;
+    }
+    .header-inner { background: transparent !important; }
+    .header-logo { display: none !important; }
+    .neo-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 1.5em; font-weight: 900; color: #1b5e20;
+      text-decoration: none; letter-spacing: 2px;
+    }
+    .neo-logo span { color: #4caf50; }
+    .header-category { background: transparent !important; }
+    .header-category-item {
+      color: #888 !important; font-size: 0.88em !important;
+      font-weight: 600 !important; padding: 4px 0 !important;
+      border-bottom: 2px solid transparent !important; transition: all 0.2s !important;
+    }
+    .header-category-item:hover { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
+    .header-category-item.current { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
+    .neo-nav { display: flex; align-items: center; gap: 24px; }
+    .neo-nav a {
+      color: #888; text-decoration: none; font-size: 0.88em;
+      font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .neo-nav a:hover { color: #2e7d32; border-bottom-color: #4caf50; }
+    .neo-nav .neo-corp { color: #bbb; font-size: 0.75em; }
+    .neo-nav .neo-login { color: #2e7d32; }
+    .neo-nav .neo-register {
+      background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+      padding: 7px 22px; border-radius: 6px; font-weight: 800;
+      font-size: 0.85em; border: none; border-bottom: none !important;
+      transition: all 0.2s;
+    }
+    .neo-nav .neo-register:hover { opacity: 0.9; }
+
+    /* Hero background image - right side, fading to left */
+    .cover-area { position: relative; overflow: hidden; height: 720px; }
+    .cover-area::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 60%;
+      background-image: url(images/top/hero-bg.jpg);
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(to left, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+    }
+    .cover-inner { position: relative; z-index: 1; }
+
+
+    /* ヒーロー内の小さな検索欄 */
+    .hero-search {
+      position: absolute;
+      bottom: -170px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 30px;
+      padding: 0 8px 0 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      width: 780px;
+      max-width: 90vw;
+      height: 38px;
+      box-sizing: border-box;
+    }
+    .hero-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 0.9em;
+      background: transparent;
+      color: #333;
+      height: 100%;
+      line-height: normal;
+      margin: 0;
+      padding: 0;
+    }
+    .hero-search input::placeholder {
+      color: #aaa;
+    }
+    .hero-search button {
+      background: #4caf50;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.2em;
+    }
+    .hero-search button:hover {
+      background: #388e3c;
+    }
+
+    /* 人気タグ */
+    .hero-popular-tags {
+      position: absolute;
+      bottom: -200px;
+      left: 10%;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .popular-label {
+      color: #222;
+      font-size: 0.85em;
+      font-weight: 700;
+    }
+    .popular-tag {
+      background: none;
+      color: #222;
+      font-size: 0.85em;
+      font-weight: 600;
+      padding: 0;
+      text-decoration: none;
+      border: none;
+      transition: all 0.2s;
+    }
+    .popular-tag:hover {
+      color: #666;
+      text-decoration: underline;
+    }
+
+    /* 特集トップ企業紹介 */
+    .featured-companies {
+      background: #fff;
+      padding: 50px 40px;
+      text-align: center;
+      border: none;
+      border-radius: 0;
+      max-width: 1000px;
+      margin: 30px auto;
+    }
+    .featured-companies-title {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: #222;
+      margin-bottom: 8px;
+    }
+    .featured-companies-sub {
+      font-size: 0.95em;
+      color: #888;
+      margin-bottom: 36px;
+    }
+    .companies-grid {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .companies-grid {
+      padding: 0;
+    }
+    .company-card {
+      background: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 24px 20px;
+      width: 160px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      transition: all 0.2s;
+    }
+    .company-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .company-logo {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .company-logo img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .company-name {
+      font-size: 1em;
+      font-weight: 700;
+      color: #222;
+    }
+    .company-desc {
+      font-size: 0.8em;
+      color: #888;
+    }
+
+    /* 案2: アイコン付きグリッドカード */
+    .search-interns-new {
+      background: #fff;
+      border-radius: 0;
+      padding: 40px;
+      margin-bottom: 30px;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    /* セクション題名: ナンバリング + タイトル */
+    .section-title-e {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .section-title-e .e-num {
+      font-size: 3em;
+      font-weight: 900;
+      color: #e8f5e9;
+      line-height: 1;
+      -webkit-text-stroke: 1.5px #4caf50;
+      font-family: 'Arial Black', sans-serif;
+    }
+    .section-title-e .e-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .section-title-e h2 {
+      font-size: 1.7em;
+      font-weight: 900;
+      color: #222;
+      margin: 0;
+    }
+    .section-title-e .e-sub {
+      font-size: 0.82em;
+      color: #999;
+      font-weight: 500;
+      margin: 0;
+    }
+    /* スポットライト型カルーセル (地図非表示) */
+    .usa-map-wrap {
+      position: relative; max-width: 1200px; margin: 30px auto 0;
+      height: 440px; overflow: hidden; cursor: ew-resize;
+    }
+    .usa-map-img { display: none; }
+    .usa-pin-dot { display: none; }
+    .usa-pin-tooltip { display: none !important; }
+    .usa-map-wrap::before,
+    .usa-map-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 12%;
+      z-index: 20; pointer-events: none;
+    }
+    .usa-map-wrap::before { left: 0;  background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0)); }
+    .usa-map-wrap::after  { right: 0; background: linear-gradient(to left,  rgba(255,255,255,1), rgba(255,255,255,0)); }
+    .usa-map-hint {
+      position: absolute; left: 50%; top: 12px; transform: translateX(-50%);
+      z-index: 25; font-size: 0.8em; font-weight: 700; color: #666;
+      background: rgba(255,255,255,0.85); padding: 4px 14px; border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      pointer-events: none; white-space: nowrap;
+    }
+
+    .usa-pin {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.45s ease;
+      z-index: 1; pointer-events: none;
+    }
+    .usa-pin-label {
+      position: static !important; transform: none !important;
+      opacity: 1 !important; visibility: visible !important;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      background: transparent;
+      padding: 26px 32px; border-radius: 20px;
+      box-shadow: none;
+      font-size: 1.05em; font-weight: 900; color: #111; white-space: nowrap;
+      width: 200px; text-align: center;
+    }
+    .usa-pin-label img, .usa-pin-label svg { width: 70px; height: 70px; object-fit: contain; display: block; }
+    .usa-pin-label img[alt="OpenAI"] { width: 160px; height: auto; }
+
+    .usa-pin.is-active {
+      transform: translate(-50%, -50%) scale(1.4);
+      z-index: 10; pointer-events: auto;
+    }
+    .usa-pin.is-prev     { transform: translate(calc(-50% - 280px), -50%) scale(0.85); opacity: 0.55; z-index: 5; }
+    .usa-pin.is-next     { transform: translate(calc(-50% + 280px), -50%) scale(0.85); opacity: 0.55; z-index: 5; }
+    .usa-pin.is-far-prev { transform: translate(calc(-50% - 500px), -50%) scale(0.65); opacity: 0.22; z-index: 2; }
+    .usa-pin.is-far-next { transform: translate(calc(-50% + 500px), -50%) scale(0.65); opacity: 0.22; z-index: 2; }
+    .usa-pin.is-hidden   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; pointer-events: none; }
+
+    .search-new-title {
+      font-size: 2.2em;
+      font-weight: 900;
+      color: #222;
+      margin-bottom: 30px;
+    }
+    /* サイドバー: アコーディオン型 */
+    .sidebar-accordion { border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; }
+    .sb-acc-item { border-bottom: 1px solid #e8e8e8; }
+    .sb-acc-item:last-child { border-bottom: none; }
+    .sb-acc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; cursor: pointer; transition: background 0.2s;
+      user-select: none;
+    }
+    .sb-acc-header:hover { background: #f5f5f5; }
+    .sb-acc-title { font-size: 1.1em; font-weight: 800; color: #222; display: flex; align-items: center; gap: 8px; }
+    .sb-acc-count { background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 10px; font-size: 0.8em; font-weight: 700; }
+    .sb-acc-arrow { font-size: 0.8em; color: #999; transition: transform 0.3s; }
+    .sb-acc-item.open .sb-acc-arrow { transform: rotate(180deg); }
+    .sb-acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .sb-acc-item.open .sb-acc-body { max-height: 600px; }
+    .sb-acc-list { list-style: none !important; padding: 0 18px 14px !important; margin: 0 !important; }
+    .sb-acc-list li { border-bottom: 1px solid #f0f0f0; }
+    .sb-acc-list li:last-child { border-bottom: none; }
+    .sb-acc-list li a {
+      display: flex !important; justify-content: space-between !important; align-items: center !important;
+      padding: 11px 8px !important; text-decoration: none !important; color: #333 !important;
+      font-size: 1em !important; font-weight: 600 !important; transition: all 0.15s !important;
+      border-radius: 6px !important;
+    }
+    .sb-acc-list li a:hover { background: #f0faf0 !important; color: #2e7d32 !important; padding-left: 14px !important; }
+    .sb-acc-list li a span {
+      background: #f5f5f5 !important; color: #666 !important; padding: 2px 8px !important; border-radius: 6px !important;
+      font-size: 0.8em !important; font-weight: 700 !important; min-width: 30px; text-align: center;
+    }
+    .sb-acc-list li a:hover span { background: #e8f5e9 !important; color: #2e7d32 !important; }
+    /* フィルター: 横並びチップグループ型 */
+    .fc-filter { margin: 30px 0 40px; display: flex; flex-direction: column; gap: 24px; }
+
+    .fc-label {
+      font-size: 0.82em; font-weight: 800; color: #999; letter-spacing: 0.05em;
+      margin-bottom: 10px; padding-left: 2px;
+    }
+    .fc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fc-chip {
+      padding: 8px 18px; border-radius: 8px; font-size: 0.85em; font-weight: 700;
+      background: #f5f5f5; color: #444; cursor: pointer; transition: all 0.15s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .fc-chip:hover { background: #e8f5e9; color: #2e7d32; }
+    .fc-chip .fc-n { font-size: 0.75em; color: #bbb; font-weight: 600; }
+    .fc-chip.fc-hot { background: #2e7d32; color: #fff; }
+    .fc-chip.fc-hot .fc-n { color: rgba(255,255,255,0.6); }
+
+    /* スマホスクロール風フィルター */
+    .phone-filter-row { display: flex; justify-content: center; gap: 24px; flex-wrap: nowrap; }
+    .pf-phone {
+      width: 310px; flex-shrink: 0;
+      background: #111; border-radius: 38px; padding: 11px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 0 0 2px #333;
+    }
+    .pf-notch {
+      width: 100px; height: 24px; background: #111; border-radius: 0 0 14px 14px;
+      margin: 0 auto; position: relative; z-index: 10; margin-top: -12px;
+    }
+    .pf-screen { background: #fff; border-radius: 30px; overflow: hidden; height: 580px; position: relative; }
+    .pf-statusbar { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font-size: 0.65em; color: #333; font-weight: 700; }
+    .pf-header { padding: 14px 20px; color: #fff; font-size: 0.95em; font-weight: 800; text-align: center; }
+    .pf-h1 { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+    .pf-h2 { background: linear-gradient(135deg, #0d47a1, #1565c0); }
+    .pf-h3 { background: linear-gradient(135deg, #4a148c, #6a1b9a); }
+    .pf-content { height: 480px; overflow: hidden; position: relative; }
+    .pf-scroll { padding: 14px; }
+    .pf-s1 { animation: pf-up 18s linear infinite; }
+    .pf-s2 { animation: pf-down 20s linear infinite; }
+    .pf-s3 { animation: pf-up 22s linear infinite; }
+    .pf-scroll:hover { animation-play-state: paused; }
+    .pf-card {
+      padding: 14px 16px; margin-bottom: 8px; border-radius: 10px;
+      border: 1px solid #f0f0f0; text-decoration: none; display: block;
+      color: #333; transition: all 0.12s;
+    }
+    .pf-card:hover { border-color: #4caf50; background: #fafffe; }
+    .pf-card-name { font-size: 0.9em; font-weight: 800; }
+    .pf-card-num { font-size: 0.75em; color: #4caf50; font-weight: 700; }
+    .pf-fade-top, .pf-fade-bottom { position: absolute; left: 0; right: 0; height: 30px; z-index: 3; pointer-events: none; }
+    .pf-fade-top { top: 0; background: linear-gradient(180deg, #fff, transparent); }
+    .pf-fade-bottom { bottom: 0; background: linear-gradient(180deg, transparent, #fff); }
+    .pf-home { height: 18px; display: flex; align-items: center; justify-content: center; }
+    .pf-home-bar { width: 80px; height: 3px; background: #ddd; border-radius: 2px; }
+    @keyframes pf-up { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+    @keyframes pf-down { 0% { transform: translateY(-50%); } 100% { transform: translateY(0); } }
+    /* 案D: アプリ風タブ */
+    .pd-tabs { display: flex; border-bottom: 1px solid #eee; }
+    .pd-tab {
+      flex: 1; padding: 8px 0; font-size: 0.62em; font-weight: 700;
+      color: #aaa; text-align: center; cursor: pointer; transition: all 0.15s;
+      border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .pd-tab:hover { color: #333; }
+    .pd-tab.active { color: #2e7d32; border-bottom-color: #4caf50; }
+    .pd-content { height: 370px; overflow: hidden; position: relative; }
+    .pd-scroll { padding: 12px; animation: pf-up 22s linear infinite; }
+    .pd-scroll:hover { animation-play-state: paused; }
+    .pd-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border-bottom: 1px solid #f5f5f5;
+      text-decoration: none; color: #333; transition: all 0.12s;
+    }
+    .pd-row:hover { background: #f0faf0; }
+    .pd-row-name { font-size: 0.78em; font-weight: 700; }
+    .pd-row-num {
+      font-size: 0.7em; color: #4caf50; font-weight: 800;
+      background: #e8f5e9; padding: 2px 8px; border-radius: 8px;
+    }
+    .search-category-label {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: #4caf50;
+      margin: 28px 0 16px;
+      padding-left: 14px;
+      border-left: 5px solid #4caf50;
+    }
+    .brutal-row {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center;
+      max-width: 1000px; margin: 0 auto 24px;
+      padding: 4px 8px;
+    }
+    .brutal-row a {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; border: 3px solid #111; border-radius: 8px;
+      padding: 14px 20px; color: #111; text-decoration: none;
+      font-weight: 900; font-size: 0.95em;
+      box-shadow: 5px 5px 0 #111;
+      transition: all 0.12s ease-out;
+      white-space: nowrap;
+    }
+    .brutal-row a:hover {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0 #111;
+      background: #fffbe6;
+    }
+    .brutal-row a:active {
+      transform: translate(5px, 5px);
+      box-shadow: 0 0 0 #111;
+    }
+    .brutal-row .num-tag {
+      font-size: 0.75em; font-weight: 900; color: #fff;
+      background: #111; padding: 3px 8px; border-radius: 4px;
+      font-family: monospace;
+    }
+    .search-icon-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .search-icon-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 16px 22px;
+      text-decoration: none;
+      color: #222;
+      font-size: 1.1em;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .search-icon-card:hover {
+      border-color: #4caf50;
+      background: #f0faf0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(76,175,80,0.15);
+    }
+    .search-icon-img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+    /* 3D回転カルーセル */
+    .carousel-3d-scene {
+      perspective: 800px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .carousel-3d {
+      width: 220px; height: 80px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: carousel3d-rotate 25s linear infinite;
+    }
+    .carousel-3d:hover { animation-play-state: paused; }
+    .carousel-3d-cell {
+      position: absolute; width: 200px; height: 70px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      border-radius: 12px; border: 1.5px solid #eee; background: rgba(255,255,255,0.95);
+      font-size: 0.88em; font-weight: 700; color: #333;
+      text-decoration: none; backface-visibility: hidden;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .carousel-3d-cell:hover { border-color: #4caf50; color: #2e7d32; }
+    .carousel-3d-cell .c3d-icon { font-size: 1.3em; }
+    @keyframes carousel3d-rotate { from { transform: rotateY(0); } to { transform: rotateY(-360deg); } }
+    /* 関東地方マップ */
+    .kanto-map-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .kanto-map-wrap img {
+      border-radius: 12px;
+    }
+    .kanto-group { cursor: pointer; }
+    .kanto-pref {
+      fill: #fafafa;
+      stroke: #444;
+      stroke-width: 0.8;
+      stroke-linejoin: round;
+      transition: fill 0.25s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
+    }
+    .kanto-group:hover .kanto-pref,
+    .kanto-group.is-linked .kanto-pref {
+      fill: #4caf50;
+      stroke: #1b5e20;
+      stroke-width: 1.2;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+    }
+    .kanto-pref-label {
+      font-size: 5px;
+      font-weight: 800;
+      fill: #333;
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+      transition: fill 0.2s ease;
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+    }
+    .kanto-group:hover .kanto-pref-label,
+    .kanto-group.is-linked .kanto-pref-label { fill: #fff; }
+    .brutal-row a.is-linked {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0 #111;
+      background: #fffbe6;
+    }
+    .kanto-tooltip {
+      display: none;
+      position: absolute;
+      background: #1b5e20;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85em;
+      font-weight: 700;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transform: translate(-50%, -100%);
+      margin-top: -10px;
+    }
+    .kanto-tooltip .kt-count {
+      display: block;
+      font-size: 0.85em;
+      color: #a5d6a7;
+      font-weight: 600;
+    }
+
+    /* コンパクトカードグリッド型 (Wantedly風) */
+    .compact-header { margin-bottom: 20px; }
+    .compact-title { font-size: 2em; font-weight: 900; color: #1b5e20; margin: 0; }
+    .compact-subtitle { color: #888; font-size: 1em; margin-top: 4px; }
+    .compact-tabs { display: flex; gap: 8px; margin: 20px 0 16px; flex-wrap: wrap; }
+    .compact-tab {
+      padding: 7px 16px; border-radius: 20px; border: 1.5px solid #ddd;
+      background: #fff; font-size: 0.85em; font-weight: 700; color: #555;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .compact-tab:hover, .compact-tab.active { background: #4caf50; color: #fff; border-color: #4caf50; }
+    .compact-tab .tab-num { font-size: 0.75em; opacity: 0.7; margin-left: 3px; }
+    .compact-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .compact-toolbar .ccount { font-size: 0.9em; color: #666; }
+    .compact-toolbar .ccount strong { color: #2e7d32; font-size: 1.1em; }
+    .compact-toolbar select { padding: 5px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.8em; }
+    .compact-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 14px !important;
+    }
+    /* カード: ボーダーレス + タイトル重視（ミニマル） */
+    .compact-card {
+      display: block; text-decoration: none; color: #222; padding: 20px;
+      border-radius: 12px; transition: all 0.2s; background: #fff;
+      border: none !important; border-bottom: 1px solid #f0f0f0 !important;
+    }
+    .compact-card:hover { background: #fafffe; box-shadow: none !important; transform: none; }
+    .compact-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .compact-card-tag {
+      background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 4px;
+      font-size: 0.7em; font-weight: 800;
+    }
+    .compact-card-tag-urgent { background: #fbe9e7; color: #e65100; }
+    .compact-card-tag-new { background: #fff3e0; color: #ff9800; }
+    .compact-card-date { font-size: 0.7em; color: #bbb; }
+    .compact-card-title {
+      font-size: 1em; font-weight: 800; line-height: 1.6; margin-bottom: 6px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .compact-card-company { font-size: 0.8em; color: #999; margin-bottom: 8px; }
+    .compact-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .compact-card-tags span {
+      background: #f5f5f5; color: #555; border-radius: 10px;
+      padding: 3px 10px; font-size: 0.7em; font-weight: 600;
+    }
+    .compact-card-meta { font-size: 0.8em; color: #888; display: flex; justify-content: space-between; }
+    .compact-card-meta strong { color: #2e7d32; }
+    .compact-pagination { display: flex; justify-content: center; gap: 6px; margin-top: 24px; padding-bottom: 60px; background: #fff !important; position: relative; z-index: 1; }
+    section.intern-list {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+    .compact-pagination a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid #ddd;
+      background: #fff; color: #444; font-size: 0.85em; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .compact-pagination a:hover { border-color: #4caf50; color: #2e7d32; background: #f0faf0; }
+    .compact-pagination a.active { background: #4caf50; color: #fff; border-color: #4caf50; }
+    .compact-pagination a.disabled { color: #ccc; cursor: default; pointer-events: none; }
+    .compact-pagination .page-dots { color: #aaa; font-size: 0.9em; padding: 0 4px; }
+    .compact-card.hidden { display: none !important; }
+    .compact-card { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* メインコンテンツをフル幅・中央寄せ */
+    .main-inner {
+      display: flex !important;
+      flex-direction: column !important;
+      max-width: 1100px !important;
+      margin: 0 auto !important;
+      padding: 0 20px !important;
+    }
+    .cs-contents.pull-left {
+      width: 100% !important;
+      float: none !important;
+      max-width: 100% !important;
+    }
+    .pull-left-inner {
+      max-width: 100% !important;
+    }
+    /* ネオ・ブルータリズム V5 ピュアホワイト */
+    .cta-brutal-microcopy { font-family: monospace; font-size: 1.15em; font-weight: 900; background: #111; color: #fff; display: inline-block; padding: 8px 20px; margin-bottom: 0; transform: rotate(-2deg); position: relative; top: 12px; left: -20px; z-index: 2; }
+    .cta-brutal-btn { display: inline-block; background: #ffffff; border: 4px solid #111; padding: 26px 52px; border-radius: 8px; font-weight: 900; font-size: 1.6em; text-decoration: none; color: #111; box-shadow: 8px 8px 0px #111; transition: all 0.1s ease-out; position: relative; }
+    .cta-brutal-btn:active { transform: translate(5px, 5px); box-shadow: 3px 3px 0px #111; }
+    .cta-brutal-tag { border: 3px solid #111; font-size: 0.7em; padding: 2px 8px; margin-right: 15px; vertical-align: middle; background: #111; font-weight: 900; color: #fff; }
+    
+    /* SNS風 ボイスカード */
+    .sns-voice-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e1e8ed;
+      position: relative;
+      transition: background 0.2s;
+      margin: 10px; /* slick carousel用余白 */
+      text-align: left;
+    }
+    .sns-voice-card:hover { background: #fcfdfe; cursor: pointer; }
+    .sns-vc-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; line-height: 1.2; }
+    .sns-vc-avatar { width: 44px; height: 44px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; flex-shrink: 0;}
+    .sns-vc-info { display: flex; flex-direction: column; }
+    .sns-vc-name-wrapper { display: flex; align-items: center; gap: 6px; }
+    .sns-vc-name { font-size: 0.95em; color: #14171a; font-weight: 800; }
+    .sns-vc-verify { color: #1da1f2; font-size: 14px; }
+    .sns-vc-role { font-size: 0.75em; color: #657786; margin-top: 4px; }
+    .sns-vc-text { font-size: 0.95em; line-height: 1.5; color: #14171a; margin-top: 8px;}
+    .sns-vc-footer { margin-top: 16px; font-size: 0.8em; color: #657786; display: flex; align-items: center; gap: 15px; }
+
+    .student-voice-area {
+      max-width: 1000px !important;
+      margin: 0 auto 40px !important;
+      background: #fff !important;
+    }
+    .student-voice-container,
+    .student-voice-carousel,
+    .student-voice {
+      background: #fff !important;
+    }
+    .student-voice-container {
+      overflow: visible !important;
+      padding: 0 40px 20px !important;
+    }
+    .student-voice-carousel .slick-list {
+      overflow: hidden !important;
+      padding-bottom: 10px !important;
+    }
+    .student-voice-carousel .slick-track {
+      display: flex !important;
+      gap: 16px;
+    }
+    .student-voice-carousel .slick-slide {
+      margin: 0 8px;
+    }
+    /* カルーセル矢印: 案3 外枠のみミニマル矢印 */
+    .student-voice-carousel .slick-prev,
+    .student-voice-carousel .slick-next {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 50% !important;
+      background: transparent !important;
+      border: 2px solid transparent !important;
+      z-index: 10 !important;
+      transition: all 0.2s ease !important;
+    }
+    .student-voice-carousel .slick-prev:hover,
+    .student-voice-carousel .slick-next:hover {
+      background: rgba(76,175,80,0.08) !important;
+      border-color: #4caf50 !important;
+    }
+    .student-voice-carousel .slick-prev { left: -44px !important; }
+    .student-voice-carousel .slick-next { right: -44px !important; }
+    /* 重複した矢印を非表示 (1組だけ残す) */
+    .student-voice-carousel .slick-prev ~ .slick-prev,
+    .student-voice-carousel .slick-next ~ .slick-next {
+      display: none !important;
+    }
+    .student-voice-carousel .slick-prev:before,
+    .student-voice-carousel .slick-next:before {
+      font-size: 24px !important;
+      color: #4caf50 !important;
+      opacity: 1 !important;
+      font-weight: 900 !important;
+      transition: color 0.2s ease !important;
+    }
+    .student-voice-carousel .slick-prev:hover:before,
+    .student-voice-carousel .slick-next:hover:before {
+      color: #1b5e20 !important;
+    }
+    .student-voice-carousel .slick-prev:before { content: '\2039' !important; }
+    .student-voice-carousel .slick-next:before { content: '\203A' !important; }
+    .student-voice-title {
+      text-align: center !important;
+    }
+    .intern-list {
+      max-width: 1000px !important;
+      margin: 0 auto !important;
+      padding-bottom: 40px !important;
+      background: #fff !important;
+    }
+    .pull-left-inner, .cs-contents.pull-left, .cs-contents {
+      background: #fff !important;
+    }
+    /* 全セクションの枠線・装飾線を完全除去 */
+    .pull-left-inner,
+    .cs-contents,
+    .cs-contents.pull-left,
+    .search-interns,
+    .search-interns-list,
+    section,
+    .main-inner,
+    .main-container,
+    .card,
+    .card-panel,
+    .collapsible,
+    nav,
+    .z-depth-1,
+    .z-depth-2,
+    .z-depth-3 {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+    /* コンパクトカード: ボーダーレス */
+    .compact-card {
+      border: none !important;
+      border-bottom: 1px solid #f0f0f0 !important;
+      box-shadow: none !important;
+    }
+    .page-footer {
+      margin-top: 0 !important;
+    }
+    /* フッター前のピンク背景を除去 */
+    .content-wrapper,
+    #app,
+    .top-page,
+    body.top-page,
+    .page-footer::before,
+    .footer-container-wrapper::before {
+      background: #fff !important;
+    }
+    footer.page-footer {
+      background-color: #222 !important;
+      margin-top: 0 !important;
+      padding-top: 40px !important;
+    }
+    /* ピンク背景を完全に消す: bodyからfooterまで全要素 */
+    html, body, body.top-page, .top-page {
+      background-color: #fff !important;
+    }
+    .compact-header {
+      text-align: center;
+    }
+
+    /* AI名言集 */
+    .ai-quotes-section {
+      background: #fff;
+      padding: 50px 40px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .ai-quotes-section .section-title-e {
+      justify-content: flex-start;
+    }
+    .ai-quotes-title {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: #222;
+      margin-bottom: 8px;
+    }
+    .ai-quotes-sub {
+      color: #888;
+      font-size: 0.95em;
+      margin-bottom: 36px;
+    }
+    .ai-quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .ai-quote-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: left;
+      border-left: 4px solid #4caf50;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+    .ai-quote-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .ai-quote-text {
+      font-size: 0.9em;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .ai-quote-author {
+      font-size: 0.75em;
+      color: #888;
+      font-weight: 600;
+    }
+
+    /* 「真の成果を、その手に」テキスト画像 */
+    .seika-text-img {
+      position: absolute;
+      right: 24%;
+      bottom: -25%;
+      width: 520px;
+      opacity: 0.9;
+      transform: rotate(-9deg);
+      z-index: 2;
+      pointer-events: none;
+    }
+  </style>
+
+  <!-- ======================== 動的SVG背景レイヤー ======================== -->
+  <style>
+    /* body / メインラッパは透明にして背景SVGを透かす */
+    body.top-page,
+    body.top-page .content-wrapper,
+    body.top-page .main-container,
+    body.top-page .main-inner {
+      background: transparent !important;
+    }
+    /* 各セクションの白塗りはわずかに透けさせる（読みやすさは保つ） */
+    body.top-page .main-inner > section,
+    body.top-page .main-inner > div {
+      background-color: rgba(255,255,255,0.0);
+    }
+    /* 固定背景レイヤー */
+    .bg-fixed-layer {
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background: #f4faf5;
+    }
+    .bg-fixed-layer > svg { display: none; width: 100%; height: 100%; }
+    body[data-bg="1"] .bg-fixed-layer { background: #f4faf5; }
+    body[data-bg="2"] .bg-fixed-layer { background: radial-gradient(at 30% 20%,#e8f5e9,#ffffff 60%); }
+    body[data-bg="3"] .bg-fixed-layer { background: linear-gradient(180deg,#ffffff 0%,#eef9f0 100%); }
+    body[data-bg="4"] .bg-fixed-layer { background: linear-gradient(180deg,#ffffff 0%,#e8f5e9 60%,#c8e6c9 100%); }
+    body[data-bg="5"] .bg-fixed-layer { background: radial-gradient(ellipse at 80% 30%,#e8f5e9,#ffffff 70%); }
+    body[data-bg="6"] .bg-fixed-layer { background: #f1faf3; }
+    body[data-bg="7"] .bg-fixed-layer { background: #fafdfa; }
+    body[data-bg="8"] .bg-fixed-layer { background: #ffffff; }
+    body[data-bg="0"] .bg-fixed-layer { background: #fff; }
+    body[data-bg="1"] #bg-svg-1,
+    body[data-bg="2"] #bg-svg-2,
+    body[data-bg="3"] #bg-svg-3,
+    body[data-bg="4"] #bg-svg-4,
+    body[data-bg="5"] #bg-svg-5,
+    body[data-bg="6"] #bg-svg-6,
+    body[data-bg="7"] #bg-svg-7,
+    body[data-bg="8"] #bg-svg-8 { display: block; }
+
+    /* スイッチャー */
+    .bg-switcher {
+      position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+      z-index: 9999;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      border: 1px solid rgba(46,125,50,0.2);
+      border-radius: 14px; padding: 10px 8px;
+      box-shadow: 0 8px 28px rgba(46,125,50,0.18);
+      display: flex; flex-direction: column; gap: 6px;
+      font-family: -apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+    }
+    .bg-switcher-title {
+      font-size: 0.62em; color: #2e7d32; font-weight: 800;
+      letter-spacing: .12em; text-align: center; padding: 2px 4px 6px;
+      border-bottom: 1px solid rgba(46,125,50,0.15); margin-bottom: 4px;
+    }
+    .bg-btn {
+      width: 80px; padding: 6px 8px;
+      background: #fff; color: #1b5e20;
+      border: 1px solid rgba(46,125,50,0.2); border-radius: 8px;
+      font-size: 0.7em; font-weight: 700;
+      cursor: pointer; transition: all .15s;
+      text-align: left; line-height: 1.2;
+    }
+    .bg-btn:hover { background: #e8f5e9; border-color: #2e7d32; }
+    .bg-btn.active { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+    .bg-btn small { display: block; font-size: 0.78em; opacity: 0.7; font-weight: 600; }
+  </style>
+</head>
+
+<body class="top-page modal-open" data-bg="1">
+
+<!-- ============== 動的SVG背景（固定レイヤー） ============== -->
+<div class="bg-fixed-layer" aria-hidden="true">
+
+  <!-- 01 Neural Network -->
+  <svg id="bg-svg-1" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg1-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#66bb6a" stop-opacity="0.5"/><stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g stroke="#2e7d32" stroke-width="1" opacity="0.4">
+      <line x1="120" y1="120" x2="320" y2="200"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3s" repeatCount="indefinite"/></line>
+      <line x1="320" y1="200" x2="540" y2="120"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" repeatCount="indefinite" begin="0.2s"/></line>
+      <line x1="540" y1="120" x2="780" y2="240"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="2.8s" repeatCount="indefinite" begin="0.5s"/></line>
+      <line x1="780" y1="240" x2="980" y2="160"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" repeatCount="indefinite" begin="0.7s"/></line>
+      <line x1="200" y1="380" x2="420" y2="460"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.6s" repeatCount="indefinite" begin="0.4s"/></line>
+      <line x1="420" y1="460" x2="640" y2="380"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="2.6s" repeatCount="indefinite" begin="0.9s"/></line>
+      <line x1="640" y1="380" x2="860" y2="500"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" begin="0.3s"/></line>
+      <line x1="320" y1="200" x2="420" y2="460"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="4s" repeatCount="indefinite" begin="0.6s"/></line>
+      <line x1="780" y1="240" x2="640" y2="380"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" repeatCount="indefinite" begin="0.1s"/></line>
+      <line x1="120" y1="120" x2="200" y2="380"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="4.2s" repeatCount="indefinite" begin="1.1s"/></line>
+      <line x1="980" y1="160" x2="860" y2="500"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.6s" repeatCount="indefinite" begin="0.8s"/></line>
+      <line x1="200" y1="380" x2="160" y2="640"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" repeatCount="indefinite" begin="1.4s"/></line>
+      <line x1="640" y1="380" x2="700" y2="660"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" repeatCount="indefinite" begin="0.5s"/></line>
+      <line x1="860" y1="500" x2="960" y2="700"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.4s" repeatCount="indefinite" begin="1.0s"/></line>
+    </g>
+    <g>
+      <circle cx="120" cy="120" r="40" fill="url(#bg1-glow)"/><circle cx="120" cy="120" r="4" fill="#2e7d32"/>
+      <circle cx="320" cy="200" r="50" fill="url(#bg1-glow)"/><circle cx="320" cy="200" r="5" fill="#2e7d32"/>
+      <circle cx="540" cy="120" r="40" fill="url(#bg1-glow)"/><circle cx="540" cy="120" r="4" fill="#2e7d32"/>
+      <circle cx="780" cy="240" r="50" fill="url(#bg1-glow)"/><circle cx="780" cy="240" r="5" fill="#2e7d32"/>
+      <circle cx="980" cy="160" r="40" fill="url(#bg1-glow)"/><circle cx="980" cy="160" r="4" fill="#2e7d32"/>
+      <circle cx="200" cy="380" r="40" fill="url(#bg1-glow)"/><circle cx="200" cy="380" r="4" fill="#2e7d32"/>
+      <circle cx="420" cy="460" r="50" fill="url(#bg1-glow)"/><circle cx="420" cy="460" r="5" fill="#2e7d32"/>
+      <circle cx="640" cy="380" r="40" fill="url(#bg1-glow)"/><circle cx="640" cy="380" r="4" fill="#2e7d32"/>
+      <circle cx="860" cy="500" r="50" fill="url(#bg1-glow)"/><circle cx="860" cy="500" r="5" fill="#2e7d32"/>
+      <circle cx="160" cy="640" r="40" fill="url(#bg1-glow)"/><circle cx="160" cy="640" r="4" fill="#2e7d32"/>
+      <circle cx="700" cy="660" r="50" fill="url(#bg1-glow)"/><circle cx="700" cy="660" r="5" fill="#2e7d32"/>
+      <circle cx="960" cy="700" r="40" fill="url(#bg1-glow)"/><circle cx="960" cy="700" r="4" fill="#2e7d32"/>
+    </g>
+  </svg>
+
+  <!-- 02 Particle Constellation -->
+  <svg id="bg-svg-2" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg2-dot" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#66bb6a" stop-opacity="0.45"/><stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g>
+      <circle cx="100" cy="80" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="280" cy="160" r="3" fill="#43a047"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="0.4s"/></circle>
+      <circle cx="450" cy="80" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.2s" repeatCount="indefinite" begin="0.7s"/></circle>
+      <circle cx="640" cy="200" r="3" fill="#66bb6a"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.8s" repeatCount="indefinite" begin="1s"/></circle>
+      <circle cx="820" cy="120" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+      <circle cx="1020" cy="200" r="3" fill="#43a047"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.9s" repeatCount="indefinite" begin="0.2s"/></circle>
+      <circle cx="160" cy="320" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.4s" repeatCount="indefinite" begin="1.2s"/></circle>
+      <circle cx="370" cy="460" r="3" fill="#66bb6a"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.7s" repeatCount="indefinite" begin="0.8s"/></circle>
+      <circle cx="580" cy="380" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.1s" repeatCount="indefinite" begin="1.4s"/></circle>
+      <circle cx="800" cy="480" r="3" fill="#43a047"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.6s" repeatCount="indefinite" begin="0.6s"/></circle>
+      <circle cx="1080" cy="420" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.3s" repeatCount="indefinite" begin="1.1s"/></circle>
+      <circle cx="220" cy="600" r="2.5" fill="#43a047"><animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" begin="0.5s"/></circle>
+      <circle cx="500" cy="680" r="3" fill="#66bb6a"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.8s" repeatCount="indefinite" begin="1.0s"/></circle>
+      <circle cx="850" cy="700" r="2.5" fill="#2e7d32"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.4s" repeatCount="indefinite" begin="0.3s"/></circle>
+    </g>
+    <g style="animation: bg-drift 8s linear infinite alternate;">
+      <circle cx="200" cy="500" r="40" fill="url(#bg2-dot)"/>
+      <circle cx="700" cy="640" r="60" fill="url(#bg2-dot)"/>
+      <circle cx="1100" cy="600" r="50" fill="url(#bg2-dot)"/>
+    </g>
+    <g style="animation: bg-drift 12s linear infinite alternate-reverse;">
+      <circle cx="400" cy="280" r="50" fill="url(#bg2-dot)" opacity="0.7"/>
+      <circle cx="900" cy="320" r="70" fill="url(#bg2-dot)" opacity="0.6"/>
+    </g>
+  </svg>
+
+  <!-- 03 Wave Mesh -->
+  <svg id="bg-svg-3" viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg3-g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2e7d32" stop-opacity="0"/><stop offset="50%" stop-color="#2e7d32" stop-opacity="0.7"/><stop offset="100%" stop-color="#2e7d32" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bg3-g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#66bb6a" stop-opacity="0"/><stop offset="50%" stop-color="#66bb6a" stop-opacity="0.6"/><stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bg3-g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a5d6a7" stop-opacity="0"/><stop offset="50%" stop-color="#a5d6a7" stop-opacity="0.7"/><stop offset="100%" stop-color="#a5d6a7" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path fill="none" stroke="url(#bg3-g1)" stroke-width="2" d="M0,400 C200,300 400,500 600,400 C800,300 1000,500 1200,400">
+      <animate attributeName="d" dur="6s" repeatCount="indefinite" values="M0,400 C200,300 400,500 600,400 C800,300 1000,500 1200,400;M0,400 C200,500 400,300 600,400 C800,500 1000,300 1200,400;M0,400 C200,300 400,500 600,400 C800,300 1000,500 1200,400"/>
+    </path>
+    <path fill="none" stroke="url(#bg3-g2)" stroke-width="2" d="M0,440 C200,360 400,520 600,440 C800,360 1000,520 1200,440">
+      <animate attributeName="d" dur="7s" repeatCount="indefinite" values="M0,440 C200,360 400,520 600,440 C800,360 1000,520 1200,440;M0,440 C200,520 400,360 600,440 C800,520 1000,360 1200,440;M0,440 C200,360 400,520 600,440 C800,360 1000,520 1200,440"/>
+    </path>
+    <path fill="none" stroke="url(#bg3-g3)" stroke-width="2" d="M0,480 C200,400 400,560 600,480 C800,400 1000,560 1200,480">
+      <animate attributeName="d" dur="8s" repeatCount="indefinite" values="M0,480 C200,400 400,560 600,480 C800,400 1000,560 1200,480;M0,480 C200,560 400,400 600,480 C800,560 1000,400 1200,480;M0,480 C200,400 400,560 600,480 C800,400 1000,560 1200,480"/>
+    </path>
+    <g opacity="0.6">
+      <path fill="none" stroke="url(#bg3-g1)" stroke-width="1.5" d="M0,200 C200,100 400,300 600,200 C800,100 1000,300 1200,200">
+        <animate attributeName="d" dur="9s" repeatCount="indefinite" values="M0,200 C200,100 400,300 600,200 C800,100 1000,300 1200,200;M0,200 C200,300 400,100 600,200 C800,300 1000,100 1200,200;M0,200 C200,100 400,300 600,200 C800,100 1000,300 1200,200"/>
+      </path>
+      <path fill="none" stroke="url(#bg3-g2)" stroke-width="1.5" d="M0,640 C200,560 400,720 600,640 C800,560 1000,720 1200,640">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite" values="M0,640 C200,560 400,720 600,640 C800,560 1000,720 1200,640;M0,640 C200,720 400,560 600,640 C800,720 1000,560 1200,640;M0,640 C200,560 400,720 600,640 C800,560 1000,720 1200,640"/>
+      </path>
+    </g>
+  </svg>
+
+  <!-- 04 Perspective Grid -->
+  <svg id="bg-svg-4" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#66bb6a" opacity="0.45">
+      <circle cx="100" cy="60" r="1.5"/><circle cx="280" cy="100" r="1.8"/><circle cx="500" cy="40" r="1.5"/>
+      <circle cx="720" cy="120" r="1.8"/><circle cx="900" cy="60" r="1.5"/><circle cx="1100" cy="100" r="1.5"/>
+      <circle cx="200" cy="180" r="1.5"/><circle cx="600" cy="160" r="1.8"/><circle cx="1000" cy="200" r="1.5"/>
+    </g>
+    <line x1="0" y1="420" x2="1200" y2="420" stroke="#2e7d32" stroke-width="1.2" opacity="0.65"/>
+    <g stroke="#2e7d32" stroke-width="1" fill="none">
+      <g style="animation: bg-scrollY 1.6s linear infinite;">
+        <line x1="0" y1="440" x2="1200" y2="440" opacity="0.5"/>
+        <line x1="0" y1="475" x2="1200" y2="475" opacity="0.45"/>
+        <line x1="0" y1="520" x2="1200" y2="520" opacity="0.4"/>
+        <line x1="0" y1="580" x2="1200" y2="580" opacity="0.35"/>
+        <line x1="0" y1="650" x2="1200" y2="650" opacity="0.3"/>
+        <line x1="0" y1="730" x2="1200" y2="730" opacity="0.25"/>
+      </g>
+    </g>
+    <g stroke="#2e7d32" stroke-width="1" opacity="0.4">
+      <line x1="0" y1="800" x2="600" y2="420"/><line x1="100" y1="800" x2="600" y2="420"/>
+      <line x1="240" y1="800" x2="600" y2="420"/><line x1="400" y1="800" x2="600" y2="420"/>
+      <line x1="600" y1="800" x2="600" y2="420"/><line x1="800" y1="800" x2="600" y2="420"/>
+      <line x1="960" y1="800" x2="600" y2="420"/><line x1="1100" y1="800" x2="600" y2="420"/>
+      <line x1="1200" y1="800" x2="600" y2="420"/>
+    </g>
+    <circle cx="600" cy="420" r="100" fill="#66bb6a" opacity="0.32"/>
+    <circle cx="600" cy="420" r="60" fill="#a5d6a7" opacity="0.65"/>
+    <circle cx="600" cy="420" r="30" fill="#fff" opacity="0.85"/>
+  </svg>
+
+  <!-- 05 Orbiting Rings -->
+  <svg id="bg-svg-5" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bg5-core" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#66bb6a" stop-opacity="0.65"/><stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g transform="translate(950,200)">
+      <circle r="70" fill="url(#bg5-core)"/><circle r="8" fill="#2e7d32"/>
+      <g><ellipse rx="100" ry="40" fill="none" stroke="#2e7d32" stroke-width="1" opacity="0.55"/><circle cx="100" cy="0" r="5" fill="#43a047"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite"/></circle></g>
+      <g transform="rotate(60)"><ellipse rx="170" ry="65" fill="none" stroke="#2e7d32" stroke-width="1" opacity="0.42"/><circle cx="-170" cy="0" r="6" fill="#66bb6a"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="9s" repeatCount="indefinite"/></circle></g>
+      <g transform="rotate(-30)"><ellipse rx="260" ry="100" fill="none" stroke="#2e7d32" stroke-width="1" opacity="0.3"/><circle cx="260" cy="0" r="5" fill="#a5d6a7"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="14s" repeatCount="indefinite"/></circle></g>
+      <g transform="rotate(20)"><ellipse rx="370" ry="140" fill="none" stroke="#2e7d32" stroke-width="0.8" opacity="0.2"/></g>
+    </g>
+    <g fill="#66bb6a" opacity="0.4">
+      <circle cx="120" cy="80" r="1.5"/><circle cx="300" cy="200" r="1.8"/><circle cx="180" cy="380" r="1.5"/>
+      <circle cx="500" cy="120" r="1.5"/><circle cx="450" cy="450" r="1.8"/><circle cx="700" cy="500" r="1.5"/>
+      <circle cx="80" cy="500" r="1.8"/><circle cx="250" cy="650" r="1.5"/><circle cx="600" cy="700" r="1.8"/>
+    </g>
+  </svg>
+
+  <!-- 06 Hex Pulse -->
+  <svg id="bg-svg-6" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs><polygon id="bg6-hex" points="30,0 60,17 60,52 30,69 0,52 0,17" fill="none" stroke="#2e7d32" stroke-width="1"/></defs>
+    <g opacity="0.32">
+      <g><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,52)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,104)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,156)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,208)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,260)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,312)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,364)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,416)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,468)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,520)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,572)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+      <g transform="translate(0,624)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/><use href="#bg6-hex" x="1140" y="0"/></g>
+      <g transform="translate(30,676)"><use href="#bg6-hex" x="0" y="0"/><use href="#bg6-hex" x="60" y="0"/><use href="#bg6-hex" x="120" y="0"/><use href="#bg6-hex" x="180" y="0"/><use href="#bg6-hex" x="240" y="0"/><use href="#bg6-hex" x="300" y="0"/><use href="#bg6-hex" x="360" y="0"/><use href="#bg6-hex" x="420" y="0"/><use href="#bg6-hex" x="480" y="0"/><use href="#bg6-hex" x="540" y="0"/><use href="#bg6-hex" x="600" y="0"/><use href="#bg6-hex" x="660" y="0"/><use href="#bg6-hex" x="720" y="0"/><use href="#bg6-hex" x="780" y="0"/><use href="#bg6-hex" x="840" y="0"/><use href="#bg6-hex" x="900" y="0"/><use href="#bg6-hex" x="960" y="0"/><use href="#bg6-hex" x="1020" y="0"/><use href="#bg6-hex" x="1080" y="0"/></g>
+    </g>
+    <g>
+      <polygon points="240,17 270,34 270,69 240,86 210,69 210,34" fill="#66bb6a" opacity="0"><animate attributeName="opacity" values="0;0.5;0" dur="3s" repeatCount="indefinite"/></polygon>
+      <polygon points="540,121 570,138 570,173 540,190 510,173 510,138" fill="#43a047" opacity="0"><animate attributeName="opacity" values="0;0.55;0" dur="3.5s" repeatCount="indefinite" begin="0.6s"/></polygon>
+      <polygon points="840,225 870,242 870,277 840,294 810,277 810,242" fill="#a5d6a7" opacity="0"><animate attributeName="opacity" values="0;0.65;0" dur="3.2s" repeatCount="indefinite" begin="1.1s"/></polygon>
+      <polygon points="360,329 390,346 390,381 360,398 330,381 330,346" fill="#66bb6a" opacity="0"><animate attributeName="opacity" values="0;0.5;0" dur="2.8s" repeatCount="indefinite" begin="0.4s"/></polygon>
+      <polygon points="660,433 690,450 690,485 660,502 630,485 630,450" fill="#43a047" opacity="0"><animate attributeName="opacity" values="0;0.55;0" dur="3.6s" repeatCount="indefinite" begin="0.9s"/></polygon>
+      <polygon points="960,533 990,550 990,585 960,602 930,585 930,550" fill="#a5d6a7" opacity="0"><animate attributeName="opacity" values="0;0.65;0" dur="3.4s" repeatCount="indefinite" begin="1.5s"/></polygon>
+      <polygon points="450,637 480,654 480,689 450,706 420,689 420,654" fill="#66bb6a" opacity="0"><animate attributeName="opacity" values="0;0.5;0" dur="3.3s" repeatCount="indefinite" begin="0.7s"/></polygon>
+    </g>
+  </svg>
+
+  <!-- 07 Data Stream -->
+  <svg id="bg-svg-7" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg7-line" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2e7d32" stop-opacity="0"/><stop offset="80%" stop-color="#2e7d32" stop-opacity="0.85"/><stop offset="100%" stop-color="#1b5e20" stop-opacity="1"/></linearGradient>
+    </defs>
+    <g>
+      <rect x="60" y="-200" width="2" height="220" fill="url(#bg7-line)"><animate attributeName="y" from="-220" to="800" dur="4s" repeatCount="indefinite"/></rect>
+      <rect x="160" y="-200" width="2" height="200" fill="url(#bg7-line)"><animate attributeName="y" from="-200" to="800" dur="5s" repeatCount="indefinite" begin="0.4s"/></rect>
+      <rect x="260" y="-200" width="2" height="240" fill="url(#bg7-line)"><animate attributeName="y" from="-240" to="800" dur="4.5s" repeatCount="indefinite" begin="0.9s"/></rect>
+      <rect x="360" y="-200" width="2" height="180" fill="url(#bg7-line)"><animate attributeName="y" from="-180" to="800" dur="3.5s" repeatCount="indefinite" begin="1.4s"/></rect>
+      <rect x="460" y="-200" width="2" height="260" fill="url(#bg7-line)"><animate attributeName="y" from="-260" to="800" dur="5.5s" repeatCount="indefinite" begin="0.2s"/></rect>
+      <rect x="560" y="-200" width="2" height="220" fill="url(#bg7-line)"><animate attributeName="y" from="-220" to="800" dur="4s" repeatCount="indefinite" begin="0.7s"/></rect>
+      <rect x="660" y="-200" width="2" height="200" fill="url(#bg7-line)"><animate attributeName="y" from="-200" to="800" dur="4.8s" repeatCount="indefinite" begin="1.1s"/></rect>
+      <rect x="760" y="-200" width="2" height="240" fill="url(#bg7-line)"><animate attributeName="y" from="-240" to="800" dur="4.4s" repeatCount="indefinite" begin="0.5s"/></rect>
+      <rect x="860" y="-200" width="2" height="220" fill="url(#bg7-line)"><animate attributeName="y" from="-220" to="800" dur="5.2s" repeatCount="indefinite" begin="0.3s"/></rect>
+      <rect x="960" y="-200" width="2" height="200" fill="url(#bg7-line)"><animate attributeName="y" from="-200" to="800" dur="4.6s" repeatCount="indefinite" begin="1.3s"/></rect>
+      <rect x="1060" y="-200" width="2" height="260" fill="url(#bg7-line)"><animate attributeName="y" from="-260" to="800" dur="3.8s" repeatCount="indefinite" begin="0.8s"/></rect>
+      <rect x="1160" y="-200" width="2" height="220" fill="url(#bg7-line)"><animate attributeName="y" from="-220" to="800" dur="4.7s" repeatCount="indefinite" begin="0.6s"/></rect>
+    </g>
+    <g stroke="#2e7d32" stroke-width="0.5" opacity="0.07">
+      <line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="240" x2="1200" y2="240"/>
+      <line x1="0" y1="360" x2="1200" y2="360"/><line x1="0" y1="480" x2="1200" y2="480"/>
+      <line x1="0" y1="600" x2="1200" y2="600"/><line x1="0" y1="720" x2="1200" y2="720"/>
+    </g>
+  </svg>
+
+  <!-- 08 Aurora Flow -->
+  <svg id="bg-svg-8" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg8-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#66bb6a" stop-opacity="0.55"/><stop offset="100%" stop-color="#a5d6a7" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bg8-2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2e7d32" stop-opacity="0.4"/><stop offset="100%" stop-color="#66bb6a" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bg8-3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a5d6a7" stop-opacity="0.55"/><stop offset="100%" stop-color="#2e7d32" stop-opacity="0"/></linearGradient>
+      <filter id="bg8-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="50"/></filter>
+    </defs>
+    <g filter="url(#bg8-blur)">
+      <path fill="url(#bg8-1)" d="M0,240 Q300,140 600,300 T1200,240 L1200,500 Q900,360 600,560 T0,500 Z">
+        <animate attributeName="d" dur="11s" repeatCount="indefinite" values="M0,240 Q300,140 600,300 T1200,240 L1200,500 Q900,360 600,560 T0,500 Z;M0,300 Q300,460 600,360 T1200,300 L1200,560 Q900,300 600,500 T0,560 Z;M0,240 Q300,140 600,300 T1200,240 L1200,500 Q900,360 600,560 T0,500 Z"/>
+      </path>
+      <path fill="url(#bg8-2)" d="M0,140 Q400,360 800,180 T1200,300 L1200,620 Q800,420 400,620 T0,500 Z">
+        <animate attributeName="d" dur="14s" repeatCount="indefinite" values="M0,140 Q400,360 800,180 T1200,300 L1200,620 Q800,420 400,620 T0,500 Z;M0,260 Q400,140 800,360 T1200,180 L1200,500 Q800,620 400,360 T0,620 Z;M0,140 Q400,360 800,180 T1200,300 L1200,620 Q800,420 400,620 T0,500 Z"/>
+      </path>
+      <path fill="url(#bg8-3)" d="M200,0 Q400,400 200,800 L500,800 Q300,400 500,0 Z">
+        <animate attributeName="d" dur="12s" repeatCount="indefinite" values="M200,0 Q400,400 200,800 L500,800 Q300,400 500,0 Z;M300,0 Q100,400 300,800 L600,800 Q400,400 600,0 Z;M200,0 Q400,400 200,800 L500,800 Q300,400 500,0 Z"/>
+      </path>
+    </g>
+    <g fill="#2e7d32" opacity="0.3">
+      <circle cx="120" cy="80" r="1.2"/><circle cx="280" cy="160" r="1.5"/><circle cx="450" cy="80" r="1.2"/>
+      <circle cx="640" cy="200" r="1.5"/><circle cx="820" cy="120" r="1.2"/><circle cx="1020" cy="200" r="1.5"/>
+      <circle cx="160" cy="700" r="1.2"/><circle cx="600" cy="740" r="1.5"/><circle cx="1080" cy="680" r="1.2"/>
+    </g>
+  </svg>
+</div>
+
+<style>
+  @keyframes bg-drift { 0%{transform:translateY(0);} 100%{transform:translateY(-40px);} }
+  @keyframes bg-scrollY { 0%{transform:translateY(0);} 100%{transform:translateY(40px);} }
+</style>
+
+<!-- ============== スイッチャー ============== -->
+<div class="bg-switcher" aria-label="背景バリアント切替">
+  <div class="bg-switcher-title">背景</div>
+  <button class="bg-btn" data-bg="0">OFF<small>白のみ</small></button>
+  <button class="bg-btn active" data-bg="1">01<small>Neural</small></button>
+  <button class="bg-btn" data-bg="2">02<small>Particle</small></button>
+  <button class="bg-btn" data-bg="3">03<small>Wave</small></button>
+  <button class="bg-btn" data-bg="4">04<small>Grid</small></button>
+  <button class="bg-btn" data-bg="5">05<small>Orbit</small></button>
+  <button class="bg-btn" data-bg="6">06<small>Hex</small></button>
+  <button class="bg-btn" data-bg="7">07<small>Stream</small></button>
+  <button class="bg-btn" data-bg="8">08<small>Aurora</small></button>
+</div>
+<script>
+  document.querySelectorAll('.bg-switcher .bg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.body.dataset.bg = btn.dataset.bg;
+      document.querySelectorAll('.bg-switcher .bg-btn').forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+</script>
+
+
+<div class="header">
+  <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
+    <div class="header-content" style="display: flex; align-items: center; width: 100%;">
+      <div class="header-left" style="margin-right: auto;">
+        <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="logo icon" style="height: 38px; width: auto;">AIme</a>
+      </div>
+      <div class="neo-nav">
+        <a href="search.html" class="header-category-item">インターンを探す</a>
+        <a href="companies.html" class="header-category-item">AI企業を探す</a>
+        <a href="blog.html" class="header-category-item">AIコラム</a>
+        <a href="company-dashboard.html" class="header-category-item" id="nav-company" style="display:none;">企業管理</a>
+        <a href="admin.html" class="header-category-item" id="nav-admin" style="display:none;">管理者</a>
+        <a href="messages.html" class="header-category-item" id="nav-messages" style="display:none;">メッセージ</a>
+        <a href="notifications.html" class="header-category-item" id="nav-notif" style="display:none; position:relative;">通知<span id="notif-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f44336; color:#fff; border-radius:999px; padding:1px 6px; font-size:.65em; font-weight:900;">0</span></a>
+        <a href="mypage.html" class="header-category-item" id="nav-mypage" style="display:none;">マイページ</a>
+        <a href="login.html" class="neo-login" id="nav-login">ログイン</a>
+        <a href="signup-role.html" class="neo-register" id="nav-signup">新規登録</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content-wrapper" id="app">
+</div>
+
+<div class="container-wrap top-page">
+  <div class="cover-area">
+  <div class="cover-inner">
+    <div class="top-catch" style="margin-left: -80px;">
+      <img class="top-catch-tag" src="images/top/crown.svg" alt="crown.svg">
+      <h2 class="top-catch-title" style="font-size: 4em; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AIと共創し、未来を切り開く。</h2>
+      <h1 class="top-catch-sub-title" style="font-size: 4em; margin-top: 0; margin-bottom: 24px; text-shadow: 0 0 20px #fff, 0 0 40px #fff;">AI特化インターンなら、AIme</h1>
+      <p style="font-size: 1.9em; font-weight: 600; margin-top: 0; text-shadow: 0 0 15px #fff, 0 0 30px #fff;">実践的なAIスキルを身につけ、次世代のキャリアを始めよう。</p>
+              <div class="top-catch-action" style="margin-top: 90px;">
+          <div class="top-catch-action-wrapper" style="text-align: left; margin-bottom: 20px;">
+            <div class="cta-brutal-microcopy">GPTより先に動け。登録30秒。</div>
+            <br>
+            <a href="signup.html" class="cta-brutal-btn">
+              <span class="cta-brutal-tag">無料</span>新規登録する
+            </a>
+          </div>
+        </div>
+        <img src="images/top/seika-text.png" alt="真の成果を、その手に" class="seika-text-img">
+        <div class="hero-popular-tags">
+          <span class="popular-label">人気:</span>
+          <a href="search.html?tag=LLM" class="popular-tag">LLM</a>
+          <a href="search.html?tag=RAG" class="popular-tag">RAG</a>
+          <a href="search.html?tag=AI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88" class="popular-tag">AIエージェント</a>
+          <a href="search.html?tag=Python" class="popular-tag">Python</a>
+          <a href="search.html?tag=GPT" class="popular-tag">GPT</a>
+          <a href="search.html?tag=%E3%83%95%E3%83%AB%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88" class="popular-tag">フルリモート</a>
+          <a href="search.html?tag=%E6%9C%AA%E7%B5%8C%E9%A8%93OK" class="popular-tag">未経験OK</a>
+        </div>
+        <form class="hero-search" method="get" action="search.html">
+          <input id="hero-search-input" type="text" name="q" placeholder="スキル、企業、条件で探す">
+          <button type="submit"><i class="material-icons">search</i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- 特集トップ企業紹介 -->
+  <div class="featured-companies">
+    <h2 class="featured-companies-title">特集：トップAI企業紹介</h2>
+    <p class="featured-companies-sub">インターン先として注目のAI企業をピックアップ</p>
+
+    <!-- アメリカ地図 + 本社ピン -->
+    <div class="usa-map-wrap">
+      <img src="images/usa-map.png" alt="アメリカ地図" class="usa-map-img">
+
+      <!-- === カリフォルニア・ベイエリア === -->
+      <div class="usa-pin" style="left: 10%; top: 36%;" data-company="OpenAI" data-location="San Francisco, CA" data-desc="ChatGPT / GPT-4">
+        <div class="usa-pin-dot" style="background: #74aa9c;"></div>
+        <div class="usa-pin-label"><img src="images/logo/openai_logo.webp" alt="OpenAI">OpenAI</div>
+      </div>
+      <div class="usa-pin" style="left: 8%; top: 41%;" data-company="Google / DeepMind" data-location="Mountain View, CA" data-desc="Gemini / Transformer">
+        <div class="usa-pin-dot" style="background: #4285f4;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#4285F4" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>Google</div>
+      </div>
+      <div class="usa-pin" style="left: 12%; top: 33%;" data-company="Anthropic" data-location="San Francisco, CA" data-desc="Claude">
+        <div class="usa-pin-dot" style="background: #d97706;"></div>
+        <div class="usa-pin-label"><img src="images/logo/anthropic_logo.png" alt="Anthropic">Anthropic</div>
+      </div>
+      <div class="usa-pin" style="left: 6.5%; top: 44%;" data-company="Meta AI" data-location="Menlo Park, CA" data-desc="LLaMA / PyTorch">
+        <div class="usa-pin-dot" style="background: #0668E1;"></div>
+        <div class="usa-pin-label"><img src="images/logo/meta_logo.png" alt="Meta">Meta AI</div>
+      </div>
+      <div class="usa-pin" style="left: 9%; top: 47%;" data-company="Apple" data-location="Cupertino, CA" data-desc="Apple Intelligence / Siri">
+        <div class="usa-pin-dot" style="background: #333;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#000000" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>Apple</div>
+      </div>
+      <div class="usa-pin" style="left: 11%; top: 40%;" data-company="Salesforce" data-location="San Francisco, CA" data-desc="Einstein AI / Slack">
+        <div class="usa-pin-dot" style="background: #00a1e0;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#00A1E0" d="M10.006 5.415a4.195 4.195 0 013.045-1.306c1.56 0 2.954.9 3.69 2.205.63-.3 1.35-.45 2.1-.45 2.85 0 5.159 2.34 5.159 5.22s-2.31 5.22-5.176 5.22c-.345 0-.69-.044-1.02-.104a3.75 3.75 0 01-3.3 1.95c-.6 0-1.155-.15-1.65-.375A4.314 4.314 0 018.88 20.4a4.302 4.302 0 01-4.05-2.82c-.27.062-.54.076-.825.076-2.204 0-4.005-1.8-4.005-4.05 0-1.5.811-2.805 2.01-3.51-.255-.57-.39-1.2-.39-1.846 0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.705 3.72 1.8"/></svg>Salesforce</div>
+      </div>
+      <div class="usa-pin" style="left: 7.5%; top: 37%;" data-company="Tesla AI" data-location="Palo Alto, CA" data-desc="Autopilot / Optimus">
+        <div class="usa-pin-dot" style="background: #cc0000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#E82127" d="M12 5.362l2.475-3.026s4.245.09 8.471 2.054c-1.082 1.636-3.231 2.438-3.231 2.438-.146-1.439-1.154-1.79-4.354-1.79L12 24 8.619 5.034c-3.18 0-4.188.354-4.335 1.792 0 0-2.146-.795-3.229-2.43C5.28 2.431 9.525 2.34 9.525 2.34L12 5.362l-.004.002H12v-.002zm0-3.899c3.415-.03 7.326.528 11.328 2.28.535-.968.672-1.395.672-1.395C19.625.612 15.528.015 12 0 8.472.015 4.375.61 0 2.349c0 0 .195.525.672 1.396C4.674 1.989 8.585 1.435 12 1.46v.003z"/></svg>Tesla</div>
+      </div>
+
+      <!-- === シアトル === -->
+      <div class="usa-pin" style="left: 11%; top: 14%;" data-company="Microsoft" data-location="Redmond, WA" data-desc="Azure AI / Copilot">
+        <div class="usa-pin-dot" style="background: #00a4ef;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 48 48"><rect width="22" height="22" x="1" y="1" fill="#f25022"/><rect width="22" height="22" x="25" y="1" fill="#7fba00"/><rect width="22" height="22" x="1" y="25" fill="#00a4ef"/><rect width="22" height="22" x="25" y="25" fill="#ffb900"/></svg>Microsoft</div>
+      </div>
+      <div class="usa-pin" style="left: 13%; top: 18%;" data-company="Amazon" data-location="Seattle, WA" data-desc="AWS / Alexa / Bedrock">
+        <div class="usa-pin-dot" style="background: #ff9900;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#FF9900" d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a17.617 17.617 0 01-10.951-.577 17.88 17.88 0 01-5.43-3.35c-.1-.074-.151-.15-.151-.22 0-.047.021-.09.051-.13zm6.565-6.218c0-1.005.247-1.863.743-2.577.495-.71 1.17-1.25 2.04-1.615.796-.335 1.756-.575 2.912-.72.39-.046 1.033-.103 1.92-.174v-.37c0-.93-.105-1.558-.3-1.875-.302-.43-.78-.65-1.44-.65h-.182c-.48.046-.896.196-1.246.46-.35.27-.575.63-.675 1.096-.06.3-.206.465-.435.51l-2.52-.315c-.248-.06-.372-.18-.372-.39 0-.046.007-.09.022-.15.247-1.29.855-2.25 1.82-2.88.976-.616 2.1-.975 3.39-1.05h.54c1.65 0 2.957.434 3.888 1.29.135.15.27.3.405.48.12.165.224.314.283.45.075.134.15.33.195.57.06.254.105.42.135.51.03.104.062.3.076.615.01.313.02.493.02.553v5.28c0 .376.06.72.165 1.036.105.313.21.54.315.674l.51.674c.09.136.136.256.136.36 0 .12-.06.226-.18.314-1.2 1.05-1.86 1.62-1.963 1.71-.165.135-.375.15-.63.045a6.062 6.062 0 01-.526-.496l-.31-.347a9.391 9.391 0 01-.317-.42l-.3-.435c-.81.886-1.603 1.44-2.4 1.665-.494.15-1.093.227-1.83.227-1.11 0-2.04-.343-2.76-1.034-.72-.69-1.08-1.665-1.08-2.94l-.05-.076zm3.753-.438c0 .566.14 1.02.425 1.364.285.34.675.512 1.155.512.045 0 .106-.007.195-.02.09-.016.134-.023.166-.023.614-.16 1.08-.553 1.424-1.178.165-.28.285-.58.36-.91.09-.32.12-.59.135-.8.015-.195.015-.54.015-1.005v-.54c-.84 0-1.484.06-1.92.18-1.275.36-1.92 1.17-1.92 2.43l-.035-.02zm9.162 7.027c.03-.06.075-.11.132-.17.362-.243.714-.41 1.05-.5a8.094 8.094 0 011.612-.24c.14-.012.28 0 .41.03.65.06 1.05.168 1.172.33.063.09.099.228.099.39v.15c0 .51-.149 1.11-.424 1.8-.278.69-.664 1.248-1.156 1.68-.073.06-.14.09-.197.09-.03 0-.06 0-.09-.012-.09-.044-.107-.12-.064-.24.54-1.26.806-2.143.806-2.64 0-.15-.03-.27-.087-.344-.145-.166-.55-.257-1.224-.257-.243 0-.533.016-.87.046-.363.045-.7.09-1 .135-.09 0-.148-.014-.18-.044-.03-.03-.036-.047-.02-.077 0-.017.006-.03.02-.063v-.06z"/></svg>Amazon</div>
+      </div>
+      <div class="usa-pin" style="left: 9.5%; top: 11%;" data-company="NVIDIA" data-location="Santa Clara, CA" data-desc="GPU / CUDA / AI半導体">
+        <div class="usa-pin-dot" style="background: #76b900;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#76B900" d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.493 3.374 6.493 3.374s-2.774 3.851-5.75 3.851c-.398 0-.787-.062-1.158-.185v-4.346c1.528.185 1.837.857 2.747 2.385l2.04-1.714s-1.492-1.952-4-1.952a6.016 6.016 0 0 0-.796.035m0-4.735v2.138l.424-.027c5.45-.185 9.01 4.47 9.01 4.47s-4.08 4.964-8.33 4.964c-.37 0-.733-.035-1.095-.097v1.325c.3.035.61.062.91.062 3.957 0 6.82-2.023 9.593-4.408.459.371 2.34 1.263 2.73 1.652-2.633 2.208-8.772 3.984-12.253 3.984-.335 0-.653-.018-.971-.053v1.864H24V4.063zm0 10.326v1.131c-3.657-.654-4.673-4.46-4.673-4.46s1.758-1.944 4.673-2.262v1.237H8.94c-1.528-.186-2.73 1.245-2.73 1.245s.68 2.412 2.739 3.11M2.456 10.9s2.164-3.197 6.5-3.533V6.201C4.153 6.59 0 10.653 0 10.653s2.35 6.802 8.948 7.42v-1.237c-4.84-.6-6.492-5.936-6.492-5.936z"/></svg>NVIDIA</div>
+      </div>
+
+      <!-- === ニューヨーク === -->
+      <div class="usa-pin" style="left: 84%; top: 28%;" data-company="IBM" data-location="Armonk, NY" data-desc="Watson / AI研究">
+        <div class="usa-pin-dot" style="background: #0530ad;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#0530AD" d="M23.544 15.993c.038 0 .06-.017.06-.053v-.036c0-.035-.022-.052-.06-.052h-.09v.14zm-.09.262h-.121v-.498h.225c.112 0 .169.066.169.157 0 .079-.036.129-.09.15l.111.19h-.133l-.092-.17h-.07zm.434-.222v-.062c0-.2-.157-.357-.363-.357a.355.355 0 00-.363.357v.062c0 .2.156.358.363.358a.355.355 0 00.363-.358zm-.838-.03c0-.28.212-.492.475-.492.264 0 .475.213.475.491 0 .279-.211.491-.475.491a.477.477 0 01-.475-.49zM16.21 8.13l-.216-.624h-3.56v.624zm.413 1.19l-.216-.623h-3.973v.624zm2.65 7.147h3.107v-.624h-3.108zm0-1.192h3.107v-.623h-3.108zm0-1.19h1.864v-.624h-1.865zm0-1.191h1.864v-.624h-1.865zm0-1.191h1.864v-.624h-3.555l-.175.504-.175-.504h-3.555v.624h1.865v-.574l.2.574h3.33l.2-.574zm1.864-1.815h-3.142l-.217.624h3.359zm-7.46 3.006h1.865v-.624h-1.865zm0 1.19h1.865v-.623h-1.865zm-1.243 1.191h3.108v-.623h-3.108zm0 1.192h3.108v-.624h-3.108zm6.386-8.961l-.216.624h3.776v-.624zm-.629 1.815h4.19v-.624h-3.974zm-4.514 1.19h3.359l-.216-.623h-3.143zm2.482 2.383h2.496l.218-.624h-2.932zm.417 1.19h1.662l.218-.623h-2.098zm.416 1.191h.83l.218-.623h-1.266zm.414 1.192l.217-.624h-.432zm-12.433-.006l4.578.006c.622 0 1.18-.237 1.602-.624h-6.18zm4.86-3v.624h2.092c0-.216-.03-.425-.083-.624zm-3.616.624h1.865v-.624H6.217zm3.617-3.573h2.008c.053-.199.083-.408.083-.624H9.834zm-3.617 0h1.865v-.624H6.217zM9.55 7.507H4.973v.624h6.18a2.36 2.36 0 00-1.602-.624zm2.056 1.191H4.973v.624h6.884a2.382 2.382 0 00-.25-.624zm-5.39 2.382v.624h4.87c.207-.176.382-.387.519-.624zm4.87 1.191h-4.87v.624h5.389a2.39 2.39 0 00-.519-.624zm-6.114 3.006h6.634c.11-.193.196-.402.25-.624H4.973zM0 8.13h4.352v-.624H0zm0 1.191h4.352v-.624H0zm1.243 1.191h1.865v-.624H1.243zm0 1.191h1.865v-.624H1.243zm0 1.19h1.865v-.623H1.243zm0 1.192h1.865v-.624H1.243zM0 15.276h4.352v-.623H0zm0 1.192h4.352v-.624H0Z"/></svg>IBM</div>
+      </div>
+
+      <!-- === テキサス === -->
+      <div class="usa-pin" style="left: 48%; top: 72%;" data-company="Oracle" data-location="Austin, TX" data-desc="OCI AI / クラウド">
+        <div class="usa-pin-dot" style="background: #f80000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#F80000" d="M16.412 4.412h-8.82a7.588 7.588 0 0 0-.008 15.176h8.828a7.588 7.588 0 0 0 0-15.176zm-.193 12.502H7.786a4.915 4.915 0 0 1 0-9.828h8.433a4.914 4.914 0 1 1 0 9.828z"/></svg>Oracle</div>
+      </div>
+      <div class="usa-pin" style="left: 44%; top: 68%;" data-company="xAI (Elon Musk)" data-location="Austin, TX" data-desc="Grok">
+        <div class="usa-pin-dot" style="background: #111;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#000000" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>xAI</div>
+      </div>
+
+      <!-- === その他 === -->
+      <div class="usa-pin" style="left: 72%; top: 35%;" data-company="Adobe" data-location="San Jose, CA" data-desc="Firefly / Sensei AI">
+        <div class="usa-pin-dot" style="background: #ff0000;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#FF0000" d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624Z"/></svg>Adobe</div>
+      </div>
+      <div class="usa-pin" style="left: 60%; top: 45%;" data-company="Intel" data-location="Santa Clara, CA" data-desc="AI半導体 / Gaudi">
+        <div class="usa-pin-dot" style="background: #0071c5;"></div>
+        <div class="usa-pin-label"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#0071C5" d="M20.42 7.345v9.18h1.651v-9.18zM0 7.475v1.737h1.737V7.474zm9.78.352v6.053c0 .513.044.945.13 1.292.087.34.235.618.44.828.203.21.475.359.803.451.334.093.754.136 1.255.136h.216v-1.533c-.24 0-.445-.012-.593-.037a.672.672 0 0 1-.39-.173.693.693 0 0 1-.173-.377 4.002 4.002 0 0 1-.037-.606v-2.182h1.193v-1.416h-1.193V7.827zm-3.505 2.312c-.396 0-.76.08-1.082.241-.327.161-.6.384-.822.668l-.087.117v-.902H2.658v6.256h1.639v-3.214c.018-.588.16-1.02.433-1.299.29-.297.642-.445 1.044-.445.476 0 .841.149 1.082.433.235.284.359.686.359 1.2v3.324h1.663V12.97c.006-.89-.229-1.595-.686-2.09-.458-.495-1.1-.742-1.917-.742zm10.065.006a3.252 3.252 0 0 0-2.306.946c-.29.29-.525.637-.692 1.033a3.145 3.145 0 0 0-.254 1.273c0 .452.08.878.241 1.274.161.395.39.742.674 1.032.284.29.637.526 1.045.693.408.173.86.26 1.342.26 1.397 0 2.262-.637 2.782-1.23l-1.187-.904c-.248.297-.841.699-1.583.699-.464 0-.847-.105-1.138-.321a1.588 1.588 0 0 1-.593-.872l-.019-.056h4.915v-.587c0-.451-.08-.872-.235-1.267a3.393 3.393 0 0 0-.661-1.033 3.013 3.013 0 0 0-1.02-.692 3.345 3.345 0 0 0-1.311-.248zm-16.297.118v6.256h1.651v-6.256zm16.278 1.286c1.132 0 1.664.797 1.664 1.255l-3.32.006c0-.458.525-1.255 1.656-1.261zm7.073 3.814a.606.606 0 0 0-.606.606.606.606 0 0 0 .606.606.606.606 0 0 0 .606-.606.606.606 0 0 0-.606-.606zm-.008.105a.5.5 0 0 1 .002 0 .5.5 0 0 1 .5.501.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .498-.5zm-.233.155v.699h.13v-.285h.093l.173.285h.136l-.18-.297a.191.191 0 0 0 .118-.056c.03-.03.05-.074.05-.136 0-.068-.02-.117-.063-.154-.037-.038-.105-.056-.185-.056zm.13.099h.154c.019 0 .037.006.056.012a.064.064 0 0 1 .037.031c.013.013.012.031.012.056a.124.124 0 0 1-.012.055.164.164 0 0 1-.037.031c-.019.006-.037.013-.056.013h-.154Z"/></svg>Intel</div>
+      </div>
+
+      <div class="usa-pin-tooltip" id="usaPinTooltip"></div>
+      <div class="usa-map-hint">カーソルを左右に動かしてスクロール</div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    const wrap = document.querySelector('.featured-companies .usa-map-wrap');
+    if (!wrap) return;
+    const pins = Array.from(wrap.querySelectorAll('.usa-pin'));
+    if (!pins.length) return;
+
+    pins.forEach(p => {
+      p.style.left = ''; p.style.top = '';
+      p.style.cursor = 'default';
+    });
+
+    const n = pins.length;
+    let idx = 0;
+    let direction = 0;
+    let speed = 0;
+    let lastStep = 0;
+
+    const render = () => {
+      pins.forEach((pin, i) => {
+        pin.classList.remove('is-active', 'is-prev', 'is-next', 'is-far-prev', 'is-far-next', 'is-hidden');
+        const diff = ((i - idx) % n + n) % n;
+        if (diff === 0) pin.classList.add('is-active');
+        else if (diff === 1) pin.classList.add('is-next');
+        else if (diff === 2) pin.classList.add('is-far-next');
+        else if (diff === n - 1) pin.classList.add('is-prev');
+        else if (diff === n - 2) pin.classList.add('is-far-prev');
+        else pin.classList.add('is-hidden');
+      });
+    };
+    render();
+
+    const deadzone = 0.08;
+    wrap.addEventListener('mousemove', (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const relX = (e.clientX - rect.left) / rect.width;
+      if (relX > 0.5 + deadzone) {
+        direction = 1;
+        speed = Math.min(1, (relX - 0.5 - deadzone) / (0.5 - deadzone));
+      } else if (relX < 0.5 - deadzone) {
+        direction = -1;
+        speed = Math.min(1, (0.5 - deadzone - relX) / (0.5 - deadzone));
+      } else {
+        direction = 0; speed = 0;
+      }
+    });
+    wrap.addEventListener('mouseleave', () => { direction = 0; speed = 0; });
+
+    const tick = (t) => {
+      if (direction !== 0 && speed > 0) {
+        const interval = 1000 - speed * 780;
+        if (t - lastStep > interval) {
+          idx = (idx + direction + n) % n;
+          render();
+          lastStep = t;
+        }
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+  </script>
+
+  <!-- バナーカルーセル削除済み -->
+
+  <div class="main-container">
+    <div class="main-inner">
+      <div class="cs-contents pull-left">
+        <div class="pull-left-inner">
+
+        <!-- ====== AI職種カテゴリ ====== -->
+        <section class="search-interns-new">
+          <div class="section-title-e"><img src="images/sections/sect_01.png" style="height:80px;width:auto;margin-right:-5px;" alt="01 pictogram"><span class="e-num">01</span><div class="e-text"><h2>AImeシップを探す</h2><p class="e-sub">職種・特徴・エリアから検索</p></div></div>
+
+          <h3 class="search-category-label">AI職種からインターンを探す</h3>
+          <div class="brutal-row" id="brutal-jobs"></div>
+
+          <h3 class="search-category-label">尖った特徴からインターンを探す</h3>
+          <div class="brutal-row" id="brutal-features"></div>
+
+          <h3 class="search-category-label">エリアからインターンを探す</h3>
+          <div style="display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+            <!-- 関東地方マップ (geolonia正確パス) -->
+            <div class="kanto-map-wrap" style="width: 420px; height: 485px; position: relative;">
+              <svg viewBox="555 560 130 150" width="420" height="485" style="display: block; width: 100%; height: 100%;">
+                <g class="kanto-group" transform="translate(557, 570)">
+                  <polygon class="kanto-pref" data-pref="群馬県" data-count="12" points="64 52 54 54 48 50 37 48 32 58 16 67 12 65 12 59 9 56 12 55 10 49 13 47 12 41 3 41 0 36 1 29 6 25 5 23 14 20 26 14 26 11 29 10 28 5 32 4 34 0 41 7 49 9 47 12 50 14 47 17 46 26 54 29 48 42 53 49 62 48"/>
+                  <text class="kanto-pref-label" x="30" y="40">群馬</text>
+                </g>
+                <g class="kanto-group" transform="translate(603, 563)">
+                  <polygon class="kanto-pref" data-pref="栃木県" data-count="8" points="19 60 18 59 16 55 7 56 2 49 8 36 0 33 1 24 4 21 1 19 3 16 28 0 40 3 46 7 47 13 47 24 48 27 45 29 47 39 44 46 33 48 30 53 27 53 26 57"/>
+                  <text class="kanto-pref-label" x="26" y="33">栃木</text>
+                </g>
+                <g class="kanto-group" transform="translate(622, 575)">
+                  <polygon class="kanto-pref" data-pref="茨城県" data-count="10" points="5 54 5 54 2 55 0 48 7 45 8 41 11 41 14 36 25 34 28 27 26 17 29 15 28 12 28 1 38 10 44 4 44 0 54 5 46 29 47 35 44 42 46 52 51 61 49 63 51 66 52 62 60 74 42 62 42 65 24 69 13 64"/>
+                  <text class="kanto-pref-label" x="30" y="42">茨城</text>
+                </g>
+                <g class="kanto-group" transform="translate(573, 618)">
+                  <polygon class="kanto-pref" data-pref="埼玉県" data-count="18" points="48 4 49 5 51 12 54 11 54 11 60 24 60 31 54 29 52 31 48 30 42 33 42 29 35 32 30 28 15 24 12 27 1 24 0 19 16 10 21 0 32 2 38 6"/>
+                  <text class="kanto-pref-label" x="33" y="19">埼玉</text>
+                </g>
+                <g class="kanto-group" transform="translate(585, 642)">
+                  <path class="kanto-pref" data-pref="東京都" data-count="89" d="M49,173 L49,178 L44,171 L49,173 Z M34,113 L32,115 L29,114 L31,111 L34,113 Z M11,104 L13,106 L11,107 L11,104 Z M18,98 L16,96 L18,92 L18,98 Z M22,75 L22,69 L26,70 L26,76 L22,75 Z M48,7 L49,12 L47,16 L41,15 L43,19 L39,20 L43,20 L43,23 L29,16 L26,18 L29,20 L27,20 L27,25 L23,20 L9,14 L4,11 L0,3 L3,0 L18,4 L23,8 L30,5 L30,9 L36,6 L40,7 L42,5 L48,7 Z"/>
+                  <text class="kanto-pref-label" x="22" y="16">東京</text>
+                </g>
+                <g class="kanto-group" transform="translate(627, 629)">
+                  <polygon class="kanto-pref" data-pref="千葉県" data-count="15" points="5 29 7 25 6 20 6 13 0 0 8 10 19 15 37 11 37 8 55 20 55 24 45 24 34 35 32 57 19 61 7 75 0 71 5 69 3 66 4 63 3 58 5 53 1 49 4 45 7 46 7 42 13 39 18 33 11 26 6 30"/>
+                  <text class="kanto-pref-label" x="25" y="38">千葉</text>
+                </g>
+                <g class="kanto-group" transform="translate(584, 656)">
+                  <polygon class="kanto-pref" data-pref="神奈川県" data-count="22" points="10 0 24 6 28 11 28 6 30 6 27 4 30 2 44 9 40 13 36 12 39 16 36 16 36 23 42 26 38 30 39 33 35 33 36 28 33 24 26 22 15 25 11 28 12 34 10 34 4 30 4 17 0 17 9 9"/>
+                  <text class="kanto-pref-label" x="22" y="22">神奈川</text>
+                </g>
+              </svg>
+              <div class="kanto-tooltip" id="kantoTooltip"></div>
+            </div>
+            <!-- 関東の県チップ -->
+            <div class="brutal-row" id="kantoPrefButtons" style="flex: 1; justify-content: flex-start; margin: 0; padding-top: 10px;">
+              <a href="search.html?area=%E6%9D%B1%E4%BA%AC%E9%83%BD&count=89" data-pref="東京都">東京都<span class="num-tag">89件</span></a>
+              <a href="search.html?area=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C&count=22" data-pref="神奈川県">神奈川県<span class="num-tag">22件</span></a>
+              <a href="search.html?area=%E5%9F%BC%E7%8E%89%E7%9C%8C&count=18" data-pref="埼玉県">埼玉県<span class="num-tag">18件</span></a>
+              <a href="search.html?area=%E5%8D%83%E8%91%89%E7%9C%8C&count=15" data-pref="千葉県">千葉県<span class="num-tag">15件</span></a>
+              <a href="search.html?area=%E8%8C%A8%E5%9F%8E%E7%9C%8C&count=10" data-pref="茨城県">茨城県<span class="num-tag">10件</span></a>
+              <a href="search.html?area=%E6%A0%83%E6%9C%A8%E7%9C%8C&count=8" data-pref="栃木県">栃木県<span class="num-tag">8件</span></a>
+              <a href="search.html?area=%E7%BE%A4%E9%A6%AC%E7%9C%8C&count=12" data-pref="群馬県">群馬県<span class="num-tag">12件</span></a>
+            </div>
+          </div>
+        </section>
+
+<!-- ====== 体験者の声 ====== -->
+        <div class="student-voice-area">
+    <div class="section-title-e"><img src="images/sections/sect_02.png" style="height:80px;width:auto;margin-right:-5px;" alt="02 pictogram"><span class="e-num">02</span><div class="e-text"><h2>AIme経験者のヤバい声</h2><p class="e-sub">先輩インターン生のリアルな体験談</p></div></div>
+    <div class="student-voice-container">
+      <div class="student-voice-carousel">
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #1da1f2, #0d8bd9);">M</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Mさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京大学 工学部 3年 / 某AIユニコーン企業へ</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">インターン初日に「このモデルのloss下げといて」と言われて泣きそうになったけど、3ヶ月後には自分でRAGパイプライン組んでた。成長速度がバグってる。もうバイトには戻れない。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #f5a623, #f76b1c);">A</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Aさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">慶應義塾大学 SFC 2年 / AI SaaSスタートアップ</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">「文系だからAI無理」と思ってたけど、プロンプトエンジニアリングなら戦える。今ではCTOと毎日壁打ちしてる。就活？AIスタートアップから3社オファー来てるので選ぶ側です。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">S</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Sさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京工業大学 情報理工学院 M1 / Kaggle金メダル</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">インターン先でH100を8枚自由に使わせてもらった。研究室の先生より計算資源が潤沢。おかげでKaggleのコンペでも金メダル。GPUは正義、AImeは神。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #ab47bc, #7b1fa2);">K</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Kさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">早稲田大学 商学部 3年 / 副業AIエンジニア</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">完全文系、プログラミング経験ゼロからスタート。インターンで鍛えられた結果、LLMアプリ開発のフリーランス案件を個人で受けられるように。同期がESで悩んでる間に稼いでます。すみません。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #00bcd4, #0097a7);">T</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Tさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">京都大学 情報学研究科 M1 / ICML論文採択</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">インターン先で取り組んだ研究が国際会議ICMLに採択された。大学の研究室とインターン先のダブルで論文書いてる状態。CV最強伝説の始まり。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+          <div class="sns-voice-card">
+            <div class="sns-vc-header">
+              <div class="sns-vc-avatar" style="background: linear-gradient(135deg, #ef5350, #c62828);">N</div>
+              <div class="sns-vc-info">
+                <div class="sns-vc-name-wrapper">
+                  <span class="sns-vc-name">Nさん</span>
+                  <span class="sns-vc-verify">✓</span>
+                </div>
+                <div class="sns-vc-role">東京大学 経済学部 4年 / AIスタートアップ起業</div>
+              </div>
+            </div>
+            <div class="sns-vc-text">インターン先のCEOに「お前、起業しろ」と言われて本当にした。シードで3000万調達。インターンが人生変えるとか言うけど、マジだった。</div>
+            <div class="sns-vc-footer">
+              <span><span style="color:#f59e0b;">★★★★★</span> 5.0</span>
+              <span>満足度</span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+        <!-- ====== インターン一覧 (コンパクトカードグリッド型) ====== -->
+        <section class="intern-list">
+          <div class="compact-header">
+            <div class="section-title-e"><img src="images/sections/sect_03.png" style="height:80px;width:auto;margin-right:-5px;" alt="03 pictogram"><span class="e-num">03</span><div class="e-text"><h2>AImeシップ一覧</h2><p class="e-sub">全部AI。例外なし。厳選156件</p></div></div>
+          </div>
+          <div class="compact-tabs">
+            <a class="compact-tab active" href="#" data-category="all">すべて<span class="tab-num">156</span></a>
+            <a class="compact-tab" href="#" data-category="llm">LLM / 言語AI<span class="tab-num">42</span></a>
+            <a class="compact-tab" href="#" data-category="image">画像生成<span class="tab-num">23</span></a>
+            <a class="compact-tab" href="#" data-category="agent">エージェント<span class="tab-num">19</span></a>
+            <a class="compact-tab" href="#" data-category="medical">医療AI<span class="tab-num">15</span></a>
+            <a class="compact-tab" href="#" data-category="robotics">ロボティクス<span class="tab-num">12</span></a>
+            <a class="compact-tab" href="#" data-category="data">データ分析<span class="tab-num">31</span></a>
+            <a class="compact-tab" href="#" data-category="business">ビジネス<span class="tab-num">27</span></a>
+            <a class="compact-tab" href="#" data-category="prompt">プロンプト<span class="tab-num">18</span></a>
+          </div>
+          <div class="compact-toolbar">
+            <span class="ccount"><strong>156</strong> 件のAImeシップ</span>
+            <select><option>新着順</option><option>給与が高い順</option><option>人気順</option><option>締切が近い順</option></select>
+          </div>
+
+          <div class="compact-grid" id="compact-grid"></div>
+
+          <!-- ページネーション -->
+          <nav class="compact-pagination">
+            <a href="#" class="disabled">&laquo;</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <span class="page-dots">...</span>
+            <a href="#">20</a>
+            <a href="#">&raquo;</a>
+          </nav>
+        </section>
+
+        </div> <!-- pull-left-inner -->
+      </div> <!-- cs-contents pull-left -->
+
+      <!-- サイドバー削除 → 検索セクション直下に移動済み -->
+    </div> <!-- main-inner -->
+  </div> <!-- main-container -->
+
+  <!-- ====== フィルター (3台スマホスクロール型) ====== -->
+  <div style="max-width: 1100px; margin: 0 auto; padding: 40px 20px 60px; background: #fff;">
+    <div class="phone-filter-row">
+      <!-- スマホ1: AI職種 -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h1">AI職種から探す</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s1" id="pfScroll1"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
+      </div>
+      <!-- スマホ2: 尖った特徴 -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h2">尖った特徴から探す</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s2" id="pfScroll2"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
+      </div>
+      <!-- スマホ3: AI領域 + キーワード -->
+      <div class="pf-phone">
+        <div class="pf-notch"></div>
+        <div class="pf-screen">
+          <div class="pf-statusbar"><span>9:41</span><span></span><span>100%</span></div>
+          <div class="pf-header pf-h3">AI領域 + キーワード</div>
+          <div class="pf-content">
+            <div class="pf-fade-top"></div>
+            <div class="pf-scroll pf-s3" id="pfScroll3"></div>
+            <div class="pf-fade-bottom"></div>
+          </div>
+          <div class="pf-home"><div class="pf-home-bar"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+  <div class="footer-container-wrapper">
+    <div class="footer-container-upper">
+      <div class="footer-container-upper-content">
+        <h3 class="footer-container-upper-content-title">AImeを探す</h3>
+        <div class="footer-container-upper-content-inner">
+          <ul class="footer-container-upper-content-items is-first">
+            <li class="footer-container-upper-content-item"><a href="search.html?job=%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2">プロンプトエンジニア</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=ML%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2">MLエンジニア</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=LLM%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA">LLMアプリ開発</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=%E3%83%87%E3%83%BC%E3%82%BF%E3%82%B5%E3%82%A4%E3%82%A8%E3%83%B3%E3%83%86%E3%82%A3%E3%82%B9%E3%83%88">データサイエンティスト</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%E3%83%AA%E3%82%B5%E3%83%BC%E3%83%81%E3%83%A3%E3%83%BC">AIリサーチャー</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E9%96%8B%E7%99%BA">AIエージェント開発</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html?job=AI%20PMM">AI PMM / BizDev</a></li>
+          </ul>
+          <ul class="footer-container-upper-content-items">
+            <li class="footer-container-upper-content-item"><a href="search.html">AIme募集一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="search.html">AIキーワード一覧</a></li>
+            <li class="footer-container-upper-content-item"><a href="companies.html">AI企業一覧</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-container-upper-content">
+        <h3 class="footer-container-upper-content-title">AIを学ぶ</h3>
+        <ul class="footer-container-upper-content-items">
+          <li class="footer-container-upper-content-item"><a href="blog.html">AIコラム（GPTに書かせてない、多分）</a></li>
+          <li class="footer-container-upper-content-item"><a href="#">AI用語辞典</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-container-upper-content">
+        <h3 class="footer-container-upper-content-title">サービス</h3>
+        <ul class="footer-container-upper-content-items">
+          <li class="footer-container-upper-content-item"><a href="original.html">AIme</a></li>
+          <li class="footer-container-upper-content-item"><a href="#">AI勉強会・ハッカソン</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-container-upper-content is-last-pc">
+        <h3 class="footer-container-upper-content-title">AI企業の採用担当者様へ</h3>
+        <ul class="footer-container-upper-content-items">
+          <li class="footer-container-upper-content-item"><a href="#">AIme採用について</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <ul class="footer-bottom-link-group">
+        <li class="footer-bottom-link-item"><a href="#">利用規約</a></li>
+        <li class="footer-bottom-link-item"><a href="#">プライバシーポリシー</a></li>
+        <li class="footer-bottom-link-item"><a href="#">お問い合わせ</a></li>
+        <li class="footer-bottom-link-item"><a href="#">運営会社</a></li>
+      </ul>
+      <p class="footer-bottom-copyright">&copy; 2026 AIme - Built by humans (for now). Powered by coffee and GPU.</p>
+    </div>
+  </div>
+</footer>
+</div>
+
+
+  <script>window.Laravel = { csrfToken: 'dummy' };</script>
+  <script src="js/top.js"></script>
+  <script src="js/top-vue.js"></script>
+  <script src="js/jobs-data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+  <script src="js/realtime.js"></script>
+  <script src="js/supabase-biz.js"></script>
+
+  <script>
+    jQuery(function ($) {
+      $('.banners-carousel').slick({
+        arrows: true,
+        dots: false,
+        autoplay: true,
+        infinite: true,
+        swipeToSlide: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        variableWidth: true,
+        centerMode: true,
+      });
+
+      $('.catch-image-carousel-pc, .catch-image-carousel-sp, .catch-text-carousel').slick({
+        arrows: false,
+        fade: true,
+        autoplaySpeed: 3000,
+        autoplay: true,
+        swipe: false,
+        swipeToSlide: false,
+        pauseOnFocus: false,
+        pauseOnHover: false,
+        pauseOnDotsHover: false,
+      });
+
+      const commonOptions = {
+        arrows: true,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        swipeToSlide: true,
+        slidesToScroll: 1,
+        centerMode: true,
+      }
+      $('.student-voice-carousel').slick({
+        ...commonOptions,
+        ...{
+          slidesToShow: 2,
+          centerPadding: "0",
+          centerMode: false,
+      }});
+      // 万が一矢印が重複生成された場合、先頭1組だけ残して削除
+      setTimeout(function(){
+        $('.student-voice-carousel .slick-prev').slice(1).remove();
+        $('.student-voice-carousel .slick-next').slice(1).remove();
+      }, 100);
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // アメリカ地図ピンのツールチップ
+      (function(){
+        var tooltip = document.getElementById('usaPinTooltip');
+        var wrap = document.querySelector('.usa-map-wrap');
+        if (!wrap || !tooltip) return;
+        wrap.querySelectorAll('.usa-pin').forEach(function(pin) {
+          pin.addEventListener('mouseenter', function() {
+            var company = pin.getAttribute('data-company');
+            var location = pin.getAttribute('data-location');
+            var desc = pin.getAttribute('data-desc') || '';
+            tooltip.innerHTML = company + '<span class="upt-loc">' + location + '</span>' + (desc ? '<span class="upt-loc" style="color:#c8e6c9;">' + desc + '</span>' : '');
+            tooltip.style.display = 'block';
+          });
+          pin.addEventListener('mousemove', function(e) {
+            var rect = wrap.getBoundingClientRect();
+            tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+            tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+          });
+          pin.addEventListener('mouseleave', function() {
+            tooltip.style.display = 'none';
+          });
+        });
+      })();
+
+      // 3D回転カルーセル構築
+      function setup3DCarousel(id, items) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var n = items.length;
+        var angle = 360 / n;
+        var r = Math.round(110 / Math.tan(Math.PI / n));
+        items.forEach(function(item, i) {
+          var cell = document.createElement('a');
+          cell.className = 'carousel-3d-cell';
+          cell.href = '#';
+          cell.innerHTML = '<span class="c3d-icon">' + item.icon + '</span>' + item.name;
+          cell.style.transform = 'rotateY(' + (angle * i) + 'deg) translateZ(' + r + 'px)';
+          el.appendChild(cell);
+        });
+      }
+      (function(){
+        var brutalJobs = [
+          {n:'LLMアプリ開発',c:56},{n:'プロンプトエンジニア',c:42},
+          {n:'MLエンジニア',c:38},{n:'データサイエンティスト',c:31},
+          {n:'AI PMM / BizDev',c:27},{n:'AIリサーチャー',c:24},
+          {n:'AIエージェント開発',c:19},{n:'AI × クリエイティブ',c:15}
+        ];
+        var brutalFeat = [
+          {n:'フルリモート可',c:89},{n:'未経験OK',c:67},
+          {n:'時給2,000円以上',c:52},{n:'文系歓迎',c:45},
+          {n:'CEO / CTO直下',c:38},{n:'論文読み会あり',c:34},
+          {n:'GPU使い放題',c:23},{n:'Kaggle推奨',c:21},
+          {n:'論文共著チャンス',c:15},{n:'自社LLM開発中',c:12},
+          {n:'国際学会発表',c:11},{n:'ストックオプション',c:8}
+        ];
+        function renderBrutal(id, items, paramKey){
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.innerHTML = items.map(function(d){
+            var url = 'search.html?' + paramKey + '=' + encodeURIComponent(d.n) + '&count=' + encodeURIComponent(d.c);
+            return '<a href="' + url + '">' + d.n + '<span class="num-tag">' + d.c + '件</span></a>';
+          }).join('');
+        }
+        renderBrutal('brutal-jobs', brutalJobs, 'job');
+        renderBrutal('brutal-features', brutalFeat, 'feature');
+      })();
+
+      // 3台スマホスクロール風フィルター生成
+      (function(){
+        var jobs=[{n:'LLMアプリ開発',c:'56'},{n:'プロンプトエンジニア',c:'42'},{n:'MLエンジニア',c:'38'},{n:'データサイエンティスト',c:'31'},{n:'AI PMM / BizDev',c:'27'},{n:'AIリサーチャー',c:'24'},{n:'AIエージェント開発',c:'19'},{n:'AI x クリエイティブ',c:'15'}];
+        var feat=[{n:'フルリモート可',c:'89'},{n:'未経験OK',c:'67'},{n:'時給2,000円以上',c:'52'},{n:'文系歓迎',c:'45'},{n:'CEO / CTO直下',c:'38'},{n:'論文読み会あり',c:'34'},{n:'GPU使い放題',c:'23'},{n:'Kaggle推奨',c:'21'},{n:'論文共著チャンス',c:'15'},{n:'自社LLM開発中',c:'12'},{n:'国際学会発表',c:'11'},{n:'ストックオプション',c:'8'}];
+        var areas=[{n:'LLM / 大規模言語モデル',c:'78'},{n:'AI SaaS',c:'56'},{n:'AIエージェント',c:'34'},{n:'画像生成 / Diffusion',c:'23'},{n:'AI x 教育',c:'21'},{n:'ヘルスケアAI',c:'18'},{n:'AI x 金融',c:'14'},{n:'音声AI / TTS',c:'12'},{n:'ロボティクス',c:'9'},{n:'AI x ゲーム',c:'8'}];
+        var kw=[{n:'RAG',c:''},{n:'ファインチューニング',c:''},{n:'Claude',c:''},{n:'LangChain',c:''},{n:'Stable Diffusion',c:''},{n:'Kaggle',c:''},{n:'Transformer',c:''},{n:'強化学習',c:''}];
+        function makeCards(items, paramKey){
+          var h='';
+          items.forEach(function(d){
+            var url='search.html?'+paramKey+'='+encodeURIComponent(d.n)+(d.c?'&count='+encodeURIComponent(d.c):'');
+            h+='<a class="pf-card" href="'+url+'"><div class="pf-card-name">'+d.n+'</div>'+(d.c?'<div class="pf-card-num">'+d.c+'件</div>':'')+'</a>';
+          });
+          return h;
+        }
+        var s1=document.getElementById('pfScroll1');
+        if(s1){var h1=makeCards(jobs,'job');s1.innerHTML=h1+h1;}
+        var s2=document.getElementById('pfScroll2');
+        if(s2){var h2=makeCards(feat,'feature');s2.innerHTML=h2+h2;}
+        var s3=document.getElementById('pfScroll3');
+        if(s3){var h3=makeCards(areas,'area')+makeCards(kw,'tag');s3.innerHTML=h3+h3;}
+      })();
+
+      // 関東地方マップ ツールチップ（SVGオーバーレイ版）+ 県ボタン連動
+      var kantoTooltip = document.getElementById('kantoTooltip');
+      var kantoWrap = document.querySelector('.kanto-map-wrap');
+      var kantoButtonsWrap = document.getElementById('kantoPrefButtons');
+      if (kantoWrap) {
+        var prefs = kantoWrap.querySelectorAll('.kanto-pref');
+        var btnByPref = {};
+        if (kantoButtonsWrap) {
+          kantoButtonsWrap.querySelectorAll('a[data-pref]').forEach(function(a){
+            btnByPref[a.getAttribute('data-pref')] = a;
+          });
+        }
+        var groupByPref = {};
+        kantoWrap.querySelectorAll('.kanto-group').forEach(function(g){
+          var p = g.querySelector('.kanto-pref');
+          if (p) groupByPref[p.getAttribute('data-pref')] = g;
+        });
+
+        prefs.forEach(function(pref) {
+          var prefName = pref.getAttribute('data-pref');
+          var linkedBtn = btnByPref[prefName];
+          pref.style.cursor = 'pointer';
+          pref.addEventListener('mouseenter', function(e) {
+            var count = pref.getAttribute('data-count');
+            kantoTooltip.innerHTML = prefName + '<span class="kt-count">' + count + '件のインターン</span>';
+            kantoTooltip.style.display = 'block';
+            if (linkedBtn) linkedBtn.classList.add('is-linked');
+          });
+          pref.addEventListener('mousemove', function(e) {
+            var rect = kantoWrap.getBoundingClientRect();
+            kantoTooltip.style.left = (e.clientX - rect.left) + 'px';
+            kantoTooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+          });
+          pref.addEventListener('mouseleave', function() {
+            kantoTooltip.style.display = 'none';
+            if (linkedBtn) linkedBtn.classList.remove('is-linked');
+          });
+          pref.addEventListener('click', function() {
+            location.href = 'search.html?area=' + encodeURIComponent(prefName);
+          });
+        });
+
+        if (kantoButtonsWrap) {
+          kantoButtonsWrap.querySelectorAll('a[data-pref]').forEach(function(a){
+            var g = groupByPref[a.getAttribute('data-pref')];
+            if (!g) return;
+            a.addEventListener('mouseenter', function(){ g.classList.add('is-linked'); });
+            a.addEventListener('mouseleave', function(){ g.classList.remove('is-linked'); });
+          });
+        }
+      }
+
+      // カードデータ（各カテゴリのテンプレート）
+      var cardTemplates = {
+        llm: [
+          {band:'Pickup',company:'株式会社ニューロンクラフト',badge:'Pickup',title:'【GPTの裏側を知りたくないか？】自社LLMを開発中のスタートアップで、RAG構築からファインチューニングまで全部やる。',tags:['GPU使い放題','自社LLM開発','フルリモート可','未経験OK'],salary:'2,000〜4,000円',location:'渋谷駅 徒歩5分'},
+          {company:'LLMラボ株式会社',title:'【LangChainマスターになれ】RAGパイプライン構築で、検索精度を極限まで高めるエンジニア募集。',tags:['RAG特化','LangChain','ベクトルDB','週3〜'],salary:'2,200〜3,800円',location:'目黒駅 徒歩7分'},
+          {band:'急募',company:'合同会社トークンAI',title:'【ファインチューニングの鬼になれ】自社LLMのチューニングで、GPT-4超えを本気で目指す。',tags:['ファインチューニング','Hugging Face','論文読み会','フルリモート'],salary:'2,500〜5,000円',location:'フルリモート'},
+          {company:'株式会社ベクトルサーチ',badge:'new',badgeNew:true,title:'【埋め込みベクトルの世界へ】セマンティック検索エンジンを開発。情報検索の未来を作るLLMエンジニア。',tags:['検索AI','Embedding','Pinecone','週4〜'],salary:'2,000〜3,500円',location:'五反田駅 徒歩3分'},
+          {company:'AIネイティブ株式会社',title:'【GPTsの次を作れ】カスタムLLMエージェントのプラットフォーム開発。API設計からUI/UXまで。',tags:['LLMプラットフォーム','API設計','TypeScript','シリーズA'],salary:'2,300〜4,500円',location:'恵比寿駅 徒歩5分'},
+          {company:'株式会社マルチモーダルAI',title:'【テキストだけじゃない】画像+テキストのマルチモーダルLLM開発。最先端の研究をプロダクトに。',tags:['マルチモーダル','Vision API','研究開発','論文共著'],salary:'2,800〜5,500円',location:'本郷三丁目駅 徒歩8分'},
+        ],
+        prompt: [
+          {band:'激レア枠 - 急募',company:'合同会社プロンプト・ラボ',title:'【日本語力、最強の武器になる】英語圏のプロンプトエンジニアに日本語で殴り込み。文系こそ来い。',tags:['文系歓迎','プログラミング不要','CEO直下','フルリモート'],salary:'1,800〜3,000円',location:'完全フルリモート'},
+          {company:'株式会社プロンプトデザイン',title:'【言葉でAIを操る職人】企業向けプロンプト設計・最適化コンサルタント。',tags:['コンサル','プロンプト設計','業務効率化','副業OK'],salary:'2,000〜3,500円',location:'品川駅 徒歩4分'},
+          {company:'AIライティング株式会社',badge:'new',badgeNew:true,title:'【AIコンテンツの品質を極めろ】プロンプトエンジニアリングで記事・広告の質を最大化。',tags:['コンテンツ','ライティング','文系歓迎','週2〜'],salary:'1,500〜2,800円',location:'渋谷駅 徒歩6分'},
+          {company:'合同会社チャットUX',title:'【会話設計のプロになれ】AIチャットボットの対話フロー設計。ユーザー体験を言葉で作る。',tags:['UX設計','チャットボット','フルリモート','未経験OK'],salary:'1,800〜3,200円',location:'フルリモート'},
+          {band:'文系最強ポジション',company:'プロンプトファクトリー株式会社',title:'【プロンプトのプロを育成】体系的な研修あり。AI時代の新職種を最前線で学ぶ。',tags:['研修充実','メンター制度','文系歓迎','1年生OK'],salary:'1,500〜2,500円',location:'新宿駅 徒歩5分'},
+        ],
+        image: [
+          {company:'株式会社ディフュージョン・ワークス',badge:'new',badgeNew:true,title:'【イラストレーターを敵に回す覚悟はあるか？】Stable Diffusion / Midjourney 時代のクリエイティブAI開発。',tags:['A100使い放題','美大生歓迎','一部リモート可','論文共著チャンス'],salary:'2,500〜5,000円',location:'六本木一丁目駅 徒歩3分'},
+          {company:'株式会社ジェネレイト',title:'【ComfyUIの魔術師求む】ワークフロー構築で画像生成パイプラインを自動化するエンジニア。',tags:['ComfyUI','自動化','クリエイティブ','週3〜'],salary:'2,000〜4,000円',location:'中目黒駅 徒歩5分'},
+          {band:'アート×テック',company:'AIアートスタジオ株式会社',title:'【AIで新しいアートを創れ】ControlNet/LoRA活用で企業向けクリエイティブを量産。',tags:['ControlNet','LoRA','美大生歓迎','ポートフォリオ'],salary:'2,200〜4,500円',location:'表参道駅 徒歩7分'},
+          {company:'動画AI株式会社',badge:'new',badgeNew:true,title:'【動画生成AIの最前線】Sora/Runway世代の動画生成技術を商用プロダクトに実装。',tags:['動画生成','Sora','GPU環境','研究開発'],salary:'2,800〜5,000円',location:'渋谷駅 徒歩10分'},
+          {company:'株式会社テクスチャAI',title:'【3Dテクスチャ×AI】ゲーム・建築向けのAIテクスチャ生成ツールを開発するスタートアップ。',tags:['3D','ゲーム開発','Unity','リモート可'],salary:'2,000〜3,800円',location:'秋葉原駅 徒歩3分'},
+        ],
+        agent: [
+          {band:'注目度MAX - 話題の領域',company:'株式会社オートノミー',badge:'Pickup',title:'【AIエージェントが人間の仕事を奪う？いや、お前が作る側だ。】自律型AIエージェントの開発。',tags:['自律型AI開発','H100クラスタ','シリーズB','CTO直下'],salary:'3,000〜6,000円',location:'渋谷駅 徒歩8分'},
+          {company:'エージェントラボ株式会社',title:'【マルチエージェントの世界】複数AIが協調して問題を解く、次世代システムの開発。',tags:['マルチエージェント','CrewAI','LangGraph','研究開発'],salary:'2,500〜5,000円',location:'目黒駅 徒歩6分'},
+          {company:'株式会社ツールユースAI',badge:'new',badgeNew:true,title:'【Tool UseでAIを進化させろ】外部ツール連携でAIの能力を100倍にする基盤開発。',tags:['Tool Use','Function Calling','API開発','フルリモート'],salary:'2,800〜5,500円',location:'フルリモート'},
+          {band:'シード期・裁量MAX',company:'合同会社AGIラボ',title:'【AGIへの第一歩】自己改善型AIエージェントの研究開発。世界を変えるチームへ。',tags:['AGI研究','自己改善AI','論文実績','少数精鋭'],salary:'3,000〜7,000円',location:'本郷三丁目駅 徒歩5分'},
+        ],
+        medical: [
+          {company:'MedAI株式会社',title:'【AIで命を救う。マジで。】医療画像診断AIの開発。東大医学部との共同研究プロジェクト。',tags:['社会貢献ガチ勢','東大共同研究','論文共著','理系推奨'],salary:'2,000〜3,500円',location:'本郷三丁目駅 徒歩5分'},
+          {company:'ヘルスケアAI株式会社',badge:'new',badgeNew:true,title:'【創薬×AI】新薬開発を加速するAIモデルの構築。バイオ×機械学習の最前線。',tags:['創薬AI','バイオインフォ','Python','週3〜'],salary:'2,200〜4,000円',location:'日本橋駅 徒歩3分'},
+          {band:'社会貢献',company:'メディカルビジョン株式会社',title:'【内視鏡AI】リアルタイム画像解析で医師の診断を支援するAIシステム開発。',tags:['画像認識','リアルタイム','医療機器','出社メイン'],salary:'2,500〜4,500円',location:'御茶ノ水駅 徒歩7分'},
+        ],
+        robotics: [
+          {company:'RoboMind株式会社',badge:'new',badgeNew:true,title:'【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。現実世界を動かすAIを作ろう。',tags:['ロボットあり','理系推奨','出社メイン','国際学会発表チャンス'],salary:'2,200〜4,000円',location:'大崎駅 徒歩10分'},
+          {company:'自動運転AI株式会社',title:'【公道を走るAI】自動運転レベル4を目指すスタートアップで、認識・判断モデル開発。',tags:['自動運転','LIDAR','シミュレーション','C++'],salary:'2,500〜5,000円',location:'お台場 徒歩8分'},
+          {band:'ハード×ソフト融合',company:'ドローンAI株式会社',title:'【空飛ぶAI】ドローン自律飛行のためのビジョンAI開発。農業・物流の未来を作る。',tags:['ドローン','ビジョンAI','ROS2','屋外実験'],salary:'2,000〜3,800円',location:'つくば 車通勤可'},
+        ],
+        data: [
+          {band:'未経験から最速でAI人材へ',company:'データドリブン株式会社',title:'【Excelで消耗するのはもうやめろ】pandas, SQL, 機械学習。「データ分析できます」を本物にする3ヶ月。',tags:['未経験OK','研修3週間','メンター制度','Kaggle推奨'],salary:'1,500〜2,500円',location:'新宿駅 徒歩7分'},
+          {company:'アナリティクスAI株式会社',title:'【データの海から宝を掘れ】BIダッシュボード構築 × 機械学習予測モデル開発。',tags:['BI','Tableau','SQL','週3〜'],salary:'1,800〜3,000円',location:'品川駅 徒歩5分'},
+          {company:'株式会社MLパイプライン',badge:'new',badgeNew:true,title:'【MLOpsの実務を学べ】モデルの学習・デプロイ・監視まで一気通貫で経験できる。',tags:['MLOps','Docker','AWS','GCP'],salary:'2,000〜3,500円',location:'渋谷駅 徒歩8分'},
+          {company:'需要予測AI株式会社',title:'【AIで在庫ロスをゼロに】小売・物流向け需要予測モデルの開発・改善。',tags:['需要予測','時系列分析','Python','リモート可'],salary:'1,800〜3,200円',location:'東京駅 徒歩3分'},
+          {band:'Kaggler歓迎',company:'コンペドリブン株式会社',title:'【Kaggleの実力を仕事に活かせ】コンペ上位経験者優遇。実データで腕試し。',tags:['Kaggle','XGBoost','特徴量設計','成果報酬'],salary:'2,000〜4,000円',location:'フルリモート'},
+          {company:'株式会社データクレンジング',title:'【汚いデータと戦え】前処理・クレンジングのスペシャリスト育成。地味だが超重要。',tags:['データ前処理','ETL','SQL','未経験OK'],salary:'1,500〜2,500円',location:'池袋駅 徒歩6分'},
+        ],
+        business: [
+          {company:'AIストラテジー株式会社',badge:'Pickup',title:'【コードが書けなくてもAI業界で天下取れる】AI製品のPMM / BizDev。市場価値バグり散らかし人材。',tags:['文系大歓迎','コード不要','CEO直下','インセンティブあり'],salary:'1,800〜3,500円',location:'表参道駅 徒歩3分'},
+          {company:'AIセールス株式会社',title:'【AI商材を売れる人材は最強】エンタープライズ向けAI SaaSの営業・CS。',tags:['営業','カスタマーサクセス','AI SaaS','インセンティブ'],salary:'1,500〜3,000円',location:'六本木駅 徒歩5分'},
+          {band:'経営直下',company:'株式会社AIコンサル',title:'【AIで業務改革を提案せよ】大手企業のAI導入コンサルティング。戦略から実行まで。',tags:['コンサル','業務改革','プレゼン力','週3〜'],salary:'2,000〜4,000円',location:'丸の内 徒歩2分'},
+          {company:'AI PR株式会社',badge:'new',badgeNew:true,title:'【AI企業のブランドを作れ】PR・マーケティングでAIスタートアップの認知を爆上げ。',tags:['PR','マーケティング','SNS運用','文系歓迎'],salary:'1,500〜2,800円',location:'渋谷駅 徒歩4分'},
+          {company:'株式会社AIリクルート',title:'【AIエンジニアを採れ】AI人材特化のリクルーター。技術を理解して最適マッチング。',tags:['採用','人事','AI業界理解','コミュ力'],salary:'1,500〜3,000円',location:'恵比寿駅 徒歩3分'},
+        ]
+      };
+      // カードHTML生成（案F: ボーダーレス + タイトル重視）
+      function createCardHTML(d) {
+        var tagHTML = '';
+        if (d.band) {
+          var cls = 'compact-card-tag';
+          if (d.band.indexOf('急募') >= 0) cls += ' compact-card-tag-urgent';
+          else if (d.band.indexOf('new') >= 0 || (d.badge && d.badgeNew)) cls += ' compact-card-tag-new';
+          tagHTML = '<span class="' + cls + '">' + d.band + '</span>';
+        } else if (d.badge) {
+          var cls2 = d.badgeNew ? 'compact-card-tag compact-card-tag-new' : 'compact-card-tag';
+          tagHTML = '<span class="' + cls2 + '">' + d.badge + '</span>';
+        }
+        var tagsHTML = d.tags.map(function(t){ return '<span>' + t + '</span>'; }).join('');
+        var href = 'job.html?id=' + encodeURIComponent(d.id);
+        return '<a class="compact-card" href="' + href + '">' +
+            '<div class="compact-card-top">' + tagHTML + '</div>' +
+            '<div class="compact-card-title">' + d.title + '</div>' +
+            '<div class="compact-card-company">' + d.company + '</div>' +
+            '<div class="compact-card-tags">' + tagsHTML + '</div>' +
+            '<div class="compact-card-meta"><span>時給 <strong>' + d.salary + '</strong></span><span>' + d.location + '</span></div>' +
+          '</a>';
+      }
+      // 指定カテゴリのカードを必要数生成
+      function generateCards(cat, count) {
+        var templates = (window.JOBS_DATA && window.JOBS_DATA[cat]) || cardTemplates[cat] || [];
+        var html = '';
+        for (var i = 0; i < count; i++) {
+          var idx = i % templates.length;
+          var tpl = Object.assign({}, templates[idx], { id: cat + '-' + idx });
+          html += createCardHTML(tpl);
+        }
+        return html;
+      }
+      var PER_PAGE = 9;
+      var grid = document.getElementById('compact-grid');
+      var countEl = document.querySelector('.compact-toolbar .ccount strong');
+      var pagContainer = document.querySelector('.compact-pagination');
+      var catCounts = {llm:42,prompt:18,image:23,agent:19,medical:15,robotics:12,data:31,business:27};
+      var currentCategory = 'all';
+      var currentPage = 1;
+
+      // 全カードデータを配列で生成
+      function getAllCards() {
+        var arr = [];
+        Object.keys(catCounts).forEach(function(cat) {
+          var templates = cardTemplates[cat];
+          for (var i = 0; i < catCounts[cat]; i++) {
+            arr.push(Object.assign({}, templates[i % templates.length], {_cat: cat}));
+          }
+        });
+        return arr;
+      }
+      function getCategoryCards(cat) {
+        var templates = cardTemplates[cat];
+        var arr = [];
+        for (var i = 0; i < catCounts[cat]; i++) {
+          arr.push(Object.assign({}, templates[i % templates.length], {_cat: cat}));
+        }
+        return arr;
+      }
+      function getCurrentCards() {
+        return currentCategory === 'all' ? getAllCards() : getCategoryCards(currentCategory);
+      }
+
+      // ページネーションHTML生成
+      function renderPagination(totalCards) {
+        var totalPages = Math.ceil(totalCards / PER_PAGE);
+        if (totalPages <= 1) { pagContainer.innerHTML = ''; return; }
+        var html = '';
+        html += '<a href="#" class="' + (currentPage <= 1 ? 'disabled' : '') + '">&laquo;</a>';
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(totalPages, start + 4);
+        if (end - start < 4) start = Math.max(1, end - 4);
+        if (start > 1) { html += '<a href="#" data-page="1">1</a>'; if (start > 2) html += '<span class="page-dots">...</span>'; }
+        for (var i = start; i <= end; i++) {
+          html += '<a href="#" data-page="' + i + '" class="' + (i === currentPage ? 'active' : '') + '">' + i + '</a>';
+        }
+        if (end < totalPages) { if (end < totalPages - 1) html += '<span class="page-dots">...</span>'; html += '<a href="#" data-page="' + totalPages + '">' + totalPages + '</a>'; }
+        html += '<a href="#" class="' + (currentPage >= totalPages ? 'disabled' : '') + '" data-page="' + (currentPage + 1) + '">&raquo;</a>';
+        pagContainer.innerHTML = html;
+      }
+
+      // カード描画
+      function render() {
+        var cards = getCurrentCards();
+        var totalCards = cards.length;
+        var totalPages = Math.ceil(totalCards / PER_PAGE);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+        var startIdx = (currentPage - 1) * PER_PAGE;
+        var pageCards = cards.slice(startIdx, startIdx + PER_PAGE);
+        var html = '';
+        pageCards.forEach(function(d) { html += createCardHTML(d); });
+        grid.innerHTML = html;
+        if (countEl) countEl.textContent = totalCards;
+        renderPagination(totalCards);
+      }
+      render();
+
+      // ===== Supabase DB から求人を優先取得 (実データがあれば差し替え) =====
+      (async function dbOverride() {
+        if (!window.AImeBiz) return;
+        try {
+          const result = await window.AImeBiz.listPublicJobs({ limit: 36, sort: 'new' });
+          if (!result || !result.items || !result.items.length) return; // 実データ無ければ静的表示を維持
+          const dbJobs = result.items.map(j => ({
+            id: j.id,
+            title: j.title,
+            company: j.companies?.name || '',
+            salary: j.salary_min ? `¥${Number(j.salary_min).toLocaleString()}` : '応相談',
+            location: j.location || '場所未定',
+            tags: (j.tags || []).slice(0, 3),
+            badge: j.is_boosted ? '注目' : '',
+            _cat: j.category || 'all',
+          }));
+          // render を DB ベースに置き換え
+          getAllCards = function(){ return dbJobs; };
+          getCategoryCards = function(cat){ return dbJobs.filter(d => d._cat === cat); };
+          if (countEl) countEl.textContent = result.total || dbJobs.length;
+          render();
+        } catch (err) {
+          console.warn('DB job override failed:', err);
+        }
+      })();
+
+      // タブ切り替え
+      var tabsContainer = document.querySelector('.compact-tabs');
+      if (tabsContainer) {
+        tabsContainer.addEventListener('click', function(e) {
+          var tab = e.target.closest('.compact-tab');
+          if (!tab) return;
+          e.preventDefault();
+          tabsContainer.querySelectorAll('.compact-tab').forEach(function(t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          currentCategory = tab.getAttribute('data-category');
+          currentPage = 1;
+          render();
+        });
+      }
+      // ページネーション
+      if (pagContainer) {
+        pagContainer.addEventListener('click', function(e) {
+          var btn = e.target.closest('a:not(.disabled)');
+          if (!btn) return;
+          e.preventDefault();
+          var pageNum = btn.getAttribute('data-page');
+          if (btn.textContent === '\u00AB') { currentPage--; }
+          else if (btn.textContent === '\u00BB') { currentPage++; }
+          else if (pageNum) { currentPage = parseInt(pageNum); }
+          render();
+          document.querySelector('.compact-header').scrollIntoView({behavior:'smooth'});
+        });
+      }
+    });
+  </script>
+
+  <!-- ====== Realtime: オンライン人数バッジ & 応募トースト ====== -->
+  <div id="live-online-badge" style="position:fixed;bottom:20px;right:20px;background:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.12);font-size:.85em;font-weight:800;color:#1b5e20;display:flex;align-items:center;gap:8px;z-index:999;opacity:0;transition:opacity .4s ease;cursor:default;user-select:none;">
+    <span style="width:8px;height:8px;background:#4caf50;border-radius:50%;display:inline-block;box-shadow:0 0 0 0 rgba(76,175,80,.6);animation:live-pulse 1.8s infinite;"></span>
+    <span>今 <span id="live-online-count">—</span> 人が見ています</span>
+  </div>
+  <style>
+    @keyframes live-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(76,175,80,.6); }
+      70% { box-shadow: 0 0 0 10px rgba(76,175,80,0); }
+      100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); }
+    }
+  </style>
+  <script>
+    (async function () {
+      // ナビ: ログイン状態・ロールに応じて表示切替
+      if (window.sb) {
+        const { data: { user } } = await window.sb.auth.getUser();
+        if (user) {
+          document.getElementById('nav-mypage').style.display = 'inline-block';
+          document.getElementById('nav-messages').style.display = 'inline-block';
+          document.getElementById('nav-notif').style.display = 'inline-block';
+          document.getElementById('nav-login').style.display = 'none';
+          document.getElementById('nav-signup').style.display = 'none';
+
+          if (window.AImeBiz) {
+            const role = await window.AImeBiz.getRole();
+            if (role === 'company') document.getElementById('nav-company').style.display = 'inline-block';
+            if (role === 'admin') document.getElementById('nav-admin').style.display = 'inline-block';
+
+            // 通知バッジ（未読数）
+            const notifs = await window.AImeBiz.listNotifications({ unreadOnly: true });
+            const badge = document.getElementById('notif-badge');
+            if (notifs.length) { badge.textContent = notifs.length; badge.style.display = 'inline-block'; }
+
+            // リアルタイム通知購読 → バッジ更新 + トースト
+            window.AImeBiz.subscribeNotifications(user.id, (n) => {
+              const cur = parseInt(badge.textContent) || 0;
+              badge.textContent = cur + 1; badge.style.display = 'inline-block';
+              if (window.AImeRealtime) window.AImeRealtime.showToast(
+                `<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">新着通知</div><div><strong>${n.title}</strong></div><div style="color:#666;font-size:.85em;margin-top:2px;">${n.body || ''}</div>`
+              );
+            });
+
+            // アクセスログ
+            window.AImeBiz.logAccess('original.html').catch(() => {});
+          }
+        }
+      }
+
+      if (!window.AImeRealtime) return;
+
+      // サイト全体のオンライン人数
+      const badge = document.getElementById('live-online-badge');
+      const countEl = document.getElementById('live-online-count');
+      window.AImeRealtime.initSitePresence(function (count) {
+        countEl.textContent = count.toLocaleString();
+        badge.style.opacity = '1';
+      });
+
+      // 応募イベントのリアルタイム通知
+      window.AImeRealtime.onApplyEvent(function (data) {
+        const company = (data.company || '匿名企業').toString();
+        const title = (data.title || 'AIインターン').toString();
+        const shortTitle = title.length > 24 ? title.slice(0, 24) + '…' : title;
+        window.AImeRealtime.showToast(
+          '<div style="color:#2e7d32;margin-bottom:4px;font-size:.75em;">たった今</div>' +
+          '<div>誰かが <strong>' + company + '</strong> に応募しました</div>' +
+          '<div style="color:#666;font-size:.8em;margin-top:2px;">' + shortTitle + '</div>'
+        );
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

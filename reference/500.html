@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一時的なエラー | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .er-wrap { max-width: 560px; margin: 80px auto 60px; padding: 0 24px; text-align: center; }
+  .er-code {
+    font-family: 'Arial Black', sans-serif; font-size: 5em; font-weight: 900;
+    color: #ffebee; -webkit-text-stroke: 2px #c62828; letter-spacing: -4px; line-height: 1;
+  }
+  .er-wrap h1 { font-size: 1.6em; font-weight: 900; margin: 14px 0 8px; color: #111; }
+  .er-wrap p { color: #666; line-height: 1.7; margin: 0 0 24px; }
+  .er-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .er-btn {
+    padding: 12px 22px; border-radius: 8px; font-weight: 800; text-decoration: none;
+    font-size: .92em; cursor: pointer; border: 2px solid transparent; background: none;
+  }
+  .er-btn.primary { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; box-shadow: 0 4px 12px rgba(76,175,80,.3); }
+  .er-btn.ghost   { background: #fff; color: #111; border-color: #111; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+</div></header>
+
+<div class="er-wrap">
+  <div class="er-code">500</div>
+  <h1>一時的なエラーが発生しました</h1>
+  <p>サーバーで予期せぬエラーが発生しました。<br>数分後に再度お試しいただくか、しばらく経ってもなお問題が解決しない場合は <a href="contact.html" style="color:#2e7d32; font-weight:800;">お問い合わせ</a> からご連絡ください。</p>
+  <div class="er-actions">
+    <button class="er-btn primary" onclick="location.reload()">再読み込み</button>
+    <a href="original.html" class="er-btn ghost">トップへ戻る</a>
+  </div>
+</div>
+
+<script>
+// 画面全体で未補足の例外/Promise拒否が出た場合、ここへリダイレクトするフック (他ページに組み込む用)
+window.aimeErrorBoundary = function (err) {
+  console.error('AIme unhandled error:', err);
+  // 必要ならリモートロギング
+};
+</script>
+</body></html>

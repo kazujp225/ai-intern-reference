@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規登録 SPLIT SCREEN 配色バリエーション | AIme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background: #0b0b0d;
+    color: #fff;
+  }
+
+  .toc {
+    position: sticky; top: 0; z-index: 100;
+    background: #0b0b0d; color: #fff;
+    padding: 14px 24px; border-bottom: 1px solid #222;
+    display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center;
+    font-size: 13px;
+  }
+  .toc b { margin-right: 10px; color: #7CFF7F; font-family: 'JetBrains Mono', monospace; }
+  .toc a { color: #ddd; text-decoration: none; padding: 4px 10px; border: 1px solid #333; border-radius: 999px; }
+  .toc a:hover { background: #1a1a1a; border-color: #7CFF7F; color: #7CFF7F; }
+
+  .proposal {
+    padding: 60px 24px 80px;
+    border-bottom: 2px dashed #222;
+  }
+  .proposal-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 2px;
+    color: #7CFF7F; background: #000;
+    padding: 6px 12px; border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .proposal-title {
+    color: #fff; font-size: 28px; font-weight: 900;
+    margin: 0 0 4px; letter-spacing: -0.5px;
+  }
+  .proposal-desc {
+    color: #888; font-size: 14px; margin: 0 0 12px;
+    max-width: 700px;
+  }
+  .swatch { display: inline-flex; gap: 6px; margin-bottom: 28px; }
+  .swatch span { width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(255,255,255,.2); }
+
+  /* ------- Split Screen 共通構造 ------- */
+  .split {
+    display: grid; grid-template-columns: 1fr 1fr;
+    height: 520px; max-width: 1200px; margin: 0 auto;
+    border-radius: 24px; overflow: hidden; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  }
+  .side {
+    position: relative; padding: 60px 48px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #fff; transition: filter .35s;
+    text-decoration: none; overflow: hidden;
+  }
+  .side:hover { filter: brightness(1.08); }
+  .side .role-en {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 4px; opacity: .75; position: relative; z-index: 1;
+  }
+  .side h3 {
+    font-size: 44px; font-weight: 900; margin: 6px 0 12px;
+    letter-spacing: -1px; position: relative; z-index: 1; line-height: 1;
+  }
+  .side p {
+    font-size: 14px; opacity: .9; max-width: 300px;
+    line-height: 1.7; position: relative; z-index: 1; margin: 0 0 24px;
+  }
+  .btn {
+    position: relative; z-index: 1; align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: 999px;
+    font-weight: 700; letter-spacing: 2px; font-size: 13px;
+    border: 1.5px solid rgba(255,255,255,.6);
+    background: rgba(0,0,0,.3); backdrop-filter: blur(8px);
+    transition: .2s;
+  }
+  .side:hover .btn { background: #fff; color: #111; border-color: #fff; }
+  .giant {
+    position: absolute; top: 40px; right: 40px;
+    font-size: 180px; font-weight: 900; opacity: .13;
+    line-height: 1; z-index: 0; font-family: 'Inter', sans-serif;
+  }
+  .divider {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-family: 'JetBrains Mono', monospace;
+    z-index: 2; border: 4px solid #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,.4);
+    background: #0b0b0d; color: #fff;
+  }
+
+  /* ===================== 案A: Original / Green × Orange ===================== */
+  .A .student { background: linear-gradient(135deg, #0d3b14, #2e7d32 50%, #4caf50); }
+  .A .company { background: linear-gradient(135deg, #bf360c, #e65100, #ff9800); }
+
+  /* ===================== 案B: Midnight × Gold (プレミアム) ===================== */
+  .B .student { background: linear-gradient(135deg, #0a1628, #15294d 50%, #1e3a6b); }
+  .B .company { background: linear-gradient(135deg, #2a1a05, #6b4d1a 50%, #c9a24a); }
+  .B .divider { background: #c9a24a; color: #0a1628; border-color: #c9a24a; }
+
+  /* ===================== 案C: Monochrome (モノトーン+赤アクセント) ===================== */
+  .C .student { background: linear-gradient(135deg, #0a0a0a, #1a1a1a 50%, #2a2a2a); }
+  .C .company { background: linear-gradient(135deg, #f5f5f5, #e8e8e8 50%, #d0d0d0); color: #111; }
+  .C .company .role-en { opacity: .6; }
+  .C .company .btn { border-color: #111; color: #111; background: rgba(255,255,255,.6); }
+  .C .company:hover .btn { background: #111; color: #fff; border-color: #111; }
+  .C .divider { background: #e53935; border-color: #fff; }
+
+  /* ===================== 案D: Pastel Mint × Peach (ソフト) ===================== */
+  .D .student { background: linear-gradient(135deg, #c3efd7, #8ed6b1 50%, #5dbd8f); color: #153a29; }
+  .D .company { background: linear-gradient(135deg, #ffe5d2, #ffc2a0 50%, #ff9a76); color: #4a1f0a; }
+  .D .btn { border-color: rgba(0,0,0,.35); color: inherit; background: rgba(255,255,255,.5); }
+  .D .side:hover .btn { background: #111; color: #fff; border-color: #111; }
+  .D .giant { opacity: .25; }
+  .D .divider { background: #fff; color: #111; border-color: #111; }
+
+  /* ===================== 案E: Cyber Neon (紫×シアン) ===================== */
+  .E .student { background: linear-gradient(135deg, #1a0a2e, #4b0082 50%, #9d00ff); }
+  .E .company { background: linear-gradient(135deg, #001a1f, #006e7a 50%, #00e5ff); }
+  .E .student::before, .E .company::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .E .student h3 { text-shadow: 0 0 20px rgba(255,0,255,.6); }
+  .E .company h3 { text-shadow: 0 0 20px rgba(0,229,255,.6); }
+  .E .divider { background: #0b0b0d; border-color: #9d00ff; box-shadow: 0 0 30px #9d00ff, 0 0 30px #00e5ff; }
+
+  /* ===================== 案F: Forest × Terracotta (アーシー) ===================== */
+  .F .student { background: linear-gradient(135deg, #1a2f1f, #344d2c 50%, #6b8a56); }
+  .F .company { background: linear-gradient(135deg, #3d1f14, #7a3b22 50%, #c6643f); }
+  .F .student::after, .F .company::after {
+    content: ''; position: absolute; inset: 0; opacity: .15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' /%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .F .divider { background: #f1e7d0; color: #3d1f14; border-color: #3d1f14; }
+
+  /* ===================== 案G: Aurora (グラデ虹) ===================== */
+  .G .student { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); }
+  .G .company { background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #30cfd0 100%); }
+  .G .student::before, .G .company::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 70%, rgba(255,255,255,.3), transparent 60%);
+    pointer-events: none;
+  }
+  .G .divider { background: #fff; color: #111; border-color: #fff; box-shadow: 0 0 40px rgba(255,255,255,.8); }
+
+  /* ===================== 案H: Ink × Cream (和モダン) ===================== */
+  .H .student { background: #1a1a1a; color: #f5f0e5; }
+  .H .student::after {
+    content: ''; position: absolute; right: -40px; bottom: -40px;
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,50,50,.5), transparent 70%);
+    pointer-events: none;
+  }
+  .H .company { background: #f5f0e5; color: #1a1a1a; }
+  .H .company::after {
+    content: ''; position: absolute; right: -60px; top: -60px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(180,40,40,.25), transparent 70%);
+    pointer-events: none;
+  }
+  .H .student h3, .H .company h3 { font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif; }
+  .H .student .btn { border-color: #dc3232; color: #fff; background: rgba(220,50,50,.2); }
+  .H .company .btn { border-color: #1a1a1a; color: #1a1a1a; background: transparent; }
+  .H .side:hover .btn { background: #dc3232; color: #fff; border-color: #dc3232; }
+  .H .divider { background: #dc3232; border-color: #f5f0e5; }
+
+  /* ===================== 案I: Monochrome Bold (黒×緑一色) ===================== */
+  .I .student { background: #0a0a0a; }
+  .I .student h3 { color: #7CFF7F; text-shadow: 0 0 30px rgba(124,255,127,.5); }
+  .I .company { background: #7CFF7F; color: #0a0a0a; }
+  .I .company .role-en { opacity: .7; }
+  .I .company .btn { border-color: #0a0a0a; color: #0a0a0a; background: transparent; }
+  .I .company:hover .btn { background: #0a0a0a; color: #7CFF7F; border-color: #0a0a0a; }
+  .I .divider { background: #0a0a0a; color: #7CFF7F; border-color: #7CFF7F; }
+
+  @media (max-width: 900px) {
+    .split { display: block; height: auto; }
+    .side { padding: 40px 28px; min-height: 240px; }
+    .divider { position: relative; top: auto; left: auto; transform: none; margin: 10px auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <b>SPLIT / 配色バリエーション /</b>
+  <a href="#A">A 緑×橙 (原案)</a>
+  <a href="#B">B 深紺×金</a>
+  <a href="#C">C モノクロ+赤</a>
+  <a href="#D">D パステル</a>
+  <a href="#E">E サイバーネオン</a>
+  <a href="#F">F 森×テラコッタ</a>
+  <a href="#G">G オーロラ</a>
+  <a href="#H">H 和モダン(墨×生成)</a>
+  <a href="#I">I 黒×グリーン</a>
+</nav>
+
+<!-- ===== A ===== -->
+<section id="A" class="proposal">
+  <span class="proposal-label">// COLOR A</span>
+  <h2 class="proposal-title">Green × Orange — 原案（AImeブランド色）</h2>
+  <p class="proposal-desc">現行AImeブランドの緑×オレンジ。エネルギッシュで若々しい。安心感と学生らしさの定番組み合わせ。</p>
+  <div class="swatch"><span style="background:#2e7d32"></span><span style="background:#4caf50"></span><span style="background:#e65100"></span><span style="background:#ff9800"></span></div>
+  <div class="split A">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== B ===== -->
+<section id="B" class="proposal">
+  <span class="proposal-label">// COLOR B</span>
+  <h2 class="proposal-title">Midnight × Gold — プレミアム / 上質路線</h2>
+  <p class="proposal-desc">深紺 × ゴールド。高単価求人・即戦力層に訴求する上質系。信頼と権威を感じさせる。</p>
+  <div class="swatch"><span style="background:#0a1628"></span><span style="background:#1e3a6b"></span><span style="background:#6b4d1a"></span><span style="background:#c9a24a"></span></div>
+  <div class="split B">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== C ===== -->
+<section id="C" class="proposal">
+  <span class="proposal-label">// COLOR C</span>
+  <h2 class="proposal-title">Monochrome + Red Accent — ミニマル / 硬派</h2>
+  <p class="proposal-desc">黒×白の強コントラストに、中央の赤ドットだけが決定力のアクセント。モード系/ファッション系に近い硬派な印象。</p>
+  <div class="swatch"><span style="background:#0a0a0a"></span><span style="background:#2a2a2a"></span><span style="background:#f5f5f5"></span><span style="background:#e53935"></span></div>
+  <div class="split C">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== D ===== -->
+<section id="D" class="proposal">
+  <span class="proposal-label">// COLOR D</span>
+  <h2 class="proposal-title">Pastel Mint × Peach — やわらか / 親しみ</h2>
+  <p class="proposal-desc">彩度を落としたミント×ピーチ。女性誌／ライフスタイル寄り。威圧感を一番下げたい場合に。</p>
+  <div class="swatch"><span style="background:#c3efd7"></span><span style="background:#5dbd8f"></span><span style="background:#ffe5d2"></span><span style="background:#ff9a76"></span></div>
+  <div class="split D">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== E ===== -->
+<section id="E" class="proposal">
+  <span class="proposal-label">// COLOR E</span>
+  <h2 class="proposal-title">Cyber Neon — 紫×シアンの発光グリッド</h2>
+  <p class="proposal-desc">近未来・ハッカー・サイバーパンク。AI/LLMらしい「攻め」の印象。グリッド＋発光テキスト。</p>
+  <div class="swatch"><span style="background:#4b0082"></span><span style="background:#9d00ff"></span><span style="background:#006e7a"></span><span style="background:#00e5ff"></span></div>
+  <div class="split E">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== F ===== -->
+<section id="F" class="proposal">
+  <span class="proposal-label">// COLOR F</span>
+  <h2 class="proposal-title">Forest × Terracotta — 落ち着きのあるアーシー</h2>
+  <p class="proposal-desc">深い森の緑×テラコッタ。ノイズテクスチャ入り。大人向け・サステナブル・研究所的な落ち着き。</p>
+  <div class="swatch"><span style="background:#344d2c"></span><span style="background:#6b8a56"></span><span style="background:#7a3b22"></span><span style="background:#c6643f"></span></div>
+  <div class="split F">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== G ===== -->
+<section id="G" class="proposal">
+  <span class="proposal-label">// COLOR G</span>
+  <h2 class="proposal-title">Aurora — オーロラ / 鮮やかグラデーション</h2>
+  <p class="proposal-desc">多色グラデーション。Z世代・クリエイティブ系向け。StripeやLinearのようなモダンSaaSの文脈。</p>
+  <div class="swatch"><span style="background:#667eea"></span><span style="background:#f093fb"></span><span style="background:#fa709a"></span><span style="background:#30cfd0"></span></div>
+  <div class="split G">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== H ===== -->
+<section id="H" class="proposal">
+  <span class="proposal-label">// COLOR H</span>
+  <h2 class="proposal-title">Ink × Cream — 和モダン（墨×生成・朱アクセント）</h2>
+  <p class="proposal-desc">墨黒×生成色に朱のアクセント。日本らしさ・格・静けさ。明朝体と相性◎。</p>
+  <div class="swatch"><span style="background:#1a1a1a"></span><span style="background:#dc3232"></span><span style="background:#f5f0e5"></span><span style="background:#b42828"></span></div>
+  <div class="split H">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== I ===== -->
+<section id="I" class="proposal">
+  <span class="proposal-label">// COLOR I</span>
+  <h2 class="proposal-title">Black × Neon Green — 反転コントラスト</h2>
+  <p class="proposal-desc">片側は真っ黒×ネオングリーン文字、もう片側はネオングリーン背景×黒文字。反転の強対比でスタイリッシュ。</p>
+  <div class="swatch"><span style="background:#0a0a0a"></span><span style="background:#7CFF7F"></span></div>
+  <div class="split I">
+    <div class="divider">OR</div>
+    <a href="signup.html" class="side student">
+      <span class="giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="side company">
+      <span class="giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<footer style="background: #050507; color: #666; padding: 40px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;">
+  — END / SPLIT SCREEN 配色バリエーション × 9 —
+</footer>
+
+</body>
+</html>

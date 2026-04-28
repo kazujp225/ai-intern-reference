@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI企業を探す | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+
+  /* ===== ヒーロー: blog.html と同系統 ===== */
+  .co-hero {
+    background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
+    padding: 48px 24px 40px;
+  }
+  .co-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .co-hero h1 {
+    margin: 0; font-size: 2em; font-weight: 900; letter-spacing: -.02em; color: #111;
+  }
+  .co-hero p { color: #555; margin: 6px 0 0; font-size: .95em; }
+
+  /* ===== 検索バー ===== */
+  .co-search {
+    display: flex; gap: 8px; max-width: 680px; margin: 18px 0 0;
+    background: #fff; border-radius: 999px; padding: 4px 4px 4px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+  .co-search input {
+    flex: 1; border: none; outline: none; font-size: .95em;
+    background: transparent; padding: 0;
+  }
+  .co-search button {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: #4caf50; color: #fff; cursor: pointer;
+    font-weight: 900; font-size: 1em; transition: background .15s;
+  }
+  .co-search button:hover { background: #388e3c; }
+
+  /* ===== パンくず ===== */
+  .breadcrumb {
+    max-width: 1100px; margin: 16px auto 0; padding: 0 24px;
+    font-size: .85em; color: #666;
+  }
+  .breadcrumb a { color: #666; font-weight: 600; text-decoration: none; }
+  .breadcrumb a:hover { color: #2e7d32; }
+  .breadcrumb span { margin: 0 4px; color: #ccc; }
+
+  /* ===== レイアウト ===== */
+  .co-layout {
+    display: grid; grid-template-columns: 260px 1fr; gap: 28px;
+    max-width: 1100px; margin: 28px auto 60px; padding: 0 24px;
+  }
+  @media (max-width: 860px) { .co-layout { grid-template-columns: 1fr; } }
+
+  /* ===== サイドバー (クリーンカード) ===== */
+  .co-side {
+    position: sticky; top: 20px; align-self: start;
+    background: #fff; padding: 20px 20px 8px; border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .co-side h3 {
+    font-size: .95em; font-weight: 900; color: #111;
+    margin: 18px 0 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .co-side h3::before {
+    content: ''; width: 4px; height: 16px; background: #4caf50; border-radius: 2px;
+  }
+  .co-side h3:first-child { margin-top: 0; }
+  .co-side ul { list-style: none; padding: 0; margin: 0; }
+  .co-side li { border-bottom: 1px solid #f0f0f0; }
+  .co-side li:last-child { border-bottom: none; }
+  .co-side li a {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 6px; color: #333; font-size: .9em; font-weight: 700;
+    text-decoration: none; border-radius: 6px; transition: all .15s;
+  }
+  .co-side li a:hover {
+    background: #f0faf0; color: #2e7d32; padding-left: 12px;
+  }
+  .co-side li a .n {
+    color: #666; font-size: .78em; font-weight: 800;
+    background: #f5f5f5; padding: 2px 10px; border-radius: 999px;
+  }
+  .co-side li a:hover .n { background: #e8f5e9; color: #2e7d32; }
+
+  /* ===== 結果ヘッダ ===== */
+  .co-results-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px; padding-bottom: 12px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .co-results-head h2 {
+    margin: 0; font-size: 1.3em; font-weight: 900; color: #111;
+    letter-spacing: -.01em;
+  }
+  .co-results-head .count {
+    color: #2e7d32; font-size: .82em; font-weight: 800;
+    background: #e8f5e9; padding: 3px 12px; border-radius: 999px;
+  }
+
+  /* ===== 企業カード ===== */
+  .co-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .co-card {
+    background: #fff; border-radius: 14px;
+    padding: 22px 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .2s, box-shadow .2s;
+    display: block; text-decoration: none; color: inherit;
+  }
+  .co-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,.08);
+  }
+  .co-card-top { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+  .co-logo {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1.3em;
+    flex-shrink: 0;
+    font-family: 'Arial Black', sans-serif;
+  }
+  .co-name {
+    font-size: 1.05em; font-weight: 900; color: #111;
+    margin: 0 0 4px; line-height: 1.3;
+  }
+  .co-cat {
+    font-family: monospace; font-size: .72em; color: #888;
+    letter-spacing: .05em; font-weight: 700;
+  }
+  .co-about {
+    font-size: .86em; color: #555; line-height: 1.6;
+    margin: 0 0 14px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .co-tags {
+    display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px;
+  }
+  .co-tag {
+    font-size: .72em; font-weight: 700;
+    background: #f0f0f0; color: #333;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .co-tag.hot { background: #1b5e20; color: #fff; }
+  .co-stats {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid #eee;
+    font-size: .8em; font-weight: 700;
+  }
+  .co-stats .co-jobs {
+    background: #e8f5e9; color: #2e7d32;
+    padding: 3px 10px; border-radius: 999px; font-weight: 800;
+  }
+  .co-stats .co-loc { color: #666; }
+
+  /* ===== ピックアップ ===== */
+  .co-pickup {
+    background: #fff; border-radius: 14px;
+    padding: 20px 22px; margin-bottom: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .co-pickup-head {
+    font-weight: 900; color: #111; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;
+  }
+  .co-pickup-head::before {
+    content: ''; width: 4px; height: 16px; background: #ff9800; border-radius: 2px;
+  }
+  .co-pickup-head .sub {
+    font-size: .78em; color: #888; font-weight: 700;
+  }
+  .co-pickup-list {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .co-pickup-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 10px 14px; background: #fafafa; border-radius: 10px;
+    color: inherit; text-decoration: none; transition: all .15s;
+  }
+  .co-pickup-item:hover { background: #f0faf0; transform: translateX(3px); }
+  .co-pickup-num {
+    font-family: 'Arial Black', sans-serif; font-size: .95em; font-weight: 900;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    flex-shrink: 0;
+  }
+  .co-pickup-name {
+    font-weight: 900; font-size: .88em; color: #111;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .co-pickup-cat {
+    font-size: .7em; color: #888; font-family: monospace;
+    margin-top: 2px;
+  }
+
+  /* ===== ページネーション ===== */
+  .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 40px; }
+  .pagination a {
+    width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+    background: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
+    color: #333; font-weight: 700; font-size: .88em;
+    transition: all .15s; text-decoration: none;
+  }
+  .pagination a.active { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; border-color: transparent; }
+  .pagination a:hover { border-color: #2e7d32; color: #2e7d32; }
+  .pagination a.active:hover { color: #fff; }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html" class="current">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup-role.html" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<section class="co-hero">
+  <div class="co-hero-inner">
+    <h1>AI企業を探す</h1>
+    <p>業界特化のAI企業・注目スタートアップから、あなたに合う会社を見つけよう</p>
+    <form class="co-search" method="get" action="companies.html">
+      <input name="q" id="co-q" placeholder="会社名、業種、技術スタックで探す">
+      <button type="submit" aria-label="検索">→</button>
+    </form>
+  </div>
+</section>
+
+<nav class="breadcrumb"><a href="original.html">トップ</a><span> / </span>AI企業を探す<span id="co-crumb-extra"></span></nav>
+
+<div class="co-layout">
+  <aside class="co-side">
+    <h3>業種カテゴリ</h3>
+    <ul>
+      <li><a href="companies.html?cat=llm">LLM / 基盤モデル<span class="n">14</span></a></li>
+      <li><a href="companies.html?cat=agent">AIエージェント<span class="n">8</span></a></li>
+      <li><a href="companies.html?cat=image">画像生成 / 動画<span class="n">11</span></a></li>
+      <li><a href="companies.html?cat=medical">医療 / ヘルスケア<span class="n">6</span></a></li>
+      <li><a href="companies.html?cat=robotics">ロボティクス<span class="n">5</span></a></li>
+      <li><a href="companies.html?cat=prompt">プロンプト特化<span class="n">9</span></a></li>
+      <li><a href="companies.html?cat=business">Biz / SaaS<span class="n">12</span></a></li>
+    </ul>
+    <h3>ステージ</h3>
+    <ul>
+      <li><a href="companies.html?stage=seed">シード<span class="n">18</span></a></li>
+      <li><a href="companies.html?stage=seriesA">シリーズA<span class="n">15</span></a></li>
+      <li><a href="companies.html?stage=seriesB">シリーズB<span class="n">9</span></a></li>
+      <li><a href="companies.html?stage=listed">上場<span class="n">7</span></a></li>
+    </ul>
+    <h3>働き方</h3>
+    <ul>
+      <li><a href="companies.html?work=remote">フルリモート可<span class="n">22</span></a></li>
+      <li><a href="companies.html?work=hybrid">ハイブリッド<span class="n">31</span></a></li>
+      <li><a href="companies.html?work=office">オフィス中心<span class="n">12</span></a></li>
+    </ul>
+    <h3>エリア</h3>
+    <ul>
+      <li><a href="companies.html?area=tokyo">東京都<span class="n">54</span></a></li>
+      <li><a href="companies.html?area=kanagawa">神奈川<span class="n">8</span></a></li>
+      <li><a href="companies.html?area=kansai">関西<span class="n">6</span></a></li>
+      <li><a href="companies.html?area=remote">リモートのみ<span class="n">7</span></a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <div class="co-pickup">
+      <div class="co-pickup-head">注目スタートアップ <span class="sub">今週の新着</span></div>
+      <div class="co-pickup-list">
+        <a class="co-pickup-item" href="company.html?id=auto">
+          <div class="co-pickup-num">01</div>
+          <div style="min-width:0;">
+            <div class="co-pickup-name">株式会社オートノミー</div>
+            <div class="co-pickup-cat">AI AGENT / SERIES B</div>
+          </div>
+        </a>
+        <a class="co-pickup-item" href="company.html?id=neuron">
+          <div class="co-pickup-num">02</div>
+          <div style="min-width:0;">
+            <div class="co-pickup-name">株式会社ニューロンクラフト</div>
+            <div class="co-pickup-cat">LLM / SERIES A</div>
+          </div>
+        </a>
+        <a class="co-pickup-item" href="company.html?id=diffusion">
+          <div class="co-pickup-num">03</div>
+          <div style="min-width:0;">
+            <div class="co-pickup-name">ディフュージョン・ワークス</div>
+            <div class="co-pickup-cat">IMAGE GEN / SEED</div>
+          </div>
+        </a>
+        <a class="co-pickup-item" href="company.html?id=agi">
+          <div class="co-pickup-num">04</div>
+          <div style="min-width:0;">
+            <div class="co-pickup-name">合同会社AGIラボ</div>
+            <div class="co-pickup-cat">AGI RESEARCH / SEED</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="co-results-head">
+      <h2 id="co-title">すべての企業</h2>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div class="count" id="co-count">12 COMPANIES / 全 65 社</div>
+      </div>
+    </div>
+
+    <div class="co-grid" id="co-grid"></div>
+
+    <div class="pagination">
+      <a href="#">«</a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#">6</a>
+      <a href="#">»</a>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div><p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p></div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="companies.html">企業一覧</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup-role.html">新規登録</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="blog.html">AIコラム</a></li><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script>
+(async function(){
+  const params = new URLSearchParams(location.search);
+  const q = params.get('q') || '';
+  const catFilter = params.get('cat');
+
+  const crumbEl = document.getElementById('co-crumb-extra');
+  const titleEl = document.getElementById('co-title');
+  const countEl = document.getElementById('co-count');
+  const grid    = document.getElementById('co-grid');
+
+  grid.innerHTML = '<div style="grid-column:1/-1; padding:40px; text-align:center; color:#888;">読み込み中…</div>';
+
+  function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function initialOf(name) {
+    return (name||'').replace(/^株式会社|^合同会社|株式会社$|（株）/g,'').charAt(0).toUpperCase() || '?';
+  }
+
+  if (q) { document.getElementById('co-q').value = q; titleEl.textContent = `"${q}" の検索結果`; crumbEl.innerHTML = `<span>/</span>"${q}"`; }
+  else if (catFilter) { titleEl.textContent = `${catFilter} の企業`; crumbEl.innerHTML = `<span>/</span>${catFilter}`; }
+
+  try {
+    const { items, total } = await window.AImeBiz.listCompaniesWithStats({
+      keyword: q || null, category: catFilter || null, limit: 24,
+    });
+    countEl.textContent = total ? `${items.length} 社 / 全 ${total} 社` : '該当企業なし';
+
+    if (!items.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1; padding:60px; text-align:center; color:#888; background:#fff; border-radius:14px;">
+        企業が登録されていません。<br>企業様は <a href="company-signup.html" style="color:#2e7d32; font-weight:800;">こちらから企業登録</a> できます。</div>`;
+      return;
+    }
+
+    grid.innerHTML = items.map(c => {
+      const jobCount = c.job_postings?.[0]?.count ?? 0;
+      const logo = c.logo_url
+        ? `<div class="co-logo" style="overflow:hidden;"><img src="${c.logo_url}" alt="" style="width:100%;height:100%;object-fit:cover;"></div>`
+        : `<div class="co-logo">${initialOf(c.name)}</div>`;
+      const verified = c.is_verified ? `<span class="co-tag hot">認証済</span>` : '';
+      return `
+        <a class="co-card" href="company.html?id=${c.id}">
+          <div class="co-card-top">
+            ${logo}
+            <div style="min-width:0;">
+              <h3 class="co-name">${escapeHtml(c.name)}</h3>
+              <div class="co-cat">${escapeHtml((c.industry || '').toUpperCase())}</div>
+            </div>
+          </div>
+          <p class="co-about">${escapeHtml(c.description || '企業説明未登録')}</p>
+          <div class="co-tags">${verified}</div>
+          <div class="co-stats">
+            <span class="co-jobs">求人 ${jobCount}</span>
+            <span class="co-loc">${escapeHtml(c.location || '')}</span>
+          </div>
+        </a>`;
+    }).join('');
+  } catch (err) {
+    grid.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; color:#c62828;">読み込みエラー: ${err.message}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業登録 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* company-signup 専用の追加スタイル (pages.css の緑 + Brutalist を踏襲) */
+  .auth-wrap-wide { max-width: 560px; }
+
+  .cs-steps {
+    display: flex; gap: 8px; margin: 0 0 24px;
+  }
+  .cs-dot {
+    flex: 1; height: 6px; background: #e8eaed; border-radius: 3px;
+    transition: background .25s;
+  }
+  .cs-dot.active { background: linear-gradient(90deg, #1b5e20, #4caf50); }
+
+  .cs-step-heading {
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 0 0 20px;
+  }
+  .cs-step-heading .num {
+    font-family: 'Arial Black', sans-serif; font-weight: 900;
+    font-size: 1.4em; color: #4caf50;
+    -webkit-text-stroke: 1px #1b5e20;
+  }
+  .cs-step-heading h2 {
+    margin: 0; font-size: 1.2em; font-weight: 900; color: #111;
+    letter-spacing: -.01em;
+  }
+
+  .cs-required { color: #e53935; font-size: .85em; margin-left: 2px; }
+
+  #cs-msg {
+    display: none; padding: 12px 14px; border-radius: 8px;
+    font-size: .88em; font-weight: 700; margin-top: 14px;
+    border: 1px solid transparent;
+  }
+  #cs-msg.error   { background: #ffebee; color: #c62828; border-color: #ef9a9a; }
+  #cs-msg.success { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+
+  .cs-btn-row { margin-top: 20px; }
+  .cs-btn-row .btn-brutal { width: 100%; }
+
+  .cs-back {
+    display: inline-block; margin-top: 14px; font-size: .85em;
+    color: #666; font-weight: 700; background: none; border: none;
+    cursor: pointer; padding: 0;
+  }
+  .cs-back:hover { color: #2e7d32; text-decoration: underline; }
+
+  /* Hero: 緑グラデーション (トップページのCTAボタンと同系統) */
+  .cs-hero {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 55%, #4caf50 100%);
+    color: #fff; padding: 56px 24px 40px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cs-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.08) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,.06) 0, transparent 40%);
+    pointer-events: none;
+  }
+  .cs-hero .kicker {
+    font-family: 'Courier New', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 4px; opacity: .85;
+    margin: 0 0 6px; position: relative;
+  }
+  .cs-hero h1 {
+    margin: 0; font-size: 2em; font-weight: 900;
+    letter-spacing: -.02em; position: relative;
+  }
+  .cs-hero p {
+    margin: 8px 0 0; opacity: .95; font-size: .95em; position: relative;
+  }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup-role.html" class="register current">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span><a href="signup-role.html">新規登録</a><span>/</span>企業登録
+</nav>
+
+<section class="cs-hero">
+  <div class="kicker">/ REGISTER AS COMPANY</div>
+  <h1>企業アカウント登録</h1>
+  <p>AIに強い学生に、御社を知ってもらいましょう</p>
+</section>
+
+<div class="auth-wrap auth-wrap-wide">
+  <div class="cs-steps">
+    <div class="cs-dot active" id="dot1"></div>
+    <div class="cs-dot" id="dot2"></div>
+  </div>
+
+  <!-- Step 1: Auth -->
+  <div id="step-1">
+    <div class="cs-step-heading">
+      <span class="num">01</span>
+      <h2>担当者アカウント作成</h2>
+    </div>
+
+    <div class="form-field">
+      <label>担当者メールアドレス<span class="cs-required">*</span></label>
+      <input type="email" id="cs-email" required placeholder="recruit@example.com" autocomplete="email">
+    </div>
+    <div class="form-field">
+      <label>パスワード（8文字以上）<span class="cs-required">*</span></label>
+      <input type="password" id="cs-password" required minlength="8" autocomplete="new-password">
+    </div>
+    <div class="form-field">
+      <label>担当者名<span class="cs-required">*</span></label>
+      <input type="text" id="cs-nickname" required placeholder="例: 山田 太郎">
+    </div>
+
+    <div class="cs-btn-row">
+      <button class="btn-brutal" id="cs-next1" type="button">
+        <span class="tag">STEP 02</span>次へ（企業情報入力）
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2: Company info -->
+  <div id="step-2" style="display:none;">
+    <div class="cs-step-heading">
+      <span class="num">02</span>
+      <h2>企業情報</h2>
+    </div>
+
+    <div class="form-field">
+      <label>会社名<span class="cs-required">*</span></label>
+      <input type="text" id="cs-co-name" required placeholder="株式会社AIめ">
+    </div>
+    <div class="form-field">
+      <label>業種</label>
+      <select id="cs-co-industry">
+        <option value="">選択してください</option>
+        <option>AI / 機械学習</option>
+        <option>LLM / 生成AI</option>
+        <option>SaaS</option>
+        <option>医療AI</option>
+        <option>ロボティクス</option>
+        <option>金融</option>
+        <option>その他</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>所在地</label>
+      <input type="text" id="cs-co-location" placeholder="東京都渋谷区">
+    </div>
+    <div class="form-field">
+      <label>Webサイト</label>
+      <input type="url" id="cs-co-website" placeholder="https://...">
+    </div>
+    <div class="form-field">
+      <label>会社説明</label>
+      <textarea id="cs-co-description" placeholder="事業内容、文化、技術スタックなど" style="min-height: 110px; resize: vertical;"></textarea>
+    </div>
+    <div class="form-field">
+      <label>会社ロゴ（任意）</label>
+      <input type="file" id="cs-co-logo" accept="image/*">
+    </div>
+
+    <div class="cs-btn-row">
+      <button class="btn-brutal" id="cs-submit" type="button">
+        <span class="tag">DONE</span>登録を完了する
+      </button>
+      <button class="cs-back" id="cs-back" type="button">← 前のステップに戻る</button>
+    </div>
+  </div>
+
+  <div id="cs-msg" role="alert"></div>
+
+  <div class="auth-foot">
+    学生の方は <a href="signup.html">学生登録</a> / 既にアカウントをお持ちですか？ <a href="login.html">ログイン</a>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="brand">AIme</div>
+      <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。次世代のAIキャリアを始めよう。</p>
+    </div>
+    <div>
+      <h4>検索</h4>
+      <ul>
+        <li><a href="search.html">求人を探す</a></li>
+        <li><a href="companies.html">企業一覧</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>アカウント</h4>
+      <ul>
+        <li><a href="login.html">ログイン</a></li>
+        <li><a href="signup-role.html">新規登録</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>サービス</h4>
+      <ul>
+        <li><a href="#">採用担当者様へ</a></li>
+        <li><a href="#">お問合せ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(function(){
+  const msg = document.getElementById('cs-msg');
+  function show(text, type) {
+    msg.textContent = text;
+    msg.className = type === 'error' ? 'error' : 'success';
+    msg.style.display = 'block';
+  }
+  function hide() { msg.style.display = 'none'; msg.className = ''; }
+
+  let authData = null;
+
+  document.getElementById('cs-next1').addEventListener('click', async () => {
+    const email = document.getElementById('cs-email').value.trim();
+    const password = document.getElementById('cs-password').value;
+    const nickname = document.getElementById('cs-nickname').value.trim();
+    if (!email || !password || !nickname || password.length < 8) {
+      show('全項目を入力してください（パスワードは8文字以上）', 'error');
+      return;
+    }
+    if (!window.sb) { show('Supabase クライアントが初期化されていません', 'error'); return; }
+
+    const { data, error } = await window.sb.auth.signUp({
+      email, password,
+      options: { data: { nickname, role: 'company' } },
+    });
+    if (error) { show('登録失敗: ' + error.message, 'error'); return; }
+    authData = data;
+    document.getElementById('step-1').style.display = 'none';
+    document.getElementById('step-2').style.display = 'block';
+    document.getElementById('dot2').classList.add('active');
+    hide();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('cs-back').addEventListener('click', () => {
+    document.getElementById('step-2').style.display = 'none';
+    document.getElementById('step-1').style.display = 'block';
+    document.getElementById('dot2').classList.remove('active');
+    hide();
+  });
+
+  document.getElementById('cs-submit').addEventListener('click', async () => {
+    const name = document.getElementById('cs-co-name').value.trim();
+    if (!name) { show('会社名は必須です', 'error'); return; }
+    try {
+      let logoUrl = null;
+      const logoFile = document.getElementById('cs-co-logo').files[0];
+      if (logoFile) {
+        const up = await window.AImeBiz.uploadFile('logos', logoFile, 'logo');
+        logoUrl = up.url;
+      }
+      await window.AImeBiz.createCompany({
+        name,
+        industry: document.getElementById('cs-co-industry').value || null,
+        location: document.getElementById('cs-co-location').value.trim() || null,
+        website: document.getElementById('cs-co-website').value.trim() || null,
+        description: document.getElementById('cs-co-description').value.trim() || null,
+        logo_url: logoUrl,
+      });
+      show('登録完了！管理画面へ移動します...', 'success');
+      setTimeout(() => location.href = 'company-dashboard.html', 1000);
+    } catch (err) {
+      show('登録失敗: ' + err.message, 'error');
+    }
+  });
+})();
+</script>
+
+</body></html>

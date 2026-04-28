@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>スマホ3台デモ モバイル表示 5案</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 16px 120px;
+    background: #f5f5f7;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    color: #111;
+  }
+  h1 { font-size: 1.3em; margin: 0 0 8px; text-align: center; }
+  .lead { text-align: center; color: #666; margin: 0 0 32px; font-size: 0.85em; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .case { background: #fff; border-radius: 20px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .case-title { font-size: 1em; font-weight: 800; margin: 0 0 4px; color: #1b5e20; }
+  .case-desc { font-size: 0.78em; color: #666; margin: 0 0 14px; line-height: 1.5; }
+  .phone-wrap {
+    width: 100%; max-width: 360px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .phone-scroll { max-height: 660px; overflow-y: auto; padding: 20px 14px; }
+
+  /* ============ ミニスマホ共通 ============ */
+  .mini {
+    background: #111;
+    border-radius: 20px;
+    padding: 8px;
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .mini-notch {
+    width: 60px; height: 8px; background: #111;
+    border-radius: 0 0 8px 8px;
+    margin: -8px auto 4px;
+  }
+  .mini-screen {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 340px;
+    position: relative;
+  }
+  .mini-status {
+    height: 18px; padding: 3px 12px;
+    font-size: 0.55em; font-weight: 800;
+    display: flex; justify-content: space-between;
+    background: #fff;
+  }
+  .mini-header {
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.7em;
+    font-weight: 800;
+    text-align: center;
+  }
+  .mini-h1 { background: linear-gradient(135deg, #1e40af, #3b82f6); }
+  .mini-h2 { background: linear-gradient(135deg, #dc2626, #f97316); }
+  .mini-h3 { background: linear-gradient(135deg, #059669, #10b981); }
+  .mini-content {
+    padding: 8px;
+    overflow-y: auto;
+    height: calc(100% - 44px);
+  }
+  .mini-content::-webkit-scrollbar { display: none; }
+  .mini-item {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 7px 10px;
+    margin-bottom: 4px;
+    font-size: 0.58em;
+    font-weight: 700;
+  }
+  .mini-item .cnt { color: #2e7d32; font-size: 0.85em; font-weight: 800; }
+  .mini-label { font-size: 0.7em; font-weight: 800; text-align: center; margin-top: 8px; color: #333; }
+
+  /* =================================================================
+     案1: 縦に3つ積み（フルサイズ）
+     ================================================================= */
+  .c1-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  /* =================================================================
+     案2: 横スクロール1台ずつ（snap）
+     ================================================================= */
+  .c2-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 2px 4px 14px;
+    margin: 0 -14px;
+    padding-left: 14px; padding-right: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .c2-scroll::-webkit-scrollbar { display: none; }
+  .c2-item {
+    flex: 0 0 75%;
+    scroll-snap-align: center;
+  }
+  .c2-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .c2-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #ccc;
+  }
+  .c2-dot.active { background: #2e7d32; width: 18px; border-radius: 3px; }
+
+  /* =================================================================
+     案3: 3台横並び（極小）
+     ================================================================= */
+  .c3-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .c3-row .mini {
+    max-width: 100%;
+  }
+  .c3-row .mini-screen {
+    height: 210px;
+  }
+  .c3-row .mini-header { font-size: 0.58em; padding: 5px 4px; }
+  .c3-row .mini-status { display: none; }
+  .c3-row .mini-content { padding: 5px; height: calc(100% - 22px); }
+  .c3-row .mini-item { padding: 4px 6px; font-size: 0.48em; }
+
+  /* =================================================================
+     案4: タブ切替 (1台ずつ表示)
+     ================================================================= */
+  .c4-tabs {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 14px;
+  }
+  .c4-tab {
+    flex: 1; text-align: center;
+    padding: 8px 4px;
+    font-size: 0.72em; font-weight: 800; color: #666;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .c4-tab.active {
+    background: #fff;
+    color: #1b5e20;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  }
+  .c4-panel { display: none; text-align: center; }
+  .c4-panel.active { display: block; }
+
+  /* =================================================================
+     案5: 3D風重ね表示（中央を大きく）
+     ================================================================= */
+  .c5-stage {
+    position: relative;
+    height: 420px;
+    margin-top: 10px;
+    perspective: 800px;
+  }
+  .c5-stage .mini {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s;
+  }
+  .c5-stage .mini.left {
+    transform: translate(calc(-50% - 60px), -50%) scale(0.75);
+    opacity: 0.5;
+    z-index: 1;
+  }
+  .c5-stage .mini.center {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    z-index: 3;
+  }
+  .c5-stage .mini.right {
+    transform: translate(calc(-50% + 60px), -50%) scale(0.75);
+    opacity: 0.5;
+    z-index: 1;
+  }
+  .c5-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .c5-nav button {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid #2e7d32;
+    background: #fff;
+    color: #2e7d32;
+    font-weight: 900;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>スマホ3台デモ モバイル表示 5案</h1>
+<p class="lead">AI職種 / 尖った特徴 / AI領域キーワード の3画面をどう見せるか。</p>
+
+<div class="grid">
+
+  <!-- ============ 案1 縦積み ============ -->
+  <div class="case">
+    <div class="case-title">案1 縦に3つ積み</div>
+    <p class="case-desc">シンプルに上から3台並べる。全部見える。縦が長くなるが情報完全。</p>
+    <div class="phone-wrap"><div class="phone-scroll">
+      <h3 style="text-align:center;font-size:0.95em;margin:0 0 16px;">3種類の検索方法</h3>
+      <div class="c1-stack">
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h1">AI職種から探す</div>
+              <div class="mini-content">
+                <div class="mini-item">LLMアプリ開発 <span class="cnt">56</span></div>
+                <div class="mini-item">プロンプトエンジニア <span class="cnt">42</span></div>
+                <div class="mini-item">MLエンジニア <span class="cnt">38</span></div>
+                <div class="mini-item">データサイエンス <span class="cnt">31</span></div>
+                <div class="mini-item">PMM / BizDev <span class="cnt">27</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">AI職種</div>
+        </div>
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h2">尖った特徴から探す</div>
+              <div class="mini-content">
+                <div class="mini-item">フルリモート可 <span class="cnt">89</span></div>
+                <div class="mini-item">未経験OK <span class="cnt">67</span></div>
+                <div class="mini-item">時給2,000円以上 <span class="cnt">52</span></div>
+                <div class="mini-item">文系歓迎 <span class="cnt">45</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">尖った特徴</div>
+        </div>
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h3">AI領域 + キーワード</div>
+              <div class="mini-content">
+                <div class="mini-item">"RAG" で検索 <span class="cnt">18</span></div>
+                <div class="mini-item">"LangChain" <span class="cnt">12</span></div>
+                <div class="mini-item">"Transformer" <span class="cnt">24</span></div>
+                <div class="mini-item">"Claude" <span class="cnt">8</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">キーワード</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案2 横スクロールsnap ============ -->
+  <div class="case">
+    <div class="case-title">案2 横スクロール 1台ずつ</div>
+    <p class="case-desc">スワイプで1台ずつ。縦スペース最小。App Storeのスクショ風。</p>
+    <div class="phone-wrap"><div class="phone-scroll">
+      <h3 style="text-align:center;font-size:0.95em;margin:0 0 10px;">3種類の検索方法</h3>
+      <div class="c2-scroll">
+        <div class="c2-item">
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h1">AI職種から探す</div>
+              <div class="mini-content">
+                <div class="mini-item">LLMアプリ開発 <span class="cnt">56</span></div>
+                <div class="mini-item">プロンプト <span class="cnt">42</span></div>
+                <div class="mini-item">MLエンジニア <span class="cnt">38</span></div>
+                <div class="mini-item">データサイエンス <span class="cnt">31</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">AI職種</div>
+        </div>
+        <div class="c2-item">
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h2">尖った特徴</div>
+              <div class="mini-content">
+                <div class="mini-item">フルリモート可 <span class="cnt">89</span></div>
+                <div class="mini-item">未経験OK <span class="cnt">67</span></div>
+                <div class="mini-item">時給2,000円+ <span class="cnt">52</span></div>
+                <div class="mini-item">文系歓迎 <span class="cnt">45</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">尖った特徴</div>
+        </div>
+        <div class="c2-item">
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h3">AI領域キーワード</div>
+              <div class="mini-content">
+                <div class="mini-item">"RAG" <span class="cnt">18</span></div>
+                <div class="mini-item">"LangChain" <span class="cnt">12</span></div>
+                <div class="mini-item">"Transformer" <span class="cnt">24</span></div>
+                <div class="mini-item">"Claude" <span class="cnt">8</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label">キーワード</div>
+        </div>
+      </div>
+      <div class="c2-dots">
+        <span class="c2-dot active"></span>
+        <span class="c2-dot"></span>
+        <span class="c2-dot"></span>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案3 3台横並び ============ -->
+  <div class="case">
+    <div class="case-title">案3 3台横並び（極小）</div>
+    <p class="case-desc">1画面に全部入る。小さくなるが「3つの検索軸」が一目で伝わる。文字はほぼ読めない。</p>
+    <div class="phone-wrap"><div class="phone-scroll">
+      <h3 style="text-align:center;font-size:0.9em;margin:0 0 14px;">3種類の検索方法</h3>
+      <div class="c3-row">
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h1">職種</div>
+              <div class="mini-content">
+                <div class="mini-item">LLM <span class="cnt">56</span></div>
+                <div class="mini-item">プロンプト <span class="cnt">42</span></div>
+                <div class="mini-item">ML <span class="cnt">38</span></div>
+                <div class="mini-item">データ <span class="cnt">31</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label" style="font-size:0.65em;">職種</div>
+        </div>
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h2">特徴</div>
+              <div class="mini-content">
+                <div class="mini-item">リモート <span class="cnt">89</span></div>
+                <div class="mini-item">未経験 <span class="cnt">67</span></div>
+                <div class="mini-item">高時給 <span class="cnt">52</span></div>
+                <div class="mini-item">文系 <span class="cnt">45</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label" style="font-size:0.65em;">特徴</div>
+        </div>
+        <div>
+          <div class="mini">
+            <div class="mini-notch"></div>
+            <div class="mini-screen">
+              <div class="mini-header mini-h3">キーワード</div>
+              <div class="mini-content">
+                <div class="mini-item">RAG <span class="cnt">18</span></div>
+                <div class="mini-item">Claude <span class="cnt">8</span></div>
+                <div class="mini-item">LangChain <span class="cnt">12</span></div>
+                <div class="mini-item">Transformer <span class="cnt">24</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mini-label" style="font-size:0.65em;">キーワード</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案4 タブ切替 ============ -->
+  <div class="case">
+    <div class="case-title">案4 タブ切替（1台ずつ）</div>
+    <p class="case-desc">3タブで切替え、選んだ1台のみ表示。縦は最小。操作でインタラクティブ。</p>
+    <div class="phone-wrap"><div class="phone-scroll">
+      <h3 style="text-align:center;font-size:0.95em;margin:0 0 10px;">3種類の検索方法</h3>
+      <div class="c4-tabs">
+        <a class="c4-tab active" onclick="c4('job')">AI職種</a>
+        <a class="c4-tab" onclick="c4('feat')">尖った特徴</a>
+        <a class="c4-tab" onclick="c4('kw')">キーワード</a>
+      </div>
+      <div class="c4-panel active" data-p="job">
+        <div class="mini">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h1">AI職種から探す</div>
+            <div class="mini-content">
+              <div class="mini-item">LLMアプリ開発 <span class="cnt">56</span></div>
+              <div class="mini-item">プロンプトエンジニア <span class="cnt">42</span></div>
+              <div class="mini-item">MLエンジニア <span class="cnt">38</span></div>
+              <div class="mini-item">データサイエンス <span class="cnt">31</span></div>
+              <div class="mini-item">PMM/BizDev <span class="cnt">27</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="c4-panel" data-p="feat">
+        <div class="mini">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h2">尖った特徴</div>
+            <div class="mini-content">
+              <div class="mini-item">フルリモート可 <span class="cnt">89</span></div>
+              <div class="mini-item">未経験OK <span class="cnt">67</span></div>
+              <div class="mini-item">時給2,000円以上 <span class="cnt">52</span></div>
+              <div class="mini-item">文系歓迎 <span class="cnt">45</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="c4-panel" data-p="kw">
+        <div class="mini">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h3">キーワード</div>
+            <div class="mini-content">
+              <div class="mini-item">"RAG" <span class="cnt">18</span></div>
+              <div class="mini-item">"LangChain" <span class="cnt">12</span></div>
+              <div class="mini-item">"Transformer" <span class="cnt">24</span></div>
+              <div class="mini-item">"Claude" <span class="cnt">8</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 案5 3D重ね表示 ============ -->
+  <div class="case">
+    <div class="case-title">案5 3D風重ね（中央1台+左右ぼかし）</div>
+    <p class="case-desc">中央が主役、左右は覗き見せ。矢印で切替。ビジュアル重視。縦スペース中。</p>
+    <div class="phone-wrap"><div class="phone-scroll">
+      <h3 style="text-align:center;font-size:0.95em;margin:0 0 4px;">3種類の検索方法</h3>
+      <div class="c5-stage">
+        <div class="mini left">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h1">AI職種</div>
+            <div class="mini-content">
+              <div class="mini-item">LLM開発 <span class="cnt">56</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mini center">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h2">尖った特徴</div>
+            <div class="mini-content">
+              <div class="mini-item">フルリモート可 <span class="cnt">89</span></div>
+              <div class="mini-item">未経験OK <span class="cnt">67</span></div>
+              <div class="mini-item">時給2,000円+ <span class="cnt">52</span></div>
+              <div class="mini-item">文系歓迎 <span class="cnt">45</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mini right">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="mini-header mini-h3">キーワード</div>
+            <div class="mini-content">
+              <div class="mini-item">"RAG" <span class="cnt">18</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="c5-nav">
+        <button>‹</button>
+        <button>›</button>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+
+<script>
+function c4(key){
+  document.querySelectorAll('.case .c4-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.case .c4-panel').forEach(p=>p.classList.toggle('active', p.dataset.p===key));
+}
+</script>
+</body>
+</html>

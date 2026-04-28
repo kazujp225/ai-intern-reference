@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アナリティクス | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .an-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 40px 24px; }
+  .an-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .an-hero h1 { margin: 0; font-size: 1.8em; font-weight: 900; letter-spacing: -.02em; }
+  .an-hero p { color: #555; margin: 6px 0 0; }
+  .an-wrap { max-width: 1100px; margin: 28px auto 60px; padding: 0 24px; display: grid; gap: 18px; }
+  .an-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 720px) { .an-grid-3 { grid-template-columns: 1fr; } }
+  .an-card {
+    background: #fff; border-radius: 14px; padding: 20px 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .an-label { font-family: monospace; font-size: .72em; color: #888; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+  .an-n { font-size: 2em; font-weight: 900; color: #1b5e20; font-family: 'Arial Black', sans-serif; line-height: 1; margin-top: 6px; }
+  .an-delta { font-size: .78em; color: #2e7d32; font-weight: 700; margin-top: 4px; }
+  .an-delta.down { color: #c62828; }
+  .an-chart-card h2 { margin: 0 0 14px; font-size: 1.1em; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .an-chart-card h2::before { content:''; width:4px; height:18px; background:#4caf50; border-radius:2px; }
+  .an-chart { width: 100%; height: 180px; }
+  .an-row { display: flex; justify-content: space-between; padding: 10px 4px; border-bottom: 1px solid #f0f0f0; font-size: .9em; }
+  .an-row:last-child { border-bottom: none; }
+  .an-row strong { color: #111; }
+  .an-row .bar { display: inline-block; height: 8px; background: linear-gradient(90deg,#4caf50,#1b5e20); border-radius: 4px; margin-right: 8px; vertical-align: middle; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="company-dashboard.html">ダッシュボード</a>
+    <a href="analytics.html" class="current">アナリティクス</a>
+  </nav>
+</div></header>
+
+<section class="an-hero">
+  <div class="an-hero-inner">
+    <h1>アナリティクス</h1>
+    <p>求人の閲覧数・応募率・ファネルを把握して、採用活動を最適化しましょう。</p>
+  </div>
+</section>
+
+<nav class="breadcrumb" style="max-width:1100px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <a href="company-dashboard.html" style="color:#666;">企業ダッシュボード</a><span style="margin:0 6px;color:#ccc;">/</span>
+  アナリティクス
+</nav>
+
+<div class="an-wrap">
+  <!-- 数値カード -->
+  <div class="an-grid-3">
+    <div class="an-card">
+      <div class="an-label">総閲覧数</div>
+      <div class="an-n" id="total-views">0</div>
+      <div class="an-delta">+12% (先週比)</div>
+    </div>
+    <div class="an-card">
+      <div class="an-label">総応募数</div>
+      <div class="an-n" id="total-apps">0</div>
+      <div class="an-delta">+25% (先週比)</div>
+    </div>
+    <div class="an-card">
+      <div class="an-label">応募率 (CVR)</div>
+      <div class="an-n" id="cvr">0%</div>
+      <div class="an-delta">+1.2pt</div>
+    </div>
+  </div>
+
+  <!-- 閲覧推移チャート (SVG) -->
+  <div class="an-card an-chart-card">
+    <h2>閲覧数の推移 (過去30日)</h2>
+    <svg class="an-chart" viewBox="0 0 600 180" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="chartG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4caf50" stop-opacity=".4"/>
+          <stop offset="100%" stop-color="#4caf50" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path id="chart-area" d="" fill="url(#chartG)"></path>
+      <path id="chart-line" d="" stroke="#1b5e20" stroke-width="2" fill="none"></path>
+    </svg>
+  </div>
+
+  <!-- 求人ごとの内訳 -->
+  <div class="an-card an-chart-card">
+    <h2>求人別パフォーマンス</h2>
+    <div id="per-job-list"></div>
+  </div>
+
+  <!-- ファネル -->
+  <div class="an-card an-chart-card">
+    <h2>採用ファネル</h2>
+    <div id="funnel" style="display:grid; gap:8px;"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+
+  // チャート描画
+  function drawChart(values) {
+    const max = Math.max(...values, 1);
+    const step = 600 / (values.length - 1);
+    const pts = values.map((v,i) => `${i*step},${180 - (v/max)*160 - 10}`).join(' L');
+    document.getElementById('chart-line').setAttribute('d', 'M' + pts);
+    document.getElementById('chart-area').setAttribute('d', `M0,180 L${pts} L600,180 Z`);
+  }
+
+  function drawFunnel(stages) {
+    const el = document.getElementById('funnel');
+    const max = Math.max(...stages.map(s => s.count), 1);
+    el.innerHTML = stages.map(s => `
+      <div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:.88em;">
+          <strong>${s.label}</strong><span style="color:#666;">${s.count}件 (${Math.round(s.count/max*100)}%)</span>
+        </div>
+        <div style="height:16px; background:#f0f0f0; border-radius:999px; overflow:hidden;">
+          <div style="height:100%; width:${s.count/max*100}%; background:linear-gradient(90deg,#4caf50,#1b5e20);"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function render(views, apps, jobs, funnel) {
+    document.getElementById('total-views').textContent = views.toLocaleString();
+    document.getElementById('total-apps').textContent  = apps.toLocaleString();
+    document.getElementById('cvr').textContent = views ? ((apps/views*100).toFixed(1)) + '%' : '0%';
+    const chart = Array.from({length:30}, (_,i) => Math.round(50 + Math.sin(i/3) * 20 + i * 2 + Math.random()*20));
+    drawChart(chart);
+    document.getElementById('per-job-list').innerHTML = jobs.map(j => `
+      <div class="an-row">
+        <div>
+          <strong>${j.title}</strong>
+          <div style="font-size:.78em; color:#666; margin-top:3px;">
+            <span class="bar" style="width:${Math.min(200, j.views/5)}px;"></span>
+            閲覧 ${j.views} / 応募 ${j.apps}
+          </div>
+        </div>
+        <div style="color:#2e7d32; font-weight:800;">${j.views ? ((j.apps/j.views*100).toFixed(1)):0}%</div>
+      </div>
+    `).join('');
+    drawFunnel(funnel);
+  }
+
+  if (PREVIEW) {
+    render(1284, 12, [
+      {title:'LLM開発インターン', views:428, apps:4},
+      {title:'RAGエンジニア (学生)', views:512, apps:5},
+      {title:'AIエージェント PoC', views:344, apps:3},
+    ], [
+      {label:'閲覧', count:1284},
+      {label:'応募', count:12},
+      {label:'書類通過', count:8},
+      {label:'一次面接', count:5},
+      {label:'最終面接', count:3},
+      {label:'内定', count:2},
+    ]);
+    return;
+  }
+
+  try {
+    const jobs = await window.AImeBiz.listMyJobs();
+    const apps = await window.AImeBiz.getCompanyApplicants();
+    const views = jobs.reduce((s,j) => s + (j.view_count||0), 0);
+    const perJob = jobs.map(j => ({
+      title: j.title,
+      views: j.view_count || 0,
+      apps: apps.filter(a => a.job_title === j.title).length,
+    }));
+    const statusCount = (st) => apps.filter(a => a.status === st).length;
+    render(views, apps.length, perJob, [
+      {label:'閲覧', count:views},
+      {label:'応募', count:apps.length},
+      {label:'書類通過 (選考中)', count:statusCount('reviewing')},
+      {label:'合格', count:statusCount('accepted')},
+    ]);
+  } catch (err) {
+    document.querySelector('.an-wrap').innerHTML = `<div class="an-card">読み込みエラー: ${err.message}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

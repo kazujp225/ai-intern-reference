@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規登録 UI案 v2 | AIme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background: #0b0b0d;
+    color: #fff;
+  }
+
+  .toc {
+    position: sticky; top: 0; z-index: 100;
+    background: #0b0b0d; color: #fff;
+    padding: 14px 24px; border-bottom: 1px solid #222;
+    display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center;
+    font-size: 13px;
+  }
+  .toc b { margin-right: 10px; color: #7CFF7F; font-family: 'JetBrains Mono', monospace; }
+  .toc a { color: #ddd; text-decoration: none; padding: 4px 10px; border: 1px solid #333; border-radius: 999px; }
+  .toc a:hover { background: #1a1a1a; border-color: #7CFF7F; color: #7CFF7F; }
+
+  .proposal {
+    padding: 60px 24px 100px;
+    border-bottom: 2px dashed #222;
+  }
+  .proposal-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 2px;
+    color: #7CFF7F; background: #000;
+    padding: 6px 12px; border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .proposal-title {
+    color: #fff; font-size: 28px; font-weight: 900;
+    margin: 0 0 4px; letter-spacing: -0.5px;
+  }
+  .proposal-desc {
+    color: #888; font-size: 14px; margin: 0 0 36px;
+    max-width: 760px;
+  }
+
+  /* ================================================================
+     P1: Linear-minimal（超ミニマル・プロダクト的）
+     ================================================================ */
+  .p1 { background: #fafafa; color: #111; padding: 80px 40px; border-radius: 20px; max-width: 1100px; margin: 0 auto; }
+  .p1 .eyebrow { font-size: 12px; letter-spacing: 4px; color: #666; text-transform: uppercase; font-weight: 700; }
+  .p1 h2 { font-size: 40px; font-weight: 700; margin: 8px 0 6px; letter-spacing: -1.2px; }
+  .p1 .sub { color: #666; margin: 0 0 40px; font-size: 15px; }
+  .p1-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 880px; }
+  .p1-card { background: #fff; border: 1px solid #eaeaea; border-radius: 14px; padding: 24px 24px 22px; text-decoration: none; color: inherit; display: block; transition: .2s; position: relative; }
+  .p1-card:hover { border-color: #111; box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+  .p1-row { display: flex; align-items: center; gap: 14px; }
+  .p1-ico { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex: 0 0 40px; }
+  .p1-card.student .p1-ico { background: #eef5ef; color: #2e7d32; }
+  .p1-card.company .p1-ico { background: #f2f2f2; color: #111; }
+  .p1-card h3 { margin: 0; font-size: 17px; font-weight: 700; }
+  .p1-card .role-en { font-size: 11px; color: #888; letter-spacing: 2px; font-family: 'JetBrains Mono', monospace; }
+  .p1-card .lead { color: #555; font-size: 13px; line-height: 1.65; margin: 14px 0 16px; }
+  .p1-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; font-size: 12px; color: #444; }
+  .p1-kv div { display: flex; justify-content: space-between; border-bottom: 1px dashed #e5e5e5; padding: 4px 0; }
+  .p1-kv b { color: #111; font-weight: 700; }
+  .p1-arrow { position: absolute; top: 24px; right: 24px; font-size: 20px; color: #999; transition: .2s; }
+  .p1-card:hover .p1-arrow { color: #111; transform: translateX(4px); }
+
+  /* ================================================================
+     P2: Magnetic 3D Tilt（インタラクティブ立体）
+     ================================================================ */
+  .p2 { background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a14 60%); padding: 100px 40px; border-radius: 24px; max-width: 1100px; margin: 0 auto; perspective: 1400px; position: relative; overflow: hidden; }
+  .p2::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(124,255,127,.08) 1px, transparent 1.5px); background-size: 40px 40px; pointer-events: none; }
+  .p2 .eyebrow { font-family: 'JetBrains Mono', monospace; color: #7CFF7F; font-size: 12px; letter-spacing: 4px; position: relative; }
+  .p2 h2 { font-size: 44px; font-weight: 900; margin: 8px 0 6px; letter-spacing: -1px; position: relative; }
+  .p2 .sub { color: #aaa; margin: 0 0 48px; position: relative; }
+  .p2-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; position: relative; }
+  .p2-card { background: linear-gradient(160deg, #1a1e3a 0%, #0f1126 100%); border: 1px solid rgba(124,255,127,.2); border-radius: 20px; padding: 32px 28px; color: #fff; text-decoration: none; display: block; transform-style: preserve-3d; transition: transform .25s, box-shadow .25s; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,.4); }
+  .p2-card:hover { transform: rotateX(6deg) rotateY(-6deg) translateZ(20px); box-shadow: -20px 30px 60px rgba(0,0,0,.6); }
+  .p2-card.company { background: linear-gradient(160deg, #2a1025 0%, #180612 100%); border-color: rgba(255,120,180,.3); }
+  .p2-card.company:hover { transform: rotateX(6deg) rotateY(6deg) translateZ(20px); }
+  .p2-float { position: absolute; top: -18px; right: 20px; background: #7CFF7F; color: #0a0a14; font-weight: 900; font-size: 11px; padding: 4px 10px; border-radius: 999px; letter-spacing: 2px; transform: translateZ(30px); }
+  .p2-card.company .p2-float { background: #ff78b4; color: #fff; }
+  .p2-card h3 { font-size: 26px; margin: 14px 0 4px; font-weight: 900; transform: translateZ(20px); }
+  .p2-card .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #7CFF7F; transform: translateZ(20px); }
+  .p2-card.company .role-en { color: #ff78b4; }
+  .p2-card .lead { color: #bbb; font-size: 13px; line-height: 1.7; margin: 14px 0 20px; transform: translateZ(10px); }
+  .p2-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; transform: translateZ(15px); }
+  .p2-stat { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 10px 6px; text-align: center; }
+  .p2-stat b { display: block; font-size: 20px; font-weight: 900; color: #7CFF7F; font-family: 'Space Grotesk'; }
+  .p2-card.company .p2-stat b { color: #ff78b4; }
+  .p2-stat span { font-size: 10px; color: #888; letter-spacing: 1px; }
+  .p2-go { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,.15); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; color: #7CFF7F; transform: translateZ(20px); }
+  .p2-card.company .p2-go { color: #ff78b4; }
+
+  /* ================================================================
+     P3: Dashboard Preview（中身を見せる）
+     ================================================================ */
+  .p3 { background: #f3f4f6; padding: 80px 40px; border-radius: 20px; max-width: 1100px; margin: 0 auto; color: #111; }
+  .p3 .eyebrow { font-size: 12px; letter-spacing: 4px; font-weight: 700; color: #666; }
+  .p3 h2 { font-size: 40px; font-weight: 900; margin: 6px 0 6px; letter-spacing: -1px; }
+  .p3 .sub { color: #555; margin: 0 0 36px; }
+  .p3-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .p3-card { background: #fff; border-radius: 20px; overflow: hidden; text-decoration: none; color: #111; display: block; box-shadow: 0 10px 30px rgba(0,0,0,.08); transition: .25s; border: 2px solid transparent; }
+  .p3-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.15); border-color: #111; }
+  .p3-mock { height: 200px; padding: 18px; position: relative; overflow: hidden; }
+  .p3-card.student .p3-mock { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+  .p3-card.company .p3-mock { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+  .p3-mock-topbar { display: flex; gap: 4px; margin-bottom: 10px; }
+  .p3-mock-topbar span { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.15); }
+  .p3-mock-card { background: #fff; border-radius: 10px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,.08); margin-bottom: 8px; font-size: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .p3-mock-card b { font-size: 11px; }
+  .p3-mock-card .chip { background: #2e7d32; color: #fff; padding: 2px 6px; border-radius: 999px; font-size: 9px; font-weight: 700; }
+  .p3-card.company .p3-mock-card .chip { background: #e65100; }
+  .p3-mock-chart { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 3px; align-items: flex-end; height: 40px; }
+  .p3-mock-chart span { width: 8px; background: rgba(46,125,50,.8); border-radius: 2px; }
+  .p3-card.company .p3-mock-chart span { background: rgba(230,81,0,.8); }
+  .p3-body { padding: 20px 24px 24px; }
+  .p3-body .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #666; letter-spacing: 3px; }
+  .p3-body h3 { font-size: 22px; font-weight: 900; margin: 4px 0 6px; }
+  .p3-body .lead { color: #555; font-size: 13px; line-height: 1.65; margin: 0 0 14px; }
+  .p3-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .p3-tags span { font-size: 11px; padding: 4px 10px; border-radius: 999px; background: #f0f0f0; color: #333; font-weight: 700; }
+  .p3-card.student .p3-tags span { background: #e8f5e9; color: #1b5e20; }
+  .p3-card.company .p3-tags span { background: #fff3e0; color: #bf360c; }
+  .p3-btn { width: 100%; padding: 12px; border-radius: 12px; background: #111; color: #fff; font-weight: 700; text-align: center; letter-spacing: 1px; font-size: 13px; }
+  .p3-card:hover .p3-btn { background: #2e7d32; }
+  .p3-card.company:hover .p3-btn { background: #e65100; }
+
+  /* ================================================================
+     P4: Conversational Wizard（チャット風）
+     ================================================================ */
+  .p4 { background: #ffffff; padding: 80px 40px; border-radius: 20px; max-width: 720px; margin: 0 auto; color: #111; border: 1px solid #eaeaea; }
+  .p4-head { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .p4-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #2e7d32, #66bb6a); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+  .p4-head .name { font-weight: 900; font-size: 15px; }
+  .p4-head .status { font-size: 11px; color: #2e7d32; display: flex; align-items: center; gap: 5px; }
+  .p4-head .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #2e7d32; }
+  .p4-chat { display: flex; flex-direction: column; gap: 12px; }
+  .p4-bubble { background: #f1f3f4; padding: 14px 18px; border-radius: 4px 16px 16px 16px; max-width: 85%; font-size: 14px; line-height: 1.6; }
+  .p4-bubble.typing { display: inline-flex; gap: 4px; padding: 14px 18px; max-width: 70px; }
+  .p4-bubble.typing span { width: 7px; height: 7px; border-radius: 50%; background: #999; animation: p4-typing 1.4s infinite ease-in-out; }
+  .p4-bubble.typing span:nth-child(2) { animation-delay: .2s; }
+  .p4-bubble.typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes p4-typing { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
+  .p4-choices { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; align-self: flex-end; max-width: 85%; }
+  .p4-choice { background: #fff; border: 2px solid #111; border-radius: 16px 16px 4px 16px; padding: 16px 20px; color: #111; text-decoration: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; transition: .2s; cursor: pointer; }
+  .p4-choice:hover { background: #111; color: #fff; transform: translateX(-4px); }
+  .p4-choice.company:hover { background: #e65100; border-color: #e65100; }
+  .p4-choice.student:hover { background: #2e7d32; border-color: #2e7d32; }
+  .p4-choice b { font-size: 15px; font-weight: 900; display: block; }
+  .p4-choice small { font-size: 11px; color: #666; }
+  .p4-choice:hover small { color: rgba(255,255,255,.8); }
+  .p4-choice .arrow { font-size: 18px; flex: 0 0 auto; }
+  .p4-foot { margin-top: 24px; font-size: 11px; color: #999; text-align: center; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; }
+
+  /* ================================================================
+     P5: Poster / Typographic（ポスター・タイポ主役）
+     ================================================================ */
+  .p5 { background: #f6f0e4; color: #111; padding: 70px 40px 60px; border-radius: 12px; max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; border: 1px solid #111; }
+  .p5::before { content: 'AIME'; position: absolute; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 600px; line-height: .7; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(17,17,17,.04); letter-spacing: -30px; pointer-events: none; z-index: 0; }
+  .p5-head { position: relative; display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 2px solid #111; margin-bottom: 36px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; }
+  .p5-head b { font-weight: 700; }
+  .p5-title { position: relative; text-align: center; }
+  .p5-title h2 { font-family: 'Space Grotesk', sans-serif; font-size: 140px; font-weight: 900; margin: 0; line-height: .85; letter-spacing: -6px; }
+  .p5-title h2 span { color: #cc0033; font-style: italic; }
+  .p5-title p { font-family: 'Noto Serif JP', serif; font-size: 16px; margin: 12px 0 40px; font-style: italic; }
+  .p5-choose { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #111; border: 2px solid #111; }
+  .p5-btn-big { background: #f6f0e4; padding: 34px 28px; text-decoration: none; color: #111; display: block; transition: .2s; position: relative; }
+  .p5-btn-big:hover { background: #111; color: #f6f0e4; }
+  .p5-btn-big:hover .p5-big-num { color: #cc0033; }
+  .p5-btn-big .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; margin-bottom: 4px; }
+  .p5-big-num { font-family: 'Space Grotesk', sans-serif; font-size: 92px; font-weight: 900; line-height: .9; letter-spacing: -4px; transition: .2s; }
+  .p5-btn-big h3 { margin: 0 0 6px; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+  .p5-btn-big p { margin: 0; font-size: 13px; line-height: 1.6; max-width: 340px; opacity: .7; }
+  .p5-btn-big .go { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px dashed currentColor; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; font-weight: 700; }
+
+  /* ================================================================
+     P6: Trading Card / Badge（バッジ・ステータス風）
+     ================================================================ */
+  .p6 { background: #0b0c14; padding: 80px 40px; border-radius: 20px; max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; }
+  .p6::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 30%, rgba(90,255,180,.15), transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(255,120,180,.15), transparent 50%); pointer-events: none; }
+  .p6 .eyebrow { position: relative; font-family: 'JetBrains Mono', monospace; color: #7CFF7F; font-size: 12px; letter-spacing: 4px; }
+  .p6 h2 { position: relative; font-size: 40px; font-weight: 900; margin: 8px 0 6px; letter-spacing: -1px; color: #fff; }
+  .p6 .sub { position: relative; color: #888; margin: 0 0 44px; }
+  .p6-cards { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 880px; margin: 0 auto; }
+  .p6-card { background: linear-gradient(160deg, #1a1f2e 0%, #0f1220 100%); border-radius: 18px; padding: 4px; position: relative; text-decoration: none; transition: .25s; }
+  .p6-card.student { background: linear-gradient(160deg, #7CFF7F 0%, #0f1220 100%); }
+  .p6-card.company { background: linear-gradient(160deg, #ff78b4 0%, #0f1220 100%); }
+  .p6-card:hover { transform: translateY(-6px); }
+  .p6-inner { background: #0f1220; border-radius: 16px; padding: 24px; color: #fff; }
+  .p6-row1 { display: flex; justify-content: space-between; align-items: flex-start; }
+  .p6-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 3px; color: #7CFF7F; padding: 4px 8px; border: 1px solid currentColor; border-radius: 4px; }
+  .p6-card.company .p6-type { color: #ff78b4; }
+  .p6-hp { text-align: right; }
+  .p6-hp b { font-family: 'Space Grotesk'; font-size: 32px; font-weight: 900; line-height: 1; display: block; color: #fff; }
+  .p6-hp span { font-size: 9px; letter-spacing: 2px; color: #888; }
+  .p6-portrait { height: 140px; margin: 14px 0; border-radius: 10px; background: #0a0c14; display: flex; align-items: center; justify-content: center; font-size: 72px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+  .p6-card.student .p6-portrait { background: radial-gradient(circle at 50% 60%, rgba(124,255,127,.25), transparent 60%), #0a0c14; }
+  .p6-card.company .p6-portrait { background: radial-gradient(circle at 50% 60%, rgba(255,120,180,.25), transparent 60%), #0a0c14; }
+  .p6-card h3 { margin: 0 0 4px; font-size: 22px; font-weight: 900; }
+  .p6-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; letter-spacing: 2px; margin-bottom: 14px; }
+  .p6-skills { border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); padding: 10px 0; margin-bottom: 14px; }
+  .p6-skill { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 12px; color: #ccc; }
+  .p6-skill b { font-family: 'Space Grotesk'; font-weight: 700; color: #fff; }
+  .p6-bar { flex: 1; height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; margin: 0 14px; overflow: hidden; }
+  .p6-bar::after { content: ''; display: block; height: 100%; background: #7CFF7F; border-radius: 2px; }
+  .p6-card.company .p6-bar::after { background: #ff78b4; }
+  .p6-s1::after { width: 95%; } .p6-s2::after { width: 80%; } .p6-s3::after { width: 88%; } .p6-s4::after { width: 72%; }
+  .p6-btn { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,.05); border-radius: 10px; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; font-weight: 700; transition: .2s; }
+  .p6-card:hover .p6-btn { background: #7CFF7F; color: #0a0c14; }
+  .p6-card.company:hover .p6-btn { background: #ff78b4; color: #0a0c14; }
+
+  @media (max-width: 900px) {
+    .p1-cards, .p2-cards, .p3-cards, .p5-choose, .p6-cards { grid-template-columns: 1fr !important; }
+    .p5-title h2 { font-size: 80px; letter-spacing: -3px; }
+    .p5::before { font-size: 320px; }
+    .p5-big-num { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <b>新規登録 UI案 v2 /</b>
+  <a href="#p1">01 Linear Minimal</a>
+  <a href="#p2">02 3D Tilt</a>
+  <a href="#p3">03 Dashboard Preview</a>
+  <a href="#p4">04 Chat Wizard</a>
+  <a href="#p5">05 Typographic Poster</a>
+  <a href="#p6">06 Trading Card</a>
+</nav>
+
+<!-- ============== P1 LINEAR MINIMAL ============== -->
+<section id="p1" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 01</span>
+    <h2 class="proposal-title">Linear Minimal — SaaS風のクリーン最小</h2>
+    <p class="proposal-desc">StripeやLinearの系譜。装飾を極限まで削って、カード1クリックで即座に分岐。玄人向けツール感。</p>
+  </div>
+  <div class="p1">
+    <div class="eyebrow">CREATE ACCOUNT</div>
+    <h2>新規登録</h2>
+    <p class="sub">あなたの立場に合わせてアカウント種別を選択してください。</p>
+    <div class="p1-cards">
+      <a href="signup.html" class="p1-card student">
+        <span class="p1-arrow">→</span>
+        <div class="p1-row">
+          <div class="p1-ico">👤</div>
+          <div>
+            <div class="role-en">STUDENT</div>
+            <h3>学生として登録</h3>
+          </div>
+        </div>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <div class="p1-kv">
+          <div><span>求人検索</span><b>156+</b></div>
+          <div><span>ブックマーク</span><b>無制限</b></div>
+          <div><span>メッセージ</span><b>直接可</b></div>
+          <div><span>履歴書</span><b>アップロード</b></div>
+        </div>
+      </a>
+      <a href="company-signup.html" class="p1-card company">
+        <span class="p1-arrow">→</span>
+        <div class="p1-row">
+          <div class="p1-ico">🏢</div>
+          <div>
+            <div class="role-en">COMPANY</div>
+            <h3>企業として登録</h3>
+          </div>
+        </div>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <div class="p1-kv">
+          <div><span>求人作成</span><b>無制限</b></div>
+          <div><span>応募者管理</span><b>有</b></div>
+          <div><span>チャット</span><b>直接可</b></div>
+          <div><span>分析</span><b>有</b></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== P2 3D TILT ============== -->
+<section id="p2" class="proposal" style="background: #050507;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 02</span>
+    <h2 class="proposal-title">3D Tilt — 浮遊する立体カード</h2>
+    <p class="proposal-desc">ホバーでカードが傾き浮き上がる立体表現。視線を奪う派手さ。スタッツ付きでデータ感も演出。</p>
+  </div>
+  <div class="p2">
+    <div class="eyebrow">◉ SELECT YOUR ROLE</div>
+    <h2>新規登録</h2>
+    <p class="sub">カードにホバーして選択してください。</p>
+    <div class="p2-cards">
+      <a href="signup.html" class="p2-card student">
+        <div class="p2-float">RECOMMENDED</div>
+        <div class="role-en">STUDENT</div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <div class="p2-stats">
+          <div class="p2-stat"><b>156+</b><span>JOBS</span></div>
+          <div class="p2-stat"><b>0円</b><span>FREE</span></div>
+          <div class="p2-stat"><b>30s</b><span>SETUP</span></div>
+        </div>
+        <div class="p2-go">REGISTER → <span>&gt;&gt;</span></div>
+      </a>
+      <a href="company-signup.html" class="p2-card company">
+        <div class="p2-float">FOR HR</div>
+        <div class="role-en">COMPANY</div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <div class="p2-stats">
+          <div class="p2-stat"><b>∞</b><span>POSTS</span></div>
+          <div class="p2-stat"><b>DM</b><span>CHAT</span></div>
+          <div class="p2-stat"><b>📊</b><span>ANALYTICS</span></div>
+        </div>
+        <div class="p2-go">REGISTER → <span>&gt;&gt;</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== P3 DASHBOARD PREVIEW ============== -->
+<section id="p3" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 03</span>
+    <h2 class="proposal-title">Dashboard Preview — 登録後の画面を見せる</h2>
+    <p class="proposal-desc">カード上部に「登録後に使える画面のサムネイル」を配置。抽象的説明ではなく実物を示す。CVRに直結しやすい。</p>
+  </div>
+  <div class="p3">
+    <div class="eyebrow">CHOOSE YOUR ROLE</div>
+    <h2>どんな画面を使いますか？</h2>
+    <p class="sub">登録後に見える画面のプレビューから選んでください。</p>
+    <div class="p3-cards">
+      <a href="signup.html" class="p3-card student">
+        <div class="p3-mock">
+          <div class="p3-mock-topbar"><span></span><span></span><span></span></div>
+          <div class="p3-mock-card"><b>LLM開発インターン</b><span class="chip">応募</span></div>
+          <div class="p3-mock-card"><b>RAGエンジニア (学生)</b><span class="chip">気になる</span></div>
+          <div class="p3-mock-card"><b>AIエージェント開発</b><span class="chip">NEW</span></div>
+          <div class="p3-mock-chart"><span style="height:50%"></span><span style="height:70%"></span><span style="height:40%"></span><span style="height:90%"></span><span style="height:60%"></span></div>
+        </div>
+        <div class="p3-body">
+          <div class="role-en">STUDENT DASHBOARD</div>
+          <h3>学生として登録</h3>
+          <p class="lead">求人検索・ブックマーク・応募管理・企業メッセージが1画面で完結。</p>
+          <div class="p3-tags"><span>検索</span><span>応募管理</span><span>メッセージ</span><span>履歴書</span></div>
+          <div class="p3-btn">この画面で始める →</div>
+        </div>
+      </a>
+      <a href="company-signup.html" class="p3-card company">
+        <div class="p3-mock">
+          <div class="p3-mock-topbar"><span></span><span></span><span></span></div>
+          <div class="p3-mock-card"><b>AIエンジニア 候補3名</b><span class="chip">選考中</span></div>
+          <div class="p3-mock-card"><b>新着応募者 12名</b><span class="chip">未読</span></div>
+          <div class="p3-mock-card"><b>求人 閲覧数 +248%</b><span class="chip">UP</span></div>
+          <div class="p3-mock-chart"><span style="height:40%"></span><span style="height:65%"></span><span style="height:75%"></span><span style="height:55%"></span><span style="height:95%"></span></div>
+        </div>
+        <div class="p3-body">
+          <div class="role-en">COMPANY DASHBOARD</div>
+          <h3>企業として登録</h3>
+          <p class="lead">求人作成・応募者管理・選考ステータス・分析が1画面で完結。</p>
+          <div class="p3-tags"><span>求人管理</span><span>応募者</span><span>チャット</span><span>分析</span></div>
+          <div class="p3-btn">この画面で始める →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== P4 CHAT WIZARD ============== -->
+<section id="p4" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 04</span>
+    <h2 class="proposal-title">Chat Wizard — 会話で進む登録</h2>
+    <p class="proposal-desc">AImeボットが質問 → ユーザが選択肢で回答する会話形式。AIサービスらしさ最大化。心理的ハードル最低。</p>
+  </div>
+  <div class="p4">
+    <div class="p4-head">
+      <div class="p4-avatar">AI</div>
+      <div>
+        <div class="name">AIme Bot</div>
+        <div class="status">オンライン</div>
+      </div>
+    </div>
+    <div class="p4-chat">
+      <div class="p4-bubble">はじめまして！AImeにご登録いただきありがとうございます🎉</div>
+      <div class="p4-bubble">まず、あなたの立場を教えてください。用意する画面を選びますね。</div>
+      <div class="p4-bubble typing"><span></span><span></span><span></span></div>
+      <div class="p4-choices">
+        <a href="signup.html" class="p4-choice student">
+          <div>
+            <b>👤 学生として登録</b>
+            <small>156件のAIインターンを探したい</small>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="company-signup.html" class="p4-choice company">
+          <div>
+            <b>🏢 企業として登録</b>
+            <small>AI人材を採用したい</small>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="p4-foot">すでに登録済み? → LOGIN</div>
+  </div>
+</section>
+
+<!-- ============== P5 TYPOGRAPHIC POSTER ============== -->
+<section id="p5" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 05</span>
+    <h2 class="proposal-title">Typographic Poster — タイポ主役のポスター</h2>
+    <p class="proposal-desc">巨大タイプと朱アクセント。アート寄り。ブランドの「世界観」を先に見せる系。</p>
+  </div>
+  <div class="p5">
+    <div class="p5-head">
+      <span>AIME / ISSUE 2026.04</span>
+      <b>NEW REGISTRATION</b>
+      <span>SELECT ROLE ↓</span>
+    </div>
+    <div class="p5-title">
+      <h2>Join <span>AI</span>me.</h2>
+      <p>Your path starts with a single choice.</p>
+    </div>
+    <div class="p5-choose">
+      <a href="signup.html" class="p5-btn-big">
+        <div class="role-en">01 / STUDENT</div>
+        <div class="p5-big-num">01</div>
+        <h3>学生として登録</h3>
+        <p>AIインターンを探している学生向け。156件以上の求人から、あなたの未来を選んでください。</p>
+        <div class="go"><span>REGISTER AS STUDENT</span><span>→</span></div>
+      </a>
+      <a href="company-signup.html" class="p5-btn-big">
+        <div class="role-en">02 / COMPANY</div>
+        <div class="p5-big-num">02</div>
+        <h3>企業として登録</h3>
+        <p>AI人材を採用したい企業向け。優秀な学生に直接アプローチし、選考を加速させます。</p>
+        <div class="go"><span>REGISTER AS COMPANY</span><span>→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== P6 TRADING CARD ============== -->
+<section id="p6" class="proposal" style="background: #050507;">
+  <div style="max-width: 1100px; margin: 0 auto 28px;">
+    <span class="proposal-label">// V2 — 06</span>
+    <h2 class="proposal-title">Trading Card — キャラ選択/バッジ</h2>
+    <p class="proposal-desc">ゲーム的なキャラ選択画面。HP・スキルバーで「自分のステータス」を先に提示。エンタメ性最強。</p>
+  </div>
+  <div class="p6">
+    <div class="eyebrow">◉ CHOOSE YOUR CLASS</div>
+    <h2>新規登録</h2>
+    <p class="sub">あなたのクラスを選択してください。</p>
+    <div class="p6-cards">
+      <a href="signup.html" class="p6-card student">
+        <div class="p6-inner">
+          <div class="p6-row1">
+            <span class="p6-type">STUDENT</span>
+            <div class="p6-hp"><b>Lv.1</b><span>START</span></div>
+          </div>
+          <div class="p6-portrait">👨‍🎓</div>
+          <h3>学生として登録</h3>
+          <div class="p6-subtitle">AI INTERN SEEKER</div>
+          <div class="p6-skills">
+            <div class="p6-skill"><span>求人検索</span><span class="p6-bar p6-s1"></span><b>156+</b></div>
+            <div class="p6-skill"><span>応募管理</span><span class="p6-bar p6-s2"></span><b>80</b></div>
+            <div class="p6-skill"><span>メッセージ</span><span class="p6-bar p6-s3"></span><b>88</b></div>
+            <div class="p6-skill"><span>履歴書</span><span class="p6-bar p6-s4"></span><b>72</b></div>
+          </div>
+          <div class="p6-btn">SELECT → <span>&gt;</span></div>
+        </div>
+      </a>
+      <a href="company-signup.html" class="p6-card company">
+        <div class="p6-inner">
+          <div class="p6-row1">
+            <span class="p6-type">COMPANY</span>
+            <div class="p6-hp"><b>Lv.1</b><span>START</span></div>
+          </div>
+          <div class="p6-portrait">🏢</div>
+          <h3>企業として登録</h3>
+          <div class="p6-subtitle">AI TALENT HUNTER</div>
+          <div class="p6-skills">
+            <div class="p6-skill"><span>求人作成</span><span class="p6-bar p6-s1"></span><b>∞</b></div>
+            <div class="p6-skill"><span>応募者管理</span><span class="p6-bar p6-s3"></span><b>88</b></div>
+            <div class="p6-skill"><span>直接チャット</span><span class="p6-bar p6-s2"></span><b>80</b></div>
+            <div class="p6-skill"><span>分析</span><span class="p6-bar p6-s4"></span><b>72</b></div>
+          </div>
+          <div class="p6-btn">SELECT → <span>&gt;</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer style="background: #050507; color: #666; padding: 40px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;">
+  — END / 新規登録 UI案 v2 × 6 —
+</footer>
+
+</body>
+</html>

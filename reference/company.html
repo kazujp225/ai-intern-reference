@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業詳細 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .company-hero {
+    background: linear-gradient(135deg, #111 0%, #1b5e20 100%);
+    color: #fff; padding: 48px 24px;
+  }
+  .company-hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  }
+  .company-logo-box {
+    width: 120px; height: 120px; flex-shrink: 0;
+    background: #fff; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    font-size: 3em; font-weight: 900;
+  }
+  .company-hero h1 { font-size: 2.4em; font-weight: 900; margin: 0 0 6px; letter-spacing: -.02em; }
+  .company-hero .loc { font-size: .95em; opacity: .85; font-weight: 700; }
+  .company-hero .desc { font-size: 1em; margin: 10px 0 14px; max-width: 680px; opacity: .9; }
+  .company-hero .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .company-hero .tag-list span {
+    padding: 4px 12px; border-radius: 999px;
+    background: rgba(255,255,255,.15); font-size: .78em; font-weight: 700;
+  }
+
+  .about { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .about h2 { margin-top: 0; font-size: 1.4em; font-weight: 900; }
+  .about p { color: #333; line-height: 1.9; }
+
+  .pos-list { margin-top: 24px; display: grid; gap: 12px; }
+
+  .cta-bar {
+    position: sticky; bottom: 0; z-index: 50;
+    background: #fff; border-top: 1px solid #e1e4e8;
+    padding: 12px 24px; display: flex; justify-content: center; gap: 12px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.05);
+  }
+
+  /* ===== フォロー / レビュー追加スタイル ===== */
+  .cp-follow-btn {
+    padding: 10px 22px; border-radius: 999px; font-weight: 800; font-size: .88em;
+    cursor: pointer; border: 2px solid #fff; background: rgba(255,255,255,.15);
+    color: #fff; transition: all .15s;
+  }
+  .cp-follow-btn:hover { background: #fff; color: #111; }
+  .cp-follow-btn.following { background: #fff; color: #1b5e20; border-color: #fff; }
+  .cp-stats-line { font-size: .88em; margin-top: 10px; opacity: .9; display: flex; gap: 16px; flex-wrap: wrap; }
+  .cp-stars { color: #ffd54f; font-weight: 900; }
+
+  .reviews-section { margin-top: 32px; }
+  .reviews-section h2 { font-size: 1.4em; font-weight: 900; margin-bottom: 14px; display:flex; align-items:center; gap:10px; }
+  .reviews-section h2::before { content:''; width:4px; height:20px; background:#4caf50; border-radius:2px; }
+  .review-card { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 4px 14px rgba(0,0,0,.04); margin-bottom: 10px; }
+  .review-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .review-rating { color: #f9a825; font-weight: 900; font-size: 1.1em; letter-spacing: 1px; }
+  .review-date { font-size: .78em; color: #999; font-family: monospace; }
+  .review-title { font-weight: 900; margin-bottom: 4px; }
+  .review-body { color: #333; line-height: 1.7; font-size: .9em; }
+  .review-form { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,.04); margin-bottom: 16px; }
+  .review-form input, .review-form textarea, .review-form select { width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: .95em; margin-bottom: 10px; font-family: inherit; }
+  .review-form textarea { min-height: 90px; resize: vertical; }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html" class="current">AI企業を探す</a>
+      <a href="blog.html">AIコラム</a>
+      <a href="login.html" class="login">ログイン</a>
+      <a href="signup.html" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span>
+  <a href="companies.html">企業一覧</a><span>/</span>
+  <span id="crumb-name">企業詳細</span>
+</nav>
+
+<section class="company-hero">
+  <div class="company-hero-inner">
+    <div class="company-logo-box" id="logo-box">AI</div>
+    <div style="flex:1; min-width: 260px;">
+      <h1 id="company-name">企業名</h1>
+      <div class="loc" id="company-loc">所在地</div>
+      <div class="cp-stats-line">
+        <span><span class="cp-stars">★</span> <strong id="cp-rating">—</strong>
+          <span style="opacity:.8;">(<span id="cp-reviews-count">0</span>件のレビュー)</span></span>
+        <span><strong id="cp-followers-count">0</strong> フォロワー</span>
+      </div>
+      <p class="desc" id="company-desc">企業の説明がここに入ります。</p>
+      <div class="tag-list" id="company-tags"></div>
+    </div>
+    <div>
+      <button id="cp-follow-btn" class="cp-follow-btn">フォローする</button>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num" id="stat-open">12<span class="unit">件</span></div><div class="label">募集中の求人</div></div>
+    <div class="stat-card"><div class="num">2,800<span class="unit">円</span></div><div class="label">平均時給</div></div>
+    <div class="stat-card"><div class="num">4.6<span class="unit">/5</span></div><div class="label">インターン評価</div></div>
+    <div class="stat-card"><div class="num">98<span class="unit">%</span></div><div class="label">返信率</div></div>
+  </div>
+
+  <section class="about">
+    <h2>About</h2>
+    <p id="company-about">最先端のAI技術を事業化し、社会課題の解決を目指しています。インターン生も主要プロジェクトに初日から関わり、プロダクション級のコードを書き、論文を読み、研究開発にも携われる環境です。メンターは経験豊富なエンジニアとリサーチャー。週次1on1・GPU使い放題・フルリモート可。</p>
+  </section>
+
+  <section style="margin-top: 32px;">
+    <h2 style="font-size: 1.4em; font-weight: 900;">募集中の求人</h2>
+    <div class="pos-list" id="pos-list"></div>
+  </section>
+
+  <!-- ===== レビューセクション ===== -->
+  <section class="reviews-section">
+    <h2>インターン経験者のレビュー</h2>
+    <div id="review-form-box"></div>
+    <div id="reviews-list"></div>
+  </section>
+</div>
+
+<div class="cta-bar">
+  <a href="signup.html" class="btn btn-primary">この企業に応募する</a>
+  <a href="#" class="btn btn-ghost">ブックマーク</a>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="brand">AIme</div>
+      <p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p>
+    </div>
+    <div><h4>検索</h4><ul><li><a href="search.html">求人を探す</a></li><li><a href="companies.html">企業一覧</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="login.html">ログイン</a></li><li><a href="signup.html">新規登録</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="#">採用担当者様へ</a></li><li><a href="#">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-biz.js"></script>
+<script>
+(async function(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const legacyName = params.get('name');
+
+  function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function initialOf(name) {
+    return (name||'').replace(/^株式会社|^合同会社|株式会社$|（株）/g,'').charAt(0).toUpperCase() || '?';
+  }
+
+  // ID が無い場合: legacy の ?name= が来たら名前検索、それも無ければエラー
+  let company = null;
+  if (id) {
+    company = await window.AImeBiz.getCompanyById(id);
+  } else if (legacyName) {
+    const { data } = await window.sb.from('companies').select('*').ilike('name', `%${legacyName}%`).limit(1);
+    company = data?.[0] || null;
+  }
+
+  if (!company) {
+    document.querySelector('.company-hero-inner').innerHTML = `
+      <div style="color:#fff;">
+        <h1 style="margin:0;">企業が見つかりませんでした</h1>
+        <p style="opacity:.9;">URL を確認するか <a href="companies.html" style="color:#fff; text-decoration:underline;">企業一覧</a>に戻ってください。</p>
+      </div>`;
+    document.querySelector('.page-wrap').style.display = 'none';
+    document.querySelector('.cta-bar')?.remove();
+    return;
+  }
+
+  // 表示
+  document.title = company.name + ' | AIme';
+  document.getElementById('crumb-name').textContent = company.name;
+  document.getElementById('company-name').textContent = company.name;
+  document.getElementById('company-loc').textContent = company.location || '所在地未登録';
+  document.getElementById('company-desc').textContent = company.description || '';
+  const tags = [];
+  if (company.industry) tags.push(company.industry);
+  if (company.is_verified) tags.push('認証済');
+  if (company.plan === 'pro') tags.push('PRO');
+  if (company.plan === 'enterprise') tags.push('ENTERPRISE');
+  document.getElementById('company-tags').innerHTML = tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
+
+  const logoBox = document.getElementById('logo-box');
+  if (company.logo_url) {
+    logoBox.innerHTML = `<img src="${company.logo_url}" alt="${escapeHtml(company.name)}" style="width:100%; height:100%; object-fit:cover; border-radius:20px;">`;
+    logoBox.style.padding = '0';
+  } else {
+    logoBox.textContent = initialOf(company.name);
+    logoBox.style.background = '#e5e7eb';
+    logoBox.style.color = '#1b5e20';
+  }
+
+  // この企業の求人一覧
+  const { items: jobs } = await window.AImeBiz.listPublicJobs({
+    companyId: company.id, limit: 20, sort: 'new',
+  });
+  const posEl = document.getElementById('pos-list');
+  if (!jobs.length) {
+    posEl.innerHTML = `<div style="padding:30px; text-align:center; color:#888; background:#fff; border-radius:14px;">現在公開中の求人はありません</div>`;
+    document.getElementById('stat-open').innerHTML = '0<span class="unit">件</span>';
+  } else {
+    posEl.innerHTML = jobs.map(j => {
+      const wage = j.salary_min ? `時給 ¥${Number(j.salary_min).toLocaleString()}` : '時給応相談';
+      const tagList = (j.tags || []).slice(0, 4).map(t => `<span class="jc-tag">${escapeHtml(t)}</span>`).join('');
+      return `
+        <a class="job-card" href="job.html?id=${j.id}">
+          <div class="jc-company">${escapeHtml(company.name)}</div>
+          <div class="jc-title">${escapeHtml(j.title)}</div>
+          <div class="jc-tags">${tagList}</div>
+          <div class="jc-meta">
+            <span class="jc-wage">${wage}</span>
+            <span>${escapeHtml(j.location || '場所未定')}</span>
+          </div>
+        </a>`;
+    }).join('');
+    document.getElementById('stat-open').innerHTML = jobs.length + '<span class="unit">件</span>';
+  }
+
+  // ============== フォロー / レビュー (Supabase) ==============
+  const companyPseudoId = company.id;
+
+  async function refreshFollow() {
+    if (!window.AImeV3) return;
+    try {
+      const [isF, count] = await Promise.all([
+        window.AImeV3.isFollowing('company', companyPseudoId).catch(()=>false),
+        window.AImeV3.countFollowers('company', companyPseudoId).catch(()=>0),
+      ]);
+      document.getElementById('cp-followers-count').textContent = count;
+      const followBtn = document.getElementById('cp-follow-btn');
+      followBtn.textContent = isF ? '✓ フォロー中' : 'フォローする';
+      followBtn.classList.toggle('following', isF);
+    } catch (err) { console.warn(err); }
+  }
+  document.getElementById('cp-follow-btn').addEventListener('click', async () => {
+    if (!window.AImeV3) return;
+    try {
+      const isF = await window.AImeV3.isFollowing('company', companyPseudoId);
+      if (isF) await window.AImeV3.unfollow('company', companyPseudoId);
+      else     await window.AImeV3.follow('company', companyPseudoId);
+      refreshFollow();
+    } catch (err) { alert('ログインが必要です: ' + err.message); }
+  });
+
+  async function refreshReviews() {
+    if (!window.AImeV3) return;
+    try {
+      const [stats, list] = await Promise.all([
+        window.AImeV3.getCompanyStats(companyPseudoId).catch(()=>({ avg_rating:0, review_count:0 })),
+        window.AImeV3.listReviews(companyPseudoId).catch(()=>[]),
+      ]);
+      document.getElementById('cp-rating').textContent = stats.avg_rating || '—';
+      document.getElementById('cp-reviews-count').textContent = stats.review_count || list.length;
+      renderReviews(list);
+    } catch (err) { console.warn(err); }
+  }
+  function renderReviews(list) {
+    const wrap = document.getElementById('reviews-list');
+    if (!list.length) {
+      wrap.innerHTML = `<div style="background:#fff;border-radius:14px;padding:32px;text-align:center;color:#888;box-shadow:0 4px 14px rgba(0,0,0,.04);">まだレビューがありません。最初のレビューを投稿しましょう！</div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(r => `
+      <div class="review-card">
+        <div class="review-head">
+          <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+          <span class="review-date">${new Date(r.created_at).toLocaleDateString('ja-JP')}${r.is_anonymous ? ' · 匿名' : ''}</span>
+        </div>
+        ${r.title ? `<div class="review-title">${escapeHtml(r.title)}</div>` : ''}
+        <div class="review-body">${escapeHtml(r.body)}</div>
+      </div>`).join('');
+  }
+
+  (async function initReviewForm() {
+    if (!window.sb) return;
+    const { data: { user } } = await window.sb.auth.getUser();
+    if (!user) return;
+    document.getElementById('review-form-box').innerHTML = `
+      <form class="review-form" id="rv-form">
+        <div style="font-weight:800; margin-bottom:10px;">レビューを投稿</div>
+        <select id="rv-rating"><option value="5">★★★★★ 最高</option><option value="4">★★★★☆ 良い</option><option value="3">★★★☆☆ 普通</option><option value="2">★★☆☆☆ 悪い</option><option value="1">★☆☆☆☆ 最悪</option></select>
+        <input id="rv-title" placeholder="タイトル (任意)">
+        <textarea id="rv-body" placeholder="このインターン先の体験を教えてください" required></textarea>
+        <label style="display:block; font-size:.85em; margin-bottom:10px;"><input type="checkbox" id="rv-anon" checked> 匿名で投稿</label>
+        <button type="submit" style="padding:10px 20px; background:linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; border:none; border-radius:8px; font-weight:800; cursor:pointer;">投稿する</button>
+      </form>`;
+    document.getElementById('rv-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await window.AImeV3.postReview(companyPseudoId, {
+          rating: parseInt(document.getElementById('rv-rating').value, 10),
+          title: document.getElementById('rv-title').value.trim(),
+          body:  document.getElementById('rv-body').value.trim(),
+          isAnonymous: document.getElementById('rv-anon').checked,
+        });
+        refreshReviews();
+        e.target.reset();
+      } catch (err) { alert('投稿失敗: ' + err.message); }
+    });
+  })();
+
+  refreshFollow();
+  refreshReviews();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+</body>
+</html>

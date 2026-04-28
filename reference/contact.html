@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お問い合わせ | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .ct-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 40px 24px; }
+  .ct-hero-inner { max-width: 720px; margin: 0 auto; }
+  .ct-hero h1 { margin: 0; font-size: 1.9em; font-weight: 900; letter-spacing: -.02em; }
+  .ct-hero p { color: #555; margin: 6px 0 0; }
+  .ct-wrap { max-width: 720px; margin: 28px auto 60px; padding: 0 24px; }
+  .ct-card { background: #fff; border-radius: 14px; padding: 28px 30px; box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04); }
+  .ct-field { margin-bottom: 16px; }
+  .ct-field label { display: block; font-size: .85em; font-weight: 800; margin-bottom: 6px; color: #222; }
+  .ct-field label .req { color: #c62828; margin-left: 3px; }
+  .ct-field input, .ct-field textarea, .ct-field select {
+    width: 100%; padding: 12px 14px; border: 2px solid #e1e4e8; background: #fafbfc;
+    border-radius: 8px; font-size: 1em; font-family: inherit;
+  }
+  .ct-field input:focus, .ct-field textarea:focus, .ct-field select:focus {
+    outline: none; border-color: #4caf50; background: #fff;
+  }
+  .ct-field textarea { min-height: 140px; resize: vertical; }
+  .ct-submit {
+    padding: 12px 28px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff;
+    border: none; border-radius: 8px; font-weight: 900; font-size: .95em; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(76,175,80,.3); transition: all .15s;
+  }
+  .ct-submit:hover { opacity: .92; transform: translateY(-1px); }
+  .ct-msg { display: none; padding: 12px; border-radius: 8px; font-weight: 700; margin-top: 16px; font-size: .9em; }
+  .ct-msg.ok { background: #e8f5e9; color: #1b5e20; display: block; }
+  .ct-msg.err { background: #ffebee; color: #c62828; display: block; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="search.html">インターンを探す</a>
+    <a href="companies.html">企業を探す</a>
+    <a href="login.html" class="login">ログイン</a>
+  </nav>
+</div></header>
+
+<section class="ct-hero">
+  <div class="ct-hero-inner"><h1>お問い合わせ</h1><p>ご質問・ご要望・不具合報告など、お気軽にどうぞ。1〜2営業日以内に返信します。</p></div>
+</section>
+
+<nav class="breadcrumb" style="max-width:720px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>お問い合わせ
+</nav>
+
+<div class="ct-wrap">
+  <div class="ct-card">
+    <form id="ct-form">
+      <div class="ct-field">
+        <label>お名前<span class="req">*</span></label>
+        <input id="ct-name" required placeholder="山田 太郎">
+      </div>
+      <div class="ct-field">
+        <label>メールアドレス<span class="req">*</span></label>
+        <input id="ct-email" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="ct-field">
+        <label>種別<span class="req">*</span></label>
+        <select id="ct-kind" required>
+          <option value="">選択してください</option>
+          <option>サービス利用について</option>
+          <option>企業登録・求人掲載について</option>
+          <option>不具合・エラー</option>
+          <option>アカウント・ログインについて</option>
+          <option>プライバシー・個人情報の開示・削除</option>
+          <option>取材・広告・提携</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="ct-field">
+        <label>お問い合わせ内容<span class="req">*</span></label>
+        <textarea id="ct-body" required placeholder="具体的にご記入ください"></textarea>
+      </div>
+      <label style="display:block; font-size:.85em; margin-bottom:14px;">
+        <input type="checkbox" id="ct-agree" required>
+        <a href="privacy.html">プライバシーポリシー</a>に同意する<span class="req">*</span>
+      </label>
+      <button type="submit" class="ct-submit">送信する</button>
+      <div id="ct-msg" class="ct-msg"></div>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer"><div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div><div class="copyright">© 2026 AIme</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+document.getElementById('ct-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('ct-msg');
+  msg.className = 'ct-msg'; msg.textContent = '送信中...';
+  const payload = {
+    name: document.getElementById('ct-name').value.trim(),
+    email: document.getElementById('ct-email').value.trim(),
+    kind: document.getElementById('ct-kind').value,
+    body: document.getElementById('ct-body').value.trim(),
+    created_at: new Date().toISOString(),
+  };
+  try {
+    // Supabase に contacts テーブルがあれば保存、なければ Edge Function send-email 経由
+    const { error } = await window.sb.from('contacts').insert(payload);
+    if (error) {
+      // フォールバック: send-email Edge Function
+      const supportAddr = window.AIME_CONFIG?.EMAIL?.SUPPORT || 'support@aime.example';
+      const res = await fetch(`${window.SUPABASE_URL}/functions/v1/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}` },
+        body: JSON.stringify({
+          to: supportAddr,
+          subject: `[お問い合わせ] ${payload.kind}`,
+          html: `<p><b>${payload.name}</b> (${payload.email})</p><p>${payload.body.replace(/\n/g,'<br>')}</p>`,
+        }),
+      });
+      if (!res.ok) throw new Error('送信に失敗しました');
+    }
+    msg.className = 'ct-msg ok';
+    msg.textContent = '✓ 送信しました。1〜2営業日以内にご返信いたします。';
+    e.target.reset();
+  } catch (err) {
+    msg.className = 'ct-msg err';
+    msg.textContent = 'エラー: ' + err.message;
+  }
+});
+</script>
+</body></html>

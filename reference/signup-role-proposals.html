@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新規登録 UI案まとめ | AIme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Noto+Serif+JP:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    background: #0b0b0d;
+    color: #111;
+  }
+
+  .toc {
+    position: sticky; top: 0; z-index: 100;
+    background: #0b0b0d; color: #fff;
+    padding: 14px 24px; border-bottom: 1px solid #222;
+    display: flex; gap: 8px 16px; flex-wrap: wrap; align-items: center;
+    font-size: 13px;
+  }
+  .toc b { margin-right: 10px; color: #7CFF7F; font-family: 'JetBrains Mono', monospace; }
+  .toc a { color: #ddd; text-decoration: none; padding: 4px 10px; border: 1px solid #333; border-radius: 999px; }
+  .toc a:hover { background: #1a1a1a; border-color: #7CFF7F; color: #7CFF7F; }
+
+  .proposal {
+    padding: 60px 24px 80px;
+    border-bottom: 2px dashed #222;
+  }
+  .proposal-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 2px;
+    color: #7CFF7F; background: #000;
+    padding: 6px 12px; border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .proposal-title {
+    color: #fff; font-size: 28px; font-weight: 900;
+    margin: 0 0 4px; letter-spacing: -0.5px;
+  }
+  .proposal-desc {
+    color: #888; font-size: 14px; margin: 0 0 40px;
+    max-width: 700px;
+  }
+
+  /* ===========================================================
+     案1: BRUTALIST (トップページのCTAと同じ系譜)
+     =========================================================== */
+  .v1-wrap { background: #FFF7D6; padding: 60px 40px; border-radius: 4px; position: relative; border: 3px solid #111; box-shadow: 12px 12px 0 #111; max-width: 1100px; margin: 0 auto; }
+  .v1-tag { background: #111; color: #F6FF3B; font-weight: 900; padding: 4px 10px; font-size: 12px; letter-spacing: 2px; display: inline-block; transform: rotate(-2deg); }
+  .v1-wrap h2 { font-size: 54px; font-weight: 900; margin: 12px 0 8px; letter-spacing: -2px; line-height: 1; }
+  .v1-wrap p.sub { font-size: 15px; margin: 0 0 36px; color: #333; }
+  .v1-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .v1-card { background: #fff; border: 3px solid #111; border-radius: 0; padding: 28px; box-shadow: 8px 8px 0 #111; cursor: pointer; transition: .15s; text-decoration: none; color: #111; display: block; position: relative; }
+  .v1-card:hover { transform: translate(-3px,-3px); box-shadow: 11px 11px 0 #111; }
+  .v1-card.student { background: #E7FFE7; }
+  .v1-card.company { background: #FFE7C2; }
+  .v1-num { position: absolute; top: -20px; left: -14px; width: 46px; height: 46px; border-radius: 50%; background: #111; color: #fff; font-family: 'JetBrains Mono', monospace; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .v1-card h3 { font-size: 28px; margin: 0 0 6px; font-weight: 900; letter-spacing: -0.5px; }
+  .v1-card .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #666; letter-spacing: 2px; text-transform: uppercase; }
+  .v1-card .lead { margin: 12px 0 18px; font-size: 14px; line-height: 1.7; }
+  .v1-feat { list-style: none; padding: 14px 0 0; margin: 0; border-top: 2px solid #111; font-size: 13px; }
+  .v1-feat li { padding: 5px 0; display: flex; gap: 8px; align-items: center; }
+  .v1-feat li::before { content: '✓'; font-weight: 900; color: #0a8a0a; }
+  .v1-cta { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: #111; color: #F6FF3B; font-weight: 900; padding: 12px 18px; font-size: 14px; letter-spacing: 1px; }
+  .v1-cta .arrow { font-size: 22px; }
+
+  /* ===========================================================
+     案2: SPOTLIGHT DARK (companies-variantsの系譜)
+     =========================================================== */
+  .v2-wrap { background: #0a0a0d; color: #fff; padding: 80px 40px; border-radius: 24px; max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; }
+  .v2-wrap::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(76,175,80,.25), transparent 70%); top: -200px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+  .v2-badge { display: inline-block; padding: 5px 12px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; font-size: 11px; letter-spacing: 3px; color: #7CFF7F; position: relative; font-family: 'JetBrains Mono', monospace; }
+  .v2-wrap h2 { position: relative; font-size: 48px; font-weight: 900; margin: 16px 0 6px; letter-spacing: -1px; }
+  .v2-wrap p.sub { position: relative; color: #999; margin: 0 0 44px; }
+  .v2-cards { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .v2-card { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 40px 32px; transition: .25s; text-decoration: none; color: #fff; position: relative; overflow: hidden; display: block; }
+  .v2-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(124,255,127,.15), transparent 50%); opacity: 0; transition: .25s; }
+  .v2-card:hover { transform: translateY(-6px); border-color: rgba(124,255,127,.4); }
+  .v2-card:hover::after { opacity: 1; }
+  .v2-card .glow-icon { width: 72px; height: 72px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; position: relative; }
+  .v2-card.student .glow-icon { background: linear-gradient(135deg, #1b5e20, #4caf50); box-shadow: 0 0 40px rgba(76,175,80,.5); }
+  .v2-card.company .glow-icon { background: linear-gradient(135deg, #bf360c, #ff9800); box-shadow: 0 0 40px rgba(255,152,0,.5); }
+  .v2-card h3 { font-size: 26px; margin: 0 0 6px; font-weight: 900; }
+  .v2-card .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7CFF7F; letter-spacing: 3px; }
+  .v2-card.company .role-en { color: #ffb366; }
+  .v2-card .lead { color: #bbb; font-size: 14px; line-height: 1.7; margin: 14px 0 22px; }
+  .v2-feat { list-style: none; padding: 18px 0 0; margin: 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 13px; color: #ddd; position: relative; z-index: 1; }
+  .v2-feat li { padding: 6px 0; display: flex; gap: 10px; }
+  .v2-feat li::before { content: '→'; color: #7CFF7F; font-weight: 900; }
+  .v2-card.company .v2-feat li::before { color: #ffb366; }
+  .v2-go { margin-top: 24px; display: inline-flex; align-items: center; gap: 8px; font-weight: 900; color: #7CFF7F; position: relative; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 2px; }
+  .v2-card.company .v2-go { color: #ffb366; }
+
+  /* ===========================================================
+     案3: 付箋 (トップのsticky-layoutスタイル)
+     =========================================================== */
+  .v3-bg { background: #2e7d32; padding: 80px 40px; border-radius: 24px; max-width: 1100px; margin: 0 auto; background-image: radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 16px 16px; text-align: center; position: relative; }
+  .v3-bg h2 { color: #fff; font-size: 42px; font-weight: 900; margin: 0 0 6px; }
+  .v3-bg p.sub { color: rgba(255,255,255,.85); margin: 0 0 48px; }
+  .v3-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 880px; margin: 0 auto; }
+  .v3-card { background: #FFEB3B; padding: 36px 28px 32px; text-align: left; color: #111; box-shadow: 6px 6px 0 rgba(0,0,0,.3), 0 12px 24px rgba(0,0,0,.25); transform: rotate(-2deg); transition: .2s; text-decoration: none; display: block; position: relative; font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
+  .v3-card.company { background: #FF7F50; color: #fff; transform: rotate(2deg); }
+  .v3-card:hover { transform: rotate(0) scale(1.03); }
+  .v3-card::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 100px; height: 22px; background: rgba(255,255,255,.6); box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+  .v3-card.company::before { background: rgba(0,0,0,.4); }
+  .v3-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 3px; opacity: .7; display: block; margin-bottom: 4px; margin-top: 18px; }
+  .v3-card h3 { font-size: 28px; font-weight: 900; margin: 0 0 12px; letter-spacing: -0.5px; }
+  .v3-card .lead { font-size: 14px; line-height: 1.7; margin: 0 0 18px; }
+  .v3-feat { list-style: none; margin: 0; padding: 14px 0 0; border-top: 2px dashed currentColor; font-size: 13px; }
+  .v3-feat li { padding: 4px 0; }
+  .v3-feat li::before { content: '✏️ '; }
+  .v3-card.company .v3-feat li::before { content: '📌 '; }
+  .v3-cta { margin-top: 20px; font-weight: 900; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+
+  /* ===========================================================
+     案4: RECEIPT/TICKET (レシート風)
+     =========================================================== */
+  .v4-wrap { background: #f5f1e8; padding: 80px 40px; border-radius: 12px; max-width: 1100px; margin: 0 auto; text-align: center; }
+  .v4-wrap h2 { font-family: 'JetBrains Mono', monospace; font-size: 38px; font-weight: 700; margin: 0 0 6px; color: #111; }
+  .v4-wrap p.sub { color: #666; margin: 0 0 44px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; }
+  .v4-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; max-width: 820px; margin: 0 auto; }
+  .v4-card { background: #fff; padding: 32px 28px 28px; font-family: 'JetBrains Mono', monospace; text-align: left; color: #111; box-shadow: 0 10px 30px rgba(0,0,0,.1); position: relative; text-decoration: none; display: block; transition: .2s; }
+  .v4-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.15); }
+  .v4-card::before, .v4-card::after { content: ''; position: absolute; left: 0; right: 0; height: 16px; background: radial-gradient(circle at 8px 0px, transparent 8px, #fff 8px); background-size: 16px 16px; }
+  .v4-card::before { top: -8px; background: radial-gradient(circle at 8px 8px, transparent 8px, #fff 8px); background-size: 16px 16px; }
+  .v4-card::after { bottom: -8px; background: radial-gradient(circle at 8px 0px, transparent 8px, #fff 8px); background-size: 16px 16px; }
+  .v4-head { text-align: center; border-bottom: 2px dashed #111; padding-bottom: 14px; margin-bottom: 14px; }
+  .v4-head .logo { font-weight: 900; font-size: 14px; letter-spacing: 4px; }
+  .v4-head .date { font-size: 10px; color: #666; margin-top: 4px; }
+  .v4-card h3 { font-size: 20px; font-weight: 900; margin: 0 0 4px; text-align: center; letter-spacing: 1px; }
+  .v4-card .lead { font-size: 11px; color: #555; text-align: center; margin: 0 0 18px; line-height: 1.6; }
+  .v4-feat { list-style: none; margin: 0; padding: 0; border-top: 1px dashed #999; font-size: 12px; }
+  .v4-feat li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #ddd; }
+  .v4-feat li span.price { font-weight: 900; }
+  .v4-total { border-top: 2px dashed #111; border-bottom: 2px dashed #111; padding: 10px 0; margin: 14px 0; text-align: center; font-weight: 900; font-size: 13px; letter-spacing: 2px; }
+  .v4-bar { text-align: center; font-size: 8px; letter-spacing: 1px; color: #666; margin-top: 10px; }
+
+  /* ===========================================================
+     案5: TERMINAL / CLI
+     =========================================================== */
+  .v5-wrap { background: #0a0e14; padding: 40px; border-radius: 12px; max-width: 1100px; margin: 0 auto; font-family: 'JetBrains Mono', monospace; color: #b8c2c6; box-shadow: 0 20px 60px rgba(0,0,0,.5); border: 1px solid #1f2430; }
+  .v5-bar { display: flex; gap: 6px; padding-bottom: 14px; border-bottom: 1px solid #1f2430; margin-bottom: 20px; }
+  .v5-bar .dot { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
+  .v5-bar .dot.y { background: #febc2e; }
+  .v5-bar .dot.g { background: #28c840; }
+  .v5-bar .path { margin-left: auto; font-size: 11px; color: #5c6370; }
+  .v5-line { margin: 4px 0; font-size: 14px; }
+  .v5-prompt { color: #7CFF7F; }
+  .v5-comment { color: #5c6370; }
+  .v5-out { color: #fff; }
+  .v5-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .v5-opt { border: 1px solid #1f2430; border-radius: 8px; padding: 20px; background: #0f141c; cursor: pointer; transition: .2s; text-decoration: none; color: #b8c2c6; display: block; }
+  .v5-opt:hover { border-color: #7CFF7F; background: #121a26; box-shadow: 0 0 0 1px #7CFF7F inset; }
+  .v5-opt .num { color: #F6FF3B; font-weight: 700; }
+  .v5-opt h3 { color: #fff; margin: 8px 0 4px; font-size: 18px; font-family: 'Inter', sans-serif; }
+  .v5-opt .lead { font-size: 12px; color: #888; margin: 0 0 14px; line-height: 1.7; }
+  .v5-flags { list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px dashed #1f2430; font-size: 11px; }
+  .v5-flags li { padding: 3px 0; }
+  .v5-flags li::before { content: '--'; color: #7CFF7F; margin-right: 6px; }
+  .v5-run { margin-top: 14px; color: #7CFF7F; font-weight: 700; font-size: 12px; }
+  .v5-cursor { display: inline-block; width: 8px; height: 14px; background: #7CFF7F; vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ===========================================================
+     案6: SPLIT (画面二分割・ホバー拡張)
+     =========================================================== */
+  .v6-wrap { display: grid; grid-template-columns: 1fr 1fr; height: 520px; max-width: 1100px; margin: 0 auto; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  .v6-side { position: relative; padding: 60px 48px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; transition: flex-basis .35s ease, filter .35s; text-decoration: none; overflow: hidden; }
+  .v6-side::before { content: ''; position: absolute; inset: 0; background: inherit; transition: transform .5s; z-index: 0; }
+  .v6-side.student { background: linear-gradient(135deg, #0d3b14, #2e7d32 50%, #4caf50); }
+  .v6-side.company { background: linear-gradient(135deg, #bf360c, #e65100, #ff9800); }
+  .v6-side:hover { filter: brightness(1.1); }
+  .v6-side .role-en { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 4px; opacity: .7; position: relative; z-index: 1; }
+  .v6-side h3 { font-size: 44px; font-weight: 900; margin: 6px 0 12px; letter-spacing: -1px; position: relative; z-index: 1; line-height: 1; }
+  .v6-side p { font-size: 14px; opacity: .9; max-width: 300px; line-height: 1.7; position: relative; z-index: 1; margin: 0 0 24px; }
+  .v6-btn { position: relative; z-index: 1; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; background: rgba(0,0,0,.4); border: 1.5px solid rgba(255,255,255,.6); border-radius: 999px; font-weight: 700; letter-spacing: 2px; font-size: 13px; backdrop-filter: blur(8px); }
+  .v6-side:hover .v6-btn { background: #fff; color: #111; border-color: #fff; }
+  .v6-giant { position: absolute; top: 40px; right: 40px; font-size: 180px; font-weight: 900; opacity: .15; line-height: 1; z-index: 0; font-family: 'Inter', sans-serif; }
+  .v6-divider { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0b0b0d; color: #fff; width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-family: 'JetBrains Mono', monospace; z-index: 2; border: 4px solid #fff; box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+
+  /* ===========================================================
+     案7: EDITORIAL (雑誌/新聞風)
+     =========================================================== */
+  .v7-wrap { background: #f7f3ea; padding: 70px 40px; max-width: 1100px; margin: 0 auto; border-radius: 4px; font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif; color: #111; border-top: 8px solid #111; border-bottom: 8px solid #111; }
+  .v7-masthead { text-align: center; padding-bottom: 24px; border-bottom: 1px solid #111; margin-bottom: 40px; }
+  .v7-masthead .issue { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 4px; color: #666; }
+  .v7-masthead h2 { font-size: 66px; font-weight: 900; margin: 6px 0 4px; letter-spacing: -2px; line-height: 1; }
+  .v7-masthead .sub { font-size: 14px; font-style: italic; color: #444; }
+  .v7-cols { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; }
+  .v7-rule { background: #111; }
+  .v7-col { padding: 0 32px; text-decoration: none; color: #111; }
+  .v7-col .kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 4px; color: #B80F0A; text-transform: uppercase; font-weight: 700; }
+  .v7-col.company .kicker { color: #1b3c8a; }
+  .v7-col h3 { font-size: 36px; line-height: 1.1; margin: 6px 0 4px; font-weight: 900; letter-spacing: -0.5px; }
+  .v7-col .byline { font-size: 12px; color: #666; margin-bottom: 14px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+  .v7-col .dropcap { font-size: 15px; line-height: 1.9; }
+  .v7-col .dropcap::first-letter { float: left; font-size: 64px; font-weight: 900; line-height: .85; margin: 4px 8px 0 0; color: #B80F0A; }
+  .v7-col.company .dropcap::first-letter { color: #1b3c8a; }
+  .v7-col .more { display: inline-block; margin-top: 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; font-weight: 700; padding: 6px 0; border-top: 2px solid #111; border-bottom: 2px solid #111; }
+
+  /* ===========================================================
+     案8: 3D CARD + ICON (トップの3Dアイコン系譜)
+     =========================================================== */
+  .v8-wrap { background: linear-gradient(180deg, #e0f2e7 0%, #c8e6c9 100%); padding: 80px 40px; border-radius: 24px; max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden; }
+  .v8-wrap::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.5) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: .5; }
+  .v8-head { position: relative; text-align: center; margin-bottom: 48px; }
+  .v8-head h2 { font-size: 44px; font-weight: 900; margin: 8px 0 6px; letter-spacing: -1px; color: #1b3c12; }
+  .v8-head p { margin: 0; color: #2e5a28; }
+  .v8-cards { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 880px; margin: 0 auto; perspective: 1200px; }
+  .v8-card { background: #fff; border-radius: 28px; padding: 48px 36px 36px; text-align: center; box-shadow: 0 20px 40px -10px rgba(27,60,18,.2), inset 0 0 0 1px rgba(255,255,255,.8); transition: transform .35s cubic-bezier(.2,.9,.3,1.2); transform-style: preserve-3d; text-decoration: none; color: inherit; display: block; position: relative; }
+  .v8-card:hover { transform: translateY(-8px) rotateX(4deg); }
+  .v8-icon-3d { width: 120px; height: 120px; margin: -80px auto 20px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; transform: translateZ(20px); }
+  .v8-card.student .v8-icon-3d { background: linear-gradient(135deg, #a5d6a7, #2e7d32); box-shadow: 0 20px 40px rgba(46,125,50,.4), inset 4px 4px 12px rgba(255,255,255,.4), inset -4px -4px 12px rgba(0,0,0,.2); }
+  .v8-card.company .v8-icon-3d { background: linear-gradient(135deg, #ffccbc, #e65100); box-shadow: 0 20px 40px rgba(230,81,0,.4), inset 4px 4px 12px rgba(255,255,255,.4), inset -4px -4px 12px rgba(0,0,0,.2); }
+  .v8-card h3 { font-size: 26px; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.5px; }
+  .v8-card .lead { font-size: 13px; color: #555; margin: 0 0 22px; line-height: 1.7; }
+  .v8-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 18px 0 24px; }
+  .v8-pills span { font-size: 11px; padding: 5px 10px; border-radius: 999px; background: #f0f7f2; color: #1b5e20; font-weight: 700; }
+  .v8-card.company .v8-pills span { background: #fff4e6; color: #e65100; }
+  .v8-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 14px; background: #1b5e20; color: #fff; font-weight: 900; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(27,94,32,.4); transition: .2s; }
+  .v8-card.company .v8-btn { background: #e65100; box-shadow: 0 8px 20px rgba(230,81,0,.4); }
+  .v8-card:hover .v8-btn { transform: translateY(-2px); }
+
+  @media (max-width: 900px) {
+    .v1-cards, .v2-cards, .v3-cards, .v4-cards, .v5-choice, .v6-wrap, .v8-cards, .v7-cols { grid-template-columns: 1fr !important; }
+    .v6-wrap { display: block; height: auto; }
+    .v6-side { padding: 40px 28px; min-height: 240px; }
+    .v7-rule { display: none; }
+    .v7-col { padding: 24px 0; border-top: 1px solid #111; }
+    .v7-col:first-of-type { border-top: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <b>新規登録 UI案 /</b>
+  <a href="#v1">01 Brutalist</a>
+  <a href="#v2">02 Spotlight Dark</a>
+  <a href="#v3">03 付箋 Sticky</a>
+  <a href="#v4">04 Receipt</a>
+  <a href="#v5">05 Terminal</a>
+  <a href="#v6">06 Split Screen</a>
+  <a href="#v7">07 Editorial</a>
+  <a href="#v8">08 3D Card</a>
+</nav>
+
+<!-- ============== 案1 BRUTALIST ============== -->
+<section id="v1" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 01</span>
+    <h2 class="proposal-title">BRUTALIST — 太枠 × チャンキーシャドウ</h2>
+    <p class="proposal-desc">トップページの「GPTより先に動け。」CTAと同じ系譜。大胆な黒枠・厚い影・原色で信頼と勢いを同時に出す。</p>
+  </div>
+  <div class="v1-wrap">
+    <span class="v1-tag">START HERE / 30SEC</span>
+    <h2>新規登録。</h2>
+    <p class="sub">あなたの立場に合わせて、アカウント種別を選択してください。</p>
+    <div class="v1-cards">
+      <a href="signup.html" class="v1-card student">
+        <span class="v1-num">01</span>
+        <div class="role-en">FOR / STUDENT</div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <ul class="v1-feat">
+          <li>156件以上のAIインターンを検索</li>
+          <li>ブックマーク・応募履歴管理</li>
+          <li>企業と直接メッセージ</li>
+          <li>履歴書アップロード</li>
+        </ul>
+        <div class="v1-cta">REGISTER AS STUDENT <span class="arrow">→</span></div>
+      </a>
+      <a href="company-signup.html" class="v1-card company">
+        <span class="v1-num">02</span>
+        <div class="role-en">FOR / COMPANY</div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <ul class="v1-feat">
+          <li>求人の作成・編集・公開管理</li>
+          <li>応募者一覧と選考ステータス管理</li>
+          <li>学生と直接チャット</li>
+          <li>閲覧数・応募数の分析</li>
+        </ul>
+        <div class="v1-cta">REGISTER AS COMPANY <span class="arrow">→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案2 SPOTLIGHT DARK ============== -->
+<section id="v2" class="proposal" style="background: #050507;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 02</span>
+    <h2 class="proposal-title">SPOTLIGHT — ダーク × ネオングリーン</h2>
+    <p class="proposal-desc">暗背景にホバーで発光するラジアルグロー。プロダクトのテック感・AI感を一番強く出せる系統。</p>
+  </div>
+  <div class="v2-wrap">
+    <span class="v2-badge">◉ AUTHENTICATION</span>
+    <h2>Create your account.</h2>
+    <p class="sub">あなたの立場に合わせて、アカウント種別を選択してください。</p>
+    <div class="v2-cards">
+      <a href="signup.html" class="v2-card student">
+        <div class="glow-icon">👤</div>
+        <div class="role-en">STUDENT</div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <ul class="v2-feat">
+          <li>156件以上のAIインターンを検索</li>
+          <li>ブックマーク・応募履歴管理</li>
+          <li>企業と直接メッセージ</li>
+          <li>履歴書アップロード</li>
+        </ul>
+        <span class="v2-go">CONTINUE →</span>
+      </a>
+      <a href="company-signup.html" class="v2-card company">
+        <div class="glow-icon">🏢</div>
+        <div class="role-en">COMPANY</div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <ul class="v2-feat">
+          <li>求人の作成・編集・公開管理</li>
+          <li>応募者一覧と選考ステータス管理</li>
+          <li>学生と直接チャット</li>
+          <li>閲覧数・応募数の分析</li>
+        </ul>
+        <span class="v2-go">CONTINUE →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案3 付箋 ============== -->
+<section id="v3" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 03</span>
+    <h2 class="proposal-title">付箋（STICKY NOTE）— 手描き × ポップ</h2>
+    <p class="proposal-desc">トップの付箋マルキーと統一。学生の「親しみやすさ」を最優先する案。マスキングテープ装飾付き。</p>
+  </div>
+  <div class="v3-bg">
+    <h2>新規登録</h2>
+    <p class="sub">あなたの立場に合う付箋を選んでください</p>
+    <div class="v3-cards">
+      <a href="signup.html" class="v3-card student">
+        <span class="v3-tag">STUDENT</span>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <ul class="v3-feat">
+          <li>156件以上のAIインターンを検索</li>
+          <li>ブックマーク・応募履歴管理</li>
+          <li>企業と直接メッセージ</li>
+          <li>履歴書アップロード</li>
+        </ul>
+        <div class="v3-cta">登録する <span>→</span></div>
+      </a>
+      <a href="company-signup.html" class="v3-card company">
+        <span class="v3-tag">COMPANY</span>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <ul class="v3-feat">
+          <li>求人の作成・編集・公開管理</li>
+          <li>応募者一覧と選考ステータス管理</li>
+          <li>学生と直接チャット</li>
+          <li>閲覧数・応募数の分析</li>
+        </ul>
+        <div class="v3-cta">登録する <span>→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案4 RECEIPT ============== -->
+<section id="v4" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 04</span>
+    <h2 class="proposal-title">RECEIPT — レシート風モノスペース</h2>
+    <p class="proposal-desc">インターン一覧のレシート風UIと統一。明細のように機能をリストアップし、「お得感」を出す。</p>
+  </div>
+  <div class="v4-wrap">
+    <h2>CREATE ACCOUNT</h2>
+    <p class="sub">------ SELECT YOUR ROLE ------</p>
+    <div class="v4-cards">
+      <a href="signup.html" class="v4-card">
+        <div class="v4-head">
+          <div class="logo">AIme / STUDENT</div>
+          <div class="date">2026.04.21 &nbsp; #S-0001</div>
+        </div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け</p>
+        <ul class="v4-feat">
+          <li>AIインターン検索 <span class="price">156件+</span></li>
+          <li>ブックマーク <span class="price">無制限</span></li>
+          <li>直接メッセージ <span class="price">有</span></li>
+          <li>履歴書アップロード <span class="price">有</span></li>
+        </ul>
+        <div class="v4-total">TOTAL ¥0 (FREE)</div>
+        <div class="v4-bar">|| |||| | |||| | ||| || |||| ||</div>
+      </a>
+      <a href="company-signup.html" class="v4-card">
+        <div class="v4-head">
+          <div class="logo">AIme / COMPANY</div>
+          <div class="date">2026.04.21 &nbsp; #C-0001</div>
+        </div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け</p>
+        <ul class="v4-feat">
+          <li>求人作成・公開 <span class="price">無制限</span></li>
+          <li>応募者管理 <span class="price">有</span></li>
+          <li>直接チャット <span class="price">有</span></li>
+          <li>閲覧・応募分析 <span class="price">有</span></li>
+        </ul>
+        <div class="v4-total">TOTAL ¥0 (START)</div>
+        <div class="v4-bar">|| |||| | |||| | ||| || |||| ||</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案5 TERMINAL ============== -->
+<section id="v5" class="proposal" style="background: #050810;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 05</span>
+    <h2 class="proposal-title">TERMINAL — CLI風ハッカー系</h2>
+    <p class="proposal-desc">エンジニア・AI開発者に刺さる。`aime signup --role=...` の選択として提示。</p>
+  </div>
+  <div class="v5-wrap">
+    <div class="v5-bar">
+      <span class="dot"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="path">~/aime — zsh — 84×24</span>
+    </div>
+    <div class="v5-line"><span class="v5-prompt">$</span> aime signup --interactive</div>
+    <div class="v5-line v5-comment"># Welcome to AIme. Let's set up your account.</div>
+    <div class="v5-line v5-out">Select role to continue:</div>
+    <div class="v5-choice">
+      <a href="signup.html" class="v5-opt">
+        <div><span class="num">[1]</span> <span style="color:#7CFF7F;">student</span> <span style="color:#5c6370;">— default</span></div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <ul class="v5-flags">
+          <li>search-interns  <span style="color:#F6FF3B;">156+</span></li>
+          <li>bookmark  <span style="color:#F6FF3B;">on</span></li>
+          <li>message-company  <span style="color:#F6FF3B;">on</span></li>
+          <li>upload-resume  <span style="color:#F6FF3B;">on</span></li>
+        </ul>
+        <div class="v5-run">$ aime signup --role=student<span class="v5-cursor"></span></div>
+      </a>
+      <a href="company-signup.html" class="v5-opt">
+        <div><span class="num">[2]</span> <span style="color:#ffb366;">company</span></div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <ul class="v5-flags">
+          <li>create-job  <span style="color:#F6FF3B;">unlimited</span></li>
+          <li>manage-applicants  <span style="color:#F6FF3B;">on</span></li>
+          <li>chat-student  <span style="color:#F6FF3B;">on</span></li>
+          <li>analytics  <span style="color:#F6FF3B;">on</span></li>
+        </ul>
+        <div class="v5-run">$ aime signup --role=company</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案6 SPLIT ============== -->
+<section id="v6" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 06</span>
+    <h2 class="proposal-title">SPLIT SCREEN — 画面二分割の大胆な選択</h2>
+    <p class="proposal-desc">スクリーン全体で二者択一を提示。選択のゴール感を最大化する大胆案。</p>
+  </div>
+  <div class="v6-wrap">
+    <div class="v6-divider">OR</div>
+    <a href="signup.html" class="v6-side student">
+      <span class="v6-giant">01</span>
+      <div class="role-en">I AM A STUDENT</div>
+      <h3>学生として<br>はじめる</h3>
+      <p>156件以上のAIインターンを検索、企業と直接メッセージ、応募管理まで全部無料で。</p>
+      <span class="v6-btn">REGISTER →</span>
+    </a>
+    <a href="company-signup.html" class="v6-side company">
+      <span class="v6-giant">02</span>
+      <div class="role-en">I AM A COMPANY</div>
+      <h3>企業として<br>はじめる</h3>
+      <p>求人作成、応募者管理、学生との直接チャット、閲覧分析まで採用の全工程をカバー。</p>
+      <span class="v6-btn">REGISTER →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ============== 案7 EDITORIAL ============== -->
+<section id="v7" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 07</span>
+    <h2 class="proposal-title">EDITORIAL — 雑誌／新聞風</h2>
+    <p class="proposal-desc">明朝体 × ドロップキャップ × ルール線。ブランドを「格」で選ばせたい場合の上品路線。</p>
+  </div>
+  <div class="v7-wrap">
+    <div class="v7-masthead">
+      <div class="issue">VOL. 2026 &nbsp; / &nbsp; NO. 04 &nbsp; / &nbsp; SIGN UP</div>
+      <h2>新規登録</h2>
+      <div class="sub">Which side of AI will you join?</div>
+    </div>
+    <div class="v7-cols">
+      <a href="signup.html" class="v7-col student">
+        <div class="kicker">FOR / STUDENT</div>
+        <h3>学生として登録</h3>
+        <div class="byline">無料プラン／30秒で開始／履歴書・応募管理付き</div>
+        <p class="dropcap">AIインターンを探している学生のための入り口。156件以上のAI求人を検索し、気になる企業にブックマーク・直接メッセージ・応募までワンストップで完結できます。履歴書もそのまま送信可能。</p>
+        <span class="more">REGISTER AS STUDENT →</span>
+      </a>
+      <div class="v7-rule"></div>
+      <a href="company-signup.html" class="v7-col company">
+        <div class="kicker">FOR / COMPANY</div>
+        <h3>企業として登録</h3>
+        <div class="byline">法人プラン／求人無制限／選考ステータス管理</div>
+        <p class="dropcap">AI人材を採用したい企業のための入り口。求人の作成・編集・公開管理から応募者一覧、選考ステータス、学生との直接チャット、閲覧・応募の分析までを網羅。優秀な学生へ直接アプローチ。</p>
+        <span class="more">REGISTER AS COMPANY →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 案8 3D CARD ============== -->
+<section id="v8" class="proposal" style="background: #1b1b1f;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <span class="proposal-label">// PROPOSAL 08</span>
+    <h2 class="proposal-title">3D CARD — 浮き出るアイコン × ソフトな緑</h2>
+    <p class="proposal-desc">トップの3Dアイコン・円形カウンターと相性がよい、柔らかくモダンな親しみ路線。</p>
+  </div>
+  <div class="v8-wrap">
+    <div class="v8-head">
+      <h2>新規登録</h2>
+      <p>あなたの立場に合わせてアカウント種別を選択してください</p>
+    </div>
+    <div class="v8-cards">
+      <a href="signup.html" class="v8-card student">
+        <div class="v8-icon-3d">👤</div>
+        <h3>学生として登録</h3>
+        <p class="lead">AIインターンを探している学生向け。無料で全ての求人を閲覧・応募できます。</p>
+        <div class="v8-pills">
+          <span>検索156+</span><span>ブックマーク</span><span>メッセージ</span><span>履歴書</span>
+        </div>
+        <span class="v8-btn">学生として登録 →</span>
+      </a>
+      <a href="company-signup.html" class="v8-card company">
+        <div class="v8-icon-3d">🏢</div>
+        <h3>企業として登録</h3>
+        <p class="lead">AI人材を採用したい企業向け。優秀な学生に直接アプローチできます。</p>
+        <div class="v8-pills">
+          <span>求人作成</span><span>応募者管理</span><span>直接チャット</span><span>分析</span>
+        </div>
+        <span class="v8-btn">企業として登録 →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer style="background: #050507; color: #666; padding: 40px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;">
+  — END OF PROPOSALS / 新規登録UI案 × 8 —
+</footer>
+
+</body>
+</html>

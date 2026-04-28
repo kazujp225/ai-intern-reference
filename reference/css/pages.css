@@ -1,0 +1,206 @@
+/* ==========================================================================
+   pages.css - 全ページ共通のヘッダー/フッター/レイアウト
+   original.html のトーン（ブランド緑 + Brutalist）に合わせた共通スタイル
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  color: #111;
+  background: #f7f8fa;
+  line-height: 1.6;
+}
+a { color: #2e7d32; text-decoration: none; }
+a:hover { color: #1b5e20; }
+
+/* ---- Header ---- */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.site-header-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; padding: 0 32px; height: 72px;
+}
+.site-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 900; font-size: 1.2em; color: #111; letter-spacing: .02em;
+}
+.site-logo img { height: 34px; width: auto; }
+.site-nav { margin-left: auto; display: flex; align-items: center; gap: 22px; }
+.site-nav a {
+  color: #222; font-weight: 700; font-size: .9em;
+  padding-bottom: 3px; border-bottom: 2px solid transparent;
+  transition: all .2s;
+}
+.site-nav a:hover, .site-nav a.current { color: #2e7d32; border-bottom-color: #4caf50; }
+.site-nav .corp { color: #999; font-size: .75em; }
+.site-nav .login { color: #2e7d32; }
+.site-nav .register {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: #fff !important; padding: 8px 22px; border-radius: 6px;
+  font-size: .85em; font-weight: 800; border: none !important;
+}
+.site-nav .register:hover { opacity: .9; color: #fff !important; border: none !important; }
+
+/* ---- Footer ---- */
+.site-footer {
+  background: #111; color: #aaa;
+  padding: 48px 32px 24px; margin-top: 60px;
+}
+.site-footer-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
+}
+.site-footer h4 { color: #fff; margin: 0 0 12px; font-size: .9em; font-weight: 800; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer ul li { margin-bottom: 8px; }
+.site-footer a { color: #aaa; font-size: .85em; transition: color .15s; }
+.site-footer a:hover { color: #fff; }
+.site-footer .brand { font-weight: 900; font-size: 1.2em; color: #fff; margin-bottom: 12px; }
+.site-footer .copyright {
+  max-width: 1280px; margin: 32px auto 0; padding-top: 24px;
+  border-top: 1px solid #333; font-size: .75em; text-align: center;
+}
+.site-footer .legal-links {
+  max-width: 1280px; margin: 18px auto 0; text-align: center;
+  display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+  font-size: .78em;
+}
+.site-footer .legal-links a { color: #888; }
+.site-footer .legal-links a:hover { color: #fff; }
+@media (max-width: 720px) {
+  .site-footer-inner { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 24px; border-radius: 8px;
+  font-weight: 800; font-size: 1em; text-decoration: none;
+  transition: all .15s; cursor: pointer; border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: #fff !important; box-shadow: 0 4px 12px rgba(76,175,80,.3);
+}
+.btn-primary:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(76,175,80,.4); }
+.btn-ghost {
+  background: #fff; color: #111 !important; border: 2px solid #111;
+}
+.btn-ghost:hover { background: #111; color: #fff !important; }
+.btn-brutal {
+  background: #fff; border: 3px solid #111; color: #111 !important;
+  font-weight: 900; padding: 18px 36px; border-radius: 8px;
+  font-size: 1.1em; box-shadow: 6px 6px 0 #111;
+  transition: all .12s ease-out;
+}
+.btn-brutal:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 #111; background: #fffbe6; }
+.btn-brutal:active { transform: translate(6px, 6px); box-shadow: 0 0 0 #111; }
+.btn-brutal .tag {
+  border: 2px solid #111; font-size: .7em; padding: 2px 8px;
+  background: #111; color: #fff; font-weight: 900;
+}
+
+/* ---- Page container ---- */
+.page-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+.page-title { font-size: 2.2em; font-weight: 900; margin: 0 0 8px; letter-spacing: -.02em; }
+.page-sub { color: #666; margin: 0 0 32px; }
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+  max-width: 1200px; margin: 24px auto 0; padding: 0 24px;
+  font-size: .85em; color: #666;
+}
+.breadcrumb a { color: #666; }
+.breadcrumb a:hover { color: #2e7d32; }
+.breadcrumb span { margin: 0 6px; color: #ccc; }
+
+/* ---- Card (job card) ---- */
+.job-card {
+  background: #fff; border-radius: 14px; padding: 24px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.05), inset 0 0 0 1px rgba(0,0,0,.04);
+  transition: transform .25s, box-shadow .25s;
+  display: block; color: inherit;
+}
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.1);
+  color: inherit;
+}
+.job-card .jc-company { font-size: .8em; font-weight: 700; color: #666; margin-bottom: 4px; }
+.job-card .jc-title { font-size: 1.2em; font-weight: 900; color: #111; margin-bottom: 12px; line-height: 1.3; }
+.job-card .jc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.job-card .jc-tag { font-size: .72em; font-weight: 700; background: #f0f0f0; color: #333; padding: 4px 10px; border-radius: 999px; }
+.job-card .jc-tag.hot { background: #1b5e20; color: #fff; }
+.job-card .jc-meta { display: flex; gap: 14px; font-size: .8em; color: #666; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+.job-card .jc-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.job-card .jc-wage { color: #2e7d32; font-weight: 800; }
+
+/* ---- Filter chips ---- */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 2px solid #e1e4e8; color: #333;
+  padding: 6px 14px; border-radius: 999px;
+  font-weight: 700; font-size: .85em; text-decoration: none;
+  transition: all .15s;
+}
+.chip:hover { border-color: #111; color: #111; }
+.chip.active { background: #111; color: #fff; border-color: #111; }
+.chip .count { font-size: .75em; background: rgba(0,0,0,0.08); padding: 2px 6px; border-radius: 999px; font-weight: 900; }
+.chip.active .count { background: rgba(255,255,255,.2); }
+
+/* ---- Form (signup / login) ---- */
+.auth-wrap {
+  max-width: 480px; margin: 60px auto;
+  background: #fff; border-radius: 20px; padding: 40px 36px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.08), inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.auth-title { font-size: 1.8em; font-weight: 900; margin: 0 0 4px; letter-spacing: -.02em; }
+.auth-sub { color: #666; margin: 0 0 28px; }
+.form-field { margin-bottom: 16px; }
+.form-field label { display: block; font-size: .85em; font-weight: 800; color: #222; margin-bottom: 6px; }
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%; padding: 12px 14px; border: 2px solid #e1e4e8; border-radius: 8px;
+  font-size: 1em; font-family: inherit; background: #fafbfc;
+  transition: border-color .15s, background .15s;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+  outline: none; border-color: #4caf50; background: #fff;
+}
+.form-check { display: flex; align-items: flex-start; gap: 8px; font-size: .85em; color: #333; margin: 16px 0; }
+.form-check input { margin-top: 3px; }
+.form-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0; color: #999; font-size: .8em; font-weight: 700;
+}
+.form-divider::before, .form-divider::after {
+  content: ''; flex: 1; height: 1px; background: #e1e4e8;
+}
+.social-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 12px; border: 2px solid #e1e4e8; border-radius: 8px;
+  background: #fff; color: #111; font-weight: 800; font-size: .9em;
+  cursor: pointer; margin-bottom: 10px; transition: all .15s;
+  text-decoration: none;
+}
+.social-btn:hover { border-color: #111; }
+.auth-foot { text-align: center; margin-top: 24px; font-size: .9em; color: #666; }
+.auth-foot a { font-weight: 800; }
+
+/* ---- Companies / carousels ---- */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin: 24px 0;
+}
+.stat-card {
+  background: #fff; border-radius: 14px; padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
+.stat-card .num { font-size: 2.2em; font-weight: 900; color: #111; line-height: 1; }
+.stat-card .num .unit { font-size: .45em; color: #888; font-weight: 800; margin-left: 4px; }
+.stat-card .label { font-size: .85em; color: #666; font-weight: 700; margin-top: 4px; }

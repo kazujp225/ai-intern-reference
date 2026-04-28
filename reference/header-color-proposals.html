@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヘッダー色合い案 比較</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f0f0f0; color: #222; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 2em; margin-bottom: 8px; }
+  .desc { text-align: center; color: #888; margin-bottom: 40px; }
+  .proposal { max-width: 1100px; margin: 0 auto 40px; }
+  .proposal-label { text-align: center; padding: 10px; font-size: 1em; font-weight: 900; color: #555; margin-bottom: 8px; }
+
+  /* 共通ヘッダースタイル */
+  .h-bar {
+    display: flex; align-items: center; padding: 0 40px; height: 70px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15); border-radius: 8px;
+  }
+  .h-logo { font-size: 1.5em; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: 2px; margin-right: auto; display: flex; align-items: center; gap: 8px; }
+  .h-logo .h-accent { opacity: 0.6; }
+  .h-nav { display: flex; align-items: center; gap: 24px; }
+  .h-nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.88em; font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .h-nav a:hover, .h-nav a.current { color: #fff; }
+  .h-nav .h-corp { color: rgba(255,255,255,0.5); font-size: 0.75em; }
+  .h-nav .h-login { color: rgba(255,255,255,0.9); }
+  .h-nav .h-register { background: #fff; padding: 7px 22px; border-radius: 6px; font-weight: 800; font-size: 0.85em; border-bottom: none !important; transition: all 0.2s; }
+</style>
+</head>
+<body>
+
+<h1>ヘッダー 色合い案 比較</h1>
+<p class="desc">案Aのレイアウトで色を変えた6パターン</p>
+
+<!-- 1: 現在のグリーン -->
+<div class="proposal">
+  <div class="proposal-label">1. ディープグリーン（現在）</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #1b5e20, #2e7d32);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #a5d6a7;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #2e7d32;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 2: ブラック -->
+<div class="proposal">
+  <div class="proposal-label">2. マットブラック</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #1a1a1a, #333);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #4caf50;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #222; background: #4caf50; color: #fff;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 3: ネイビー -->
+<div class="proposal">
+  <div class="proposal-label">3. ディープネイビー</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #0d1b2a, #1b3a5c);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #64b5f6;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #1b3a5c;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 4: グリーン→ブルー -->
+<div class="proposal">
+  <div class="proposal-label">4. グリーン → ティール</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #1b5e20, #00695c);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #80cbc4;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #00695c;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 5: パープル -->
+<div class="proposal">
+  <div class="proposal-label">5. ディープパープル</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #311b92, #4a148c);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #b39ddb;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #4a148c;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 6: ライトグリーン（明るめ） -->
+<div class="proposal">
+  <div class="proposal-label">6. ライトグリーン（明るめ）</div>
+  <div class="h-bar" style="background: linear-gradient(135deg, #388e3c, #66bb6a);">
+    <a href="#" class="h-logo">AI<span class="h-accent">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="border-bottom-color: #fff;">AIインターン</a>
+      <a href="#">AI勉強会</a>
+      <a href="#" class="h-corp">採用担当者様</a>
+      <a href="#" class="h-login">login</a>
+      <a href="#" class="h-register" style="color: #2e7d32;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 7: ブラック + グリーンアクセント -->
+<div class="proposal">
+  <div class="proposal-label">7. ブラック + グリーンライン</div>
+  <div class="h-bar" style="background: #111; border-bottom: 3px solid #4caf50; border-radius: 8px 8px 0 0;">
+    <a href="#" class="h-logo" style="color: #4caf50;">AI<span class="h-accent" style="opacity:0.4;">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="color: #4caf50; border-bottom-color: #4caf50;">AIインターン</a>
+      <a href="#" style="color: #888;">AI勉強会</a>
+      <a href="#" class="h-corp" style="color: #555;">採用担当者様</a>
+      <a href="#" class="h-login" style="color: #aaa;">login</a>
+      <a href="#" class="h-register" style="background: #4caf50; color: #fff;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 8: ホワイト + グリーンテキスト -->
+<div class="proposal">
+  <div class="proposal-label">8. ホワイト + グリーンテキスト</div>
+  <div class="h-bar" style="background: #fff; box-shadow: 0 1px 0 #e0e0e0;">
+    <a href="#" class="h-logo" style="color: #1b5e20;">AI<span class="h-accent" style="color: #4caf50;">_</span>INTERN</a>
+    <nav class="h-nav">
+      <a href="#" class="current" style="color: #2e7d32; border-bottom-color: #4caf50;">AIインターン</a>
+      <a href="#" style="color: #888;">AI勉強会</a>
+      <a href="#" class="h-corp" style="color: #bbb;">採用担当者様</a>
+      <a href="#" class="h-login" style="color: #2e7d32;">login</a>
+      <a href="#" class="h-register" style="background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;">REGISTER</a>
+    </nav>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>イベント詳細 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .ed-wrap { max-width: 800px; margin: 32px auto 60px; padding: 0 24px; }
+  .ed-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04); }
+  .ed-label { font-family: monospace; font-size: .78em; color: #2e7d32; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
+  .ed-title { margin: 6px 0 14px; font-size: 1.7em; font-weight: 900; letter-spacing: -.02em; line-height: 1.3; }
+  .ed-meta-row { display: flex; gap: 20px; flex-wrap: wrap; padding: 16px 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; margin: 18px 0; }
+  .ed-meta { font-size: .88em; }
+  .ed-meta strong { display: block; color: #999; font-size: .78em; font-weight: 700; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; }
+  .ed-body { line-height: 1.8; color: #333; white-space: pre-wrap; }
+  .ed-company { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid #f0f0f0; }
+  .ed-logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; }
+  .ed-cta { margin-top: 24px; display: flex; gap: 10px; }
+  .ed-btn-primary { padding: 12px 26px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; border:none; border-radius:8px; font-weight:900; cursor:pointer; font-size:.95em; }
+  .ed-btn-ghost { padding: 12px 26px; background:#fff; border:1px solid #e0e0e0; border-radius:8px; font-weight:700; cursor:pointer; color:#333; font-size:.9em; }
+  .ed-rsvp-count { margin-top:12px; color:#666; font-size:.85em; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="events.html" class="current">イベント</a>
+    <a href="mypage.html">マイページ</a>
+  </nav>
+</div></header>
+
+<nav class="breadcrumb" style="max-width:800px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <a href="events.html" style="color:#666;">イベント</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <span id="ed-crumb">詳細</span>
+</nav>
+
+<div class="ed-wrap">
+  <div id="ed-main" class="ed-card"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script>
+(async function(){
+  const id = new URLSearchParams(location.search).get('id');
+  const main = document.getElementById('ed-main');
+  if (!id) { main.innerHTML = '<p>イベントIDが指定されていません</p>'; return; }
+
+  let event;
+  try { event = await window.AImeV3.getEvent(id); }
+  catch (err) { main.innerHTML = `<p>読み込みエラー: ${err.message}</p>`; return; }
+
+  if (!event) {
+    // モック fallback
+    event = {
+      id, title: 'サンプルイベント (プレビュー)',
+      description: 'このイベントは存在しません。Supabase にイベントを登録するか、events.html のデモ一覧から選んでください。',
+      starts_at: new Date().toISOString(), location: 'オンライン',
+      online_url: '', capacity: 50,
+      companies: { id: 'demo', name: '株式会社コンフィグ' },
+    };
+  }
+
+  document.getElementById('ed-crumb').textContent = event.title.slice(0, 24);
+  const dt = new Date(event.starts_at);
+  const dateStr = dt.toLocaleString('ja-JP', { year:'numeric', month:'short', day:'numeric', weekday:'short', hour:'2-digit', minute:'2-digit' });
+  const companyName = event.companies?.name || '—';
+  const initial = companyName.replace(/^株式会社|^合同会社/,'').charAt(0).toUpperCase();
+
+  const rsvpCount = await window.AImeV3.countRsvps(event.id);
+  const myStatus = await window.AImeV3.myRsvp(event.id);
+
+  main.innerHTML = `
+    <div class="ed-label">Event</div>
+    <h1 class="ed-title">${event.title}</h1>
+    <div class="ed-meta-row">
+      <div class="ed-meta"><strong>DATE</strong>${dateStr}</div>
+      <div class="ed-meta"><strong>PLACE</strong>${event.online_url ? 'オンライン' : (event.location || 'TBD')}</div>
+      ${event.capacity ? `<div class="ed-meta"><strong>CAPACITY</strong>${event.capacity} 名</div>` : ''}
+    </div>
+    <div class="ed-body">${(event.description || '').replace(/[<>]/g,c=>({'<':'&lt;','>':'&gt;'}[c]))}</div>
+    <div class="ed-company">
+      <div class="ed-logo">${initial}</div>
+      <div>
+        <div style="font-weight:900;">${companyName}</div>
+        <a href="company.html?id=${encodeURIComponent(event.companies?.id || '')}" style="font-size:.82em; color:#2e7d32; font-weight:700;">企業ページを見る →</a>
+      </div>
+    </div>
+    <div class="ed-cta">
+      <button id="rsvp-go" class="ed-btn-primary">${myStatus === 'going' ? '✓ 参加予定' : '参加予約 (RSVP)'}</button>
+      <button id="rsvp-maybe" class="ed-btn-ghost">${myStatus === 'maybe' ? '✓ 興味あり' : '興味あり'}</button>
+    </div>
+    <div class="ed-rsvp-count">現在 <strong>${rsvpCount}名</strong> が参加予定</div>
+  `;
+
+  document.getElementById('rsvp-go').addEventListener('click', async () => {
+    try { await window.AImeV3.rsvp(event.id, 'going'); location.reload(); }
+    catch (err) { alert('エラー: ' + err.message); }
+  });
+  document.getElementById('rsvp-maybe').addEventListener('click', async () => {
+    try { await window.AImeV3.rsvp(event.id, 'maybe'); location.reload(); }
+    catch (err) { alert('エラー: ' + err.message); }
+  });
+})();
+</script>
+</body>
+</html>

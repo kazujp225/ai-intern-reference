@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup Check | AIme 診断ツール</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; font-family: -apple-system, "Hiragino Kaku Gothic ProN", sans-serif; }
+  .sc-wrap { max-width: 900px; margin: 40px auto; padding: 0 24px; }
+  .sc-hero { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; padding: 32px; border-radius: 20px; margin-bottom: 20px; }
+  .sc-hero h1 { margin: 0 0 6px; font-size: 1.6em; font-weight: 900; }
+  .sc-hero p { margin: 0; opacity: .9; font-size: .95em; }
+  .sc-card { background: #fff; border-radius: 14px; padding: 20px 24px; box-shadow: 0 4px 14px rgba(0,0,0,.04); margin-bottom: 12px; }
+  .sc-card h2 { margin: 0 0 14px; font-size: 1.05em; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .sc-card h2::before { content: ''; width: 4px; height: 18px; background: #4caf50; border-radius: 2px; }
+  .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: .9em; }
+  .sc-row:last-child { border-bottom: none; }
+  .sc-name { font-weight: 700; color: #111; }
+  .sc-name small { display: block; color: #888; font-weight: 500; font-size: .82em; margin-top: 2px; }
+  .sc-badge { padding: 3px 12px; border-radius: 999px; font-size: .78em; font-weight: 800; }
+  .sc-badge.ok { background: #e8f5e9; color: #1b5e20; }
+  .sc-badge.ng { background: #ffebee; color: #c62828; }
+  .sc-badge.warn { background: #fff3e0; color: #ef6c00; }
+  .sc-badge.pending { background: #e3f2fd; color: #1565c0; }
+  .sc-summary { margin: 20px 0; padding: 16px 20px; border-radius: 10px; font-weight: 700; }
+  .sc-summary.all-ok { background: #e8f5e9; color: #1b5e20; border: 2px solid #4caf50; }
+  .sc-summary.has-issues { background: #fff3e0; color: #ef6c00; border: 2px solid #ff9800; }
+  .sc-actions { margin-top: 20px; }
+  .sc-btn { display: inline-block; padding: 10px 22px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff !important; border: none; border-radius: 8px; font-weight: 800; text-decoration: none; cursor: pointer; }
+  .sc-btn:hover { opacity: .92; }
+  .sc-btn.ghost { background: #fff; color: #333 !important; border: 1px solid #e0e0e0; }
+  pre { background: #1a1a1a; color: #e8f5e9; padding: 14px; border-radius: 8px; overflow-x: auto; font-size: .82em; line-height: 1.6; }
+  .sc-hint { background: #fff3e0; color: #ef6c00; padding: 10px 14px; border-radius: 8px; font-size: .85em; margin-top: 8px; }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<div class="sc-wrap">
+  <div class="sc-hero">
+    <h1>🔍 AIme セットアップ診断</h1>
+    <p>Supabase との疎通・テーブル存在・Storage・認証の状態を自動チェックします。</p>
+  </div>
+
+  <div id="summary-box"></div>
+
+  <div class="sc-card">
+    <h2>接続</h2>
+    <div id="conn-section"></div>
+  </div>
+
+  <div class="sc-card">
+    <h2>テーブル (schema.sql / v2 / v3)</h2>
+    <div id="table-section"></div>
+  </div>
+
+  <div class="sc-card">
+    <h2>Storage バケット</h2>
+    <div id="storage-section"></div>
+  </div>
+
+  <div class="sc-card">
+    <h2>認証プロバイダ</h2>
+    <div id="auth-section"></div>
+  </div>
+
+  <div class="sc-card">
+    <h2>不足分の SQL</h2>
+    <p style="font-size:.88em; color:#555; margin-top:0;">以下の SQL を Supabase Dashboard → SQL Editor で実行してください。</p>
+    <div id="missing-sql-section"></div>
+  </div>
+
+  <div class="sc-actions">
+    <button class="sc-btn" onclick="location.reload()">再チェック</button>
+    <a href="original.html" class="sc-btn ghost">サイトトップへ</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+(async function(){
+  const sb = window.sb;
+  const state = { tables: {}, buckets: {}, conn: null, auth: null };
+
+  // ============ 接続チェック ============
+  const connSec = document.getElementById('conn-section');
+  if (!sb) {
+    connSec.innerHTML = row('Supabase クライアント', '初期化失敗', 'ng', 'config.js / supabase-client.js を確認');
+    state.conn = false;
+  } else {
+    try {
+      // 軽いクエリで疎通確認
+      const { error } = await sb.from('profiles').select('id', { head: true, count: 'exact' }).limit(1);
+      if (error && error.message.includes('does not exist')) {
+        connSec.innerHTML = row('Supabase 接続', '接続OK (テーブル未作成)', 'warn', '接続はできていますが profiles テーブルが無い');
+        state.conn = true;
+      } else if (error) {
+        connSec.innerHTML = row('Supabase 接続', 'エラー: ' + error.message, 'ng', '');
+        state.conn = false;
+      } else {
+        connSec.innerHTML = row('Supabase 接続', 'OK', 'ok', `${window.SUPABASE_URL.replace('https://','')}`);
+        state.conn = true;
+      }
+    } catch (err) {
+      connSec.innerHTML = row('Supabase 接続', 'エラー: ' + err.message, 'ng', '');
+      state.conn = false;
+    }
+  }
+
+  // ============ テーブルチェック ============
+  const EXPECTED = {
+    'v1 (schema.sql)': ['profiles', 'posts', 'comments', 'likes', 'bookmarks', 'applications', 'job_stats', 'files'],
+    'v2 (schema-v2.sql)': ['companies', 'job_postings', 'conversations', 'messages', 'notifications'],
+    'v3 (schema-v3.sql)': ['follows', 'saved_searches', 'reviews', 'events', 'event_rsvps', 'endorsements', 'reports', 'audit_logs', 'user_settings', 'company_updates', 'search_history', 'contacts'],
+  };
+  const tableSec = document.getElementById('table-section');
+  if (!state.conn) {
+    tableSec.innerHTML = '<div class="sc-hint">接続失敗のためスキップ</div>';
+  } else {
+    let html = '';
+    for (const [group, tables] of Object.entries(EXPECTED)) {
+      html += `<div style="margin-top:8px; font-family:monospace; font-size:.82em; color:#888; letter-spacing:1px; text-transform:uppercase; padding:6px 0;">${group}</div>`;
+      for (const t of tables) {
+        // head:true だとスキーマキャッシュ404でも成功扱いになるバグがあるので、実GETで確認
+        const res = await sb.from(t).select('*').limit(1);
+        const ok = !res.error;
+        state.tables[t] = ok;
+        html += row(t, ok ? 'あり' : '無し', ok ? 'ok' : 'ng', ok ? '' : (res.error?.message.slice(0,60) || 'テーブルが存在しません'));
+      }
+    }
+    tableSec.innerHTML = html;
+  }
+
+  // ============ Storage バケット ============
+  const EXPECTED_BUCKETS = ['logos', 'covers', 'avatars', 'resumes', 'portfolios'];
+  const storageSec = document.getElementById('storage-section');
+  if (!state.conn) {
+    storageSec.innerHTML = '<div class="sc-hint">接続失敗のためスキップ</div>';
+  } else {
+    let html = '';
+    // listBuckets は anon key では使えないことがあるので、各バケットにダミー一覧を試す
+    for (const b of EXPECTED_BUCKETS) {
+      const { error } = await sb.storage.from(b).list('', { limit: 1 });
+      const ok = !error || error.message.includes('row-level security'); // RLSで弾かれても存在はする
+      const notFound = error && (error.message.includes('not found') || error.message.includes('does not exist'));
+      state.buckets[b] = ok && !notFound;
+      if (notFound) {
+        html += row(b, '無し', 'ng', 'バケット未作成');
+      } else if (ok) {
+        html += row(b, 'あり', 'ok', '');
+      } else {
+        html += row(b, 'エラー', 'warn', error.message.slice(0,60));
+      }
+    }
+    storageSec.innerHTML = html;
+  }
+
+  // ============ 認証プロバイダ ============
+  // anon key では providers 一覧を直接取得できないので、UI上の動作で判定
+  const authSec = document.getElementById('auth-section');
+  authSec.innerHTML = [
+    row('Email / Password', '有効 (クライアント側)', 'ok', '/signup.html で登録テスト可能'),
+    row('Google OAuth', '要手動設定', 'warn', 'Supabase Dashboard → Authentication → Providers で設定'),
+    row('LinkedIn OAuth', '要手動設定', 'warn', '必要なら Dashboard で設定 (任意)'),
+    row('GitHub OAuth', '要手動設定', 'warn', '必要なら Dashboard で設定 (任意)'),
+    row('Magic Link', '有効 (クライアント側)', 'ok', 'メール送信は Supabase デフォルト SMTP'),
+  ].join('');
+
+  // ============ 不足分 SQL ============
+  const missingTables = Object.entries(state.tables).filter(([,v]) => !v).map(([k]) => k);
+  const missingBuckets = Object.entries(state.buckets).filter(([,v]) => !v).map(([k]) => k);
+  const missSec = document.getElementById('missing-sql-section');
+  const scripts = [];
+  if (missingTables.length) {
+    // どのバージョンが不足か判定
+    const v1tables = EXPECTED['v1 (schema.sql)'];
+    const v2tables = EXPECTED['v2 (schema-v2.sql)'];
+    const v3tables = EXPECTED['v3 (schema-v3.sql)'];
+    if (missingTables.some(t => v1tables.includes(t))) scripts.push('schema.sql');
+    if (missingTables.some(t => v2tables.includes(t))) scripts.push('schema-v2.sql');
+    if (missingTables.some(t => v3tables.includes(t))) scripts.push('schema-v3.sql');
+  }
+  let missingHtml = '';
+  if (scripts.length === 0 && missingBuckets.length === 0) {
+    missingHtml = '<div class="sc-badge ok" style="display:inline-block; padding:8px 18px;">✓ 全て揃っています</div>';
+  } else {
+    if (scripts.length) {
+      missingHtml += '<p style="font-weight:700; color:#111;">実行が必要な SQL:</p><ol style="margin:6px 0 14px; padding-left:24px; line-height:1.9;">';
+      for (const s of scripts) {
+        missingHtml += `<li><code style="background:#f5f5f5; padding:2px 8px; border-radius:4px;">sql/${s}</code></li>`;
+      }
+      missingHtml += '</ol>';
+      missingHtml += '<div class="sc-hint">Supabase Dashboard → <strong>SQL Editor</strong> → New query に、各ファイルの中身を順番に貼り付けて Run してください。</div>';
+    }
+    if (missingBuckets.length) {
+      missingHtml += '<p style="font-weight:700; color:#111; margin-top:14px;">作成が必要な Storage バケット:</p>';
+      missingHtml += '<pre style="margin-top:6px;">insert into storage.buckets (id, name, public) values\n' +
+        missingBuckets.map(b => `  ('${b}','${b}', ${['logos','covers','avatars'].includes(b) ? 'true':'false'})`).join(',\n') +
+        '\non conflict (id) do nothing;</pre>';
+      missingHtml += '<div class="sc-hint">schema-v3.sql を実行済みなら自動で作られます。別途必要な場合のみ上記を実行。</div>';
+    }
+  }
+  missSec.innerHTML = missingHtml;
+
+  // ============ サマリー ============
+  const allTablesOk = Object.values(state.tables).every(Boolean);
+  const allBucketsOk = Object.values(state.buckets).every(Boolean);
+  const summary = document.getElementById('summary-box');
+  if (state.conn && allTablesOk && allBucketsOk) {
+    summary.innerHTML = `<div class="sc-summary all-ok">✅ セットアップ完了！このプロジェクトは本番運用可能な状態です。<br>
+      <span style="font-weight:500; font-size:.9em;">次は <a href="signup.html" style="color:#1b5e20; font-weight:800;">signup.html</a> でテスト登録してください。</span></div>`;
+  } else if (!state.conn) {
+    summary.innerHTML = `<div class="sc-summary has-issues">❌ Supabase に接続できません。<br>
+      <span style="font-weight:500; font-size:.9em;">js/config.js の URL / ANON_KEY を確認してください。</span></div>`;
+  } else {
+    const missCount = (scripts.length || 0) + missingBuckets.length;
+    summary.innerHTML = `<div class="sc-summary has-issues">⚠️ 完了まで あと${missCount}ステップ。<br>
+      <span style="font-weight:500; font-size:.9em;">下の「不足分の SQL」を実行してください。</span></div>`;
+  }
+
+  function row(name, status, kind, hint) {
+    return `<div class="sc-row">
+      <div class="sc-name">${name}${hint ? `<small>${hint}</small>` : ''}</div>
+      <span class="sc-badge ${kind}">${status}</span>
+    </div>`;
+  }
+})();
+</script>
+
+</body></html>

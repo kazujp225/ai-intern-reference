@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設定 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .st-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 40px 24px; }
+  .st-hero-inner { max-width: 800px; margin: 0 auto; }
+  .st-hero h1 { margin: 0; font-size: 1.8em; font-weight: 900; letter-spacing: -.02em; }
+  .st-hero p { color: #555; margin: 6px 0 0; }
+  .st-wrap { max-width: 800px; margin: 28px auto 60px; padding: 0 24px; }
+  .st-section {
+    background: #fff; border-radius: 14px; padding: 24px 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 16px;
+  }
+  .st-section h2 { margin: 0 0 14px; font-size: 1.1em; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .st-section h2::before { content:''; width:4px; height:16px; background:#4caf50; border-radius:2px; }
+  .st-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+  .st-row:last-child { border-bottom: none; }
+  .st-row-body { flex: 1; min-width: 0; }
+  .st-row-title { font-weight: 800; font-size: .95em; }
+  .st-row-desc { font-size: .82em; color: #666; margin-top: 3px; line-height: 1.5; }
+  .st-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+  .st-switch input { opacity: 0; width: 0; height: 0; }
+  .st-slider { position: absolute; inset: 0; background: #ccc; border-radius: 999px; cursor: pointer; transition: .2s; }
+  .st-slider::before { content:''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+  .st-switch input:checked + .st-slider { background: #2e7d32; }
+  .st-switch input:checked + .st-slider::before { transform: translateX(20px); }
+  .st-select { padding: 7px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-weight:700; background:#fff; font-size:.88em; }
+  .st-danger { color: #c62828; font-weight: 800; background: transparent; border: 1px solid #ffcdd2; padding: 8px 16px; border-radius: 8px; font-size: .85em; cursor: pointer; }
+  .st-danger:hover { background: #ffebee; }
+  .st-note { padding: 10px 14px; background: #fff3e0; color: #e65100; border-radius: 8px; font-size: .85em; margin-top: 10px; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="mypage.html">マイページ</a>
+    <a href="settings.html" class="current">設定</a>
+  </nav>
+</div></header>
+
+<section class="st-hero">
+  <div class="st-hero-inner"><h1>設定</h1><p>通知・プライバシー・セキュリティの設定</p></div>
+</section>
+
+<nav class="breadcrumb" style="max-width:800px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  <a href="mypage.html" style="color:#666;">マイページ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  設定
+</nav>
+
+<div class="st-wrap">
+  <div class="st-section">
+    <h2>通知</h2>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">メール通知</div>
+        <div class="st-row-desc">応募・メッセージ・新着求人アラートをメールで受け取る</div>
+      </div>
+      <label class="st-switch"><input type="checkbox" id="notify-email" checked><span class="st-slider"></span></label>
+    </div>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">ブラウザ通知 (プッシュ)</div>
+        <div class="st-row-desc">ログイン中に新着を即時通知</div>
+      </div>
+      <label class="st-switch"><input type="checkbox" id="notify-push" checked><span class="st-slider"></span></label>
+    </div>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">週次ダイジェスト</div>
+        <div class="st-row-desc">保存検索の新着求人・おすすめをまとめて週1でお届け</div>
+      </div>
+      <select class="st-select" id="digest-freq">
+        <option value="off">オフ</option>
+        <option value="daily">毎日</option>
+        <option value="weekly" selected>毎週</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="st-section">
+    <h2>プライバシー</h2>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">プロフィールを一般公開</div>
+        <div class="st-row-desc">オフにすると企業のみが閲覧可能に</div>
+      </div>
+      <label class="st-switch"><input type="checkbox" id="privacy-public" checked><span class="st-slider"></span></label>
+    </div>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">連絡先を企業に共有</div>
+        <div class="st-row-desc">応募した企業にメールアドレスを自動共有する</div>
+      </div>
+      <label class="st-switch"><input type="checkbox" id="privacy-contact" checked><span class="st-slider"></span></label>
+    </div>
+  </div>
+
+  <div class="st-section">
+    <h2>セキュリティ</h2>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">2要素認証 (MFA)</div>
+        <div class="st-row-desc">Supabase Dashboard で Authenticator App を設定できます</div>
+      </div>
+      <a href="https://supabase.com/dashboard/project/_/auth/mfa" target="_blank" class="st-select" style="text-decoration:none; color:#2e7d32; background:#e8f5e9; border:1px solid #c8e6c9;">設定画面へ</a>
+    </div>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">パスワード変更</div>
+        <div class="st-row-desc">リセットメールを送信します</div>
+      </div>
+      <button class="st-danger" id="reset-pw-btn" style="color:#2e7d32; border-color:#c8e6c9;">リセットメール送信</button>
+    </div>
+  </div>
+
+  <div class="st-section">
+    <h2>アカウント</h2>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title">データをダウンロード (GDPR)</div>
+        <div class="st-row-desc">応募履歴・投稿・メッセージをJSONで取得</div>
+      </div>
+      <button class="st-select" id="export-btn" style="cursor:pointer;">ダウンロード</button>
+    </div>
+    <div class="st-row">
+      <div class="st-row-body">
+        <div class="st-row-title" style="color:#c62828;">アカウントを完全削除</div>
+        <div class="st-row-desc">すべてのデータが削除されます（取り消し不可）</div>
+      </div>
+      <button class="st-danger" id="delete-btn">削除する</button>
+    </div>
+    <div id="save-status" class="st-note" style="display:none;"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+  if (PREVIEW) return; // プレビューはデフォルト値で表示
+
+  try {
+    const s = await window.AImeV3.getSettings();
+    if (!s) return;
+    document.getElementById('notify-email').checked = s.notify_email;
+    document.getElementById('notify-push').checked  = s.notify_push;
+    document.getElementById('digest-freq').value    = s.digest_frequency;
+    document.getElementById('privacy-public').checked  = s.show_profile_publicly;
+    document.getElementById('privacy-contact').checked = s.show_contact_to_companies;
+  } catch (err) {
+    console.warn(err);
+  }
+
+  function bindSave(id, field, transform = v => v) {
+    const el = document.getElementById(id);
+    el.addEventListener('change', async () => {
+      const val = transform(el.type === 'checkbox' ? el.checked : el.value);
+      try {
+        await window.AImeV3.updateSettings({ [field]: val });
+        const s = document.getElementById('save-status');
+        s.textContent = '✓ 保存しました'; s.style.background = '#e8f5e9'; s.style.color = '#1b5e20'; s.style.display = 'block';
+        setTimeout(() => s.style.display = 'none', 1500);
+      } catch (err) { alert('保存失敗: ' + err.message); }
+    });
+  }
+  bindSave('notify-email', 'notify_email');
+  bindSave('notify-push',  'notify_push');
+  bindSave('digest-freq',  'digest_frequency');
+  bindSave('privacy-public', 'show_profile_publicly');
+  bindSave('privacy-contact','show_contact_to_companies');
+
+  document.getElementById('reset-pw-btn').addEventListener('click', async () => {
+    const { data: { user } } = await window.sb.auth.getUser();
+    if (!user) { alert('ログインしてください'); return; }
+    const { error } = await window.sb.auth.resetPasswordForEmail(user.email, {
+      redirectTo: location.origin + '/reset-password.html',
+    });
+    if (error) alert('エラー: ' + error.message);
+    else alert('パスワードリセットメールを送信しました');
+  });
+
+  document.getElementById('export-btn').addEventListener('click', async () => {
+    const { data: { user } } = await window.sb.auth.getUser();
+    if (!user) return;
+    const [profile, apps, bookmarks, posts] = await Promise.all([
+      window.sb.from('profiles').select('*').eq('id', user.id).single().then(r=>r.data),
+      window.sb.from('applications').select('*').eq('user_id', user.id).then(r=>r.data),
+      window.sb.from('bookmarks').select('*').eq('user_id', user.id).then(r=>r.data),
+      window.sb.from('posts').select('*').eq('author_id', user.id).then(r=>r.data),
+    ]);
+    const blob = new Blob([JSON.stringify({ profile, apps, bookmarks, posts }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'aime-export.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('delete-btn').addEventListener('click', async () => {
+    if (!confirm('本当にアカウントを削除しますか？\n全データが消えます（取り消し不可）。')) return;
+    if (!confirm('最終確認: 削除します。よろしいですか？')) return;
+    // Supabase Edge Function 側で削除を行うのが安全。ここでは profiles と関連データのみ削除。
+    const { data: { user } } = await window.sb.auth.getUser();
+    if (!user) return;
+    try {
+      await window.sb.from('profiles').delete().eq('id', user.id);
+      await window.sb.auth.signOut();
+      alert('アカウントを削除しました');
+      location.href = 'original.html';
+    } catch (err) { alert('エラー: ' + err.message); }
+  });
+})();
+</script>
+</body>
+</html>

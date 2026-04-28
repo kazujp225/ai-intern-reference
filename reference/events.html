@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>イベント・セミナー | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  body { background: #f7f8fa; }
+  .ev-hero { background: linear-gradient(135deg,#f1f8e9,#e8f5e9); padding: 44px 24px 36px; }
+  .ev-hero-inner { max-width: 1100px; margin: 0 auto; }
+  .ev-hero h1 { margin: 0; font-size: 2em; font-weight: 900; letter-spacing: -.02em; }
+  .ev-hero p { color: #555; margin: 6px 0 0; }
+  .ev-wrap { max-width: 1100px; margin: 28px auto 60px; padding: 0 24px; }
+  .ev-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .ev-card {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.04), inset 0 0 0 1px rgba(0,0,0,.04);
+    transition: transform .2s, box-shadow .2s; display: block; color: inherit; text-decoration: none;
+  }
+  .ev-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.08); color: inherit; }
+  .ev-date {
+    font-family: 'Arial Black', sans-serif; font-size: 2em; font-weight: 900; color: #1b5e20; line-height: 1;
+  }
+  .ev-date small { display:block; font-size: .38em; color: #666; letter-spacing: 2px; font-family: monospace; margin-top: 4px; }
+  .ev-title { font-size: 1.1em; font-weight: 900; margin: 14px 0 6px; color: #111; line-height: 1.4; }
+  .ev-meta { font-size: .82em; color: #666; line-height: 1.6; }
+  .ev-company { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; font-size: .85em; font-weight: 700; color: #2e7d32; }
+  .ev-logo { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .88em; overflow: hidden; }
+  .ev-logo img { width:100%; height:100%; object-fit:cover; }
+  .ev-empty { background: #fff; border-radius: 14px; padding: 60px; text-align: center; color: #888; }
+  .ev-tabs { display: flex; gap: 6px; padding: 6px; background: #fff; border-radius: 12px; max-width: 320px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .ev-tab { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 8px; font-weight: 700; color: #666; cursor: pointer; font-size: .88em; }
+  .ev-tab.active { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; }
+</style>  <link rel="stylesheet" href="css/mobile-nav.css?v=27">  <script src="js/mobile-nav.js?v=27" defer></script></head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+  <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+  <nav class="site-nav">
+    <a href="search.html">インターンを探す</a>
+    <a href="companies.html">AI企業を探す</a>
+    <a href="events.html" class="current">イベント</a>
+    <a href="blog.html">AIコラム</a>
+    <a href="mypage.html">マイページ</a>
+  </nav>
+</div></header>
+
+<section class="ev-hero">
+  <div class="ev-hero-inner">
+    <h1>イベント・セミナー</h1>
+    <p>AI企業が主催する説明会・勉強会・ミートアップ情報。参加予約（RSVP）もこのページから。</p>
+  </div>
+</section>
+
+<nav class="breadcrumb" style="max-width:1100px;margin:16px auto 0;padding:0 24px;font-size:.85em;color:#666;">
+  <a href="original.html" style="color:#666;">トップ</a><span style="margin:0 6px;color:#ccc;">/</span>
+  イベント
+</nav>
+
+<div class="ev-wrap">
+  <div class="ev-tabs">
+    <button class="ev-tab active" data-filter="upcoming">開催予定</button>
+    <button class="ev-tab" data-filter="past">過去</button>
+  </div>
+  <div id="ev-list" class="ev-list"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner"><div><div class="brand">AIme</div></div><div></div><div></div><div></div></div>
+  <div class="copyright">© 2026 AIme</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-v3.js"></script>
+<script src="js/aime-ui.js"></script>
+<script>
+(async function(){
+  const PREVIEW = new URLSearchParams(location.search).get('preview') === '1';
+  const listEl = document.getElementById('ev-list');
+  let currentFilter = 'upcoming';
+
+  function fmt(d) {
+    const dt = new Date(d);
+    const m = dt.getMonth() + 1, day = dt.getDate();
+    const time = dt.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+    return { m, day, time, weekday: ['日','月','火','水','木','金','土'][dt.getDay()] };
+  }
+
+  function render(items) {
+    if (!items.length) { listEl.innerHTML = `<div class="ev-empty">該当するイベントはありません</div>`; return; }
+    listEl.innerHTML = items.map(e => {
+      const d = fmt(e.starts_at);
+      const companyName = e.companies?.name || '—';
+      const logoInitial = companyName.replace(/^株式会社|^合同会社/,'').charAt(0).toUpperCase();
+      const logoHtml = e.companies?.logo_url
+        ? `<div class="ev-logo"><img src="${e.companies.logo_url}" alt=""></div>`
+        : `<div class="ev-logo">${logoInitial}</div>`;
+      return `
+        <a class="ev-card" href="event-detail.html?id=${e.id}">
+          <div class="ev-date">${d.m}/${d.day}<small>${d.weekday} ${d.time}</small></div>
+          <div class="ev-title">${e.title}</div>
+          <div class="ev-meta">
+            ${e.online_url ? '🖥 オンライン開催' : e.location || '会場TBD'}
+            ${e.capacity ? ` · 定員 ${e.capacity}名` : ''}
+          </div>
+          <div class="ev-company">${logoHtml}${companyName}</div>
+        </a>`;
+    }).join('');
+  }
+
+  async function load() {
+    if (PREVIEW) {
+      const demo = [
+        { id:'e1', title:'生成AIスタートアップ合同説明会 2026 Spring', starts_at:'2026-05-12T19:00:00+09:00', location:'オンライン', online_url:'https://example.com/zoom', capacity:200, companies:{ name:'株式会社コンフィグ' } },
+        { id:'e2', title:'Claude Code ハンズオン勉強会', starts_at:'2026-05-20T18:30:00+09:00', location:'東京都渋谷区', capacity:40, companies:{ name:'株式会社ニューラル' } },
+        { id:'e3', title:'RAG実装コンテスト @ Tokyo', starts_at:'2026-06-03T13:00:00+09:00', location:'東京都港区', capacity:80, companies:{ name:'オートノミー' } },
+      ];
+      render(demo);
+      return;
+    }
+    try {
+      const items = await window.AImeV3.listEvents({ upcoming: currentFilter === 'upcoming' });
+      render(items);
+    } catch (err) {
+      listEl.innerHTML = `<div class="ev-empty">読み込みエラー: ${err.message}</div>`;
+    }
+  }
+
+  document.querySelectorAll('.ev-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.ev-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentFilter = t.dataset.filter;
+    load();
+  }));
+
+  load();
+})();
+</script>
+</body>
+</html>

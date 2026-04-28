@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="関東地方の地図">
+  <defs>
+    <style>
+      .pref {
+        fill: #e8f5e9;
+        stroke: #999;
+        stroke-width: 1.2;
+        stroke-linejoin: round;
+        cursor: pointer;
+        transition: fill 0.2s ease;
+      }
+      .pref:hover { fill: #4caf50; }
+      .pref-label {
+        font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+        font-size: 14px; font-weight: 700; fill: #1b5e20;
+        text-anchor: middle; pointer-events: none; user-select: none;
+      }
+      .pref:hover + .pref-label { fill: #fff; }
+      #tooltip { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- 群馬県 Gunma - 北西 -->
+  <path class="pref" data-pref="群馬県" data-count="12" d="
+    M 68,160 C 62,148 58,132 65,118 C 72,104 82,95 88,82
+    C 94,70 105,58 118,48 C 128,40 140,35 155,32
+    C 168,30 180,34 192,38 C 202,42 210,48 220,55
+    C 228,62 235,72 240,82 C 244,90 246,100 250,108
+    C 254,118 258,125 255,138 C 252,148 248,158 242,168
+    C 236,178 228,185 218,190 C 210,194 200,196 190,198
+    C 178,200 168,198 158,195 C 148,192 138,186 128,180
+    C 118,174 108,168 98,164 C 88,160 78,158 72,162
+    Z"/>
+  <text class="pref-label" x="162" y="125">群馬</text>
+
+  <!-- 栃木県 Tochigi - 北東 -->
+  <path class="pref" data-pref="栃木県" data-count="8" d="
+    M 255,108 C 258,98 262,88 270,78 C 278,68 288,58 300,50
+    C 312,42 325,36 340,34 C 352,32 365,35 378,40
+    C 388,44 396,52 402,62 C 408,72 412,85 414,98
+    C 416,112 415,125 412,138 C 409,150 404,162 396,172
+    C 388,182 378,190 366,196 C 355,200 342,202 330,200
+    C 318,198 308,194 298,188 C 288,182 280,174 272,165
+    C 264,156 258,146 254,136 C 252,128 252,118 255,108
+    Z"/>
+  <text class="pref-label" x="335" y="125">栃木</text>
+
+  <!-- 茨城県 Ibaraki - 東 -->
+  <path class="pref" data-pref="茨城県" data-count="10" d="
+    M 414,98 C 418,88 425,80 435,75 C 445,70 456,68 466,72
+    C 476,76 484,84 490,94 C 496,104 500,116 502,130
+    C 504,145 504,160 502,175 C 500,190 496,205 490,218
+    C 484,232 476,244 466,255 C 456,265 444,272 432,278
+    C 420,284 408,286 396,282 C 385,278 376,270 370,260
+    C 365,250 362,238 360,226 C 358,214 358,202 360,190
+    C 362,180 366,172 372,164 C 380,155 388,148 396,140
+    C 404,132 410,120 412,108
+    Z"/>
+  <text class="pref-label" x="438" y="178">茨城</text>
+
+  <!-- 埼玉県 Saitama - 中央 -->
+  <path class="pref" data-pref="埼玉県" data-count="18" d="
+    M 72,162 C 80,168 92,174 105,180 C 118,186 132,192 148,198
+    C 162,202 178,206 192,208 C 206,210 220,210 234,208
+    C 248,206 260,200 272,195 C 284,190 296,186 308,188
+    C 320,190 332,196 342,204 C 350,210 356,218 360,228
+    C 362,238 362,248 358,258 C 354,268 348,276 340,282
+    C 332,288 322,292 310,294 C 298,296 286,296 274,294
+    C 260,292 248,288 236,284 C 222,280 210,274 198,268
+    C 184,262 172,255 160,248 C 148,240 136,232 125,224
+    C 114,216 104,206 96,196 C 88,186 82,176 76,168
+    Z"/>
+  <text class="pref-label" x="215" y="245">埼玉</text>
+
+  <!-- 東京都 Tokyo - 中央南 -->
+  <path class="pref" data-pref="東京都" data-count="89" d="
+    M 125,310 C 130,298 140,288 152,280 C 164,272 178,268 192,266
+    C 206,264 220,266 234,270 C 246,274 258,280 268,288
+    C 278,296 285,306 290,318 C 294,330 295,342 292,354
+    C 289,365 282,375 273,382 C 264,389 254,394 242,398
+    C 232,400 220,400 210,396 C 200,392 190,386 180,380
+    C 168,372 158,365 148,356 C 138,347 130,338 125,328
+    C 120,318 120,310 125,310
+    Z"/>
+  <text class="pref-label" x="212" y="338">東京</text>
+
+  <!-- 千葉県 Chiba - 南東 -->
+  <path class="pref" data-pref="千葉県" data-count="15" d="
+    M 360,228 C 366,238 372,250 378,262 C 384,274 390,286 394,300
+    C 398,314 400,328 400,342 C 400,358 398,372 392,388
+    C 386,402 378,416 368,428 C 358,440 345,450 332,458
+    C 318,465 304,468 290,466 C 278,464 268,458 260,448
+    C 252,438 248,426 246,414 C 244,402 246,390 250,378
+    C 255,368 262,358 270,350 C 278,342 286,334 292,324
+    C 298,314 304,304 310,296 C 318,286 328,278 340,270
+    C 348,264 355,252 358,240
+    Z"/>
+  <text class="pref-label" x="335" y="365">千葉</text>
+
+  <!-- 神奈川県 Kanagawa - 南西 -->
+  <path class="pref" data-pref="神奈川県" data-count="22" d="
+    M 76,350 C 86,338 98,328 112,320 C 124,314 136,310 148,310
+    C 158,310 168,314 178,320 C 188,326 196,334 204,344
+    C 212,354 218,365 222,378 C 225,388 226,398 224,408
+    C 222,418 216,426 208,432 C 198,438 188,442 176,444
+    C 164,446 152,445 140,440 C 128,435 118,428 108,418
+    C 98,408 90,396 84,384 C 78,372 74,360 76,350
+    Z"/>
+  <text class="pref-label" x="152" y="385">神奈川</text>
+
+  <!-- ==========================================
+       TOOLTIP
+  ========================================== -->
+  <g id="tooltip" visibility="hidden">
+    <rect id="tip-bg" x="0" y="0" width="160" height="52" rx="8" fill="#1b5e20" opacity="0.95"/>
+    <text id="tip-name" x="80" y="22" text-anchor="middle" fill="#fff"
+          font-family="'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif"
+          font-size="14" font-weight="700"></text>
+    <text id="tip-count" x="80" y="42" text-anchor="middle" fill="#a5d6a7"
+          font-family="'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif"
+          font-size="12" font-weight="600"></text>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    (function () {
+      var svg      = document.currentScript ? document.currentScript.closest('svg') : document.querySelector('svg');
+      var tooltip  = svg.getElementById('tooltip');
+      var tipBg    = svg.getElementById('tip-bg');
+      var tipName  = svg.getElementById('tip-name');
+      var tipCount = svg.getElementById('tip-count');
+
+      function getSVGPoint(evt) {
+        var pt  = svg.createSVGPoint();
+        pt.x = evt.clientX; pt.y = evt.clientY;
+        var ctm = svg.getScreenCTM();
+        if (ctm) pt = pt.matrixTransform(ctm.inverse());
+        return pt;
+      }
+
+      function positionTooltip(evt, w) {
+        var pt = getSVGPoint(evt);
+        var tx = Math.max(4, Math.min(pt.x - w / 2, 600 - w - 4));
+        var ty = pt.y - 62;
+        if (ty < 4) ty = pt.y + 16;
+        tooltip.setAttribute('transform', 'translate(' + tx + ',' + ty + ')');
+      }
+
+      svg.querySelectorAll('.pref').forEach(function (path) {
+        var name  = path.getAttribute('data-pref') || '';
+        var count = path.getAttribute('data-count') || '0';
+
+        path.addEventListener('mouseenter', function (evt) {
+          tipName.textContent  = name;
+          tipCount.textContent = count + '件のインターン';
+          var w = Math.max(tipName.getBBox().width, tipCount.getBBox().width) + 36;
+          tipBg.setAttribute('width', w);
+          tipName.setAttribute('x', w / 2);
+          tipCount.setAttribute('x', w / 2);
+          tooltip.setAttribute('visibility', 'visible');
+          positionTooltip(evt, w);
+        });
+        path.addEventListener('mousemove', function (evt) {
+          positionTooltip(evt, parseFloat(tipBg.getAttribute('width')));
+        });
+        path.addEventListener('mouseleave', function () {
+          tooltip.setAttribute('visibility', 'hidden');
+        });
+        path.setAttribute('tabindex', '0');
+        path.setAttribute('role', 'button');
+        path.setAttribute('aria-label', name + ' ' + count + '件');
+      });
+    })();
+  ]]></script>
+</svg>

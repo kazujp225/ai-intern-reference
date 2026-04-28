@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投稿詳細 | AIme</title>
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .po-wrap { max-width: 760px; margin: 40px auto 60px; padding: 0 24px; }
+  .po-card { background: #fff; border-radius: 16px; padding: 36px; box-shadow: 0 4px 14px rgba(0,0,0,.05); }
+  .po-card h1 { margin: 0 0 12px; font-size: 1.8em; font-weight: 900; line-height: 1.3; letter-spacing: -.01em; }
+  .po-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: .85em; color: #666; }
+  .po-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2e7d32; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+  .po-body { font-size: 1em; line-height: 1.9; color: #222; white-space: pre-wrap; }
+  .po-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 20px; }
+  .po-tag { padding: 4px 12px; border-radius: 999px; background: #e8f5e9; color: #2e7d32; font-size: .8em; font-weight: 700; }
+  .po-actions { display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid #f0f0f0; }
+  .po-like-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 20px; border: 2px solid #e0e0e0; background: #fff; border-radius: 999px;
+    cursor: pointer; font-weight: 800; font-size: .9em; color: #666; transition: all .15s;
+  }
+  .po-like-btn:hover { border-color: #f44336; color: #f44336; }
+  .po-like-btn.liked { background: #ffebee; border-color: #f44336; color: #c62828; }
+
+  .po-comments { margin-top: 40px; }
+  .po-comments h2 { margin: 0 0 16px; font-size: 1.2em; font-weight: 900; }
+  .po-comment-form textarea {
+    width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;
+    font-family: inherit; min-height: 80px; resize: vertical; font-size: .95em;
+  }
+  .po-comment-form button {
+    margin-top: 10px; padding: 10px 22px; background: linear-gradient(135deg,#1b5e20,#2e7d32);
+    color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 800;
+  }
+  .po-comment {
+    display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .po-comment:last-child { border-bottom: none; }
+  .po-comment .author-name { font-weight: 800; font-size: .9em; color: #111; }
+  .po-comment .body-text { font-size: .92em; color: #333; margin-top: 4px; line-height: 1.6; white-space: pre-wrap; }
+  .po-comment .meta-row { font-size: .75em; color: #888; margin-top: 4px; }
+  .po-delete { background: none; border: none; color: #c62828; font-size: .8em; cursor: pointer; padding: 0; }
+  .po-empty { text-align: center; padding: 30px; color: #888; font-size: .9em; }
+
+  .po-login-prompt { text-align: center; padding: 20px; background: #f1f8e9; border-radius: 8px; font-size: .9em; color: #2e7d32; }
+  .po-login-prompt a { font-weight: 800; }
+</style>
+  <link rel="stylesheet" href="css/mobile-nav.css?v=27">
+  <script src="js/mobile-nav.js?v=27" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
+    <nav class="site-nav">
+      <a href="search.html">インターンを探す</a>
+      <a href="companies.html">AI企業を探す</a>
+      <a href="blog.html" class="current">AIコラム</a>
+      <a href="mypage.html" id="nav-mypage" style="display:none;">マイページ</a>
+      <a href="login.html" id="nav-login" class="login">ログイン</a>
+      <a href="signup.html" id="nav-signup" class="register">新規登録</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="breadcrumb">
+  <a href="original.html">トップ</a><span>/</span>
+  <a href="blog.html">AIコラム</a><span>/</span>
+  <span id="crumb">投稿</span>
+</nav>
+
+<div class="po-wrap" id="po-main"><div class="po-empty">読み込み中...</div></div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div></div>
+    <div></div><div></div><div></div>
+  </div>
+  <div class="copyright">© 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-social.js"></script>
+<script src="js/mock-posts.js"></script>
+<script>
+(async function(){
+  const id = new URLSearchParams(location.search).get('id');
+  const main = document.getElementById('po-main');
+  if (!id) { main.innerHTML = '<div class="po-empty">投稿IDが指定されていません</div>'; return; }
+
+  const { data: { user } } = await window.sb.auth.getUser();
+  if (user) {
+    document.getElementById('nav-mypage').style.display = 'inline-block';
+    document.getElementById('nav-login').style.display = 'none';
+    document.getElementById('nav-signup').style.display = 'none';
+  }
+
+  // モック記事の場合はSupabaseをスキップしてモックデータから生成
+  const isMock = id.startsWith('mock-');
+  let post;
+  if (isMock) {
+    const m = window.getMockPost(id);
+    if (!m) { main.innerHTML = '<div class="po-empty">投稿が見つかりませんでした</div>'; return; }
+    post = {
+      id: m.id,
+      title: m.title,
+      body: m.body,
+      tags: m.tags || [],
+      created_at: m.created_at,
+      profiles: { nickname: m.author_nickname, avatar_color: '#2e7d32' },
+      _mockLikeCount: m.like_count || 0,
+    };
+  } else {
+    post = await window.AImeSocial.getPost(id);
+    if (!post) { main.innerHTML = '<div class="po-empty">投稿が見つかりませんでした</div>'; return; }
+  }
+
+  document.title = post.title + ' | AIme';
+  document.getElementById('crumb').textContent = post.title.slice(0, 20);
+
+  const nick = post.profiles?.nickname || '匿名';
+  const initial = nick.charAt(0).toUpperCase();
+
+  const [liked, likeCount, comments] = isMock
+    ? [false, post._mockLikeCount, []]
+    : await Promise.all([
+        window.AImeSocial.hasLiked('post', id),
+        window.AImeSocial.countLikes('post', id),
+        window.AImeSocial.listComments('post', id),
+      ]);
+
+  function esc(s){return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  main.innerHTML = `
+    <div class="po-card">
+      <h1>${esc(post.title)}</h1>
+      <div class="po-meta">
+        <div class="po-avatar">${initial}</div>
+        <span><strong>${esc(nick)}</strong></span>
+        <span>${new Date(post.created_at).toLocaleString('ja-JP')}</span>
+      </div>
+      <div class="po-body">${esc(post.body)}</div>
+      ${post.tags && post.tags.length ? `<div class="po-tags">${post.tags.map(t => `<span class="po-tag">#${esc(t)}</span>`).join('')}</div>` : ''}
+      <div class="po-actions">
+        <button class="po-like-btn ${liked ? 'liked' : ''}" id="like-btn">
+          <span>♥</span> <span id="like-count">${likeCount}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="po-comments">
+      <h2>コメント (<span id="comment-count">${comments.length}</span>)</h2>
+      ${user ? `
+        <form class="po-comment-form" id="comment-form">
+          <textarea id="comment-body" placeholder="コメントを書く..." required></textarea>
+          <button type="submit">投稿</button>
+        </form>
+      ` : `<div class="po-login-prompt">コメントを書くには <a href="login.html">ログイン</a> してください</div>`}
+      <div id="comment-list" style="margin-top: 20px;"></div>
+    </div>
+  `;
+
+  function renderComments(list) {
+    const el = document.getElementById('comment-list');
+    if (!list.length) { el.innerHTML = '<div class="po-empty">まだコメントはありません</div>'; return; }
+    el.innerHTML = list.map(c => {
+      const n = c.profiles?.nickname || '匿名';
+      const i = n.charAt(0).toUpperCase();
+      const canDelete = user && c.author_id === user.id;
+      return `
+        <div class="po-comment">
+          <div class="po-avatar">${i}</div>
+          <div style="flex:1;">
+            <div class="author-name">${esc(n)}</div>
+            <div class="body-text">${esc(c.body)}</div>
+            <div class="meta-row">
+              ${new Date(c.created_at).toLocaleString('ja-JP')}
+              ${canDelete ? `・<button class="po-delete" data-cid="${c.id}">削除</button>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    el.querySelectorAll('.po-delete').forEach(b => b.addEventListener('click', async () => {
+      await window.AImeSocial.deleteComment(b.dataset.cid);
+      const fresh = await window.AImeSocial.listComments('post', id);
+      document.getElementById('comment-count').textContent = fresh.length;
+      renderComments(fresh);
+    }));
+  }
+  renderComments(comments);
+
+  // Like button
+  document.getElementById('like-btn').addEventListener('click', async () => {
+    if (isMock) { alert('モック記事のためいいねできません'); return; }
+    if (!user) { location.href = 'login.html'; return; }
+    const btn = document.getElementById('like-btn');
+    const countEl = document.getElementById('like-count');
+    const isLiked = btn.classList.contains('liked');
+    try {
+      if (isLiked) {
+        await window.AImeSocial.unlike('post', id);
+        btn.classList.remove('liked'); countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+      } else {
+        await window.AImeSocial.like('post', id);
+        btn.classList.add('liked'); countEl.textContent = parseInt(countEl.textContent) + 1;
+      }
+    } catch (err) { alert(err.message); }
+  });
+
+  // Comment submit
+  const cf = document.getElementById('comment-form');
+  if (cf) cf.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isMock) { alert('モック記事のためコメントできません'); return; }
+    const body = document.getElementById('comment-body').value.trim();
+    if (!body) return;
+    try {
+      await window.AImeSocial.addComment('post', id, body);
+      document.getElementById('comment-body').value = '';
+      const fresh = await window.AImeSocial.listComments('post', id);
+      document.getElementById('comment-count').textContent = fresh.length;
+      renderComments(fresh);
+    } catch (err) { alert(err.message); }
+  });
+
+  // Realtime: 他ユーザーのいいね/コメントを反映 (モック記事では無効)
+  if (!isMock) window.AImeSocial.subscribeTargetUpdates('post', id, async (ev) => {
+    if (ev.kind === 'likes') {
+      const c = await window.AImeSocial.countLikes('post', id);
+      document.getElementById('like-count').textContent = c;
+    } else if (ev.kind === 'comments') {
+      const fresh = await window.AImeSocial.listComments('post', id);
+      document.getElementById('comment-count').textContent = fresh.length;
+      renderComments(fresh);
+    }
+  });
+})();
+</script>
+</body>
+</html>
