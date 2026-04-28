@@ -13,6 +13,7 @@
   <meta name="twitter:title" content="AIインターン | 人類最後の就活">
   <link href="css/vendor.css" rel="stylesheet">
   <link href="css/top.css" rel="stylesheet">
+  <link href="css/auth.css" rel="stylesheet">
   <style>
     .ai-gradient { background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%); }
     .ai-glow { text-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
@@ -1476,9 +1477,60 @@
         <a href="#" class="header-category-item current">AIインターン</a>
         <a href="#" class="header-category-item">AI勉強会</a>
         <a href="#" class="neo-corp">採用担当者様</a>
-        <a href="#" class="neo-login">login</a>
-        <a href="#" class="neo-register">REGISTER</a>
+        <a href="#" class="neo-login" id="auth-login-btn">login</a>
+        <a href="#" class="neo-register" id="auth-register-btn">REGISTER</a>
+        <div class="auth-user-info" id="auth-user-info">
+          <span class="auth-user-email" id="auth-user-email"></span>
+          <a href="#" class="auth-logout-btn" id="auth-logout-btn">ログアウト</a>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="auth-modal-overlay" id="auth-modal-overlay">
+  <div class="auth-modal">
+    <button class="auth-modal-close" id="auth-modal-close">&times;</button>
+    <div class="auth-modal-header">
+      <h3 class="auth-modal-title">AI_INTERNへようこそ</h3>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="auth-tab-login">ログイン</button>
+      <button class="auth-tab" id="auth-tab-register">新規登録</button>
+    </div>
+    <div class="auth-modal-body">
+      <div id="auth-error" class="auth-error"></div>
+      <div id="auth-success" class="auth-success"></div>
+      <form id="auth-form-login">
+        <div class="auth-field">
+          <label for="login-email">メールアドレス</label>
+          <input type="email" name="email" id="login-email" placeholder="example@email.com" required>
+        </div>
+        <div class="auth-field">
+          <label for="login-password">パスワード</label>
+          <input type="password" name="password" id="login-password" placeholder="パスワード" required>
+        </div>
+        <button type="submit" class="auth-submit" data-label="ログイン">ログイン</button>
+        <div class="auth-links">
+          <a href="#" id="auth-reset-password">パスワードを忘れた方</a>
+        </div>
+      </form>
+      <form id="auth-form-register" style="display:none;">
+        <div class="auth-field">
+          <label for="register-email">メールアドレス</label>
+          <input type="email" name="email" id="register-email" placeholder="example@email.com" required>
+        </div>
+        <div class="auth-field">
+          <label for="register-password">パスワード</label>
+          <input type="password" name="password" id="register-password" placeholder="6文字以上" required minlength="6">
+        </div>
+        <div class="auth-field">
+          <label for="register-password-confirm">パスワード（確認）</label>
+          <input type="password" name="password_confirm" id="register-password-confirm" placeholder="もう一度入力" required minlength="6">
+        </div>
+        <button type="submit" class="auth-submit" data-label="新規登録">新規登録</button>
+      </form>
     </div>
   </div>
 </div>
@@ -1497,7 +1549,7 @@
               <div class="top-catch-action" style="margin-top: 40px;">
           <div class="top-catch-action-item waves-effect">
             <p class="top-catch-action-text">＼ GPTより先に動け。登録30秒。／</p>
-            <a class="top-catch-action-btn register" href="#"><span class="top-catch-action-btn-icon">無料</span><span class="top-catch-action-btn-text">新規登録する</span></a>
+            <a class="top-catch-action-btn register" href="#" id="auth-hero-register"><span class="top-catch-action-btn-icon">無料</span><span class="top-catch-action-btn-text">新規登録する</span></a>
           </div>
         </div>
         <img src="images/top/seika-text.png" alt="真の成果を、その手に" class="seika-text-img">
@@ -2975,6 +3027,11 @@ document.querySelectorAll('.popular-tag').forEach(function(tag) {
     });
   })();
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth/supabase-config.js"></script>
+  <script src="js/auth/auth-state.js"></script>
+  <script src="js/auth/auth-ui.js"></script>
 
 </body>
 
