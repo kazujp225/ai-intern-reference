@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>企業登録 | AIme</title>
+<meta name="description" content="AImeに企業登録。AI特化インターンシップの求人を掲載して、優秀なAI人材を採用しましょう。">
 <link rel="stylesheet" href="css/pages.css">
 <style>
   /* company-signup 専用の追加スタイル (pages.css の緑 + Brutalist を踏襲) */
@@ -119,16 +120,16 @@
     </div>
 
     <div class="form-field">
-      <label>担当者メールアドレス<span class="cs-required">*</span></label>
+      <label for="cs-email">担当者メールアドレス<span class="cs-required">*</span></label>
       <input type="email" id="cs-email" required placeholder="recruit@example.com" autocomplete="email">
     </div>
     <div class="form-field">
-      <label>パスワード（8文字以上）<span class="cs-required">*</span></label>
+      <label for="cs-password">パスワード（8文字以上）<span class="cs-required">*</span></label>
       <input type="password" id="cs-password" required minlength="8" autocomplete="new-password">
     </div>
     <div class="form-field">
-      <label>担当者名<span class="cs-required">*</span></label>
-      <input type="text" id="cs-nickname" required placeholder="例: 山田 太郎">
+      <label for="cs-nickname">担当者名<span class="cs-required">*</span></label>
+      <input type="text" id="cs-nickname" required placeholder="例: 山田 太郎" autocomplete="name">
     </div>
 
     <div class="cs-btn-row">
@@ -146,11 +147,11 @@
     </div>
 
     <div class="form-field">
-      <label>会社名<span class="cs-required">*</span></label>
-      <input type="text" id="cs-co-name" required placeholder="株式会社AIめ">
+      <label for="cs-co-name">会社名<span class="cs-required">*</span></label>
+      <input type="text" id="cs-co-name" required placeholder="株式会社AIめ" autocomplete="organization">
     </div>
     <div class="form-field">
-      <label>業種</label>
+      <label for="cs-co-industry">業種</label>
       <select id="cs-co-industry">
         <option value="">選択してください</option>
         <option>AI / 機械学習</option>
@@ -163,19 +164,19 @@
       </select>
     </div>
     <div class="form-field">
-      <label>所在地</label>
+      <label for="cs-co-location">所在地</label>
       <input type="text" id="cs-co-location" placeholder="東京都渋谷区">
     </div>
     <div class="form-field">
-      <label>Webサイト</label>
+      <label for="cs-co-website">Webサイト</label>
       <input type="url" id="cs-co-website" placeholder="https://...">
     </div>
     <div class="form-field">
-      <label>会社説明</label>
+      <label for="cs-co-description">会社説明</label>
       <textarea id="cs-co-description" placeholder="事業内容、文化、技術スタックなど" style="min-height: 110px; resize: vertical;"></textarea>
     </div>
     <div class="form-field">
-      <label>会社ロゴ（任意）</label>
+      <label for="cs-co-logo">会社ロゴ（任意）</label>
       <input type="file" id="cs-co-logo" accept="image/*">
     </div>
 

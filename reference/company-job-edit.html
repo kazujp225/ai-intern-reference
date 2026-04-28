@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>求人編集 | AIme</title>
+<meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/pages.css">
 <style>
   .je-hero { background: linear-gradient(135deg,#1b5e20,#2e7d32); color: #fff; padding: 32px 24px; }
@@ -34,15 +35,15 @@
 <div class="je-wrap">
   <div class="je-card">
     <form id="je-form">
-      <div class="je-field"><label>タイトル <span style="color:#f44336;">*</span></label><input id="j-title" required placeholder="例: 【GPT-4超え】自社LLMファインチューニングエンジニア"></div>
-      <div class="je-field"><label>説明</label><textarea id="j-description" placeholder="求人の詳細・仕事内容"></textarea></div>
+      <div class="je-field"><label for="j-title">タイトル <span style="color:#f44336;">*</span></label><input id="j-title" required placeholder="例: 【GPT-4超え】自社LLMファインチューニングエンジニア"></div>
+      <div class="je-field"><label for="j-description">説明</label><textarea id="j-description" placeholder="求人の詳細・仕事内容"></textarea></div>
       <div class="je-row">
-        <div class="je-field"><label>時給（最小）</label><input type="number" id="j-salary-min" placeholder="2000"></div>
-        <div class="je-field"><label>時給（最大）</label><input type="number" id="j-salary-max" placeholder="5000"></div>
+        <div class="je-field"><label for="j-salary-min">時給（最小）</label><input type="number" id="j-salary-min" placeholder="2000"></div>
+        <div class="je-field"><label for="j-salary-max">時給（最大）</label><input type="number" id="j-salary-max" placeholder="5000"></div>
       </div>
       <div class="je-row">
-        <div class="je-field"><label>勤務地</label><input id="j-location" placeholder="渋谷駅 徒歩5分 / フルリモート"></div>
-        <div class="je-field"><label>カテゴリ</label>
+        <div class="je-field"><label for="j-location">勤務地</label><input id="j-location" placeholder="渋谷駅 徒歩5分 / フルリモート"></div>
+        <div class="je-field"><label for="j-category">カテゴリ</label>
           <select id="j-category">
             <option value="">選択</option>
             <option value="llm">LLM / 言語AI</option><option value="prompt">プロンプト</option>
@@ -52,12 +53,12 @@
           </select>
         </div>
       </div>
-      <div class="je-field"><label>勤務日数</label><input id="j-workdays" placeholder="週3〜"></div>
-      <div class="je-field"><label>タグ（カンマ区切り）</label><input id="j-tags" placeholder="LLM, RAG, Python"></div>
-      <div class="je-field"><label>応募要件（改行区切り）</label><textarea id="j-skills" placeholder="Python基礎&#10;LLMの基本理解"></textarea></div>
-      <div class="je-field"><label>歓迎スキル（改行区切り）</label><textarea id="j-welcome" placeholder="Hugging Face経験&#10;Kaggle入賞"></textarea></div>
-      <div class="je-field"><label>福利厚生（改行区切り）</label><textarea id="j-benefits" placeholder="GPU使い放題&#10;論文読み会"></textarea></div>
-      <div class="je-field"><label>応募締切</label><input type="date" id="j-deadline"></div>
+      <div class="je-field"><label for="j-workdays">勤務日数</label><input id="j-workdays" placeholder="週3〜"></div>
+      <div class="je-field"><label for="j-tags">タグ（カンマ区切り）</label><input id="j-tags" placeholder="LLM, RAG, Python"></div>
+      <div class="je-field"><label for="j-skills">応募要件（改行区切り）</label><textarea id="j-skills" placeholder="Python基礎&#10;LLMの基本理解"></textarea></div>
+      <div class="je-field"><label for="j-welcome">歓迎スキル（改行区切り）</label><textarea id="j-welcome" placeholder="Hugging Face経験&#10;Kaggle入賞"></textarea></div>
+      <div class="je-field"><label for="j-benefits">福利厚生（改行区切り）</label><textarea id="j-benefits" placeholder="GPU使い放題&#10;論文読み会"></textarea></div>
+      <div class="je-field"><label for="j-deadline">応募締切</label><input type="date" id="j-deadline"></div>
       <div class="je-toggle"><label><input type="checkbox" id="j-public" checked> 公開する</label></div>
       <div style="display:flex; gap:10px; margin-top:10px;">
         <button type="submit" class="je-btn">保存</button>

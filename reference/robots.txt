@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /reports-admin.html
+Disallow: /analytics.html
+Disallow: /company-dashboard.html
+Disallow: /company-job-edit.html
+Disallow: /setup-check.html
+Disallow: /js/
+Disallow: /sql/
+Disallow: /edge-functions/
+
+Sitemap: https://ai-intern-reference-1.onrender.com/sitemap.xml

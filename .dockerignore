@@ -8,13 +8,37 @@ node_modules/
 *.md
 sql/
 edge-functions/
-# proposal / preview / backup 系は本番Dockerイメージに不要
+# proposal / preview / backup / showcase 系は本番Dockerイメージに不要
 reference/*-proposals*.html
 reference/*-variants*.html
 reference/*-preview.html
 reference/original_backup.html
+reference/original-bg.html
+reference/original-improved.html
 reference/*_showcase.html
+reference/quotes-[0-9]*.html
+reference/quotes-index.html
+reference/quotes-card-variants.html
+reference/quotes-marquee-variants.html
+reference/intern-card-flat.html
+reference/intern-card-receipt-variants.html
+reference/bg-svg-dynamic.html
+reference/hero-network-bg.html
+reference/network-bg-only.html
+reference/setup-check.html
+reference/japan-map-preview.html
+reference/student-voice-slide-viewer.html
+reference/featured-title-fonts.html
+reference/vercel.json
+reference/QUICK-START.md
+reference/SETUP-V3.md
 reference/generate_svgs.py
 reference/remove_bg.py
 reference/restore_layout.py
 reference/update_map_logos.py
+# ルートの開発用ファイル
+*.py
+*_showcase.html
+cta_*.html
+quotes_showcase.html
+voice_showcase.html
