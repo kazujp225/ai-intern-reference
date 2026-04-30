@@ -131,6 +131,14 @@ body {
     margin-left: auto !important;
     margin-right: auto !important;
   }
+  .neo-logo {
+    font-size: 1.3em !important;
+    gap: 6px !important;
+  }
+  .neo-logo img {
+    height: 30px !important;
+    width: auto !important;
+  }
   .neo-nav {
     display: none !important;
   }
@@ -952,7 +960,7 @@ body {
     margin: 0 !important;
     pointer-events: none;
     display: block !important;
-    background: #fff !important;
+    background: transparent !important;
     box-sizing: border-box !important;
     width: 100% !important;
   }
