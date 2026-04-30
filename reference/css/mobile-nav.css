@@ -629,10 +629,15 @@ body {
   }
   .search-interns-new .kanto-map-wrap {
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 280px !important;
     height: auto !important;
     aspect-ratio: 420 / 485;
     margin: 0 auto !important;
+    overflow: visible !important;
+  }
+  .search-interns-new .kanto-map-wrap svg {
+    width: 100% !important;
+    height: auto !important;
   }
   .search-interns-new #kantoPrefButtons {
     width: 100% !important;
@@ -1557,7 +1562,7 @@ body {
     padding: 4px 12px 12px;
   }
   .search-interns-new .brutal-row {
-    justify-content: center !important;
+    justify-content: flex-start !important;
     margin: 0 !important;
     padding: 0 !important;
   }
