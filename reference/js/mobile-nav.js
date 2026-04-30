@@ -179,7 +179,6 @@
     const labels = section.querySelectorAll('.search-category-label');
     if (labels.length === 0) return;
 
-    let first = true;
     labels.forEach(label => {
       // 次の兄弟 (brutal-row か エリアflex div) を body として使う
       const body = label.nextElementSibling;
@@ -197,8 +196,7 @@
 
       // ラッパを作成
       const wrap = document.createElement('div');
-      wrap.className = 'aime-acc' + (first ? ' open' : '');
-      first = false;
+      wrap.className = 'aime-acc open';
 
       // 元の位置を保持してwrap内に移動
       label.parentNode.insertBefore(wrap, label);
@@ -242,6 +240,14 @@
     };
     setTimeout(updateCounts, 500);
     setTimeout(updateCounts, 1500);
+    setTimeout(updateCounts, 3000);
+    setTimeout(updateCounts, 5000);
+
+    // brutal-row の中身が動的に変わったら即カウント更新
+    var accObserver = new MutationObserver(updateCounts);
+    section.querySelectorAll('.brutal-row').forEach(function(row) {
+      accObserver.observe(row, { childList: true });
+    });
   }
   window.addEventListener('load', initSearchAccordion);
   document.addEventListener('DOMContentLoaded', initSearchAccordion);

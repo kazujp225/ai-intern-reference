@@ -1553,13 +1553,14 @@ body {
     margin-top: 4px;
   }
   .aime-acc-body {
-    max-height: 0;
-    overflow: hidden;
+    max-height: 0 !important;
+    overflow: hidden !important;
     transition: max-height 0.3s ease;
   }
   .aime-acc.open .aime-acc-body {
-    max-height: 1000px;
-    padding: 4px 12px 12px;
+    max-height: 5000px !important;
+    overflow: visible !important;
+    padding: 4px 12px 12px !important;
   }
   .search-interns-new .brutal-row {
     justify-content: flex-start !important;
