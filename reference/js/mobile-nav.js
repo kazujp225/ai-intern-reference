@@ -53,7 +53,7 @@
   function clampOverflow() {
     if (window.innerWidth > 900) return;
     const vw = document.documentElement.clientWidth;
-    const SKIP_SEL = '.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll], .mobile-bottom-nav, .usa-map-wrap';
+    const SKIP_SEL = '.student-voice-carousel, .compact-tabs, .bl-toolbar, table, [data-allow-x-scroll], .mobile-bottom-nav, .usa-map-wrap, .phone-filter-row, .pf-phone';
     const violators = [];
     // --- Pass 1: 全要素の寸法チェック、違反者を記録 ---
     document.querySelectorAll('body *').forEach(el => {

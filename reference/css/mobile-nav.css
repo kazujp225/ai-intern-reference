@@ -182,9 +182,12 @@ body {
   }
   .cover-area::before {
     width: 100% !important;
-    opacity: 0.35;
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%) !important;
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 100%) !important;
+    opacity: 1 !important;
+    -webkit-filter: none !important;
+    filter: none !important;
+    -webkit-mask-image: none !important;
+            mask-image: none !important;
+    left: 0 !important;
   }
   .top-catch {
     margin-left: 0 !important;
@@ -268,6 +271,44 @@ body {
   .top-page > section {
     padding-left: 16px !important;
     padding-right: 16px !important;
+  }
+
+  /* --- ステップイラスト --- */
+  .steps-illustration {
+    background: #fff;
+    padding: 28px 16px 20px !important;
+  }
+  .steps-grid {
+    display: flex;
+    gap: 8px;
+  }
+  .step-item {
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+  }
+  .step-item img {
+    width: 90%;
+    height: auto;
+    margin-bottom: 6px;
+  }
+  .step-num {
+    font-size: 0.55em;
+    font-weight: 900;
+    color: #4caf50;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .step-title {
+    font-size: 0.78em;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 0.65em;
+    color: #666;
+    line-height: 1.5;
   }
   /* モバイルではカード枠(白背景・角丸・影)を消してページに溶け込ませる */
   .featured-companies {
@@ -727,9 +768,13 @@ body {
     bottom: 0 !important;
     top: auto !important;
     z-index: 2147483647 !important; /* 最大z-index、他のfixed要素にも負けない */
-    padding: 6px 12px max(10px, env(safe-area-inset-bottom, 10px));
+    padding: 6px 12px calc(54px + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
     pointer-events: none;
     display: block !important;
+    background: #fff !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
   }
   .mobile-bottom-nav .mbn-inner {
     display: flex;
@@ -783,10 +828,19 @@ body {
   img, video, iframe, svg { max-width: 100%; height: auto; }
 
   /* --- main / .page-wrap / container 系の左右paddingを適正化 --- */
-  main, .page-wrap, .container, .main-inner,
-  .container-wrap, .cs-contents, .pull-left, .pull-left-inner {
+  main, .page-wrap, .container, .main-inner {
     padding-left: 14px !important;
     padding-right: 14px !important;
+  }
+  .container-wrap {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .main-inner .cs-contents,
+  .main-inner .pull-left,
+  .main-inner .pull-left-inner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
   .page-wrap { padding: 20px 14px 30px !important; max-width: 100% !important; }
 
