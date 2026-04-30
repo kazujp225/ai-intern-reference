@@ -98,6 +98,10 @@ body {
   /* ----------------------------------------------------------
      ヘッダー: ロゴ + ログイン/新規登録 以外を非表示
      ---------------------------------------------------------- */
+  /* モバイル専用要素を表示 */
+  .sp-only { display: block !important; }
+  span.sp-only { display: inline !important; }
+
   .header-category-item { display: none !important; }
   .site-nav > a:not(.login):not(.register):not(.neo-login):not(.neo-register) {
     display: none !important;
