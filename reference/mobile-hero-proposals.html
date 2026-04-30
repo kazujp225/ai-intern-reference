@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>モバイルヒーロー提案 A〜E</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; }
+
+  .proposals { display: flex; flex-direction: column; align-items: center; gap: 48px; padding: 32px 16px 80px; }
+  .proposal-label { font-size: 1.1em; font-weight: 900; color: #333; margin-bottom: 8px; text-align: center; }
+  .proposal-sub { font-size: 0.8em; color: #888; margin-bottom: 12px; text-align: center; }
+
+  /* 各フレームをスマホサイズに */
+  .phone-frame {
+    width: 375px; max-width: 100%;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    border: 6px solid #222;
+    background: #fff;
+  }
+  .phone-frame .hero { min-height: 680px; position: relative; overflow: hidden; }
+
+  /* ===== 案A: ミニマルカード ===== */
+  .hero-a {
+    background: url('images/top/hero-bg.jpg') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 20px 40px;
+  }
+  .hero-a .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.7) 100%);
+  }
+  .hero-a .card {
+    position: relative; z-index: 1;
+    background: #fff; border-radius: 24px;
+    padding: 36px 24px 28px; text-align: center;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    width: 100%;
+  }
+  .hero-a .logo { font-size: 1.6em; font-weight: 900; color: #1b5e20; margin-bottom: 20px; }
+  .hero-a .logo span { color: #4caf50; }
+  .hero-a .catch { font-size: 1.4em; font-weight: 900; color: #111; line-height: 1.4; margin-bottom: 8px; }
+  .hero-a .sub { font-size: 0.9em; color: #666; margin-bottom: 24px; line-height: 1.5; }
+  .hero-a .cta {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    border: none; border-radius: 14px; font-size: 1.05em; font-weight: 800;
+    text-decoration: none; text-align: center; margin-bottom: 16px;
+  }
+  .hero-a .cta-free { font-size: 0.7em; background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 4px; margin-right: 6px; }
+  .hero-a .search-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: #f5f5f5; border-radius: 12px; padding: 12px 14px;
+  }
+  .hero-a .search-bar input {
+    flex: 1; border: none; background: none; font-size: 0.9em; outline: none; color: #333;
+  }
+  .hero-a .search-bar .icon { color: #4caf50; font-size: 1.2em; }
+
+  /* ===== 案B: グラデーション全画面 ===== */
+  .hero-b {
+    background: linear-gradient(160deg, #0d3d0d 0%, #1b5e20 30%, #2e7d32 60%, #43a047 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 80px 28px 40px; text-align: center; color: #fff;
+  }
+  .hero-b .logo { font-size: 1.8em; font-weight: 900; letter-spacing: 3px; margin-bottom: 32px; opacity: 0.95; }
+  .hero-b .catch { font-size: 1.8em; font-weight: 900; line-height: 1.35; margin-bottom: 12px; }
+  .hero-b .sub { font-size: 1em; opacity: 0.8; margin-bottom: 40px; line-height: 1.6; }
+  .hero-b .cta {
+    display: block; width: 100%; padding: 18px;
+    background: #fff; color: #1b5e20;
+    border: none; border-radius: 16px; font-size: 1.1em; font-weight: 900;
+    text-decoration: none; text-align: center; margin-bottom: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .hero-b .cta-tag { font-size: 0.65em; background: #e8f5e9; color: #1b5e20; padding: 3px 10px; border-radius: 6px; margin-right: 8px; font-weight: 800; }
+  .hero-b .search-bar {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 14px 16px;
+  }
+  .hero-b .search-bar input {
+    flex: 1; border: none; background: none; font-size: 0.9em; outline: none; color: #fff;
+  }
+  .hero-b .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+  .hero-b .search-bar .icon { color: rgba(255,255,255,0.8); font-size: 1.2em; }
+  .hero-b .stats {
+    display: flex; gap: 24px; margin-top: 28px;
+  }
+  .hero-b .stat { text-align: center; }
+  .hero-b .stat-num { font-size: 1.5em; font-weight: 900; }
+  .hero-b .stat-label { font-size: 0.7em; opacity: 0.7; margin-top: 2px; }
+
+  /* ===== 案C: 2段構成（キャッチ＋検索） ===== */
+  .hero-c { display: flex; flex-direction: column; }
+  .hero-c .top-half {
+    background: url('images/top/hero-bg.jpg') center/cover no-repeat;
+    position: relative; padding: 70px 24px 40px; text-align: center;
+    min-height: 360px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-c .top-half .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.95) 100%);
+  }
+  .hero-c .top-half > * { position: relative; z-index: 1; }
+  .hero-c .badge { display: inline-block; background: #e8f5e9; color: #1b5e20; font-size: 0.72em; font-weight: 800; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .hero-c .catch { font-size: 1.6em; font-weight: 900; color: #111; line-height: 1.35; margin-bottom: 10px; }
+  .hero-c .sub { font-size: 0.88em; color: #555; margin-bottom: 20px; }
+  .hero-c .cta {
+    display: inline-block; padding: 14px 36px;
+    background: #111; color: #fff;
+    border-radius: 10px; font-size: 1em; font-weight: 800;
+    text-decoration: none; border: 3px solid #111;
+    box-shadow: 4px 4px 0 #1b5e20;
+  }
+  .hero-c .cta-tag { font-size: 0.7em; background: #fff; color: #111; padding: 2px 8px; border-radius: 4px; margin-right: 8px; }
+  .hero-c .bottom-half {
+    background: #fff; padding: 28px 20px 20px;
+    border-top: 1px solid #eee;
+  }
+  .hero-c .search-label { font-size: 0.85em; font-weight: 800; color: #333; margin-bottom: 12px; }
+  .hero-c .search-bar {
+    display: flex; align-items: center;
+    background: #f8f8f8; border: 2px solid #e0e0e0; border-radius: 14px; padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .hero-c .search-bar input { flex: 1; border: none; background: none; font-size: 0.92em; outline: none; }
+  .hero-c .search-bar .icon { color: #4caf50; }
+  .hero-c .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero-c .tag {
+    background: #f0faf0; border: 1px solid #c8e6c9; border-radius: 20px;
+    padding: 6px 14px; font-size: 0.78em; font-weight: 700; color: #1b5e20;
+    text-decoration: none;
+  }
+
+  /* ===== 案D: ストーリー型スワイプ ===== */
+  .hero-d { position: relative; }
+  .hero-d .slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .hero-d .slides::-webkit-scrollbar { display: none; }
+  .hero-d .slide {
+    min-width: 100%; scroll-snap-align: start;
+    min-height: 680px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 60px 28px 40px;
+    text-align: center;
+  }
+  .hero-d .slide-1 {
+    background: linear-gradient(160deg, #111 0%, #1a1a2e 100%);
+    color: #fff;
+  }
+  .hero-d .slide-1 .logo { font-size: 2em; font-weight: 900; color: #4caf50; margin-bottom: 40px; }
+  .hero-d .slide-1 .catch { font-size: 1.8em; font-weight: 900; line-height: 1.35; margin-bottom: 14px; }
+  .hero-d .slide-1 .sub { font-size: 0.95em; opacity: 0.6; line-height: 1.6; }
+
+  .hero-d .slide-2 {
+    background: linear-gradient(160deg, #1b5e20 0%, #2e7d32 100%);
+    color: #fff;
+  }
+  .hero-d .slide-2 .stats { display: flex; flex-direction: column; gap: 32px; }
+  .hero-d .slide-2 .stat-num { font-size: 3em; font-weight: 900; letter-spacing: -2px; }
+  .hero-d .slide-2 .stat-label { font-size: 0.85em; opacity: 0.8; margin-top: 4px; }
+  .hero-d .slide-2 .stat-divider { width: 40px; height: 2px; background: rgba(255,255,255,0.3); margin: 0 auto; }
+
+  .hero-d .slide-3 {
+    background: #fff; color: #111;
+  }
+  .hero-d .slide-3 .catch { font-size: 1.4em; font-weight: 900; margin-bottom: 24px; color: #1b5e20; }
+  .hero-d .slide-3 .cta {
+    display: block; width: 100%; padding: 18px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    border: none; border-radius: 16px; font-size: 1.1em; font-weight: 800;
+    text-decoration: none; text-align: center; margin-bottom: 20px;
+  }
+  .hero-d .slide-3 .search-bar {
+    display: flex; align-items: center; width: 100%;
+    background: #f5f5f5; border-radius: 14px; padding: 14px 16px;
+  }
+  .hero-d .slide-3 .search-bar input { flex: 1; border: none; background: none; font-size: 0.9em; outline: none; }
+  .hero-d .slide-3 .search-bar .icon { color: #4caf50; }
+  .hero-d .dots {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px; z-index: 10;
+  }
+  .hero-d .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
+  .hero-d .dot.active { width: 24px; border-radius: 4px; background: #4caf50; }
+
+  /* ===== 案E: チャットUI風 ===== */
+  .hero-e {
+    background: #f7faf7; padding: 60px 20px 30px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .hero-e .header { text-align: center; margin-bottom: 8px; }
+  .hero-e .header .logo { font-size: 1.5em; font-weight: 900; color: #1b5e20; }
+  .hero-e .header .logo span { color: #4caf50; }
+  .hero-e .bot-row { display: flex; align-items: flex-start; gap: 10px; }
+  .hero-e .bot-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #1b5e20, #4caf50);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.9em; flex-shrink: 0;
+  }
+  .hero-e .bubble {
+    background: #fff; border-radius: 0 18px 18px 18px;
+    padding: 16px 18px; font-size: 0.95em; line-height: 1.55; color: #222;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); max-width: 85%;
+    border: 1px solid #e8f5e9;
+  }
+  .hero-e .bubble strong { color: #1b5e20; }
+  .hero-e .choices { display: flex; flex-direction: column; gap: 10px; padding-left: 50px; }
+  .hero-e .choice {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; border: 2px solid #c8e6c9; border-radius: 14px;
+    padding: 14px 16px; text-decoration: none; color: #1b5e20;
+    font-weight: 700; font-size: 0.92em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: all 0.15s;
+  }
+  .hero-e .choice:active { background: #e8f5e9; border-color: #2e7d32; }
+  .hero-e .choice .c-icon { font-size: 1.3em; }
+  .hero-e .choice .c-arrow { margin-left: auto; color: #aaa; }
+  .hero-e .divider { text-align: center; font-size: 0.75em; color: #aaa; margin: 4px 0; }
+  .hero-e .search-bar {
+    display: flex; align-items: center;
+    background: #fff; border: 2px solid #e0e0e0; border-radius: 14px; padding: 14px 16px;
+    margin-left: 50px;
+  }
+  .hero-e .search-bar input { flex: 1; border: none; background: none; font-size: 0.9em; outline: none; }
+  .hero-e .search-bar .icon { color: #4caf50; }
+  .hero-e .typing {
+    display: flex; align-items: center; gap: 10px; padding-left: 50px;
+    font-size: 0.8em; color: #aaa;
+  }
+  .hero-e .typing-dots { display: flex; gap: 3px; }
+  .hero-e .typing-dots span {
+    width: 6px; height: 6px; border-radius: 50%; background: #bbb;
+    animation: blink 1.4s infinite both;
+  }
+  .hero-e .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .hero-e .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{ opacity:0.3; } 40%{ opacity:1; } }
+</style>
+</head>
+<body>
+
+<div class="proposals">
+
+  <!-- ===== 案A: ミニマルカード型 ===== -->
+  <div>
+    <div class="proposal-label">案A: ミニマルカード型</div>
+    <div class="proposal-sub">洗練・シンプル・信頼感</div>
+    <div class="phone-frame">
+      <div class="hero hero-a">
+        <div class="overlay"></div>
+        <div class="card">
+          <div class="logo">AI<span>me</span></div>
+          <div class="catch">AIと共創し、<br>未来を切り開く。</div>
+          <div class="sub">AI特化インターンなら、AIme。<br>実践AIスキルで、次世代キャリアへ。</div>
+          <a href="#" class="cta"><span class="cta-free">無料</span>新規登録する</a>
+          <div class="search-bar">
+            <input type="text" placeholder="スキル、企業、条件で探す" readonly>
+            <span class="icon">🔍</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案B: グラデーション全画面型 ===== -->
+  <div>
+    <div class="proposal-label">案B: グラデーション全画面型</div>
+    <div class="proposal-sub">大胆・ブランド訴求・アプリっぽい</div>
+    <div class="phone-frame">
+      <div class="hero hero-b">
+        <div class="logo">AIme</div>
+        <div class="catch">AIと共創し、<br>未来を切り開く。</div>
+        <div class="sub">AI特化インターンなら、AIme。<br>実践AIスキルで、次世代キャリアへ。</div>
+        <a href="#" class="cta"><span class="cta-tag">無料</span>新規登録する</a>
+        <div class="search-bar">
+          <input type="text" placeholder="スキル、企業、条件で探す" readonly>
+          <span class="icon">🔍</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num">250+</div><div class="stat-label">掲載インターン</div></div>
+          <div class="stat"><div class="stat-num">80+</div><div class="stat-label">AI企業</div></div>
+          <div class="stat"><div class="stat-num">3,200</div><div class="stat-label">登録学生</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案C: 2段構成（キャッチ＋検索） ===== -->
+  <div>
+    <div class="proposal-label">案C: 2段構成（キャッチ＋検索）</div>
+    <div class="proposal-sub">実用的・求人サイトらしい</div>
+    <div class="phone-frame">
+      <div class="hero hero-c">
+        <div class="top-half">
+          <div class="overlay"></div>
+          <div class="badge">🏆 AI特化インターン掲載数 No.1</div>
+          <div class="catch">AIと共創し、<br>未来を切り開く。</div>
+          <div class="sub">AI特化インターンなら、AIme</div>
+          <a href="#" class="cta"><span class="cta-tag">無料</span>新規登録する</a>
+        </div>
+        <div class="bottom-half">
+          <div class="search-label">🔍 インターンを探す</div>
+          <div class="search-bar">
+            <input type="text" placeholder="スキル、企業、条件で探す" readonly>
+            <span class="icon">🔍</span>
+          </div>
+          <div class="tags">
+            <a href="#" class="tag">LLM</a>
+            <a href="#" class="tag">RAG</a>
+            <a href="#" class="tag">AIエージェント</a>
+            <a href="#" class="tag">Python</a>
+            <a href="#" class="tag">フルリモート</a>
+            <a href="#" class="tag">未経験OK</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案D: ストーリー型スワイプ ===== -->
+  <div>
+    <div class="proposal-label">案D: ストーリー型スワイプ</div>
+    <div class="proposal-sub">モダン・Z世代向け（← 横スワイプできます）</div>
+    <div class="phone-frame">
+      <div class="hero hero-d">
+        <div class="slides" id="dSlides">
+          <div class="slide slide-1">
+            <div class="logo">AIme</div>
+            <div class="catch">AIと共創し、<br>未来を切り開く。</div>
+            <div class="sub">AI特化インターンなら、AIme。<br>実践AIスキルで、次世代キャリアへ。</div>
+          </div>
+          <div class="slide slide-2">
+            <div class="stats">
+              <div><div class="stat-num">250+</div><div class="stat-label">掲載AIインターン</div></div>
+              <div class="stat-divider"></div>
+              <div><div class="stat-num">80+</div><div class="stat-label">提携AI企業</div></div>
+              <div class="stat-divider"></div>
+              <div><div class="stat-num">3,200</div><div class="stat-label">登録学生数</div></div>
+            </div>
+          </div>
+          <div class="slide slide-3">
+            <div class="catch">さあ、始めよう。</div>
+            <a href="#" class="cta">無料で登録する</a>
+            <div class="search-bar">
+              <input type="text" placeholder="スキル、企業、条件で探す" readonly>
+              <span class="icon">🔍</span>
+            </div>
+          </div>
+        </div>
+        <div class="dots">
+          <div class="dot active" data-i="0"></div>
+          <div class="dot" data-i="1"></div>
+          <div class="dot" data-i="2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案E: チャットUI風 ===== -->
+  <div>
+    <div class="proposal-label">案E: チャットUI風</div>
+    <div class="proposal-sub">AI特化サイトらしい・対話的・ユニーク</div>
+    <div class="phone-frame">
+      <div class="hero hero-e">
+        <div class="header">
+          <div class="logo">AI<span>me</span></div>
+        </div>
+        <div class="bot-row">
+          <div class="bot-avatar">AI</div>
+          <div class="bubble">こんにちは！<strong>AIme</strong>です。<br>AI特化インターンを一緒に探しましょう。<br>何をしたいですか？</div>
+        </div>
+        <div class="choices">
+          <a href="#" class="choice">
+            <span class="c-icon">🔍</span>
+            インターンを探す
+            <span class="c-arrow">›</span>
+          </a>
+          <a href="#" class="choice">
+            <span class="c-icon">🏢</span>
+            AI企業を見る
+            <span class="c-arrow">›</span>
+          </a>
+          <a href="#" class="choice">
+            <span class="c-icon">📝</span>
+            AIコラムを読む
+            <span class="c-arrow">›</span>
+          </a>
+          <a href="#" class="choice">
+            <span class="c-icon">✨</span>
+            無料で登録する
+            <span class="c-arrow">›</span>
+          </a>
+        </div>
+        <div class="divider">── または検索 ──</div>
+        <div class="search-bar">
+          <input type="text" placeholder="スキル、企業、条件で探す" readonly>
+          <span class="icon">🔍</span>
+        </div>
+        <div class="typing">
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+          AImeが入力中...
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// 案Dのスワイプドットを連動
+(function() {
+  var slides = document.getElementById('dSlides');
+  if (!slides) return;
+  var dots = slides.parentElement.querySelectorAll('.dot');
+  slides.addEventListener('scroll', function() {
+    var idx = Math.round(slides.scrollLeft / slides.offsetWidth);
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  });
+})();
+</script>
+
+</body>
+</html>
