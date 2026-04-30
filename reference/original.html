@@ -1458,7 +1458,7 @@
         <h3 class="footer-container-upper-content-title">AIを学ぶ</h3>
         <ul class="footer-container-upper-content-items">
           <li class="footer-container-upper-content-item"><a href="blog.html">AIコラム（GPTに書かせてない、多分）</a></li>
-          <li class="footer-container-upper-content-item"><a href="#">AI用語辞典</a></li>
+          <li class="footer-container-upper-content-item"><a href="blog.html">AI用語辞典</a></li>
         </ul>
       </div>
 
@@ -1466,14 +1466,14 @@
         <h3 class="footer-container-upper-content-title">サービス</h3>
         <ul class="footer-container-upper-content-items">
           <li class="footer-container-upper-content-item"><a href="original.html">AIme</a></li>
-          <li class="footer-container-upper-content-item"><a href="#">AI勉強会・ハッカソン</a></li>
+          <li class="footer-container-upper-content-item"><a href="events.html">AI勉強会・ハッカソン</a></li>
         </ul>
       </div>
 
       <div class="footer-container-upper-content is-last-pc">
         <h3 class="footer-container-upper-content-title">AI企業の採用担当者様へ</h3>
         <ul class="footer-container-upper-content-items">
-          <li class="footer-container-upper-content-item"><a href="#">AIme採用について</a></li>
+          <li class="footer-container-upper-content-item"><a href="company-signup.html">AIme採用について</a></li>
         </ul>
       </div>
     </div>
@@ -1626,30 +1626,82 @@
         });
       }
       (function(){
-        var brutalJobs = [
-          {n:'LLMアプリ開発',c:56},{n:'プロンプトエンジニア',c:42},
-          {n:'MLエンジニア',c:38},{n:'データサイエンティスト',c:31},
-          {n:'AI PMM / BizDev',c:27},{n:'AIリサーチャー',c:24},
-          {n:'AIエージェント開発',c:19},{n:'AI × クリエイティブ',c:15}
+        // カテゴリ → 表示名マッピング
+        var catLabels = {
+          llm: 'LLMアプリ開発', prompt: 'プロンプトエンジニア',
+          data: 'データサイエンティスト', agent: 'AIエージェント開発',
+          image: 'AI × クリエイティブ', medical: '医療AI',
+          robotics: 'ロボティクス', business: 'AI PMM / BizDev'
+        };
+        // 特徴タグ一覧
+        var featTags = [
+          'フルリモート可','未経験OK','文系歓迎',
+          'CEO直下','CTO直下','論文読み会','GPU使い放題',
+          'Kaggle推奨','論文共著チャンス','自社LLM開発',
+          '国際学会発表','ストックオプション'
         ];
-        var brutalFeat = [
-          {n:'フルリモート可',c:89},{n:'未経験OK',c:67},
-          {n:'時給2,000円以上',c:52},{n:'文系歓迎',c:45},
-          {n:'CEO / CTO直下',c:38},{n:'論文読み会あり',c:34},
-          {n:'GPU使い放題',c:23},{n:'Kaggle推奨',c:21},
-          {n:'論文共著チャンス',c:15},{n:'自社LLM開発中',c:12},
-          {n:'国際学会発表',c:11},{n:'ストックオプション',c:8}
-        ];
+
         function renderBrutal(id, items, paramKey){
           var el = document.getElementById(id);
           if (!el) return;
           el.innerHTML = items.map(function(d){
-            var url = 'search.html?' + paramKey + '=' + encodeURIComponent(d.n) + '&count=' + encodeURIComponent(d.c);
+            var url = 'search.html?' + paramKey + '=' + encodeURIComponent(d.n);
             return '<a href="' + url + '">' + d.n + '<span class="num-tag">' + d.c + '件</span></a>';
           }).join('');
         }
-        renderBrutal('brutal-jobs', brutalJobs, 'job');
-        renderBrutal('brutal-features', brutalFeat, 'feature');
+
+        // Supabaseからカテゴリ別件数を取得
+        if (window.sb) {
+          // 職種カテゴリ
+          window.sb.from('internships').select('category').then(function(res) {
+            if (res.error || !res.data) {
+              console.warn('[AIme] Supabase internships取得エラー、フォールバック使用', res.error);
+              renderFallback();
+              return;
+            }
+            var counts = {};
+            res.data.forEach(function(r) { counts[r.category] = (counts[r.category] || 0) + 1; });
+            var jobs = Object.keys(catLabels).map(function(k) {
+              return { n: catLabels[k], c: counts[k] || 0 };
+            }).filter(function(d) { return d.c > 0; }).sort(function(a,b) { return b.c - a.c; });
+            renderBrutal('brutal-jobs', jobs, 'job');
+          });
+          // 特徴タグ別件数
+          window.sb.from('internships').select('tags').then(function(res) {
+            if (res.error || !res.data) return;
+            var tagCounts = {};
+            res.data.forEach(function(r) {
+              if (!r.tags) return;
+              r.tags.forEach(function(t) {
+                featTags.forEach(function(ft) {
+                  if (t.indexOf(ft) >= 0) tagCounts[ft] = (tagCounts[ft] || 0) + 1;
+                });
+              });
+            });
+            var feat = featTags.map(function(t) {
+              return { n: t, c: tagCounts[t] || 0 };
+            }).filter(function(d) { return d.c > 0; }).sort(function(a,b) { return b.c - a.c; });
+            renderBrutal('brutal-features', feat, 'feature');
+          });
+        } else {
+          renderFallback();
+        }
+
+        function renderFallback() {
+          var brutalJobs = [
+            {n:'LLMアプリ開発',c:6},{n:'プロンプトエンジニア',c:5},
+            {n:'データサイエンティスト',c:6},{n:'AI PMM / BizDev',c:5},
+            {n:'AIエージェント開発',c:4},{n:'AI × クリエイティブ',c:5},
+            {n:'医療AI',c:3},{n:'ロボティクス',c:3}
+          ];
+          var brutalFeat = [
+            {n:'フルリモート可',c:8},{n:'未経験OK',c:5},
+            {n:'文系歓迎',c:4},{n:'GPU使い放題',c:3},
+            {n:'論文共著チャンス',c:3},{n:'Kaggle推奨',c:2}
+          ];
+          renderBrutal('brutal-jobs', brutalJobs, 'job');
+          renderBrutal('brutal-features', brutalFeat, 'feature');
+        }
       })();
 
       // 3台スマホスクロール風フィルター生成
