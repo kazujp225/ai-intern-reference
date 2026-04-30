@@ -790,13 +790,12 @@ body {
   /* ページネーション: 1行に収め、縦スクロール禁止・必要なら横スクロール */
   .compact-pagination {
     margin-top: 14px !important;
-    padding: 8px 16px 20px !important;
+    padding: 8px 20px 30px !important;
     gap: 3px !important;
     flex-wrap: nowrap !important;
     justify-content: center !important;
     max-width: 100% !important;
-    overflow-y: hidden !important;
-    overflow-x: auto !important;
+    overflow: visible !important;
     touch-action: pan-x !important;
     -webkit-overflow-scrolling: touch !important;
     box-sizing: border-box !important;
