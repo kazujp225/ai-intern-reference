@@ -37,7 +37,8 @@ body {
 }
 /* モバイルで横ずれを作りがちな親要素全てにoverflow-x:hidden */
 @media (max-width: 900px) {
-  main, header, footer, section, article, aside, nav,
+  main, header, footer, section, article, aside,
+  nav:not(.mobile-menu):not(.mobile-bottom-nav),
   .container, .container-wrap, .main-inner, .page-wrap,
   .cs-contents, .pull-left, .pull-left-inner,
   .content-wrapper, .cover-area, .cover-inner,
@@ -74,6 +75,8 @@ body {
   }
   /* ただしボトムナビ・横スクロール許可エリアは例外 */
   .mobile-bottom-nav, .mobile-bottom-nav *,
+  .mobile-menu, .mobile-menu *,
+  .mobile-menu-overlay,
   .student-voice-carousel, .student-voice-carousel *,
   .compact-tabs, .compact-tabs *,
   .bl-toolbar, .bl-toolbar *,
@@ -105,6 +108,18 @@ body {
   .header-inner {
     padding: 0 14px !important;
     height: 60px !important;
+    justify-content: center !important;
+  }
+  .header-content {
+    justify-content: center !important;
+  }
+  .header-left {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .neo-nav {
+    display: none !important;
   }
   .site-header-inner {
     padding: 0 14px !important;
@@ -122,6 +137,156 @@ body {
   .neo-register, .site-nav .register {
     font-size: 0.82em !important;
     padding: 6px 14px !important;
+  }
+
+  /* ハンバーガーメニューボタン */
+  .mobile-hamburger {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .mobile-hamburger span {
+    display: block;
+    width: 100%;
+    height: 2.5px;
+    background: #333;
+    border-radius: 2px;
+  }
+
+  /* モバイルメニュー オーバーレイ */
+  .mobile-menu-overlay {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    background: rgba(0,0,0,0.4) !important;
+    z-index: 2147483646 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    margin: 0 !important; padding: 0 !important;
+  }
+  .mobile-menu-overlay.open {
+    display: block !important;
+  }
+
+  /* モバイルメニュー パネル */
+  .mobile-menu {
+    position: fixed !important;
+    top: 0 !important;
+    right: -280px !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    height: 100vh !important;
+    background: #fff !important;
+    z-index: 2147483647 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    transition: right 0.3s ease !important;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.1) !important;
+    padding: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    max-width: none !important;
+    display: block !important;
+    margin: 0 !important;
+    left: auto !important;
+  }
+  .mobile-menu.open {
+    right: 0 !important;
+  }
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .mobile-menu-title {
+    font-size: 1.05em;
+    font-weight: 900;
+    color: #111;
+  }
+  .mobile-menu-close {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    color: #666;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-menu-auth {
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .mobile-menu-login {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #2e7d32;
+    border-radius: 10px;
+    color: #2e7d32;
+    font-weight: 800;
+    font-size: 0.88em;
+    text-decoration: none;
+  }
+  .mobile-menu-signup {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.88em;
+    text-decoration: none;
+  }
+  .mobile-menu-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    display: block !important;
+  }
+  .mobile-menu-list li {
+    display: block !important;
+    width: 100% !important;
+  }
+  .mobile-menu-list li a {
+    display: block !important;
+    padding: 14px 20px !important;
+    color: #333 !important;
+    text-decoration: none !important;
+    font-size: 0.95em !important;
+    font-weight: 700 !important;
+    transition: background 0.15s !important;
+    white-space: normal !important;
+  }
+  .mobile-menu-list li a:active {
+    background: #f5f5f5 !important;
+  }
+  .mobile-menu-sub li a {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #666;
+    padding: 12px 20px;
+  }
+  .mobile-menu-divider {
+    height: 1px;
+    background: #eee;
+    margin: 0 20px;
   }
 
   /* コンテンツが下ナビに隠れないよう余白を確保
@@ -188,6 +353,8 @@ body {
     -webkit-mask-image: none !important;
             mask-image: none !important;
     left: 0 !important;
+    right: 0 !important;
+    background-position: 65% center !important;
   }
   .top-catch {
     margin-left: 0 !important;
@@ -458,7 +625,7 @@ body {
   .intern-list,
   section.intern-list {
     background: transparent !important;
-    padding: 0 !important;
+    padding: 0 14px !important;
     margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
@@ -610,7 +777,7 @@ body {
   /* ページネーション: 1行に収め、縦スクロール禁止・必要なら横スクロール */
   .compact-pagination {
     margin-top: 14px !important;
-    padding: 8px 10px 20px !important;
+    padding: 8px 16px 20px !important;
     gap: 3px !important;
     flex-wrap: nowrap !important;
     justify-content: center !important;
@@ -619,6 +786,7 @@ body {
     overflow-x: auto !important;
     touch-action: pan-x !important;
     -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
   }
   .compact-pagination::-webkit-scrollbar { display: none; }
   .compact-pagination a {
@@ -768,13 +936,18 @@ body {
     bottom: 0 !important;
     top: auto !important;
     z-index: 2147483647 !important; /* 最大z-index、他のfixed要素にも負けない */
-    padding: 6px 12px calc(54px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 6px 12px max(10px, env(safe-area-inset-bottom, 10px)) !important;
     margin: 0 !important;
     pointer-events: none;
     display: block !important;
     background: #fff !important;
     box-sizing: border-box !important;
     width: 100% !important;
+  }
+  /* トップページのみ: Safariツールバー分上げる */
+  .top-page ~ .mobile-bottom-nav,
+  body.top-page .mobile-bottom-nav {
+    bottom: 60px !important;
   }
   .mobile-bottom-nav .mbn-inner {
     display: flex;
@@ -828,19 +1001,19 @@ body {
   img, video, iframe, svg { max-width: 100%; height: auto; }
 
   /* --- main / .page-wrap / container 系の左右paddingを適正化 --- */
-  main, .page-wrap, .container, .main-inner {
+  /* 親ラッパーは0にして二重パディングを防ぐ */
+  .container-wrap,
+  .main-inner,
+  .cs-contents,
+  .pull-left,
+  .pull-left-inner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  /* コンテンツ直接の親だけにパディング */
+  main, .page-wrap, .container {
     padding-left: 14px !important;
     padding-right: 14px !important;
-  }
-  .container-wrap {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-  .main-inner .cs-contents,
-  .main-inner .pull-left,
-  .main-inner .pull-left-inner {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
   }
   .page-wrap { padding: 20px 14px 30px !important; max-width: 100% !important; }
 
@@ -1211,11 +1384,32 @@ body {
 
   /* --- カバー画像（プロフィール / 企業）--- */
   .mp-cover, .c-cover, .cd-cover {
-    height: 140px !important;
+    height: 160px !important;
   }
   .mp-avatar, .c-logo, .cd-logo {
     width: 72px !important;
     height: 72px !important;
+  }
+  /* プロフィールカードのモバイル調整 */
+  .mp-prof-card {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    padding: 60px 16px 24px !important;
+    border-radius: 16px !important;
+    overflow: visible !important;
+  }
+  .mp-avatar-wrap {
+    margin-top: -44px !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 72px !important;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+  .mp-name {
+    font-size: 1.3em !important;
   }
 
   /* --- sns-vc-avatar サイズ調整 (体験談) --- */

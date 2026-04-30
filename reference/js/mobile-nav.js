@@ -48,6 +48,36 @@
   }
 
   // =======================================================
+  // ハンバーガーメニュー開閉
+  // =======================================================
+  function initHamburger() {
+    var btn = document.getElementById('mobile-hamburger');
+    var menu = document.getElementById('mobile-menu');
+    var overlay = document.getElementById('mobile-menu-overlay');
+    var close = document.getElementById('mobile-menu-close');
+    if (!btn || !menu) return;
+
+    function openMenu() {
+      menu.classList.add('open');
+      if (overlay) overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      menu.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    btn.addEventListener('click', openMenu);
+    if (close) close.addEventListener('click', closeMenu);
+    if (overlay) overlay.addEventListener('click', closeMenu);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHamburger);
+  } else {
+    initHamburger();
+  }
+
+  // =======================================================
   // 横幅オーバー要素を自動検知して強制クランプ (モバイルのみ)
   // =======================================================
   function clampOverflow() {
