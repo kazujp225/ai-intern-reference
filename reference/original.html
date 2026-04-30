@@ -1653,9 +1653,9 @@
         // Supabaseからカテゴリ別件数を取得
         if (window.sb) {
           // 職種カテゴリ
-          window.sb.from('internships').select('category').then(function(res) {
+          window.sb.from('job_postings').select('category').eq('is_public', true).eq('status', 'approved').then(function(res) {
             if (res.error || !res.data) {
-              console.warn('[AIme] Supabase internships取得エラー、フォールバック使用', res.error);
+              console.warn('[AIme] Supabase job_postings取得エラー、フォールバック使用', res.error);
               renderFallback();
               return;
             }
@@ -1667,7 +1667,7 @@
             renderBrutal('brutal-jobs', jobs, 'job');
           });
           // 特徴タグ別件数
-          window.sb.from('internships').select('tags').then(function(res) {
+          window.sb.from('job_postings').select('tags').eq('is_public', true).eq('status', 'approved').then(function(res) {
             if (res.error || !res.data) return;
             var tagCounts = {};
             res.data.forEach(function(r) {
