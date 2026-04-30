@@ -103,12 +103,21 @@ body {
     display: none !important;
   }
 
-  /* ヘッダーのパディングを狭く (originalスタイルのpadding: 0 40px対策) */
+  /* ヘッダー: ヒーローと一体化 */
+  .header {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+    position: absolute !important;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
   #vue-header,
   .header-inner {
     padding: 0 14px !important;
     height: 60px !important;
     justify-content: center !important;
+    background: transparent !important;
   }
   .header-content {
     justify-content: center !important;
@@ -479,8 +488,8 @@ body {
   }
   /* モバイルではカード枠(白背景・角丸・影)を消してページに溶け込ませる */
   .featured-companies {
-    padding: 24px 14px !important;
-    margin: 8px 0 !important;
+    padding: 12px 14px !important;
+    margin: 0 !important;
     max-width: 100% !important;
     border-radius: 0 !important;
     background: transparent !important;
@@ -520,8 +529,8 @@ body {
      01. AImeシップを探す — モバイル最適化 (チップ型)
      ---------------------------------------------------------- */
   .search-interns-new {
-    padding: 20px 14px !important;
-    margin: 12px 0 !important;
+    padding: 12px 14px !important;
+    margin: 0 !important;
   }
   /* セクション題名 (01 AImeシップを探す) コンパクト化 */
   .search-interns-new .section-title-e,
@@ -1225,8 +1234,9 @@ body {
     object-fit: contain !important;
   }
   .usa-pin-label img[alt="OpenAI"] {
-    width: 96px !important;
-    height: auto !important;
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: contain !important;
   }
 
   /* --- slick全般: モバイルではunslick前提でも念のため強制制約 --- */

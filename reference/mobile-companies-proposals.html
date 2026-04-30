@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>特集AI企業セクション提案 A〜E</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; }
+  .proposals { display: flex; flex-direction: column; align-items: center; gap: 48px; padding: 32px 16px 80px; }
+  .proposal-label { font-size: 1.1em; font-weight: 900; color: #333; margin-bottom: 4px; text-align: center; }
+  .proposal-sub { font-size: 0.78em; color: #888; margin-bottom: 12px; text-align: center; }
+  .phone-frame {
+    width: 375px; max-width: 100%;
+    border-radius: 32px; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    border: 6px solid #222; background: #fff;
+  }
+  .section { padding: 28px 16px 24px; }
+  .sec-title { font-size: 1.15em; font-weight: 900; color: #111; margin-bottom: 4px; text-align: center; }
+  .sec-sub { font-size: 0.78em; color: #888; margin-bottom: 20px; text-align: center; }
+
+  /* 共通ロゴ */
+  .co-logo { width: 48px; height: 48px; border-radius: 12px; object-fit: contain; background: #f5f5f5; padding: 6px; }
+  .co-logo-round { width: 56px; height: 56px; border-radius: 50%; object-fit: contain; background: #f5f5f5; padding: 8px; }
+  .co-name { font-size: 0.85em; font-weight: 800; color: #111; }
+  .co-desc { font-size: 0.7em; color: #888; }
+
+  /* ===== 案A: ロゴカルーセル ===== */
+  .carousel-wrap { overflow-x: auto; scroll-snap-type: x mandatory; display: flex; gap: 12px; padding: 0 4px 16px; -webkit-overflow-scrolling: touch; }
+  .carousel-wrap::-webkit-scrollbar { display: none; }
+  .carousel-card {
+    flex: 0 0 85%; scroll-snap-align: center;
+    background: #fff; border: 1.5px solid #e8f5e9; border-radius: 16px;
+    padding: 20px; display: flex; align-items: center; gap: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .carousel-card .info { flex: 1; min-width: 0; }
+  .carousel-card .co-name { font-size: 0.95em; margin-bottom: 4px; }
+  .carousel-card .co-loc { font-size: 0.68em; color: #4caf50; font-weight: 700; margin-bottom: 4px; }
+  .carousel-card .co-desc { line-height: 1.4; }
+  .dots-a { display: flex; justify-content: center; gap: 5px; }
+  .dots-a span { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
+  .dots-a span.active { width: 18px; border-radius: 3px; background: #4caf50; }
+
+  /* ===== 案B: 2列グリッド ===== */
+  .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-cell {
+    background: #fafafa; border: 1px solid #eee; border-radius: 14px;
+    padding: 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .grid-cell:active { background: #e8f5e9; }
+  .grid-cell .co-name { text-align: center; }
+  .grid-cell .co-desc { text-align: center; }
+
+  /* ===== 案C: 横スクロールチップ ===== */
+  .chips-row { display: flex; gap: 8px; overflow-x: auto; padding: 0 0 16px; -webkit-overflow-scrolling: touch; }
+  .chips-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1.5px solid #e0e0e0; border-radius: 999px;
+    padding: 6px 14px 6px 6px; cursor: pointer; transition: all 0.15s;
+  }
+  .chip.active { border-color: #4caf50; background: #f0faf0; }
+  .chip img { width: 32px; height: 32px; border-radius: 50%; object-fit: contain; background: #f5f5f5; padding: 3px; }
+  .chip span { font-size: 0.78em; font-weight: 700; color: #333; white-space: nowrap; }
+  .chip-detail {
+    background: #f8fdf8; border: 1.5px solid #c8e6c9; border-radius: 14px;
+    padding: 16px; display: flex; align-items: center; gap: 14px;
+    margin-top: 12px;
+  }
+  .chip-detail .info { flex: 1; }
+  .chip-detail .co-name { font-size: 1em; margin-bottom: 2px; }
+  .chip-detail .co-loc { font-size: 0.72em; color: #4caf50; font-weight: 700; }
+  .chip-detail .co-desc { margin-top: 6px; font-size: 0.82em; color: #555; line-height: 1.5; }
+  .chip-detail .co-btn {
+    display: inline-block; margin-top: 10px; padding: 8px 16px;
+    background: #2e7d32; color: #fff; border-radius: 8px;
+    font-size: 0.78em; font-weight: 800; text-decoration: none;
+  }
+
+  /* ===== 案D: ストーリーズ風 ===== */
+  .stories-row { display: flex; gap: 14px; overflow-x: auto; padding: 0 0 8px; -webkit-overflow-scrolling: touch; }
+  .stories-row::-webkit-scrollbar { display: none; }
+  .story-item { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 68px; cursor: pointer; }
+  .story-ring {
+    width: 64px; height: 64px; border-radius: 50%;
+    padding: 3px; background: linear-gradient(135deg, #1b5e20, #4caf50);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .story-ring img {
+    width: 100%; height: 100%; border-radius: 50%;
+    object-fit: contain; background: #fff; padding: 6px;
+    border: 2px solid #fff;
+  }
+  .story-name { font-size: 0.65em; font-weight: 700; color: #333; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+  .story-modal {
+    margin-top: 16px; background: #fff; border-radius: 16px;
+    border: 1.5px solid #e8f5e9; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .story-modal-header {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff; padding: 20px 16px; text-align: center;
+  }
+  .story-modal-header .co-name { color: #fff; font-size: 1.1em; }
+  .story-modal-header .co-loc { font-size: 0.78em; opacity: 0.8; margin-top: 4px; }
+  .story-modal-body { padding: 16px; }
+  .story-modal-body .co-desc { font-size: 0.88em; color: #555; line-height: 1.6; margin-bottom: 12px; }
+  .story-modal-body .stat-row { display: flex; gap: 16px; }
+  .story-modal-body .stat { text-align: center; flex: 1; }
+  .story-modal-body .stat-num { font-size: 1.3em; font-weight: 900; color: #2e7d32; }
+  .story-modal-body .stat-label { font-size: 0.68em; color: #888; }
+
+  /* ===== 案E: マーキー2段 ===== */
+  .marquee-section { overflow: hidden; padding: 0; }
+  .marquee-row { display: flex; gap: 16px; width: max-content; padding: 6px 0; }
+  .marquee-row-1 { animation: marquee-left 25s linear infinite; }
+  .marquee-row-2 { animation: marquee-right 28s linear infinite; }
+  @keyframes marquee-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @keyframes marquee-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+  .marquee-card {
+    flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+    background: #fff; border: 1px solid #eee; border-radius: 12px;
+    padding: 10px 14px; min-width: 180px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .marquee-card img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: #f5f5f5; padding: 4px; }
+  .marquee-card .info { min-width: 0; }
+  .marquee-card .co-name { font-size: 0.8em; }
+  .marquee-card .co-desc { font-size: 0.65em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
+
+  /* ロゴ代替 */
+  .logo-placeholder {
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.7em; color: #fff; border-radius: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="proposals">
+
+  <!-- ===== 案A: ロゴカルーセル ===== -->
+  <div>
+    <div class="proposal-label">案A: ロゴカルーセル</div>
+    <div class="proposal-sub">横スワイプで企業カードを表示</div>
+    <div class="phone-frame">
+      <div class="section">
+        <div class="sec-title">特集：トップAI企業紹介</div>
+        <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+        <div class="carousel-wrap">
+          <div class="carousel-card">
+            <img class="co-logo" src="images/logo/openai_logo.webp" alt="OpenAI">
+            <div class="info">
+              <div class="co-name">OpenAI</div>
+              <div class="co-loc">San Francisco, CA</div>
+              <div class="co-desc">ChatGPT / GPT-4を開発。世界をリードするAI研究企業。</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <img class="co-logo" src="images/logo/anthropic_logo.png" alt="Anthropic">
+            <div class="info">
+              <div class="co-name">Anthropic</div>
+              <div class="co-loc">San Francisco, CA</div>
+              <div class="co-desc">Claude開発元。AI安全性研究のパイオニア。</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="co-logo logo-placeholder" style="background:#4285f4;width:48px;height:48px;">G</div>
+            <div class="info">
+              <div class="co-name">Google / DeepMind</div>
+              <div class="co-loc">Mountain View, CA</div>
+              <div class="co-desc">Gemini / Transformer。AI基盤技術の最前線。</div>
+            </div>
+          </div>
+          <div class="carousel-card">
+            <div class="co-logo logo-placeholder" style="background:#0668E1;width:48px;height:48px;">M</div>
+            <div class="info">
+              <div class="co-name">Meta AI</div>
+              <div class="co-loc">Menlo Park, CA</div>
+              <div class="co-desc">LLaMA / PyTorch。オープンソースAIの推進者。</div>
+            </div>
+          </div>
+        </div>
+        <div class="dots-a">
+          <span class="active"></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案B: 2列グリッド ===== -->
+  <div>
+    <div class="proposal-label">案B: 2列グリッド</div>
+    <div class="proposal-sub">一覧性が高い・コンパクト</div>
+    <div class="phone-frame">
+      <div class="section">
+        <div class="sec-title">特集：トップAI企業紹介</div>
+        <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+        <div class="grid-2col">
+          <a href="#" class="grid-cell">
+            <img class="co-logo" src="images/logo/openai_logo.webp" alt="OpenAI">
+            <div class="co-name">OpenAI</div>
+            <div class="co-desc">ChatGPT / GPT-4</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <img class="co-logo" src="images/logo/anthropic_logo.png" alt="Anthropic">
+            <div class="co-name">Anthropic</div>
+            <div class="co-desc">Claude</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#4285f4;">G</div>
+            <div class="co-name">Google</div>
+            <div class="co-desc">Gemini</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#0668E1;">M</div>
+            <div class="co-name">Meta AI</div>
+            <div class="co-desc">LLaMA</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#333;">A</div>
+            <div class="co-name">Apple</div>
+            <div class="co-desc">Apple Intelligence</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#00a4ef;">MS</div>
+            <div class="co-name">Microsoft</div>
+            <div class="co-desc">Copilot / Azure AI</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#76b900;">N</div>
+            <div class="co-name">NVIDIA</div>
+            <div class="co-desc">GPU / CUDA</div>
+          </a>
+          <a href="#" class="grid-cell">
+            <div class="co-logo logo-placeholder" style="background:#ff9900;">A</div>
+            <div class="co-name">Amazon</div>
+            <div class="co-desc">AWS / Bedrock</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案C: 横スクロールチップ ===== -->
+  <div>
+    <div class="proposal-label">案C: 横スクロールチップ</div>
+    <div class="proposal-sub">チップ選択で詳細表示</div>
+    <div class="phone-frame">
+      <div class="section">
+        <div class="sec-title">特集：トップAI企業紹介</div>
+        <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+        <div class="chips-row">
+          <div class="chip active"><img src="images/logo/openai_logo.webp" alt="OpenAI"><span>OpenAI</span></div>
+          <div class="chip"><img src="images/logo/anthropic_logo.png" alt="Anthropic"><span>Anthropic</span></div>
+          <div class="chip"><img src="images/logo/meta_logo.png" alt="Meta"><span>Meta AI</span></div>
+          <div class="chip"><div class="co-logo logo-placeholder" style="background:#4285f4;width:32px;height:32px;border-radius:50%;font-size:0.6em;">G</div><span>Google</span></div>
+          <div class="chip"><div class="co-logo logo-placeholder" style="background:#333;width:32px;height:32px;border-radius:50%;font-size:0.6em;">A</div><span>Apple</span></div>
+          <div class="chip"><div class="co-logo logo-placeholder" style="background:#00a4ef;width:32px;height:32px;border-radius:50%;font-size:0.6em;">MS</div><span>Microsoft</span></div>
+        </div>
+        <div class="chip-detail">
+          <img class="co-logo" src="images/logo/openai_logo.webp" alt="OpenAI" style="width:56px;height:56px;">
+          <div class="info">
+            <div class="co-name">OpenAI</div>
+            <div class="co-loc">San Francisco, CA</div>
+            <div class="co-desc">ChatGPT / GPT-4を開発。世界をリードするAI研究企業。</div>
+            <a href="#" class="co-btn">インターンを見る →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案D: ストーリーズ風 ===== -->
+  <div>
+    <div class="proposal-label">案D: ストーリーズ風アイコン</div>
+    <div class="proposal-sub">SNSライクでZ世代向け</div>
+    <div class="phone-frame">
+      <div class="section">
+        <div class="sec-title">特集：トップAI企業紹介</div>
+        <div class="sec-sub">タップして詳細を見る</div>
+        <div class="stories-row">
+          <div class="story-item">
+            <div class="story-ring"><img src="images/logo/openai_logo.webp" alt="OpenAI"></div>
+            <div class="story-name">OpenAI</div>
+          </div>
+          <div class="story-item">
+            <div class="story-ring"><img src="images/logo/anthropic_logo.png" alt="Anthropic"></div>
+            <div class="story-name">Anthropic</div>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:linear-gradient(135deg,#4285f4,#34a853);"><div style="width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;color:#4285f4;font-size:1.4em;border:2px solid #fff;">G</div></div>
+            <div class="story-name">Google</div>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:linear-gradient(135deg,#0668E1,#00c6ff);"><div style="width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;color:#0668E1;font-size:1.4em;border:2px solid #fff;">M</div></div>
+            <div class="story-name">Meta AI</div>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:linear-gradient(135deg,#333,#666);"><div style="width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;color:#333;font-size:1.2em;border:2px solid #fff;"></div></div>
+            <div class="story-name">Apple</div>
+          </div>
+          <div class="story-item">
+            <div class="story-ring" style="background:linear-gradient(135deg,#00a4ef,#7fba00);"><div style="width:100%;height:100%;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;color:#00a4ef;font-size:1em;border:2px solid #fff;">MS</div></div>
+            <div class="story-name">Microsoft</div>
+          </div>
+        </div>
+        <div class="story-modal">
+          <div class="story-modal-header">
+            <div class="co-name">OpenAI</div>
+            <div class="co-loc">San Francisco, CA</div>
+          </div>
+          <div class="story-modal-body">
+            <div class="co-desc">ChatGPT / GPT-4を開発する世界最先端のAI研究企業。安全で有益なAGIの実現を目指す。</div>
+            <div class="stat-row">
+              <div class="stat"><div class="stat-num">12</div><div class="stat-label">募集中</div></div>
+              <div class="stat"><div class="stat-num">4.8</div><div class="stat-label">評価</div></div>
+              <div class="stat"><div class="stat-num">¥2,500</div><div class="stat-label">時給〜</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 案E: マーキー2段 ===== -->
+  <div>
+    <div class="proposal-label">案E: マーキー2段（自動流れ）</div>
+    <div class="proposal-sub">動きがあり目を引く・現状の改良版</div>
+    <div class="phone-frame">
+      <div class="section">
+        <div class="sec-title">特集：トップAI企業紹介</div>
+        <div class="sec-sub">インターン先として注目のAI企業をピックアップ</div>
+        <div class="marquee-section">
+          <div class="marquee-row marquee-row-1">
+            <div class="marquee-card"><img src="images/logo/openai_logo.webp" alt="OpenAI"><div class="info"><div class="co-name">OpenAI</div><div class="co-desc">ChatGPT / GPT-4</div></div></div>
+            <div class="marquee-card"><img src="images/logo/anthropic_logo.png" alt="Anthropic"><div class="info"><div class="co-name">Anthropic</div><div class="co-desc">Claude</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#4285f4;width:36px;height:36px;border-radius:8px;font-size:0.8em;">G</div><div class="info"><div class="co-name">Google</div><div class="co-desc">Gemini</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#0668E1;width:36px;height:36px;border-radius:8px;font-size:0.8em;">M</div><div class="info"><div class="co-name">Meta AI</div><div class="co-desc">LLaMA / PyTorch</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#333;width:36px;height:36px;border-radius:8px;font-size:0.8em;">A</div><div class="info"><div class="co-name">Apple</div><div class="co-desc">Apple Intelligence</div></div></div>
+            <!-- 複製 -->
+            <div class="marquee-card"><img src="images/logo/openai_logo.webp" alt="OpenAI"><div class="info"><div class="co-name">OpenAI</div><div class="co-desc">ChatGPT / GPT-4</div></div></div>
+            <div class="marquee-card"><img src="images/logo/anthropic_logo.png" alt="Anthropic"><div class="info"><div class="co-name">Anthropic</div><div class="co-desc">Claude</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#4285f4;width:36px;height:36px;border-radius:8px;font-size:0.8em;">G</div><div class="info"><div class="co-name">Google</div><div class="co-desc">Gemini</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#0668E1;width:36px;height:36px;border-radius:8px;font-size:0.8em;">M</div><div class="info"><div class="co-name">Meta AI</div><div class="co-desc">LLaMA / PyTorch</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#333;width:36px;height:36px;border-radius:8px;font-size:0.8em;">A</div><div class="info"><div class="co-name">Apple</div><div class="co-desc">Apple Intelligence</div></div></div>
+          </div>
+          <div class="marquee-row marquee-row-2">
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#00a4ef;width:36px;height:36px;border-radius:8px;font-size:0.7em;">MS</div><div class="info"><div class="co-name">Microsoft</div><div class="co-desc">Copilot / Azure AI</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#76b900;width:36px;height:36px;border-radius:8px;font-size:0.7em;">NV</div><div class="info"><div class="co-name">NVIDIA</div><div class="co-desc">GPU / CUDA</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#ff9900;width:36px;height:36px;border-radius:8px;font-size:0.7em;">A</div><div class="info"><div class="co-name">Amazon</div><div class="co-desc">AWS / Bedrock</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#cc0000;width:36px;height:36px;border-radius:8px;font-size:0.7em;">T</div><div class="info"><div class="co-name">Tesla</div><div class="co-desc">Autopilot</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#00a1e0;width:36px;height:36px;border-radius:8px;font-size:0.7em;">SF</div><div class="info"><div class="co-name">Salesforce</div><div class="co-desc">Einstein AI</div></div></div>
+            <!-- 複製 -->
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#00a4ef;width:36px;height:36px;border-radius:8px;font-size:0.7em;">MS</div><div class="info"><div class="co-name">Microsoft</div><div class="co-desc">Copilot / Azure AI</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#76b900;width:36px;height:36px;border-radius:8px;font-size:0.7em;">NV</div><div class="info"><div class="co-name">NVIDIA</div><div class="co-desc">GPU / CUDA</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#ff9900;width:36px;height:36px;border-radius:8px;font-size:0.7em;">A</div><div class="info"><div class="co-name">Amazon</div><div class="co-desc">AWS / Bedrock</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#cc0000;width:36px;height:36px;border-radius:8px;font-size:0.7em;">T</div><div class="info"><div class="co-name">Tesla</div><div class="co-desc">Autopilot</div></div></div>
+            <div class="marquee-card"><div class="logo-placeholder" style="background:#00a1e0;width:36px;height:36px;border-radius:8px;font-size:0.7em;">SF</div><div class="info"><div class="co-name">Salesforce</div><div class="co-desc">Einstein AI</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
