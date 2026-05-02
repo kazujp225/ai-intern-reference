@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"><title>求人リンクテスト</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+.card { display: block; background: #fff; border: 2px solid #4caf50; border-radius: 12px; padding: 16px; margin: 10px 0; text-decoration: none; color: #111; cursor: pointer; }
+.card:hover { background: #e8f5e9; }
+.card .company { font-size: .8em; color: #666; }
+.card .title { font-size: 1.1em; font-weight: 900; margin: 4px 0; }
+.card .meta { font-size: .85em; color: #2e7d32; }
+#status { padding: 10px; background: #f5f5f5; border-radius: 8px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>求人リンクテスト</h1>
+<div id="status">読み込み中...</div>
+<div id="list"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script>
+(async function(){
+  var statusEl = document.getElementById('status');
+  var listEl = document.getElementById('list');
+
+  try {
+    var cfg = window.AIME_CONFIG.SUPABASE;
+    statusEl.textContent = 'Supabase接続中... URL=' + cfg.URL;
+    var sb = window.supabase.createClient(cfg.URL, cfg.ANON_KEY);
+
+    var res = await sb.from('job_postings')
+      .select('id, title, salary_min, salary_max, location, is_boosted, companies(id, name)')
+      .eq('is_public', true).eq('status', 'approved')
+      .order('is_boosted', { ascending: false })
+      .limit(12);
+
+    if (res.error) {
+      statusEl.textContent = 'エラー: ' + res.error.message;
+      return;
+    }
+
+    statusEl.textContent = res.data.length + '件取得成功！各カードをクリックすると求人詳細に遷移します。';
+
+    listEl.innerHTML = res.data.map(function(j) {
+      var wage = j.salary_min ? '時給 ¥' + j.salary_min.toLocaleString() + '〜¥' + (j.salary_max || '').toLocaleString() : '応相談';
+      return '<a class="card" href="job.html?id=' + j.id + '">'
+        + '<div class="company">' + (j.companies ? j.companies.name : '') + '</div>'
+        + '<div class="title">' + (j.is_boosted ? '【注目】' : '') + j.title + '</div>'
+        + '<div class="meta">' + wage + ' / ' + (j.location || '') + '</div>'
+        + '</a>';
+    }).join('');
+
+  } catch(e) {
+    statusEl.textContent = 'JSエラー: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>

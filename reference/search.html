@@ -10,6 +10,34 @@
 <style>
   body { background: #f7f8fa; }
 
+  /* ===== ヘッダー: トップページと統一 ===== */
+  .site-header { display: none !important; }
+  .header {
+    background: #fff; position: relative; overflow: hidden;
+    box-shadow: 0 1px 0 #e0e0e0;
+  }
+  .header-inner { background: transparent; }
+  .neo-logo {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 1.5em; font-weight: 900; color: #1b5e20;
+    text-decoration: none; letter-spacing: 2px;
+  }
+  .neo-nav { display: flex; align-items: center; gap: 24px; }
+  .neo-nav a {
+    color: #888; text-decoration: none; font-size: 0.88em;
+    font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .neo-nav a:hover { color: #2e7d32; border-bottom-color: #4caf50; }
+  .neo-nav .neo-login { color: #2e7d32; }
+  .neo-nav .neo-register {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    padding: 7px 22px; border-radius: 6px; font-weight: 800;
+    font-size: 0.85em; border: none; border-bottom: none;
+    transition: all 0.2s;
+  }
+  .neo-nav .neo-register:hover { opacity: 0.9; }
+
   /* ===== ヒーロー: blog.html と同系統 (ソフト緑グラデ) ===== */
   .search-hero {
     background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
@@ -43,7 +71,16 @@
     display: grid; grid-template-columns: 260px 1fr; gap: 28px;
     max-width: 1100px; margin: 28px auto 60px; padding: 0 24px;
   }
-  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) {
+    .layout { display: flex; flex-direction: column; }
+    .layout > main { order: 1; display: flex; flex-direction: column; }
+    .layout > main > .results-head { order: 1; }
+    .layout > main > .results-grid { order: 2; }
+    .layout > main > .pagination { order: 3; }
+    .layout > main > .active-filters { order: 4; }
+    .layout > main > #ranking-section { order: 5; }
+    .layout > .filter-side { order: 2; position: static; }
+  }
 
   /* ===== サイドバー (クリーンカード) ===== */
   .filter-side {
@@ -231,18 +268,22 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div class="site-header-inner">
-    <a class="site-logo" href="original.html"><img src="images/flat_svg/logo_icon.svg" alt="logo">AIme</a>
-    <nav class="site-nav">
-      <a href="search.html" class="current">インターンを探す</a>
-      <a href="companies.html">AI企業を探す</a>
-      <a href="blog.html">AIコラム</a>
-      <a href="login.html" class="login">ログイン</a>
-      <a href="signup.html" class="register">新規登録</a>
-    </nav>
+<div class="header">
+  <div class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
+    <div style="display: flex; align-items: center; width: 100%;">
+      <div style="margin-right: auto;">
+        <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="AIme" style="height:32px;width:auto;">AIme</a>
+      </div>
+      <div class="neo-nav">
+        <a href="search.html">インターンを探す</a>
+        <a href="companies.html">AI企業を探す</a>
+        <a href="blog.html">AIコラム</a>
+        <a href="login.html" class="neo-login">ログイン</a>
+        <a href="signup.html" class="neo-register">新規登録</a>
+      </div>
+    </div>
   </div>
-</header>
+</div>
 
 <section class="search-hero">
   <div class="search-hero-inner">
@@ -511,7 +552,7 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
     if (window.sb) {
       try {
         let query = window.sb.from('job_postings')
-          .select('*, companies(id, name, logo_url, industry, is_verified)', { count: 'exact' })
+          .select('*, companies(id, name)', { count: 'exact' })
           .eq('is_public', true).eq('status', 'approved');
 
         // カテゴリフィルタ
@@ -533,10 +574,15 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
         query = query.range(pageIdx * PAGE_SIZE, (pageIdx + 1) * PAGE_SIZE - 1);
 
         const { data, count, error } = await query;
+        if (error) {
+          grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;color:red;font-size:.8em;">Supabase error: ' + error.message + '</div>';
+        }
         if (!error && data && data.length) {
           result = { items: data, total: count || data.length };
         }
-      } catch (err) { console.warn('[search] Supabase query failed:', err); }
+      } catch (err) {
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:20px;color:red;font-size:.8em;">JS error: ' + err.message + '</div>';
+      }
     }
 
     // Supabaseが空の場合はフォールバック
@@ -579,22 +625,28 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
       grid.innerHTML = result.items.map(j => {
         const company = j.companies?.name || '';
         const isHot = j.is_boosted;
-        const tags = (j.tags || []).slice(0, 4).map(t => `<span class="jc-tag">${escapeHtml(t)}</span>`).join('');
-        const wage = j.salary_min ? `時給 ¥${Number(j.salary_min).toLocaleString()}${j.salary_max ? '〜¥' + Number(j.salary_max).toLocaleString() : ''}` : '時給応相談';
-        return `
-          <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
-            <div class="jc-company">${escapeHtml(company)}</div>
-            <div class="jc-title">${escapeHtml(j.title)}</div>
-            <div class="jc-tags">
-              ${isHot ? `<span class="jc-tag hot">注目</span>` : ''}
-              ${tags}
-            </div>
-            <div class="jc-meta">
-              <span class="jc-wage">${wage}</span>
-              <span>${escapeHtml(j.location || '場所未定')}</span>
-            </div>
-          </a>`;
+        const tags = (j.tags || []).slice(0, 4).map(t => '<span class="jc-tag">' + escapeHtml(t) + '</span>').join('');
+        const wage = j.salary_min ? '時給 ¥' + Number(j.salary_min).toLocaleString() + (j.salary_max ? '〜¥' + Number(j.salary_max).toLocaleString() : '') : '時給応相談';
+        const url = 'job.html?id=' + encodeURIComponent(j.id);
+        return '<div class="job-card" data-href="' + url + '" style="cursor:pointer;">'
+          + '<div class="jc-company">' + escapeHtml(company) + '</div>'
+          + '<div class="jc-title">' + escapeHtml(j.title) + '</div>'
+          + '<div class="jc-tags">'
+          + (isHot ? '<span class="jc-tag hot">注目</span>' : '')
+          + tags
+          + '</div>'
+          + '<div class="jc-meta">'
+          + '<span class="jc-wage">' + wage + '</span>'
+          + '<span>' + escapeHtml(j.location || '場所未定') + '</span>'
+          + '</div>'
+          + '</div>';
       }).join('');
+      // カードクリックで遷移
+      grid.querySelectorAll('.job-card[data-href]').forEach(function(card) {
+        card.addEventListener('click', function() {
+          location.href = card.getAttribute('data-href');
+        });
+      });
     }
 
     // ページネーション更新

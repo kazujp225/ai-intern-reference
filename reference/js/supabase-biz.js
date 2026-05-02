@@ -70,7 +70,7 @@
         .eq('is_approved', true);
       if (keyword) q = q.or(`name.ilike.%${keyword}%,description.ilike.%${keyword}%`);
       if (category) q = q.eq('industry', category);
-      q = q.order('is_verified', { ascending: false }).order('created_at', { ascending: false }).range(offset, offset + limit - 1);
+      q = q.order('created_at', { ascending: false }).range(offset, offset + limit - 1);
       const { data, count } = await q;
       return { items: data || [], total: count || 0 };
     },
@@ -104,8 +104,8 @@
       return data || [];
     },
     async listPublicJobs({ limit = 30, offset = 0, keyword, category, location, tag, feature, companyId, remoteType, sort = 'new' } = {}) {
-      let q = sb.from('job_postings').select('*, companies(id, name, logo_url, industry, is_verified)', { count: 'exact' })
-        .eq('is_public', true).eq('status', 'approved').eq('is_draft', false);
+      let q = sb.from('job_postings').select('*, companies(id, name)', { count: 'exact' })
+        .eq('is_public', true).eq('status', 'approved');
       if (keyword) q = q.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
       if (category) q = q.eq('category', category);
       if (location) q = q.ilike('location', `%${location}%`);
@@ -121,14 +121,14 @@
       return { items: data || [], total: count || 0 };
     },
     async listFeaturedJobs(limit = 8) {
-      const { data } = await sb.from('job_postings').select('*, companies(id, name, logo_url)')
-        .eq('is_public', true).eq('status', 'approved').eq('is_draft', false)
+      const { data } = await sb.from('job_postings').select('*, companies(id, name)')
+        .eq('is_public', true).eq('status', 'approved')
         .eq('is_boosted', true).order('created_at', { ascending: false }).limit(limit);
       return data || [];
     },
     async listTopCompanies(limit = 12) {
       const { data } = await sb.from('companies').select('*')
-        .eq('is_approved', true).order('is_verified', { ascending: false })
+        .eq('is_approved', true)
         .order('created_at', { ascending: false }).limit(limit);
       return data || [];
     },
@@ -179,7 +179,7 @@
         const c = await this.getMyCompany(); if (!c) return [];
         q = sb.from('conversations').select('*, profiles:student_id(nickname)').eq('company_id', c.id);
       } else {
-        q = sb.from('conversations').select('*, companies(name, logo_url)').eq('student_id', u.id);
+        q = sb.from('conversations').select('*, companies(name)').eq('student_id', u.id);
       }
       const { data } = await q.order('last_message_at', { ascending: false });
       return data || [];
