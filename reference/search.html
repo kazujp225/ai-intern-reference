@@ -275,35 +275,13 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
 </script>
 
 <div class="layout">
-  <aside class="filter-side">
+  <aside class="filter-side" id="filter-side">
     <h3>AI職種</h3>
-    <ul>
-      <li><a href="search.html?job=LLMアプリ開発&count=56">LLMアプリ開発<span class="n">56</span></a></li>
-      <li><a href="search.html?job=プロンプトエンジニア&count=42">プロンプトエンジニア<span class="n">42</span></a></li>
-      <li><a href="search.html?job=MLエンジニア&count=38">MLエンジニア<span class="n">38</span></a></li>
-      <li><a href="search.html?job=データサイエンティスト&count=31">データサイエンティスト<span class="n">31</span></a></li>
-      <li><a href="search.html?job=AIリサーチャー&count=24">AIリサーチャー<span class="n">24</span></a></li>
-      <li><a href="search.html?job=AIエージェント開発&count=19">AIエージェント開発<span class="n">19</span></a></li>
-    </ul>
+    <ul id="filter-jobs"></ul>
     <h3>尖った特徴</h3>
-    <ul>
-      <li><a href="search.html?feature=フルリモート可&count=89">フルリモート可<span class="n">89</span></a></li>
-      <li><a href="search.html?feature=未経験OK&count=67">未経験OK<span class="n">67</span></a></li>
-      <li><a href="search.html?feature=時給2,000円以上&count=52">時給2,000円以上<span class="n">52</span></a></li>
-      <li><a href="search.html?feature=CEO / CTO直下&count=38">CEO / CTO直下<span class="n">38</span></a></li>
-      <li><a href="search.html?feature=論文読み会あり&count=34">論文読み会あり<span class="n">34</span></a></li>
-      <li><a href="search.html?feature=GPU使い放題&count=23">GPU使い放題<span class="n">23</span></a></li>
-    </ul>
+    <ul id="filter-features"></ul>
     <h3>エリア</h3>
-    <ul>
-      <li><a href="search.html?area=東京都&count=89">東京都<span class="n">89</span></a></li>
-      <li><a href="search.html?area=神奈川県&count=22">神奈川県<span class="n">22</span></a></li>
-      <li><a href="search.html?area=埼玉県&count=18">埼玉県<span class="n">18</span></a></li>
-      <li><a href="search.html?area=千葉県&count=15">千葉県<span class="n">15</span></a></li>
-      <li><a href="search.html?area=茨城県&count=10">茨城県<span class="n">10</span></a></li>
-      <li><a href="search.html?area=栃木県&count=8">栃木県<span class="n">8</span></a></li>
-      <li><a href="search.html?area=群馬県&count=12">群馬県<span class="n">12</span></a></li>
-    </ul>
+    <ul id="filter-areas"></ul>
   </aside>
 
   <main>
@@ -403,35 +381,190 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
   const sortSelect = document.getElementById('sort-select');
   sortSelect.value = params.get('sort') || 'new';
 
+  // === 全56件フォールバックデータ (seed-jobs.sql準拠) ===
+  const ALL_FALLBACK = [
+    // LLM (12件)
+    { id:'f1', title:'【GPTの裏側を知りたくないか？】自社LLM開発、RAG構築からファインチューニングまで全部やる。', companies:{name:'株式会社ニューロンクラフト'}, tags:['GPU使い放題','自社LLM開発中','フルリモート可','未経験OK'], salary_min:2000, salary_max:4000, location:'渋谷駅 徒歩5分', is_boosted:true, category:'llm' },
+    { id:'f2', title:'【LangChainマスターになれ】RAGパイプライン構築で検索精度を極限まで高める。', companies:{name:'LLMラボ株式会社'}, tags:['RAG特化','LangChain','ベクトルDB'], salary_min:2200, salary_max:3800, location:'目黒駅 徒歩7分', is_boosted:false, category:'llm' },
+    { id:'f3', title:'【ファインチューニングの鬼になれ】GPT-4超えを本気で目指す。', companies:{name:'合同会社トークンAI'}, tags:['ファインチューニング','Hugging Face','論文読み会あり','フルリモート可'], salary_min:2500, salary_max:5000, location:'フルリモート', is_boosted:false, category:'llm' },
+    { id:'f4', title:'【埋め込みベクトルの世界へ】セマンティック検索エンジンを開発。', companies:{name:'株式会社ベクトルサーチ'}, tags:['検索AI','Embedding','Pinecone'], salary_min:2000, salary_max:3500, location:'五反田駅 徒歩3分', is_boosted:false, category:'llm' },
+    { id:'f5', title:'【GPTsの次を作れ】カスタムLLMエージェントプラットフォーム開発。', companies:{name:'AIネイティブ株式会社'}, tags:['LLMプラットフォーム','API設計','TypeScript'], salary_min:2300, salary_max:4500, location:'恵比寿駅 徒歩5分', is_boosted:false, category:'llm' },
+    { id:'f6', title:'【マルチモーダルLLM開発】画像+テキストの最先端研究をプロダクトに。', companies:{name:'株式会社マルチモーダルAI'}, tags:['マルチモーダル','Vision API','研究開発','論文共著チャンス'], salary_min:2800, salary_max:5500, location:'本郷三丁目駅 徒歩8分', is_boosted:false, category:'llm' },
+    { id:'f7', title:'【LLMの推論を高速化せよ】量子化・KVキャッシュ最適化エンジニア。', companies:{name:'株式会社ニューロンクラフト'}, tags:['推論最適化','CUDA','GPU使い放題'], salary_min:2500, salary_max:4500, location:'渋谷駅 徒歩5分', is_boosted:false, category:'llm' },
+    { id:'f8', title:'【AIの安全性を研究せよ】LLMアラインメント・レッドチーミング。', companies:{name:'LLMラボ株式会社'}, tags:['AI安全性','レッドチーム','研究開発'], salary_min:2200, salary_max:4000, location:'目黒駅 徒歩7分', is_boosted:false, category:'llm' },
+    { id:'f9', title:'【日本語LLMを鍛えろ】日本語コーパス構築とモデル学習。', companies:{name:'合同会社トークンAI'}, tags:['日本語AI','コーパス構築','フルリモート可'], salary_min:2000, salary_max:3800, location:'フルリモート', is_boosted:false, category:'llm' },
+    { id:'f10', title:'【LLMでコードを書かせろ】AIコーディングアシスタント開発。', companies:{name:'AIネイティブ株式会社'}, tags:['コード生成','Copilot','TypeScript'], salary_min:2500, salary_max:5000, location:'恵比寿駅 徒歩5分', is_boosted:false, category:'llm' },
+    { id:'f11', title:'【ナレッジグラフ×LLM】構造化データとLLMの融合で次世代検索。', companies:{name:'株式会社ベクトルサーチ'}, tags:['ナレッジグラフ','検索AI','Python'], salary_min:2000, salary_max:3500, location:'五反田駅 徒歩3分', is_boosted:false, category:'llm' },
+    { id:'f12', title:'【音声×LLM】リアルタイム音声AI対話システム開発。', companies:{name:'株式会社マルチモーダルAI'}, tags:['音声AI','リアルタイム','研究開発'], salary_min:2500, salary_max:4500, location:'本郷三丁目駅 徒歩8分', is_boosted:false, category:'llm' },
+    // プロンプトエンジニア (8件)
+    { id:'f13', title:'【日本語力、最強の武器になる】文系こそ来い。プロンプトエンジニア。', companies:{name:'合同会社プロンプト・ラボ'}, tags:['文系歓迎','プログラミング不要','CEO直下','フルリモート可'], salary_min:1800, salary_max:3000, location:'完全フルリモート', is_boosted:true, category:'prompt' },
+    { id:'f14', title:'【言葉でAIを操る職人】企業向けプロンプト設計コンサルタント。', companies:{name:'株式会社プロンプトデザイン'}, tags:['コンサル','プロンプト設計','業務効率化'], salary_min:2000, salary_max:3500, location:'品川駅 徒歩4分', is_boosted:false, category:'prompt' },
+    { id:'f15', title:'【AIコンテンツの品質を極めろ】プロンプトで記事・広告の質を最大化。', companies:{name:'AIライティング株式会社'}, tags:['コンテンツ','ライティング','文系歓迎','未経験OK'], salary_min:1500, salary_max:2800, location:'渋谷駅 徒歩6分', is_boosted:false, category:'prompt' },
+    { id:'f16', title:'【会話設計のプロになれ】AIチャットボットの対話フロー設計。', companies:{name:'合同会社チャットUX'}, tags:['UX設計','チャットボット','フルリモート可','未経験OK'], salary_min:1800, salary_max:3200, location:'フルリモート', is_boosted:false, category:'prompt' },
+    { id:'f17', title:'【プロンプトのプロを育成】体系的な研修あり。AI時代の新職種。', companies:{name:'プロンプトファクトリー株式会社'}, tags:['研修充実','メンター制度','文系歓迎','未経験OK'], salary_min:1500, salary_max:2500, location:'新宿駅 徒歩5分', is_boosted:false, category:'prompt' },
+    { id:'f18', title:'【法律×プロンプト】リーガルテック向けプロンプト最適化。', companies:{name:'合同会社プロンプト・ラボ'}, tags:['リーガルテック','文系歓迎','フルリモート可'], salary_min:2000, salary_max:3500, location:'フルリモート', is_boosted:false, category:'prompt' },
+    { id:'f19', title:'【教育×AI】学習支援AIのプロンプト設計・チューニング。', companies:{name:'株式会社プロンプトデザイン'}, tags:['教育AI','プロンプト設計','未経験OK'], salary_min:1800, salary_max:3000, location:'品川駅 徒歩4分', is_boosted:false, category:'prompt' },
+    { id:'f20', title:'【多言語プロンプト】英語・中国語・日本語の多言語プロンプト研究。', companies:{name:'AIライティング株式会社'}, tags:['多言語','プロンプト設計','語学力'], salary_min:2000, salary_max:3500, location:'渋谷駅 徒歩6分', is_boosted:false, category:'prompt' },
+    // データサイエンティスト / MLエンジニア (9件)
+    { id:'f21', title:'【Excelで消耗するのはもうやめろ】データ分析を本物にする3ヶ月。', companies:{name:'データドリブン株式会社'}, tags:['未経験OK','研修充実','メンター制度','Kaggle推奨'], salary_min:1500, salary_max:2500, location:'新宿駅 徒歩7分', is_boosted:false, category:'data' },
+    { id:'f22', title:'【MLOpsの実務を学べ】学習・デプロイ・監視まで一気通貫。', companies:{name:'株式会社MLパイプライン'}, tags:['MLOps','Docker','AWS','GCP'], salary_min:2000, salary_max:3500, location:'渋谷駅 徒歩8分', is_boosted:false, category:'data' },
+    { id:'f23', title:'【Kaggleの実力を仕事に活かせ】コンペ上位経験者優遇。', companies:{name:'コンペドリブン株式会社'}, tags:['Kaggle推奨','XGBoost','フルリモート可'], salary_min:2000, salary_max:4000, location:'フルリモート', is_boosted:false, category:'data' },
+    { id:'f24', title:'【データの海から宝を掘れ】BIダッシュボード×機械学習予測モデル。', companies:{name:'データドリブン株式会社'}, tags:['BI','Tableau','SQL'], salary_min:1800, salary_max:3000, location:'品川駅 徒歩5分', is_boosted:false, category:'data' },
+    { id:'f25', title:'【AIで在庫ロスをゼロに】需要予測モデルの開発・改善。', companies:{name:'株式会社MLパイプライン'}, tags:['需要予測','時系列分析','Python','フルリモート可'], salary_min:1800, salary_max:3200, location:'東京駅 徒歩3分', is_boosted:false, category:'data' },
+    { id:'f26', title:'【汚いデータと戦え】前処理・クレンジングのスペシャリスト。', companies:{name:'コンペドリブン株式会社'}, tags:['データ前処理','ETL','SQL','未経験OK'], salary_min:1500, salary_max:2500, location:'池袋駅 徒歩6分', is_boosted:false, category:'data' },
+    { id:'f27', title:'【レコメンドエンジン開発】パーソナライズAIで購買体験を変える。', companies:{name:'データドリブン株式会社'}, tags:['レコメンド','協調フィルタリング','Python'], salary_min:2200, salary_max:3800, location:'新宿駅 徒歩7分', is_boosted:false, category:'data' },
+    { id:'f28', title:'【異常検知AI】製造業向けリアルタイム異常検知モデル構築。', companies:{name:'株式会社MLパイプライン'}, tags:['異常検知','IoT','リアルタイム'], salary_min:2000, salary_max:3500, location:'渋谷駅 徒歩8分', is_boosted:false, category:'data' },
+    // AI × クリエイティブ (6件)
+    { id:'f29', title:'【Stable Diffusion時代のクリエイティブAI開発】美大生歓迎。', companies:{name:'株式会社ディフュージョン・ワークス'}, tags:['GPU使い放題','美大生歓迎','論文共著チャンス'], salary_min:2500, salary_max:5000, location:'六本木一丁目駅 徒歩3分', is_boosted:true, category:'image' },
+    { id:'f30', title:'【動画生成AIの最前線】Sora/Runway世代の動画生成技術。', companies:{name:'動画AI株式会社'}, tags:['動画生成','Sora','GPU使い放題','研究開発'], salary_min:2800, salary_max:5000, location:'渋谷駅 徒歩10分', is_boosted:false, category:'image' },
+    { id:'f31', title:'【AIで新しいアートを創れ】ControlNet/LoRA活用。', companies:{name:'AIアートスタジオ株式会社'}, tags:['ControlNet','LoRA','美大生歓迎'], salary_min:2200, salary_max:4500, location:'表参道駅 徒歩7分', is_boosted:false, category:'image' },
+    { id:'f32', title:'【3Dテクスチャ×AI】ゲーム・建築向けAIテクスチャ生成。', companies:{name:'株式会社テクスチャAI'}, tags:['3D','ゲーム開発','Unity','フルリモート可'], salary_min:2000, salary_max:3800, location:'秋葉原駅 徒歩3分', is_boosted:false, category:'image' },
+    { id:'f33', title:'【ComfyUIの魔術師求む】画像生成パイプライン自動化。', companies:{name:'株式会社ディフュージョン・ワークス'}, tags:['ComfyUI','自動化','クリエイティブ'], salary_min:2000, salary_max:4000, location:'六本木一丁目駅 徒歩3分', is_boosted:false, category:'image' },
+    { id:'f34', title:'【広告クリエイティブ×AI】AI生成画像で広告効果を最大化。', companies:{name:'動画AI株式会社'}, tags:['広告','クリエイティブ','文系歓迎'], salary_min:2000, salary_max:3500, location:'渋谷駅 徒歩10分', is_boosted:false, category:'image' },
+    // AIエージェント開発 (6件)
+    { id:'f35', title:'【AIエージェントが人間の仕事を奪う？お前が作る側だ。】自律型AI開発。', companies:{name:'株式会社オートノミー'}, tags:['自律型AI開発','H100クラスタ','CTO直下','ストックオプション'], salary_min:3000, salary_max:6000, location:'渋谷駅 徒歩8分', is_boosted:true, category:'agent' },
+    { id:'f36', title:'【マルチエージェントの世界】複数AIが協調して問題を解く。', companies:{name:'エージェントラボ株式会社'}, tags:['マルチエージェント','CrewAI','LangGraph','研究開発'], salary_min:2500, salary_max:5000, location:'目黒駅 徒歩6分', is_boosted:false, category:'agent' },
+    { id:'f37', title:'【Tool UseでAIを進化させろ】外部ツール連携で能力100倍。', companies:{name:'株式会社ツールユースAI'}, tags:['Tool Use','Function Calling','API開発','フルリモート可'], salary_min:2800, salary_max:5500, location:'フルリモート', is_boosted:false, category:'agent' },
+    { id:'f38', title:'【AGIへの第一歩】自己改善型AIエージェントの研究開発。', companies:{name:'合同会社AGIラボ'}, tags:['AGI研究','自己改善AI','論文共著チャンス','ストックオプション'], salary_min:3000, salary_max:7000, location:'本郷三丁目駅 徒歩5分', is_boosted:false, category:'agent' },
+    { id:'f39', title:'【AIワークフロー自動化】企業業務を丸ごとAI化する基盤開発。', companies:{name:'株式会社オートノミー'}, tags:['ワークフロー','自動化','LangGraph'], salary_min:2500, salary_max:4500, location:'渋谷駅 徒歩8分', is_boosted:false, category:'agent' },
+    { id:'f40', title:'【AIコーディングエージェント】自律的にコードを書くAI開発。', companies:{name:'エージェントラボ株式会社'}, tags:['コード生成','自律型AI開発','研究開発'], salary_min:2800, salary_max:5000, location:'目黒駅 徒歩6分', is_boosted:false, category:'agent' },
+    // AI PMM / BizDev (5件)
+    { id:'f41', title:'【コードが書けなくてもAI業界で天下取れる】PMM / BizDev。', companies:{name:'AIストラテジー株式会社'}, tags:['文系歓迎','コード不要','CEO直下','ストックオプション'], salary_min:1800, salary_max:3500, location:'表参道駅 徒歩3分', is_boosted:true, category:'business' },
+    { id:'f42', title:'【AIで業務改革を提案せよ】大手企業AI導入コンサルティング。', companies:{name:'株式会社AIコンサル'}, tags:['コンサル','業務改革','プレゼン力'], salary_min:2000, salary_max:4000, location:'丸の内 徒歩2分', is_boosted:false, category:'business' },
+    { id:'f43', title:'【AI商材を売れる人材は最強】エンタープライズAI SaaS営業。', companies:{name:'AIストラテジー株式会社'}, tags:['営業','カスタマーサクセス','AI SaaS','文系歓迎'], salary_min:1500, salary_max:3000, location:'六本木駅 徒歩5分', is_boosted:false, category:'business' },
+    { id:'f44', title:'【AI企業のブランドを作れ】PR・マーケティング。', companies:{name:'株式会社AIコンサル'}, tags:['PR','マーケティング','SNS運用','文系歓迎'], salary_min:1500, salary_max:2800, location:'渋谷駅 徒歩4分', is_boosted:false, category:'business' },
+    { id:'f45', title:'【AIエンジニアを採れ】AI人材特化のリクルーター。', companies:{name:'AIストラテジー株式会社'}, tags:['採用','人事','AI業界理解','文系歓迎'], salary_min:1500, salary_max:3000, location:'恵比寿駅 徒歩3分', is_boosted:false, category:'business' },
+    // AIリサーチャー (4件)
+    { id:'f46', title:'【最先端論文を実装せよ】AI研究インターン。NeurIPS/ICML級。', companies:{name:'株式会社マルチモーダルAI'}, tags:['研究開発','論文共著チャンス','国際学会発表','GPU使い放題'], salary_min:2500, salary_max:5000, location:'本郷三丁目駅 徒歩8分', is_boosted:false, category:'research' },
+    { id:'f47', title:'【強化学習×ゲーム】ゲームAIで世界一を目指す研究チーム。', companies:{name:'合同会社AGIラボ'}, tags:['強化学習','ゲームAI','研究開発','論文共著チャンス'], salary_min:2200, salary_max:4000, location:'本郷三丁目駅 徒歩5分', is_boosted:false, category:'research' },
+    { id:'f48', title:'【数理最適化×AI】組合せ最適化問題を機械学習で解く。', companies:{name:'株式会社マルチモーダルAI'}, tags:['数理最適化','研究開発','Python'], salary_min:2000, salary_max:4000, location:'本郷三丁目駅 徒歩8分', is_boosted:false, category:'research' },
+    { id:'f49', title:'【説明可能AI（XAI）】AIの意思決定を人間が理解できるようにする研究。', companies:{name:'合同会社AGIラボ'}, tags:['XAI','研究開発','論文共著チャンス'], salary_min:2200, salary_max:4500, location:'本郷三丁目駅 徒歩5分', is_boosted:false, category:'research' },
+    // 医療AI (4件)
+    { id:'f50', title:'【AIで命を救う。マジで。】医療画像診断AI開発。', companies:{name:'MedAI株式会社'}, tags:['社会貢献','東大共同研究','論文共著チャンス'], salary_min:2000, salary_max:3500, location:'本郷三丁目駅 徒歩5分', is_boosted:false, category:'medical' },
+    { id:'f51', title:'【創薬×AI】新薬開発を加速するAIモデル構築。', companies:{name:'ヘルスケアAI株式会社'}, tags:['創薬AI','バイオインフォ','Python'], salary_min:2200, salary_max:4000, location:'日本橋駅 徒歩3分', is_boosted:false, category:'medical' },
+    { id:'f52', title:'【内視鏡AI】リアルタイム画像解析で医師の診断を支援。', companies:{name:'メディカルビジョン株式会社'}, tags:['画像認識','リアルタイム','医療機器'], salary_min:2500, salary_max:4500, location:'御茶ノ水駅 徒歩7分', is_boosted:false, category:'medical' },
+    { id:'f53', title:'【メンタルヘルス×AI】自然言語処理で心の健康をサポート。', companies:{name:'MedAI株式会社'}, tags:['NLP','メンタルヘルス','社会貢献','未経験OK'], salary_min:1800, salary_max:3000, location:'本郷三丁目駅 徒歩5分', is_boosted:false, category:'medical' },
+    // ロボティクス (3件)
+    { id:'f54', title:'【ソフトウェアに飽きたらハードで殴れ】具身化AI x ロボティクス。', companies:{name:'RoboMind株式会社'}, tags:['ロボット','国際学会発表','GPU使い放題'], salary_min:2200, salary_max:4000, location:'大崎駅 徒歩10分', is_boosted:false, category:'robotics' },
+    { id:'f55', title:'【公道を走るAI】自動運転レベル4を目指す。', companies:{name:'自動運転AI株式会社'}, tags:['自動運転','LIDAR','シミュレーション'], salary_min:2500, salary_max:5000, location:'お台場 徒歩8分', is_boosted:false, category:'robotics' },
+    { id:'f56', title:'【空飛ぶAI】ドローン自律飛行のためのビジョンAI開発。', companies:{name:'ドローンAI株式会社'}, tags:['ドローン','ビジョンAI','ROS2'], salary_min:2000, salary_max:3800, location:'つくば 車通勤可', is_boosted:false, category:'robotics' },
+  ];
+
+  const CAT_MAP = {
+    'LLMアプリ開発':'llm','プロンプトエンジニア':'prompt',
+    'MLエンジニア':'data','データサイエンティスト':'data',
+    'AIリサーチャー':'research','AIエージェント開発':'agent',
+    'AI PMM / BizDev':'business','AI × クリエイティブ':'image',
+    '医療AI':'medical','ロボティクス':'robotics'
+  };
+  const CAT_LABELS = {
+    'llm':'LLMアプリ開発','prompt':'プロンプトエンジニア',
+    'data':'データサイエンティスト','research':'AIリサーチャー',
+    'agent':'AIエージェント開発','business':'AI PMM / BizDev',
+    'image':'AI × クリエイティブ','medical':'医療AI','robotics':'ロボティクス'
+  };
+  const FEAT_TAGS = ['フルリモート可','未経験OK','文系歓迎','GPU使い放題','論文共著チャンス','Kaggle推奨','ストックオプション','CEO直下','研究開発','論文読み会あり'];
+
+  // サイドバーをデータから動的生成
+  function buildSidebar(allJobs) {
+    // 職種別件数
+    const jobCounts = {};
+    allJobs.forEach(j => { jobCounts[j.category] = (jobCounts[j.category] || 0) + 1; });
+    const jobUl = document.getElementById('filter-jobs');
+    const jobOrder = ['llm','prompt','data','research','agent','business','image','medical','robotics'];
+    jobUl.innerHTML = jobOrder.filter(k => jobCounts[k]).map(k => {
+      const isActive = job === CAT_LABELS[k];
+      return `<li><a href="search.html?job=${encodeURIComponent(CAT_LABELS[k])}" style="${isActive ? 'background:#e8f5e9;color:#2e7d32;padding-left:12px;' : ''}"><span>${CAT_LABELS[k]}</span><span class="n">${jobCounts[k]}</span></a></li>`;
+    }).join('');
+
+    // 特徴別件数
+    const featCounts = {};
+    allJobs.forEach(j => (j.tags || []).forEach(t => {
+      FEAT_TAGS.forEach(ft => { if (t.indexOf(ft) >= 0) featCounts[ft] = (featCounts[ft] || 0) + 1; });
+    }));
+    const featUl = document.getElementById('filter-features');
+    featUl.innerHTML = FEAT_TAGS.filter(ft => featCounts[ft]).sort((a,b) => featCounts[b] - featCounts[a]).map(ft => {
+      const isActive = feat === ft;
+      return `<li><a href="search.html?feature=${encodeURIComponent(ft)}" style="${isActive ? 'background:#e8f5e9;color:#2e7d32;padding-left:12px;' : ''}"><span>${ft}</span><span class="n">${featCounts[ft]}</span></a></li>`;
+    }).join('');
+
+    // エリア別件数
+    const areaCounts = {};
+    const areaNames = ['渋谷','目黒','品川','新宿','六本木','恵比寿','表参道','本郷','フルリモート','港区','秋葉原','池袋','丸の内','大崎','お台場','つくば'];
+    allJobs.forEach(j => {
+      areaNames.forEach(a => { if ((j.location || '').indexOf(a) >= 0) areaCounts[a] = (areaCounts[a] || 0) + 1; });
+    });
+    const areaUl = document.getElementById('filter-areas');
+    areaUl.innerHTML = Object.keys(areaCounts).sort((a,b) => areaCounts[b] - areaCounts[a]).map(a => {
+      const isActive = area === a;
+      return `<li><a href="search.html?area=${encodeURIComponent(a)}" style="${isActive ? 'background:#e8f5e9;color:#2e7d32;padding-left:12px;' : ''}"><span>${a}</span><span class="n">${areaCounts[a]}</span></a></li>`;
+    }).join('');
+  }
+
   // DB検索実行
   async function doSearch() {
     const grid = document.getElementById('results-grid');
     grid.innerHTML = '<div style="grid-column:1/-1; padding:40px; text-align:center; color:#888;">読み込み中…</div>';
 
-    let companyId = null;
-    if (comp) {
-      // 企業名から id を解決 (部分一致)
-      const { data: companies } = await window.sb.from('companies').select('id').ilike('name', `%${comp}%`).limit(1);
-      if (companies && companies.length) companyId = companies[0].id;
+    // Supabaseから直接クエリ（AImeBizに依存しない）
+    let result = { items: [], total: 0 };
+    if (window.sb) {
+      try {
+        let query = window.sb.from('job_postings')
+          .select('*, companies(id, name, logo_url, industry, is_verified)', { count: 'exact' })
+          .eq('is_public', true).eq('status', 'approved');
+
+        // カテゴリフィルタ
+        if (job) {
+          const cat = CAT_MAP[job] || null;
+          if (cat) query = query.eq('category', cat);
+        }
+        // エリアフィルタ
+        if (area) query = query.ilike('location', '%' + area + '%');
+        // キーワード検索
+        if (q) query = query.or('title.ilike.%' + q + '%,description.ilike.%' + q + '%');
+        // タグフィルタ
+        if (tag) query = query.contains('tags', [tag]);
+        // 特徴フィルタ
+        if (feat) query = query.contains('tags', [feat]);
+
+        // ソート
+        query = query.order('is_boosted', { ascending: false }).order('created_at', { ascending: false });
+        query = query.range(pageIdx * PAGE_SIZE, (pageIdx + 1) * PAGE_SIZE - 1);
+
+        const { data, count, error } = await query;
+        if (!error && data && data.length) {
+          result = { items: data, total: count || data.length };
+        }
+      } catch (err) { console.warn('[search] Supabase query failed:', err); }
     }
 
-    let result = { items: [], total: 0 };
-    try {
-      result = await window.AImeBiz.listPublicJobs({
-        limit: PAGE_SIZE,
-        offset: pageIdx * PAGE_SIZE,
-        keyword: q || null,
-        location: area || null,
-        companyId,
-        tag: tag || job || null,
-        feature: feat || null,
-        remoteType: remote || null,
-        sort: sortSelect.value,
-      });
-    } catch (err) {
-      grid.innerHTML = `<div style="grid-column:1/-1; padding:40px; text-align:center; color:#c62828;">検索エラー: ${err.message}</div>`;
-      return;
+    // Supabaseが空の場合はフォールバック
+    if (!result.items.length) {
+      let filtered = ALL_FALLBACK.slice();
+      if (job) filtered = filtered.filter(j => j.category === (CAT_MAP[job] || job));
+      if (feat) filtered = filtered.filter(j => j.tags.some(t => t.indexOf(feat) >= 0));
+      if (area) filtered = filtered.filter(j => (j.location || '').indexOf(area) >= 0);
+      if (q) filtered = filtered.filter(j => j.title.indexOf(q) >= 0 || j.companies.name.indexOf(q) >= 0 || j.tags.some(t => t.indexOf(q) >= 0));
+      filtered.sort((a,b) => (b.is_boosted ? 1 : 0) - (a.is_boosted ? 1 : 0));
+      result = { items: filtered.slice(pageIdx * PAGE_SIZE, (pageIdx + 1) * PAGE_SIZE), total: filtered.length };
     }
+
+    // サイドバー: Supabaseから全件集計
+    try {
+      if (window.sb) {
+        const allRes = await window.sb.from('job_postings')
+          .select('category,tags,location')
+          .eq('is_public', true).eq('status', 'approved');
+        if (allRes.data && allRes.data.length) {
+          buildSidebar(allRes.data);
+        } else {
+          buildSidebar(ALL_FALLBACK);
+        }
+      } else {
+        buildSidebar(ALL_FALLBACK);
+      }
+    } catch (e) { buildSidebar(ALL_FALLBACK); }
 
     // 結果件数
     document.getElementById('results-count').textContent = result.total
@@ -524,7 +657,7 @@ document.getElementById('save-search-btn')?.addEventListener('click', async () =
         section.style.display = 'block';
       }
     }
-  } catch (err) { console.warn('ranking failed:', err); }
+  } catch (err) { /* ranking unavailable */ }
 
   doSearch();
 })();

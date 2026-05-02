@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>サイト全体ローディング画面 proposals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #333; }
+
+  h1 { text-align: center; padding: 40px 20px 10px; font-size: 1.6em; font-weight: 900; }
+  .subtitle { text-align: center; color: #888; font-size: 0.85em; margin-bottom: 40px; }
+
+  .proposal { max-width: 500px; margin: 0 auto 50px; padding: 0 20px; }
+  .proposal-label { font-size: 1.1em; font-weight: 800; margin-bottom: 4px; color: #1b5e20; }
+  .proposal-desc { font-size: 0.8em; color: #888; margin-bottom: 14px; }
+
+  /* ブラウザ風フレーム */
+  .browser {
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    background: #fff;
+  }
+  .browser-bar {
+    height: 36px; background: #e8e8e8; display: flex; align-items: center; padding: 0 14px; gap: 6px;
+  }
+  .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .browser-dot.r { background: #ff5f57; }
+  .browser-dot.y { background: #ffbd2e; }
+  .browser-dot.g { background: #28c840; }
+  .browser-url {
+    flex: 1; margin-left: 10px; background: #fff; border-radius: 5px;
+    height: 22px; padding: 0 10px; font-size: 0.6em; color: #aaa;
+    display: flex; align-items: center;
+  }
+  .browser-body { height: 500px; position: relative; overflow: hidden; }
+
+  /* ============================== */
+  /* 共通：ローディングオーバーレイ   */
+  /* ============================== */
+  .loading-overlay {
+    position: absolute; inset: 0; z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  /* ============================== */
+  /* 案A: ミニマルロゴ + スピナー    */
+  /* ============================== */
+  .lo-a { background: #fff; }
+  .lo-a .la-logo {
+    font-size: 2.4em; font-weight: 900; color: #1b5e20; letter-spacing: -1px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .lo-a .la-logo img { height: 40px; }
+  .lo-a .la-spinner {
+    width: 32px; height: 32px; margin-top: 24px;
+    border: 3px solid #e0e0e0; border-top-color: #2e7d32;
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============================== */
+  /* 案B: パルスロゴ                */
+  /* ============================== */
+  .lo-b { background: #fff; }
+  .lo-b .lb-logo {
+    font-size: 3em; font-weight: 900; color: #1b5e20;
+    display: flex; align-items: center; gap: 12px;
+    animation: lb-pulse 1.6s ease-in-out infinite;
+  }
+  .lo-b .lb-logo img { height: 48px; animation: lb-pulse 1.6s ease-in-out infinite; }
+  @keyframes lb-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.96); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+  .lo-b .lb-sub {
+    margin-top: 16px; font-size: 0.78em; color: #aaa; font-weight: 600;
+    animation: lb-pulse 1.6s ease-in-out infinite;
+  }
+
+  /* ============================== */
+  /* 案C: プログレスバー            */
+  /* ============================== */
+  .lo-c { background: #fff; }
+  .lo-c .lc-logo {
+    font-size: 2.4em; font-weight: 900; color: #1b5e20;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .lo-c .lc-logo img { height: 40px; }
+  .lo-c .lc-bar-wrap {
+    width: 180px; height: 4px; background: #e8f5e9; border-radius: 2px;
+    margin-top: 24px; overflow: hidden;
+  }
+  .lo-c .lc-bar {
+    height: 100%; width: 30%; border-radius: 2px;
+    background: linear-gradient(90deg, #1b5e20, #4caf50);
+    animation: lc-slide 1.5s ease-in-out infinite;
+  }
+  @keyframes lc-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(500%); }
+  }
+  .lo-c .lc-text {
+    margin-top: 14px; font-size: 0.72em; color: #aaa; font-weight: 600;
+  }
+
+  /* ============================== */
+  /* 案D: AIタイピング              */
+  /* ============================== */
+  .lo-d { background: #111; }
+  .lo-d .ld-logo {
+    font-size: 2.4em; font-weight: 900; color: #4caf50;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .lo-d .ld-logo img { height: 40px; filter: brightness(2); }
+  .lo-d .ld-terminal {
+    background: #1a1a2e; border-radius: 8px; padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.72em;
+    color: #4caf50; min-width: 260px;
+  }
+  .lo-d .ld-line { margin-bottom: 6px; opacity: 0; animation: ld-appear 0.3s forwards; }
+  .lo-d .ld-line:nth-child(1) { animation-delay: 0.2s; }
+  .lo-d .ld-line:nth-child(2) { animation-delay: 0.7s; }
+  .lo-d .ld-line:nth-child(3) { animation-delay: 1.2s; }
+  .lo-d .ld-line:nth-child(4) { animation-delay: 1.7s; color: #fff; }
+  .lo-d .ld-cursor {
+    display: inline-block; width: 7px; height: 14px; background: #4caf50;
+    animation: ld-blink 0.7s step-end infinite; vertical-align: middle; margin-left: 2px;
+  }
+  @keyframes ld-appear { to { opacity: 1; } }
+  @keyframes ld-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .lo-d .ld-prefix { color: #888; }
+
+  /* ============================== */
+  /* 案E: スケルトン + ロゴ(推奨)   */
+  /* ============================== */
+  .lo-e { background: #fff; flex-direction: column; }
+  @keyframes sk-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* 中央ローディング表示 */
+  .le-center {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    flex: 1;
+  }
+  .le-logo {
+    font-size: 2.2em; font-weight: 900; color: #1b5e20;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .le-logo img { height: 36px; }
+  .le-dots { display: flex; gap: 8px; margin-top: 20px; }
+  .le-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #4caf50;
+    animation: le-bounce 1.2s ease-in-out infinite;
+  }
+  .le-dot:nth-child(2) { animation-delay: 0.15s; }
+  .le-dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes le-bounce {
+    0%,80%,100% { transform: scale(0.5); opacity: 0.3; }
+    40% { transform: scale(1.2); opacity: 1; }
+  }
+  /* コンテンツスケルトン */
+  .le-skel {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    padding: 20px 24px; opacity: 0.4;
+  }
+  .le-skel-row {
+    height: 60px; border-radius: 10px; margin-bottom: 10px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+    background-size: 200% 100%; animation: sk-shimmer 1.5s ease-in-out infinite;
+  }
+  .le-skel-row:nth-child(2) { animation-delay: 0.15s; }
+  .le-skel-row:nth-child(3) { animation-delay: 0.3s; }
+
+  .sep { max-width: 500px; margin: 10px auto 40px; border: none; border-top: 1px dashed #ddd; }
+  .recommend { text-align: center; font-size: 0.7em; color: #4caf50; font-weight: 700; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<h1>サイトローディング画面 比較</h1>
+<p class="subtitle">サイトを開いた瞬間に表示されるローディングUI - 全5案</p>
+
+<!-- ==================== 案A ==================== -->
+<div class="proposal">
+  <div class="proposal-label">案A: ミニマル ロゴ + スピナー</div>
+  <div class="proposal-desc">ロゴと回転スピナーだけ。軽量・高速・シンプル。</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+      <div class="browser-url">aime.example.com</div>
+    </div>
+    <div class="browser-body">
+      <div class="loading-overlay lo-a">
+        <div class="la-logo">
+          <img src="images/flat_svg/logo_icon.svg" alt="">AIme
+        </div>
+        <div class="la-spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ==================== 案B ==================== -->
+<div class="proposal">
+  <div class="proposal-label">案B: パルス ロゴ</div>
+  <div class="proposal-desc">ロゴ全体がふわっと明滅。ブランド印象を残しつつ待ち時間を感じさせない。</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+      <div class="browser-url">aime.example.com</div>
+    </div>
+    <div class="browser-body">
+      <div class="loading-overlay lo-b">
+        <div class="lb-logo">
+          <img src="images/flat_svg/logo_icon.svg" alt="">AIme
+        </div>
+        <div class="lb-sub">人類最後の就活、始めませんか？</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ==================== 案C ==================== -->
+<div class="proposal">
+  <div class="proposal-label">案C: ロゴ + プログレスバー</div>
+  <div class="proposal-desc">横に流れるプログレスバーで進行感を演出。「読み込み中」テキスト付き。</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+      <div class="browser-url">aime.example.com</div>
+    </div>
+    <div class="browser-body">
+      <div class="loading-overlay lo-c">
+        <div class="lc-logo">
+          <img src="images/flat_svg/logo_icon.svg" alt="">AIme
+        </div>
+        <div class="lc-bar-wrap"><div class="lc-bar"></div></div>
+        <div class="lc-text">読み込み中...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ==================== 案D ==================== -->
+<div class="proposal">
+  <div class="proposal-label">案D: ターミナル風（AI感強め）</div>
+  <div class="proposal-desc">黒背景にターミナル風のテキストが1行ずつ出現。サイトの「尖り」感を初手から演出。</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+      <div class="browser-url">aime.example.com</div>
+    </div>
+    <div class="browser-body">
+      <div class="loading-overlay lo-d" id="terminalDemo">
+        <div class="ld-logo">
+          <img src="images/flat_svg/logo_icon.svg" alt="">AIme
+        </div>
+        <div class="ld-terminal">
+          <div class="ld-line"><span class="ld-prefix">$</span> initializing AI modules...</div>
+          <div class="ld-line"><span class="ld-prefix">$</span> loading internship data...</div>
+          <div class="ld-line"><span class="ld-prefix">$</span> connecting to the future...</div>
+          <div class="ld-line"><span class="ld-prefix">></span> ready.<span class="ld-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ==================== 案E ==================== -->
+<div class="proposal">
+  <div class="recommend">RECOMMENDED</div>
+  <div class="proposal-label">案E: スケルトン + ロゴ（推奨）</div>
+  <div class="proposal-desc">実際のレイアウトのスケルトンを薄く見せつつ、中央にロゴ + ドットローダー。読み込み完了後の形が予測でき、体感速度が最も速い。</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+      <div class="browser-url">aime.example.com</div>
+    </div>
+    <div class="browser-body">
+      <div class="loading-overlay lo-e">
+<div class="le-center">
+          <div class="le-logo"><img src="images/flat_svg/logo_icon.svg" alt="">AIme</div>
+          <div class="le-dots">
+            <div class="le-dot"></div><div class="le-dot"></div><div class="le-dot"></div>
+          </div>
+        </div>
+        <div class="le-skel">
+          <div class="le-skel-row"></div>
+          <div class="le-skel-row"></div>
+          <div class="le-skel-row"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:60px;"></div>
+
+<script>
+// 案Dのターミナルアニメをループさせる
+setInterval(function(){
+  var lines = document.querySelectorAll('#terminalDemo .ld-line');
+  lines.forEach(function(l){
+    l.style.animation = 'none';
+    l.offsetHeight;
+    l.style.animation = '';
+  });
+}, 4000);
+</script>
+</body>
+</html>

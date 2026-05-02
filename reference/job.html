@@ -170,77 +170,55 @@
   // UUID 判定（DB ID は UUID、レガシーは 'llm-0' のような形式）
   const isUuid = id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-  let job = null;
-  if (isUuid && window.AImeBiz) {
-    try {
-      const dbJob = await window.AImeBiz.getJob(id);
-      if (dbJob) {
-        job = {
-          id: dbJob.id,
-          title: dbJob.title,
-          company: dbJob.companies?.name || '',
-          companyId: dbJob.companies?.id,
-          companyLogo: dbJob.companies?.logo_url,
-          about: dbJob.description || '',
-          skills: dbJob.skills || [],
-          welcome: dbJob.welcome_skills || [],
-          benefits: dbJob.benefits || [],
-          tags: dbJob.tags || [],
-          category: dbJob.category || 'other',
-          location: dbJob.location || '',
-          salary: dbJob.salary_min ? `¥${Number(dbJob.salary_min).toLocaleString()}` : '応相談',
-          workdays: dbJob.workdays || '応相談',
-          band: dbJob.is_boosted ? '注目' : null,
-          _isDb: true,
-          _dbJobId: dbJob.id,
-        };
-      }
-    } catch (err) { console.warn('DB fetch failed, falling back:', err); }
+  function dbToJob(dbJob) {
+    return {
+      id: dbJob.id, title: dbJob.title,
+      company: dbJob.companies?.name || '',
+      companyId: dbJob.companies?.id,
+      companyLogo: dbJob.companies?.logo_url,
+      about: dbJob.description || '',
+      skills: dbJob.skills || [], welcome: dbJob.welcome_skills || [],
+      benefits: dbJob.benefits || [], tags: dbJob.tags || [],
+      category: dbJob.category || 'other', location: dbJob.location || '',
+      salary: dbJob.salary_min ? `¥${Number(dbJob.salary_min).toLocaleString()}` : '応相談',
+      workdays: dbJob.workdays || '応相談',
+      band: dbJob.is_boosted ? '注目' : null,
+      _isDb: true, _dbJobId: dbJob.id,
+    };
   }
+
+  let job = null;
+
+  // UUID ID → Supabaseから直接取得（AImeBizに依存しない）
+  if (isUuid && window.sb) {
+    try {
+      const { data } = await window.sb.from('job_postings')
+        .select('*, companies(*)').eq('id', id).maybeSingle();
+      if (data) job = dbToJob(data);
+    } catch (err) { console.warn('DB fetch failed:', err); }
+  }
+
   // レガシーフォールバック
   if (!job && window.JOBS_GET) job = window.JOBS_GET(id);
 
-  if (!job) {
-    const suggestions = [];
-    Object.keys(window.JOBS_DATA || {}).forEach(cat => {
-      (window.JOBS_DATA[cat] || []).forEach((j, i) => {
-        suggestions.push(Object.assign({}, j, { id: cat + '-' + i, category: cat }));
-      });
-    });
-    const pickup = suggestions.filter(j => j.band && (j.band.indexOf('Pickup') >= 0 || j.band.indexOf('急募') >= 0)).slice(0, 3);
-    const shown = pickup.length >= 3 ? pickup : suggestions.slice(0, 3);
+  // フォールバックID (f1〜f56) → Supabaseからインデックスで取得
+  if (!job && id && id.startsWith('f') && window.sb) {
+    try {
+      const idx = parseInt(id.slice(1), 10) - 1;
+      const { data } = await window.sb.from('job_postings')
+        .select('*, companies(id, name, logo_url)')
+        .eq('is_public', true).eq('status', 'approved')
+        .range(idx, idx);
+      if (data && data[0]) {
+        job = dbToJob(data[0]);
+        history.replaceState(null, '', 'job.html?id=' + data[0].id);
+      }
+    } catch (err) { console.warn('Fallback ID resolve failed:', err); }
+  }
 
-    main.innerHTML = `
-      <section class="nf-hero">
-        <div class="nf-hero-inner">
-          <div class="icon">404</div>
-          <h1>この求人は見つかりませんでした</h1>
-          <p>掲載が終了したか、URLが間違っている可能性があります。<br>下の人気求人からあなたに合うAIインターンを探してみましょう。</p>
-          <div class="nf-actions">
-            <a href="search.html" class="btn btn-white">AIインターンを探す</a>
-            <a href="original.html" class="btn btn-ghost">トップページへ戻る</a>
-          </div>
-        </div>
-      </section>
-      <div class="nf-suggest">
-        <div class="nf-suggest-title-wrap"><span class="nf-suggest-title">注目のAIインターン</span></div>
-        <div class="nf-suggest-grid">
-          ${shown.map(j => `
-            <a class="job-card" href="job.html?id=${encodeURIComponent(j.id)}">
-              <div class="jc-company">${j.company}</div>
-              <div class="jc-title">${j.title}</div>
-              <div class="jc-tags">
-                ${j.band ? `<span class="jc-tag hot">${j.band}</span>` : ''}
-                ${(j.tags||[]).slice(0,3).map(t => `<span class="jc-tag">${t}</span>`).join('')}
-              </div>
-              <div class="jc-meta">
-                <span class="jc-wage">時給 ${j.salary}</span>
-                <span>${j.location}</span>
-              </div>
-            </a>
-          `).join('')}
-        </div>
-      </div>`;
+  if (!job) {
+    // 404画面を出さず検索ページにリダイレクト
+    location.href = 'search.html';
     return;
   }
 
@@ -253,15 +231,22 @@
     data:'データ分析', business:'ビジネス'
   }[job.category] || job.category;
 
-  // 同じカテゴリの関連求人 (DB 優先 → レガシー fallback)
+  // 同じカテゴリの関連求人
   let relatedItems = [];
-  if (job._isDb && window.AImeBiz) {
+  if (job._isDb && window.sb) {
     try {
-      const r = await window.AImeBiz.listPublicJobs({ category: job.category, limit: 5 });
-      relatedItems = (r.items || []).filter(j => j.id !== job.id).slice(0, 4).map(j => ({
-        id: j.id, company: j.companies?.name || '', title: j.title,
-        salary: j.salary_min ? `¥${Number(j.salary_min).toLocaleString()}` : '応相談',
-      }));
+      const { data } = await window.sb.from('job_postings')
+        .select('id, title, salary_min, companies(name)')
+        .eq('is_public', true).eq('status', 'approved')
+        .eq('category', job.category)
+        .neq('id', job.id)
+        .limit(4);
+      if (data) {
+        relatedItems = data.map(j => ({
+          id: j.id, company: j.companies?.name || '', title: j.title,
+          salary: j.salary_min ? `¥${Number(j.salary_min).toLocaleString()}` : '応相談',
+        }));
+      }
     } catch (err) { console.warn(err); }
   } else if (window.JOBS_DATA) {
     const list = window.JOBS_DATA[job.category] || [];

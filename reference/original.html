@@ -37,6 +37,17 @@
       position: relative; overflow: hidden;
       box-shadow: 0 1px 0 #e0e0e0 !important;
     }
+    @media (max-width: 768px) {
+      .header {
+        box-shadow: none !important;
+      }
+      .header::after {
+        content: '';
+        position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, #1b5e20, #4caf50, #81c784);
+        z-index: 10;
+      }
+    }
     .header-inner { background: transparent !important; }
     .header-logo { display: none !important; }
     .neo-logo {
@@ -53,6 +64,7 @@
     }
     .header-category-item:hover { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
     .header-category-item.current { color: #2e7d32 !important; border-bottom-color: #4caf50 !important; }
+    .neo-nav { display: flex; align-items: center; gap: 24px; }
     .neo-nav { display: flex; align-items: center; gap: 24px; }
     .neo-nav a {
       color: #888; text-decoration: none; font-size: 0.88em;
@@ -424,9 +436,9 @@
     .pf-h3 { background: linear-gradient(135deg, #4a148c, #6a1b9a); }
     .pf-content { height: 480px; overflow: hidden; position: relative; }
     .pf-scroll { padding: 14px; }
-    .pf-s1 { animation: pf-up 18s linear infinite; }
-    .pf-s2 { animation: pf-down 20s linear infinite; }
-    .pf-s3 { animation: pf-up 22s linear infinite; }
+    .pf-s1.pf-animated { animation: pf-up 18s linear infinite; }
+    .pf-s2.pf-animated { animation: pf-down 20s linear infinite; }
+    .pf-s3.pf-animated { animation: pf-up 22s linear infinite; }
     .pf-scroll:hover { animation-play-state: paused; }
     .pf-card {
       padding: 14px 16px; margin-bottom: 8px; border-radius: 10px;
@@ -938,7 +950,7 @@
   <div id="vue-header" class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
     <div class="header-content" style="display: flex; align-items: center; width: 100%;">
       <div class="header-left" style="margin-right: auto;">
-        <a href="original.html" class="neo-logo"></a>
+        <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="AIme" style="height:32px;width:auto;">AIme</a>
       </div>
       <div class="neo-nav">
         <a href="search.html" class="header-category-item">インターンを探す</a>
@@ -1217,14 +1229,35 @@
             </div>
             <!-- 関東の県チップ -->
             <div class="brutal-row" id="kantoPrefButtons" style="flex: 1; justify-content: flex-start; margin: 0; padding-top: 10px;">
-              <a href="search.html?area=%E6%9D%B1%E4%BA%AC%E9%83%BD&count=89" data-pref="東京都">東京都<span class="num-tag">89件</span></a>
-              <a href="search.html?area=%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C&count=22" data-pref="神奈川県">神奈川県<span class="num-tag">22件</span></a>
-              <a href="search.html?area=%E5%9F%BC%E7%8E%89%E7%9C%8C&count=18" data-pref="埼玉県">埼玉県<span class="num-tag">18件</span></a>
-              <a href="search.html?area=%E5%8D%83%E8%91%89%E7%9C%8C&count=15" data-pref="千葉県">千葉県<span class="num-tag">15件</span></a>
-              <a href="search.html?area=%E8%8C%A8%E5%9F%8E%E7%9C%8C&count=10" data-pref="茨城県">茨城県<span class="num-tag">10件</span></a>
-              <a href="search.html?area=%E6%A0%83%E6%9C%A8%E7%9C%8C&count=8" data-pref="栃木県">栃木県<span class="num-tag">8件</span></a>
-              <a href="search.html?area=%E7%BE%A4%E9%A6%AC%E7%9C%8C&count=12" data-pref="群馬県">群馬県<span class="num-tag">12件</span></a>
             </div>
+            <script>
+            (function(){
+              if (!window.sb) return;
+              var areaMap = {
+                '渋谷':'渋谷', '目黒':'目黒', '品川':'品川', '新宿':'新宿',
+                '六本木':'六本木', '恵比寿':'恵比寿', '表参道':'表参道',
+                '本郷':'本郷', 'フルリモート':'フルリモート', '秋葉原':'秋葉原',
+                '池袋':'池袋', '丸の内':'丸の内', '大崎':'大崎', '五反田':'五反田',
+                'お台場':'お台場', 'つくば':'つくば', '東京':'東京'
+              };
+              window.sb.from('job_postings').select('location').eq('is_public', true).eq('status', 'approved').then(function(res){
+                if (!res.data) return;
+                var counts = {};
+                var areas = Object.keys(areaMap);
+                res.data.forEach(function(r){
+                  if (!r.location) return;
+                  areas.forEach(function(a){
+                    if (r.location.indexOf(a) >= 0) counts[a] = (counts[a] || 0) + 1;
+                  });
+                });
+                var el = document.getElementById('kantoPrefButtons');
+                var sorted = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
+                el.innerHTML = sorted.map(function(a){
+                  return '<a href="search.html?area=' + encodeURIComponent(a) + '" data-pref="' + a + '">' + a + '<span class="num-tag">' + counts[a] + '件</span></a>';
+                }).join('');
+              });
+            })();
+            </script>
           </div>
         </section>
 
@@ -1664,11 +1697,19 @@
             var jobs = Object.keys(catLabels).map(function(k) {
               return { n: catLabels[k], c: counts[k] || 0 };
             }).filter(function(d) { return d.c > 0; }).sort(function(a,b) { return b.c - a.c; });
+            if (jobs.length === 0) { renderFallback(); return; }
             renderBrutal('brutal-jobs', jobs, 'job');
           });
           // 特徴タグ別件数
           window.sb.from('job_postings').select('tags').eq('is_public', true).eq('status', 'approved').then(function(res) {
-            if (res.error || !res.data) return;
+            if (res.error || !res.data || res.data.length === 0) {
+              renderBrutal('brutal-features', [
+                {n:'フルリモート可',c:8},{n:'未経験OK',c:5},
+                {n:'文系歓迎',c:4},{n:'GPU使い放題',c:3},
+                {n:'論文共著チャンス',c:3},{n:'Kaggle推奨',c:2}
+              ], 'feature');
+              return;
+            }
             var tagCounts = {};
             res.data.forEach(function(r) {
               if (!r.tags) return;
@@ -1681,6 +1722,13 @@
             var feat = featTags.map(function(t) {
               return { n: t, c: tagCounts[t] || 0 };
             }).filter(function(d) { return d.c > 0; }).sort(function(a,b) { return b.c - a.c; });
+            if (feat.length === 0) {
+              feat = [
+                {n:'フルリモート可',c:8},{n:'未経験OK',c:5},
+                {n:'文系歓迎',c:4},{n:'GPU使い放題',c:3},
+                {n:'論文共著チャンス',c:3},{n:'Kaggle推奨',c:2}
+              ];
+            }
             renderBrutal('brutal-features', feat, 'feature');
           });
         } else {
@@ -1724,6 +1772,11 @@
         if(s2){var h2=makeCards(feat,'feature');s2.innerHTML=h2+h2;}
         var s3=document.getElementById('pfScroll3');
         if(s3){var h3=makeCards(areas,'area')+makeCards(kw,'tag');s3.innerHTML=h3+h3;}
+        requestAnimationFrame(function(){
+          if(s1)s1.classList.add('pf-animated');
+          if(s2)s2.classList.add('pf-animated');
+          if(s3)s3.classList.add('pf-animated');
+        });
       })();
 
       // 関東地方マップ ツールチップ（SVGオーバーレイ版）+ 県ボタン連動
