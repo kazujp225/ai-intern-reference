@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>AIキーワード一覧 | AIme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0">
+  <meta name="description" content="AI業界で使われる主要キーワードからインターン求人を探す。RAG、LLM、PyTorch、プロンプトエンジニアリングなど注目のAI技術キーワード一覧。">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: #f7f8fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header { background: #fff; box-shadow: 0 1px 0 #e0e0e0; }
+    .neo-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 1.5em; font-weight: 900; color: #1b5e20;
+      text-decoration: none; letter-spacing: 2px;
+    }
+    .neo-nav { display: flex; align-items: center; gap: 24px; }
+    .neo-nav a {
+      color: #888; text-decoration: none; font-size: 0.88em;
+      font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .neo-nav a:hover { color: #2e7d32; border-bottom-color: #4caf50; }
+    .neo-nav .neo-login { color: #2e7d32; }
+    .neo-nav .neo-register {
+      background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+      padding: 7px 22px; border-radius: 6px; font-weight: 800;
+      font-size: 0.85em; border: none; border-bottom: none;
+    }
+
+    /* Hero */
+    .hero {
+      background: #fff;
+      padding: 48px 40px 40px;
+      text-align: center;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .hero h1 {
+      font-size: 1.8em;
+      font-weight: 900;
+      color: #1b5e20;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 1em;
+      color: #888;
+      font-weight: 500;
+    }
+
+    /* Content */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .keywords-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .keyword-card {
+      display: inline-block;
+      background: #fff;
+      color: #333;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      border: 1.5px solid #e0e0e0;
+      font-size: 0.92em;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .keyword-card:hover {
+      border-color: #4caf50;
+      color: #2e7d32;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.12);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    .page-footer {
+      background: #fff;
+      border-top: 1px solid #e0e0e0;
+      padding: 32px 40px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      color: #888;
+      text-decoration: none;
+      font-size: 0.82em;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #2e7d32; }
+    .footer-copyright {
+      font-size: 0.78em;
+      color: #bbb;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 16px !important; }
+      .neo-nav { gap: 12px; }
+      .neo-nav a { font-size: 0.78em; }
+      .hero { padding: 32px 20px 28px; }
+      .hero h1 { font-size: 1.4em; }
+      .content { padding: 24px 16px 48px; }
+      .keywords-grid { gap: 8px; }
+      .keyword-card { padding: 8px 18px; font-size: 0.85em; }
+      .page-footer { padding: 24px 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .neo-nav a:not(.neo-login):not(.neo-register) { display: none; }
+      .neo-nav { gap: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
+      <div style="display: flex; align-items: center; width: 100%;">
+        <div style="margin-right: auto;">
+          <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="AIme" style="height:32px;width:auto;">AIme</a>
+        </div>
+        <div class="neo-nav">
+          <a href="search.html">インターンを探す</a>
+          <a href="companies.html">AI企業を探す</a>
+          <a href="blog.html">AIコラム</a>
+          <a href="login.html" class="neo-login">ログイン</a>
+          <a href="signup.html" class="neo-register">新規登録</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <h1>AIキーワード一覧</h1>
+    <p>AI業界で使われる主要キーワードから求人を探す</p>
+  </section>
+
+  <div class="content">
+    <div class="keywords-grid">
+      <a href="search.html?tag=RAG" class="keyword-card">RAG</a>
+      <a href="search.html?tag=%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0" class="keyword-card">ファインチューニング</a>
+      <a href="search.html?tag=Claude" class="keyword-card">Claude</a>
+      <a href="search.html?tag=LangChain" class="keyword-card">LangChain</a>
+      <a href="search.html?tag=Stable+Diffusion" class="keyword-card">Stable Diffusion</a>
+      <a href="search.html?tag=Kaggle" class="keyword-card">Kaggle</a>
+      <a href="search.html?tag=Transformer" class="keyword-card">Transformer</a>
+      <a href="search.html?tag=%E5%BC%B7%E5%8C%96%E5%AD%A6%E7%BF%92" class="keyword-card">強化学習</a>
+      <a href="search.html?tag=LLM" class="keyword-card">LLM</a>
+      <a href="search.html?tag=GPT" class="keyword-card">GPT</a>
+      <a href="search.html?tag=%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0" class="keyword-card">プロンプトエンジニアリング</a>
+      <a href="search.html?tag=%E3%83%99%E3%82%AF%E3%83%88%E3%83%ABDB" class="keyword-card">ベクトルDB</a>
+      <a href="search.html?tag=Hugging+Face" class="keyword-card">Hugging Face</a>
+      <a href="search.html?tag=PyTorch" class="keyword-card">PyTorch</a>
+      <a href="search.html?tag=MLOps" class="keyword-card">MLOps</a>
+      <a href="search.html?tag=Docker" class="keyword-card">Docker</a>
+      <a href="search.html?tag=AWS" class="keyword-card">AWS</a>
+      <a href="search.html?tag=GCP" class="keyword-card">GCP</a>
+      <a href="search.html?tag=Python" class="keyword-card">Python</a>
+      <a href="search.html?tag=TypeScript" class="keyword-card">TypeScript</a>
+      <a href="search.html?tag=NLP" class="keyword-card">NLP</a>
+      <a href="search.html?tag=%E7%94%BB%E5%83%8F%E8%AA%8D%E8%AD%98" class="keyword-card">画像認識</a>
+      <a href="search.html?tag=%E9%9F%B3%E5%A3%B0AI" class="keyword-card">音声AI</a>
+      <a href="search.html?tag=%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88" class="keyword-card">エージェント</a>
+      <a href="search.html?tag=Tool+Use" class="keyword-card">Tool Use</a>
+      <a href="search.html?tag=ComfyUI" class="keyword-card">ComfyUI</a>
+      <a href="search.html?tag=LoRA" class="keyword-card">LoRA</a>
+      <a href="search.html?tag=CUDA" class="keyword-card">CUDA</a>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-links">
+      <a href="terms.html">利用規約</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="contact.html">お問い合わせ</a>
+      <a href="tokushoho.html">運営会社</a>
+    </div>
+    <p class="footer-copyright">&copy; 2026 AIme - Built by humans (for now). Powered by coffee and GPU.</p>
+  </footer>
+
+</body>
+
+</html>

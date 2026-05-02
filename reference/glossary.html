@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI用語辞典 | AIme</title>
+<meta name="description" content="AIインターンで知っておきたい用語をわかりやすく解説。LLM、RAG、ファインチューニング、プロンプトエンジニアリングなど主要なAI用語を網羅。">
+<link rel="canonical" href="https://ai-intern-reference-1.onrender.com/glossary.html">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f7f8fa;
+    color: #333;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* Header */
+  .header { background: #fff; box-shadow: 0 1px 0 #e0e0e0; }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .neo-logo {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 1.5em; font-weight: 900; color: #1b5e20;
+    text-decoration: none; letter-spacing: 2px;
+  }
+  .neo-nav { display: flex; align-items: center; gap: 24px; }
+  .neo-nav a {
+    color: #888; text-decoration: none; font-size: 0.88em;
+    font-weight: 600; padding: 4px 0; border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .neo-nav a:hover { color: #2e7d32; border-bottom-color: #4caf50; }
+  .neo-nav .neo-login { color: #2e7d32; }
+  .neo-nav .neo-register {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff;
+    padding: 7px 22px; border-radius: 6px; font-weight: 800;
+    font-size: 0.85em; border: none; border-bottom: none;
+  }
+  .neo-nav .neo-register:hover { opacity: 0.9; }
+
+  /* Hero */
+  .gl-hero {
+    background: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .gl-hero h1 {
+    font-size: 2.2em;
+    font-weight: 900;
+    color: #1b5e20;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .gl-hero p {
+    color: #666;
+    font-size: 1em;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Category Navigation */
+  .gl-categories {
+    max-width: 900px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .gl-cat-btn {
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1.5px solid #c8e6c9;
+    background: #fff;
+    color: #2e7d32;
+    font-size: 0.85em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gl-cat-btn:hover,
+  .gl-cat-btn.active {
+    background: #2e7d32;
+    color: #fff;
+    border-color: #2e7d32;
+  }
+
+  /* Glossary List */
+  .gl-list {
+    max-width: 900px;
+    margin: 32px auto 60px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .gl-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(0,0,0,0.04);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .gl-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(0,0,0,0.04);
+  }
+
+  .gl-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .gl-card-header:hover { background: #fafffe; }
+
+  .gl-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2em; flex-shrink: 0;
+  }
+
+  .gl-title-wrap { flex: 1; min-width: 0; }
+  .gl-term {
+    font-size: 1.1em; font-weight: 800; color: #1b5e20;
+    border-left: 3px solid #4caf50;
+    padding-left: 10px;
+    line-height: 1.3;
+  }
+  .gl-term-sub {
+    font-size: 0.82em; color: #888; font-weight: 600;
+    padding-left: 13px; margin-top: 2px;
+  }
+
+  .gl-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72em;
+    font-weight: 700;
+    background: #f1f8e9;
+    color: #558b2f;
+    flex-shrink: 0;
+  }
+
+  .gl-chevron {
+    width: 20px; height: 20px; flex-shrink: 0;
+    transition: transform 0.25s;
+    color: #aaa;
+  }
+  .gl-card.open .gl-chevron { transform: rotate(180deg); }
+
+  .gl-card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: 0 24px;
+  }
+  .gl-card.open .gl-card-body {
+    max-height: 300px;
+    padding: 0 24px 22px;
+  }
+  .gl-card-body p {
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.8;
+    padding-left: 58px;
+  }
+
+  /* Footer */
+  .site-footer {
+    background: #1a1a1a;
+    color: #ccc;
+    padding: 40px 24px 20px;
+  }
+  .site-footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .site-footer .brand {
+    font-size: 1.3em; font-weight: 900; color: #4caf50;
+    margin-bottom: 4px;
+  }
+  .site-footer h4 {
+    font-size: 0.85em; font-weight: 700; color: #fff;
+    margin-bottom: 8px;
+  }
+  .site-footer ul { list-style: none; }
+  .site-footer ul li { margin-bottom: 4px; }
+  .site-footer ul a { color: #aaa; font-size: 0.85em; transition: color 0.2s; }
+  .site-footer ul a:hover { color: #4caf50; }
+  .copyright {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding-top: 16px;
+    border-top: 1px solid #333;
+    font-size: 0.78em;
+    color: #666;
+    text-align: center;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .neo-nav { display: none; }
+    .gl-hero h1 { font-size: 1.6em; }
+    .gl-card-body p { padding-left: 0; }
+    .gl-icon { width: 36px; height: 36px; font-size: 1em; }
+    .site-footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner" style="display: flex; align-items: center; padding: 0 40px; height: 80px;">
+    <div style="display: flex; align-items: center; width: 100%;">
+      <div style="margin-right: auto;">
+        <a href="original.html" class="neo-logo"><img src="images/flat_svg/logo_icon.svg" alt="AIme" style="height:32px;width:auto;">AIme</a>
+      </div>
+      <div class="neo-nav">
+        <a href="search.html">インターンを探す</a>
+        <a href="companies.html">AI企業を探す</a>
+        <a href="blog.html">AIコラム</a>
+        <a href="login.html" class="neo-login">ログイン</a>
+        <a href="signup.html" class="neo-register">新規登録</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="gl-hero">
+  <h1>AI用語辞典</h1>
+  <p>AIインターンで知っておきたい用語をわかりやすく解説</p>
+
+  <div class="gl-categories">
+    <button class="gl-cat-btn active" data-cat="all">すべて</button>
+    <button class="gl-cat-btn" data-cat="model">モデル・学習</button>
+    <button class="gl-cat-btn" data-cat="technique">技術・手法</button>
+    <button class="gl-cat-btn" data-cat="infra">インフラ・運用</button>
+    <button class="gl-cat-btn" data-cat="career">キャリア</button>
+  </div>
+</section>
+
+<!-- Glossary List -->
+<div class="gl-list">
+
+  <div class="gl-card open" data-cat="model">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F9E0;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">LLM</div>
+        <div class="gl-term-sub">Large Language Model / 大規模言語モデル</div>
+      </div>
+      <span class="gl-tag">モデル・学習</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>GPTやClaudeなどの大規模な自然言語処理モデル。大量のテキストデータで学習し、文章生成・要約・翻訳などを行う。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="technique">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F50D;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">RAG</div>
+        <div class="gl-term-sub">Retrieval-Augmented Generation / 検索拡張生成</div>
+      </div>
+      <span class="gl-tag">技術・手法</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>外部データベースから情報を検索し、LLMの回答に組み込む技術。ハルシネーションを抑え、最新情報を反映できる。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="model">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F3AF;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">ファインチューニング</div>
+        <div class="gl-term-sub">Fine-tuning</div>
+      </div>
+      <span class="gl-tag">モデル・学習</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>事前学習済みモデルを特定のタスクやドメインに合わせて追加学習すること。少量のデータで高精度なモデルを構築できる。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="technique">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F4DD;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">プロンプトエンジニアリング</div>
+        <div class="gl-term-sub">Prompt Engineering</div>
+      </div>
+      <span class="gl-tag">技術・手法</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>AIに適切な指示（プロンプト）を与えて望ましい出力を得る技術。LLMの性能を最大限引き出す重要スキル。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="model">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x26A1;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">Transformer</div>
+        <div class="gl-term-sub">トランスフォーマー</div>
+      </div>
+      <span class="gl-tag">モデル・学習</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>自己注意機構を用いたニューラルネットワーク。GPTやBERTなど現代のAIモデルの基盤アーキテクチャ。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="infra">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x2699;&#xFE0F;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">MLOps</div>
+        <div class="gl-term-sub">Machine Learning Operations</div>
+      </div>
+      <span class="gl-tag">インフラ・運用</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>機械学習モデルの開発・デプロイ・運用を効率化するプラクティス。CI/CDやモニタリングを含む。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="infra">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F4BE;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">ベクトルDB</div>
+        <div class="gl-term-sub">Vector Database</div>
+      </div>
+      <span class="gl-tag">インフラ・運用</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>テキストや画像を数値ベクトルに変換して格納・検索するデータベース。RAGやセマンティック検索に不可欠。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="technique">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F916;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">エージェント</div>
+        <div class="gl-term-sub">AI Agent</div>
+      </div>
+      <span class="gl-tag">技術・手法</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>自律的にタスクを実行するAIシステム。ツール呼び出しや計画立案を行い、複雑な問題を解決する。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="model">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F3AE;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">強化学習</div>
+        <div class="gl-term-sub">Reinforcement Learning</div>
+      </div>
+      <span class="gl-tag">モデル・学習</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>試行錯誤を通じて報酬を最大化する学習手法。ゲームAIやロボット制御に活用される。</p>
+    </div>
+  </div>
+
+  <div class="gl-card" data-cat="career">
+    <div class="gl-card-header">
+      <div class="gl-icon">&#x1F3C6;</div>
+      <div class="gl-title-wrap">
+        <div class="gl-term">Kaggle</div>
+        <div class="gl-term-sub">カグル</div>
+      </div>
+      <span class="gl-tag">キャリア</span>
+      <svg class="gl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="gl-card-body">
+      <p>データサイエンスのコンペティションプラットフォーム。実践的なスキルを磨き、ポートフォリオを構築できる。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div><div class="brand">AIme</div><p style="font-size:.85em; margin:0;">AI特化インターン求人サイト。</p></div>
+    <div><h4>コンテンツ</h4><ul><li><a href="blog.html">AIコラム</a></li><li><a href="glossary.html">AI用語辞典</a></li></ul></div>
+    <div><h4>アカウント</h4><ul><li><a href="mypage.html">マイページ</a></li></ul></div>
+    <div><h4>サービス</h4><ul><li><a href="contact.html">お問合せ</a></li></ul></div>
+  </div>
+  <div class="copyright">&copy; 2026 AIme. All rights reserved.</div>
+</footer>
+
+<script>
+(function() {
+  // Accordion toggle
+  var cards = document.querySelectorAll('.gl-card-header');
+  cards.forEach(function(header) {
+    header.addEventListener('click', function() {
+      var card = header.parentElement;
+      card.classList.toggle('open');
+    });
+  });
+
+  // Category filter
+  var catBtns = document.querySelectorAll('.gl-cat-btn');
+  catBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      catBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var cat = btn.getAttribute('data-cat');
+      var items = document.querySelectorAll('.gl-card');
+      items.forEach(function(item) {
+        if (cat === 'all' || item.getAttribute('data-cat') === cat) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
